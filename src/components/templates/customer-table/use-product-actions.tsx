@@ -1,10 +1,7 @@
+import { useAdminDeleteCustomer } from "@medusa-react"
 import { Customer } from "@medusajs/medusa"
 import { navigate } from "gatsby"
 import * as React from "react"
-import
-  {
-    useAdminDeleteCustomer
-  } from "../../../../medusa-react"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import EditIcon from "../../fundamentals/icons/edit-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"

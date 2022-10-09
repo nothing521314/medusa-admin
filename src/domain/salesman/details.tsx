@@ -1,22 +1,20 @@
 import { Customer } from "@medusajs/medusa"
 import { RouteComponentProps } from "@reach/router"
-import React, { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import { SelectComponents } from "../../../components/molecules/select/select-components"
-import {
-  useAdminCustomer,
-  useAdminUpdateCustomer,
-} from "../../../../medusa-react"
-import LockIcon from "../../../components/fundamentals/icons/lock-icon"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import InputField from "../../../components/molecules/input"
-import Section from "../../../components/organisms/section"
-import BodyCard from "../../../components/organisms/body-card"
-import useNotification from "../../../hooks/use-notification"
-import Button from "../../../components/fundamentals/button"
-import { getErrorMessage } from "../../../utils/error-messages"
-import Validator from "../../../utils/validator"
 import { navigate } from "gatsby"
+import React, { useEffect, useState } from "react"
+import { Controller, useForm, useWatch } from "react-hook-form"
+import { useSalesmanActions } from "src/hooks/use-salesman-actions"
+import { useAdminCustomer, useAdminUpdateCustomer } from "../../../medusa-react"
+import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select"
+import Button from "../../components/fundamentals/button"
+import LockIcon from "../../components/fundamentals/icons/lock-icon"
+import Breadcrumb from "../../components/molecules/breadcrumb"
+import InputField from "../../components/molecules/input"
+import BodyCard from "../../components/organisms/body-card"
+import useNotification from "../../hooks/use-notification"
+import { countries } from "../../utils/countries"
+import { getErrorMessage } from "../../utils/error-messages"
+import Validator from "../../utils/validator"
 
 type CustomerDetailProps = {
   id: string
@@ -27,17 +25,31 @@ type EditCustomerFormType = {
   last_name: string
   email: string
   phone: string | null
+  regions?: {
+    label: string
+    value: string
+  }[]
 }
 
-const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
+const countryOptions = countries.map((c) => ({
+  label: c.name,
+  value: c.alpha2,
+}))
+
+const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
   const [customer, setCustomer] = useState<Customer>()
   const {
     register,
     reset,
     handleSubmit,
+    control,
     formState: { isDirty, isValid },
   } = useForm<EditCustomerFormType>()
+  const watch = useWatch({
+    control,
+  })
   const notification = useNotification()
+  const { handleDelete } = useSalesmanActions()
   const updateCustomer = useAdminUpdateCustomer(id)
   // Fetch info
   useAdminCustomer(id, {
@@ -58,7 +70,7 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully updated customer", "success")
+          notification("Success", "Successfully updated salesman", "success")
         },
         onError: (err) => {
           notification("Error", getErrorMessage(err), "error")
@@ -90,20 +102,20 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
   return (
     <div>
       <Breadcrumb
-        currentPage={"Customer Details"}
-        previousBreadcrumb={"Customers"}
-        previousRoute="/a/customers"
+        currentPage={"Salesman Details"}
+        previousBreadcrumb={"Salesman"}
+        previousRoute="/a/salesman"
       />
-      {/* <div className="flex justify-end m-3">
+      <div className="flex justify-end m-3">
         <Button
           variant="nuclear"
           className="min-w-[100px]"
-          // onClick={() => setShowCreate(true)}
+          onClick={() => handleDelete(id)}
         >
           Delete Salesman
         </Button>
-      </div> */}
-      <BodyCard title="Customer">
+      </div>
+      <BodyCard title="Salesman">
         <div className="w-full flex mb-4 space-x-2">
           <InputField
             label="First Name"
@@ -116,7 +128,7 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
             placeholder="James"
           />
         </div>
-        <div className="flex space-x-2">
+        <div className="w-full flex mb-4 space-x-2">
           <InputField
             label="Email"
             {...register("email", {
@@ -138,10 +150,27 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
             placeholder="+45 42 42 42 42"
           />
         </div>
+        <div className="flex space-x-2">
+          <Controller
+            control={control}
+            name="regions"
+            render={({ field: { value, onChange } }) => {
+              return (
+                <ExperimentalSelect
+                  label={`Regions`}
+                  options={countryOptions}
+                  onChange={onChange}
+                  isMulti
+                  selectAll
+                />
+              )
+            }}
+          />
+        </div>
         <div className="mt-6 w-full flex justify-center">
           <Button
             variant="danger"
-            onClick={() => navigate(`/a/customers`)}
+            onClick={() => navigate(`/a/salesman`)}
             className="mr-2"
           >
             Cancel
@@ -161,7 +190,7 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
   )
 }
 
-export default CustomerDetail
+export default SalesmanDetail
 
 const getDefaultValues = (customer: Customer): EditCustomerFormType => {
   return {
@@ -169,5 +198,6 @@ const getDefaultValues = (customer: Customer): EditCustomerFormType => {
     email: customer.email,
     last_name: customer.last_name,
     phone: customer.phone,
+    regions: undefined,
   }
 }

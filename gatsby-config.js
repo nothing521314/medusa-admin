@@ -6,6 +6,19 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    "gatsby-plugin-root-import",
+    {
+      resolve: `gatsby-plugin-alias-imports`,
+      options: {
+        alias: {
+          "@src": "src",
+          "@components": "src/components",
+          "@medusa-react": "medusa-react",
+          "@medusa-js": "medusa-js",
+        },
+        extensions: ["ts"],
+      },
+    },
     // {
     //  resolve: `gatsby-source-filesystem`,
     //  options: {

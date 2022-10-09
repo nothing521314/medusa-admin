@@ -1,23 +1,20 @@
 import { RouteComponentProps } from "@reach/router"
 import { navigate } from "gatsby"
 import { isEmpty } from "lodash"
-import {
-  useAdminCustomers,
-  useAdminDeleteCustomer,
-} from "../../../../medusa-react"
 import qs from "qs"
 import React, { useEffect, useState } from "react"
 import { usePagination, useTable } from "react-table"
+import { useCustomerActions } from "src/hooks/use-customer-actions"
+import
+  {
+    useAdminCustomers
+  } from "../../../../medusa-react"
 import Spinner from "../../atoms/spinner"
-import DetailsIcon from "../../fundamentals/details-icon"
 import EditIcon from "../../fundamentals/icons/edit-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
 import Table, { TablePagination } from "../../molecules/table"
 import { useCustomerColumns } from "./use-customer-columns"
 import { useCustomerFilters } from "./use-customer-filters"
-import useImperativeDialog from "../../../hooks/use-imperative-dialog"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
 
 const DEFAULT_PAGE_SIZE = 15
 
@@ -81,8 +78,7 @@ const CustomerTable: React.FC<RouteComponentProps> = () => {
     },
     usePagination
   )
-  const notification = useNotification()
-
+  const { handleDelete } = useCustomerActions()
   // Debounced search
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -132,27 +128,6 @@ const CustomerTable: React.FC<RouteComponentProps> = () => {
   useEffect(() => {
     refreshWithFilters()
   }, [representationObject])
-
-  const dialog = useImperativeDialog()
-  const deleteProduct = useAdminDeleteCustomer()
-
-  const handleDelete = async (id: string) => {
-    const shouldDelete = await dialog({
-      heading: "Delete Customer",
-      text: "Are you sure you want to delete this customer?",
-    })
-
-    if (shouldDelete) {
-      deleteProduct.mutate(id, {
-        onSuccess: () => {
-          notification("Deleted", "Successfully deleted customer", "success")
-        },
-        onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
-        },
-      })
-    }
-  }
 
   return (
     <div className="w-full h-full overflow-y-auto flex flex-col justify-between">

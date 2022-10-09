@@ -44,7 +44,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...attributes}
         className={clsx(
           "btn",
-          "min-w-[150px]",
+          "min-w-[50px]",
           variantClassname,
           sizeClassname,
           attributes.className

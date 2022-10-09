@@ -1,15 +1,14 @@
 import { RouteComponentProps, Router } from "@reach/router"
 import React, { useState } from "react"
 
-import Button from "../../components/fundamentals/button"
 import BodyCard from "../../components/organisms/body-card"
 import CustomerTable from "../../components/templates/customer-table"
-import CreateCustomerModal from "./create"
-import Details from "./details/index"
-import CustomerGroups from "./groups"
-import CustomersPageTableHeader from "./header"
+import Details from "./details"
+import SalesmanPageTableHeader from "./header"
+import CreateSalesmanModal from "./create"
+import Button from "../../components/fundamentals/button"
 
-const CustomerIndex: React.FC<RouteComponentProps> = () => {
+const SalesmanIndex: React.FC<RouteComponentProps> = () => {
   const [showCreate, setShowCreate] = useState(false)
 
   return (
@@ -20,16 +19,16 @@ const CustomerIndex: React.FC<RouteComponentProps> = () => {
           className="min-w-[100px]"
           onClick={() => setShowCreate(true)}
         >
-          Create Customer
+          Create Salesman
         </Button>
         {showCreate && (
-          <CreateCustomerModal handleClose={() => setShowCreate(false)} />
+          <CreateSalesmanModal handleClose={() => setShowCreate(false)} />
         )}
       </div>
       <div className="flex flex-col grow h-full">
         <div className="w-full flex flex-col grow">
           <BodyCard
-            customHeader={<CustomersPageTableHeader activeView="customers" />}
+            customHeader={<SalesmanPageTableHeader activeView="salesman" />}
           >
             <CustomerTable />
           </BodyCard>
@@ -39,14 +38,13 @@ const CustomerIndex: React.FC<RouteComponentProps> = () => {
   )
 }
 
-const Customers = () => {
+const Salesman = () => {
   return (
     <Router>
-      <CustomerIndex path="/" />
-      <CustomerGroups path="/groups/*" />
+      <SalesmanIndex path="/" />
       <Details path=":id" />
     </Router>
   )
 }
 
-export default Customers
+export default Salesman

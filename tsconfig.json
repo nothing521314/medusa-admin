@@ -13,7 +13,9 @@
     "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
-      // "@medusa-react2": ["medusa-react/src/index.ts"]
+      "@medusa-react": ["medusa-react/src/index.ts"],
+      "@medusa-js": ["medusa-js/index.ts"],
+      "@components": ["src/components/"]
     }
   },
   "exclude": ["node_modules", "public", ".cache"]

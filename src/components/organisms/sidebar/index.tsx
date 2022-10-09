@@ -54,6 +54,12 @@ const Sidebar: React.FC = () => {
             text={"Customers"}
           />
           <SidebarMenuItem
+            pageLink={"/a/salesman"}
+            icon={<CustomerIcon size={ICON_SIZE} />}
+            triggerHandler={triggerHandler}
+            text={"Salesman"}
+          />
+          <SidebarMenuItem
             pageLink={"/a/discounts"}
             icon={<SaleIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
