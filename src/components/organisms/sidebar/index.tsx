@@ -1,5 +1,5 @@
-import { useAdminStore, useAdminUsers } from "../../../../medusa-react";
 import React, { useState } from "react";
+import { useAdminStore } from "../../../../medusa-react";
 import CashIcon from "../../fundamentals/icons/cash-icon";
 import CustomerIcon from "../../fundamentals/icons/customer-icon";
 import DollarSignIcon from "../../fundamentals/icons/dollar-sign-icon";

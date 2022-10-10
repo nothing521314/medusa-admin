@@ -10,47 +10,31 @@ import EditIcon from "src/components/fundamentals/icons/edit-icon";
 import MailIcon from "src/components/fundamentals/icons/mail-icon";
 import SortingIcon from "src/components/fundamentals/icons/sorting-icon";
 import TrashIcon from "src/components/fundamentals/icons/trash-icon";
-import { FeatureFlagContext } from "../../../context/feature-flag";
+import { useDebounce } from "src/hooks/use-debounce";
 import Spinner from "../../atoms/spinner";
 import Table, { TablePagination } from "../../molecules/table";
+import { parseQuotationQueryString } from "./quotation-filters";
 import useOrderTableColumns from "./use-order-column";
-import { useOrderFilters } from "./use-order-filters";
 
 const DEFAULT_PAGE_SIZE = 15;
-
-const defaultQueryProps = {
-  expand: "shipping_address",
-  fields:
-    "id,status,display_id,created_at,email,fulfillment_status,payment_status,total,currency_code",
-};
 
 const OrderTable: React.FC<RouteComponentProps> = () => {
   const location = useLocation();
 
-  const { isFeatureEnabled } = React.useContext(FeatureFlagContext);
-
-  const hiddenColumns = useMemo(() => {
-    if (isFeatureEnabled("sales_channels")) {
-      defaultQueryProps.expand = "shipping_address,sales_channel";
-      return [];
+  const defaultFilter = useMemo(() => {
+    if (location.search && location.search[0] === "?") {
+      location.search = location.search.substring(1);
     }
-    return ["sales_channel"];
-  }, [isFeatureEnabled]);
 
-  const {
-    reset,
-    paginate,
-    setQuery: setFreeText,
-    queryObject,
-    representationObject,
-  } = useOrderFilters(location.search, defaultQueryProps);
-  const filtersOnLoad = queryObject;
+    return parseQuotationQueryString(location.search);
+  }, [location]);
 
-  const offs = parseInt(filtersOnLoad?.offset) || 0;
-  const lim = parseInt(filtersOnLoad.limit) || DEFAULT_PAGE_SIZE;
+  const [filters, setFilters] = useState(defaultFilter);
 
-  const [query, setQuery] = useState(filtersOnLoad?.query);
+  const filtersDebounce = useDebounce(filters, 400);
+
   // const { orders, isLoading, count } = useAdminOrders(queryObject);
+
   const { orders, isLoading, count } = {
     orders: [
       {
@@ -64,16 +48,17 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
         total: 111111,
         currency_code: "VND",
         currency: "usd",
+        id: "order_01FG1DWV8Y6K4K72KBR6KA74DN",
       },
     ],
     isLoading: false,
-    count: 1,
+    count: 10,
   };
 
   const numPages = useMemo(() => {
-    const controlledPageCount = Math.ceil(count! / queryObject.limit);
+    const controlledPageCount = Math.ceil(count! / filters.limit);
     return controlledPageCount;
-  }, [count, queryObject.limit]);
+  }, [count, filters.limit]);
 
   const columns = useOrderTableColumns();
 
@@ -98,9 +83,8 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
       manualPagination: true,
       manualSortBy: true,
       initialState: {
-        pageSize: lim,
-        pageIndex: offs / lim,
-        hiddenColumns,
+        pageSize: filtersDebounce.limit,
+        pageIndex: filtersDebounce.offset / filtersDebounce.limit,
         sortBy: [
           { id: "created_at", desc: true },
           { id: "total", desc: true },
@@ -113,31 +97,14 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
     usePagination
   );
 
-  // Debounced search
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (query) {
-        setFreeText(query);
-        gotoPage(0);
-      } else {
-        // if we delete query string, we reset the table view
-        reset();
-      }
-    }, 400);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [gotoPage, query, reset, setFreeText]);
-
   const handleNext = () => {
     if (canNextPage) {
-      paginate(1);
       nextPage();
     }
   };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      paginate(-1);
       previousPage();
     }
   };
@@ -146,20 +113,42 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
     return id;
   }, []);
 
+  const handleSetQuery = useCallback(
+    (value: string) => {
+      setFilters((pre) => ({
+        ...pre,
+        query: value,
+      }));
+      gotoPage(0);
+    },
+    [gotoPage]
+  );
+
   const updateUrlFromFilter = useCallback((obj = {}) => {
     const stringified = qs.stringify(obj);
     window.history.replaceState("/a/orders", "", `${`?${stringified}`}`);
   }, []);
 
+  const removeEmptyProperties = useCallback(
+    (obj: {
+      [key: string]: string | number | Array<string> | undefined | boolean;
+    }) => {
+      return Object.fromEntries(
+        Object.entries(obj).filter(([, value]) => value !== "")
+      );
+    },
+    []
+  );
+
   const refreshWithFilters = useCallback(() => {
-    const filterObj = representationObject;
+    const filterObj = removeEmptyProperties(filtersDebounce);
 
     if (isEmpty(filterObj)) {
       updateUrlFromFilter({ offset: 0, limit: DEFAULT_PAGE_SIZE });
     } else {
       updateUrlFromFilter(filterObj);
     }
-  }, [representationObject, updateUrlFromFilter]);
+  }, [filtersDebounce, removeEmptyProperties, updateUrlFromFilter]);
 
   useEffect(() => {
     refreshWithFilters();
@@ -169,8 +158,8 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
     <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full ">
       <Table
         enableSearch
-        handleSearch={setQuery}
-        searchValue={query}
+        handleSearch={handleSetQuery}
+        searchValue={filters.query}
         {...getTableProps()}
         className={clsx({ ["relative"]: isLoading })}
       >
@@ -235,7 +224,6 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
                     },
                   ]}
                   {...row.getRowProps()}
-                  className="group"
                 >
                   {row.cells.map((cell, index) => {
                     return cell.render("Cell", { index });
@@ -248,9 +236,9 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
       </Table>
       <TablePagination
         count={count!}
-        limit={queryObject.limit}
-        offset={queryObject.offset}
-        pageSize={queryObject.offset + rows.length}
+        limit={filters.limit}
+        offset={filters.offset}
+        pageSize={filters.offset + rows.length}
         title="Quotations"
         currentPage={pageIndex + 1}
         pageCount={pageCount}

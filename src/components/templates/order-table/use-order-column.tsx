@@ -1,10 +1,8 @@
 import { Order } from "@medusajs/medusa";
 import moment from "moment";
 import React, { useMemo } from "react";
-import ReactCountryFlag from "react-country-flag";
 import { Column } from "react-table";
 import { getColor } from "../../../utils/color";
-import { isoAlpha2Countries } from "../../../utils/countries";
 import { formatAmountWithSymbol } from "../../../utils/prices";
 import Tooltip from "../../atoms/tooltip";
 import CustomerAvatarItem from "../../molecules/customer-avatar-item";
@@ -42,6 +40,7 @@ const useOrderTableColumns = (): Column<Order>[] => {
       {
         Header: "Date created",
         accessor: "created_at",
+        defaultCanSort: true,
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell key={index}>
             <Tooltip content={moment(value).format("DD MMM YYYY hh:mm a")}>
@@ -87,41 +86,31 @@ const useOrderTableColumns = (): Column<Order>[] => {
           </Table.Cell>
         ),
       },
-      {
-        Header: "",
-        disableSortBy: true,
-        accessor: "currency_code",
-        Cell: ({ cell: { value }, index }) => (
-          <Table.Cell key={index} className="w-[5%]">
-            <div className="text-right text-grey-40">{value.toUpperCase()}</div>
-          </Table.Cell>
-        ),
-      },
-      {
-        Header: "",
-        disableSortBy: true,
-        accessor: "currency",
-        Cell: ({ row, index }) => (
-          <Table.Cell className="w-[5%] pr-2" key={index}>
-            <div className="flex rounded-rounded w-full justify-end">
-              <Tooltip
-                content={
-                  isoAlpha2Countries[
-                    row.original.shipping_address?.country_code?.toUpperCase()
-                  ] ||
-                  row.original.shipping_address?.country_code?.toUpperCase()
-                }
-              >
-                <ReactCountryFlag
-                  className={"rounded"}
-                  svg
-                  countryCode={row.original.shipping_address?.country_code}
-                />
-              </Tooltip>
-            </div>
-          </Table.Cell>
-        ),
-      },
+      // {
+      //   Header: "",
+      //   disableSortBy: true,
+      //   accessor: "currency",
+      //   Cell: ({ row, index }) => (
+      //     <Table.Cell className="w-[5%] pr-2" key={index}>
+      //       <div className="flex rounded-rounded w-full justify-end">
+      //         <Tooltip
+      //           content={
+      //             isoAlpha2Countries[
+      //               row.original.shipping_address?.country_code?.toUpperCase()
+      //             ] ||
+      //             row.original.shipping_address?.country_code?.toUpperCase()
+      //           }
+      //         >
+      //           <ReactCountryFlag
+      //             className={"rounded"}
+      //             svg
+      //             countryCode={row.original.shipping_address?.country_code}
+      //           />
+      //         </Tooltip>
+      //       </div>
+      //     </Table.Cell>
+      //   ),
+      // },
     ],
     []
   );

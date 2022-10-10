@@ -1,50 +1,50 @@
-import { Address, ClaimOrder, Fulfillment, Swap } from "@medusajs/medusa"
-import { RouteComponentProps } from "@reach/router"
-import { navigate } from "gatsby"
-import { capitalize, sum } from "lodash"
+import { Address, ClaimOrder, Fulfillment, Swap } from "@medusajs/medusa";
+import { RouteComponentProps } from "@reach/router";
+import { navigate } from "gatsby";
+import { capitalize, sum } from "lodash";
 import {
   useAdminCancelOrder,
   useAdminCapturePayment,
   useAdminOrder,
   useAdminRegion,
   useAdminUpdateOrder,
-} from "../../../../medusa-react"
-import moment from "moment"
-import React, { useMemo, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
-import ReactJson from "react-json-view"
-import Avatar from "../../../components/atoms/avatar"
-import CopyToClipboard from "../../../components/atoms/copy-to-clipboard"
-import Spinner from "../../../components/atoms/spinner"
-import Tooltip from "../../../components/atoms/tooltip"
-import Badge from "../../../components/fundamentals/badge"
-import Button from "../../../components/fundamentals/button"
-import DetailsIcon from "../../../components/fundamentals/details-icon"
-import CancelIcon from "../../../components/fundamentals/icons/cancel-icon"
-import ClipboardCopyIcon from "../../../components/fundamentals/icons/clipboard-copy-icon"
-import CornerDownRightIcon from "../../../components/fundamentals/icons/corner-down-right-icon"
-import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
-import MailIcon from "../../../components/fundamentals/icons/mail-icon"
-import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
-import { ActionType } from "../../../components/molecules/actionables"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import BodyCard from "../../../components/organisms/body-card"
-import RawJSON from "../../../components/organisms/raw-json"
-import Timeline from "../../../components/organisms/timeline"
-import { AddressType } from "../../../components/templates/address-form"
-import useClipboard from "../../../hooks/use-clipboard"
-import useImperativeDialog from "../../../hooks/use-imperative-dialog"
-import useNotification from "../../../hooks/use-notification"
-import { isoAlpha2Countries } from "../../../utils/countries"
-import { getErrorMessage } from "../../../utils/error-messages"
-import extractCustomerName from "../../../utils/extract-customer-name"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import AddressModal from "./address-modal"
-import CreateFulfillmentModal from "./create-fulfillment"
-import EmailModal from "./email-modal"
-import MarkShippedModal from "./mark-shipped"
-import OrderLine from "./order-line"
-import CreateRefundModal from "./refund"
+} from "../../../../medusa-react";
+import moment from "moment";
+import React, { useMemo, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import ReactJson from "react-json-view";
+import Avatar from "../../../components/atoms/avatar";
+import CopyToClipboard from "../../../components/atoms/copy-to-clipboard";
+import Spinner from "../../../components/atoms/spinner";
+import Tooltip from "../../../components/atoms/tooltip";
+import Badge from "../../../components/fundamentals/badge";
+import Button from "../../../components/fundamentals/button";
+import DetailsIcon from "../../../components/fundamentals/details-icon";
+import CancelIcon from "../../../components/fundamentals/icons/cancel-icon";
+import ClipboardCopyIcon from "../../../components/fundamentals/icons/clipboard-copy-icon";
+import CornerDownRightIcon from "../../../components/fundamentals/icons/corner-down-right-icon";
+import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon";
+import MailIcon from "../../../components/fundamentals/icons/mail-icon";
+import TruckIcon from "../../../components/fundamentals/icons/truck-icon";
+import { ActionType } from "../../../components/molecules/actionables";
+import Breadcrumb from "../../../components/molecules/breadcrumb";
+import BodyCard from "../../../components/organisms/body-card";
+import RawJSON from "../../../components/organisms/raw-json";
+import Timeline from "../../../components/organisms/timeline";
+import { AddressType } from "../../../components/templates/address-form";
+import useClipboard from "../../../hooks/use-clipboard";
+import useImperativeDialog from "../../../hooks/use-imperative-dialog";
+import useNotification from "../../../hooks/use-notification";
+import { isoAlpha2Countries } from "../../../utils/countries";
+import { getErrorMessage } from "../../../utils/error-messages";
+import extractCustomerName from "../../../utils/extract-customer-name";
+import { formatAmountWithSymbol } from "../../../utils/prices";
+import AddressModal from "./address-modal";
+import CreateFulfillmentModal from "./create-fulfillment";
+import EmailModal from "./email-modal";
+import MarkShippedModal from "./mark-shipped";
+import OrderLine from "./order-line";
+import CreateRefundModal from "./refund";
 import {
   DisplayTotal,
   FormattedAddress,
@@ -54,30 +54,30 @@ import {
   PaymentActionables,
   PaymentDetails,
   PaymentStatusComponent,
-} from "./templates"
+} from "./templates";
 
 type OrderDetailFulfillment = {
-  title: string
-  type: string
-  fulfillment: Fulfillment
-  swap?: Swap
-  claim?: ClaimOrder
-}
+  title: string;
+  type: string;
+  fulfillment: Fulfillment;
+  swap?: Swap;
+  claim?: ClaimOrder;
+};
 
 const gatherAllFulfillments = (order) => {
   if (!order) {
-    return []
+    return [];
   }
 
-  const all: OrderDetailFulfillment[] = []
+  const all: OrderDetailFulfillment[] = [];
 
   order.fulfillments.forEach((f, index) => {
     all.push({
       title: `Fulfillment #${index + 1}`,
       type: "default",
       fulfillment: f,
-    })
-  })
+    });
+  });
 
   if (order.claims?.length) {
     order.claims.forEach((claim) => {
@@ -88,10 +88,10 @@ const gatherAllFulfillments = (order) => {
             type: "claim",
             fulfillment,
             claim,
-          })
-        })
+          });
+        });
       }
-    })
+    });
   }
 
   if (order.swaps?.length) {
@@ -103,61 +103,61 @@ const gatherAllFulfillments = (order) => {
             type: "swap",
             fulfillment,
             swap,
-          })
-        })
+          });
+        });
       }
-    })
+    });
   }
 
-  return all
-}
+  return all;
+};
 
-type OrderDetailProps = RouteComponentProps<{ id: string }>
+type OrderDetailProps = RouteComponentProps<{ id: string }>;
 
 const OrderDetails = ({ id }: OrderDetailProps) => {
-  const dialog = useImperativeDialog()
+  const dialog = useImperativeDialog();
 
   const [addressModal, setAddressModal] = useState<null | {
-    address: Address
-    type: AddressType
-  }>(null)
+    address: Address;
+    type: AddressType;
+  }>(null);
 
   const [emailModal, setEmailModal] = useState<null | {
-    email: string
-  }>(null)
+    email: string;
+  }>(null);
 
-  const [showFulfillment, setShowFulfillment] = useState(false)
-  const [showRefund, setShowRefund] = useState(false)
-  const [fullfilmentToShip, setFullfilmentToShip] = useState(null)
+  const [showFulfillment, setShowFulfillment] = useState(false);
+  const [showRefund, setShowRefund] = useState(false);
+  const [fullfilmentToShip, setFullfilmentToShip] = useState(null);
 
-  const { order, isLoading } = useAdminOrder(id!)
+  const { order, isLoading } = useAdminOrder(id!);
 
-  const capturePayment = useAdminCapturePayment(id!)
-  const cancelOrder = useAdminCancelOrder(id!)
+  const capturePayment = useAdminCapturePayment(id!);
+  const cancelOrder = useAdminCancelOrder(id!);
 
   const { mutate: updateOrder, isLoading: submitting } = useAdminUpdateOrder(
     id!
-  )
+  );
 
   const { region } = useAdminRegion(order?.region_id!, {
     enabled: !!order?.region_id,
-  })
+  });
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   const [, handleCopy] = useClipboard(`${order?.display_id!}`, {
     successDuration: 5500,
     onCopied: () => notification("Success", "Order ID copied", "success"),
-  })
+  });
 
   const [, handleCopyEmail] = useClipboard(order?.email!, {
     successDuration: 5500,
     onCopied: () => notification("Success", "Email copied", "success"),
-  })
+  });
 
   // @ts-ignore
-  useHotkeys("esc", () => navigate("/a/orders"))
-  useHotkeys("command+i", handleCopy)
+  useHotkeys("esc", () => navigate("/a/orders"));
+  useHotkeys("command+i", handleCopy);
 
   const {
     hasMovements,
@@ -166,24 +166,24 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
     swapRefund,
     returnRefund,
   } = useMemo(() => {
-    let manualRefund = 0
-    let swapRefund = 0
-    let returnRefund = 0
+    let manualRefund = 0;
+    let swapRefund = 0;
+    let returnRefund = 0;
 
-    const swapAmount = sum(order?.swaps.map((s) => s.difference_due) || [0])
+    const swapAmount = sum(order?.swaps.map((s) => s.difference_due) || [0]);
 
     if (order?.refunds?.length) {
       order.refunds.forEach((ref) => {
         if (ref.reason === "other" || ref.reason === "discount") {
-          manualRefund += ref.amount
+          manualRefund += ref.amount;
         }
         if (ref.reason === "return") {
-          returnRefund += ref.amount
+          returnRefund += ref.amount;
         }
         if (ref.reason === "swap") {
-          swapRefund += ref.amount
+          swapRefund += ref.amount;
         }
-      })
+      });
     }
     return {
       hasMovements: swapAmount + manualRefund + swapRefund + returnRefund !== 0,
@@ -191,27 +191,27 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
       manualRefund,
       swapRefund,
       returnRefund,
-    }
-  }, [order])
+    };
+  }, [order]);
 
   const handleDeleteOrder = async () => {
     const shouldDelete = await dialog({
       heading: "Cancel order",
       text: "Are you sure you want to cancel the order?",
-    })
+    });
 
     if (!shouldDelete) {
-      return
+      return;
     }
 
     return cancelOrder.mutate(undefined, {
       onSuccess: () =>
         notification("Success", "Successfully canceled order", "success"),
       onError: (err) => notification("Error", getErrorMessage(err), "error"),
-    })
-  }
+    });
+  };
 
-  const allFulfillments = gatherAllFulfillments(order)
+  const allFulfillments = gatherAllFulfillments(order);
 
   const customerActionables: ActionType[] = [
     {
@@ -219,7 +219,7 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
       icon: <DetailsIcon size={"20"} />,
       onClick: () => navigate(`/a/customers/${order?.customer.id}`),
     },
-  ]
+  ];
 
   if (order?.shipping_address) {
     customerActionables.push({
@@ -230,7 +230,7 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
           address: order?.shipping_address,
           type: AddressType.SHIPPING,
         }),
-    })
+    });
   }
 
   if (order?.billing_address) {
@@ -242,10 +242,10 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
           setAddressModal({
             address: order?.billing_address,
             type: AddressType.BILLING,
-          })
+          });
         }
       },
-    })
+    });
   }
 
   if (order?.email) {
@@ -255,9 +255,9 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
       onClick: () => {
         setEmailModal({
           email: order?.email,
-        })
+        });
       },
-    })
+    });
   }
 
   return (
@@ -638,7 +638,7 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default OrderDetails
+export default OrderDetails;
