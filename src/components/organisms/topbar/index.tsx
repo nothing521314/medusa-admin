@@ -1,4 +1,4 @@
-import { useCart, useCreateLineItem } from "@medusa-react";
+import { useCart } from "@medusa-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { navigate } from "gatsby";
 import React, { useCallback, useContext, useMemo, useState } from "react";
@@ -34,8 +34,6 @@ const Topbar: React.FC = () => {
     return cart.items.reduce((sum, i) => sum + i.quantity, 0);
   }, [cart]);
 
-  const { mutate } = useCreateLineItem("cart_01GF12Y9SE92CAABPPXPHR7JVM");
-
   const [showSupportform, setShowSupportForm] = useState(false);
 
   const handleClickCartIcon = useCallback(() => {
@@ -55,18 +53,6 @@ const Topbar: React.FC = () => {
     <div className="w-full min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-b border-grey-20 sticky top-0 flex items-center justify-between z-40">
       <SearchBar />
       <div className="flex items-center">
-        <Button
-          size="small"
-          variant="primary"
-          onClick={() =>
-            mutate({
-              variant_id: "variant_01GEY3SVY9QS2CMEGXWNSTAH0M",
-              quantity: 1,
-            })
-          }
-        >
-          Add Item
-        </Button>
         <Button
           size="small"
           variant="ghost"
