@@ -1,4 +1,4 @@
-import { adminOrderKeys } from "./queries"
+import { adminOrderKeys } from "./queries";
 import {
   AdminOrdersRes,
   AdminPostOrdersOrderFulfillmentsReq,
@@ -7,11 +7,11 @@ import {
   AdminPostOrdersOrderReturnsReq,
   AdminPostOrdersOrderShipmentReq,
   AdminPostOrdersOrderShippingMethodsReq,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminUpdateOrder = (
   id: string,
@@ -21,8 +21,8 @@ export const useAdminUpdateOrder = (
     AdminPostOrdersOrderReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostOrdersOrderReq) =>
@@ -32,15 +32,15 @@ export const useAdminUpdateOrder = (
       [adminOrderKeys.lists(), adminOrderKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCancelOrder = (
   id: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.orders.cancel(id),
@@ -49,15 +49,15 @@ export const useAdminCancelOrder = (
       [adminOrderKeys.lists(), adminOrderKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCompleteOrder = (
   id: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.orders.complete(id),
@@ -66,15 +66,15 @@ export const useAdminCompleteOrder = (
       [adminOrderKeys.lists(), adminOrderKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCapturePayment = (
   id: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.orders.capturePayment(id),
@@ -83,8 +83,8 @@ export const useAdminCapturePayment = (
       [adminOrderKeys.lists(), adminOrderKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminRefundPayment = (
   id: string,
@@ -94,8 +94,8 @@ export const useAdminRefundPayment = (
     AdminPostOrdersOrderRefundsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostOrdersOrderRefundsReq) =>
@@ -105,8 +105,8 @@ export const useAdminRefundPayment = (
       [adminOrderKeys.lists(), adminOrderKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCreateFulfillment = (
   orderId: string,
@@ -116,8 +116,8 @@ export const useAdminCreateFulfillment = (
     AdminPostOrdersOrderFulfillmentsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostOrdersOrderFulfillmentsReq) =>
@@ -127,15 +127,15 @@ export const useAdminCreateFulfillment = (
       [adminOrderKeys.lists(), adminOrderKeys.detail(orderId)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCancelFulfillment = (
   orderId: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, string>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (fulfillmentId: string) =>
@@ -145,8 +145,8 @@ export const useAdminCancelFulfillment = (
       [adminOrderKeys.lists(), adminOrderKeys.detail(orderId)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCreateShipment = (
   orderId: string,
@@ -156,15 +156,15 @@ export const useAdminCreateShipment = (
     AdminPostOrdersOrderShipmentReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostOrdersOrderShipmentReq) =>
       client.admin.orders.createShipment(orderId, payload),
     buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
-  )
-}
+  );
+};
 
 export const useAdminRequestReturn = (
   orderId: string,
@@ -174,15 +174,15 @@ export const useAdminRequestReturn = (
     AdminPostOrdersOrderReturnsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostOrdersOrderReturnsReq) =>
       client.admin.orders.requestReturn(orderId, payload),
     buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
-  )
-}
+  );
+};
 
 export const useAdminAddShippingMethod = (
   orderId: string,
@@ -192,22 +192,22 @@ export const useAdminAddShippingMethod = (
     AdminPostOrdersOrderShippingMethodsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostOrdersOrderShippingMethodsReq) =>
       client.admin.orders.addShippingMethod(orderId, payload),
     buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
-  )
-}
+  );
+};
 
 export const useAdminArchiveOrder = (
   id: string,
   options?: UseMutationOptions<Response<AdminOrdersRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.orders.archive(id),
@@ -216,5 +216,5 @@ export const useAdminArchiveOrder = (
       [adminOrderKeys.lists(), adminOrderKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};

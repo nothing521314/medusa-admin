@@ -1,13 +1,13 @@
-import clsx from "clsx"
-import { navigate } from "gatsby"
-import React from "react"
-import ChevronRightIcon from "../../fundamentals/icons/chevron-right-icon"
+import clsx from "clsx";
+import { navigate } from "gatsby";
+import React from "react";
+import ChevronRightIcon from "../../fundamentals/icons/chevron-right-icon";
 
 type BreadcrumbProps = React.HtmlHTMLAttributes<HTMLDivElement> & {
-  previousRoute?: string
-  previousBreadcrumb?: string
-  currentPage: string
-}
+  previousRoute?: string;
+  previousBreadcrumb?: string;
+  currentPage: string;
+};
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({
   previousRoute = "/a/settings",
@@ -35,7 +35,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
       </span>
       <span>{currentPage}</span>
     </div>
-  )
-}
+  );
+};
 
-export default Breadcrumb
+export default Breadcrumb;

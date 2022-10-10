@@ -1,13 +1,13 @@
-import React from "react"
-import Button from "../../fundamentals/button"
-import Modal from "../../molecules/modal"
+import React from "react";
+import Button from "../../fundamentals/button";
+import Modal from "../../molecules/modal";
 
 type ExportModalProps = {
-  handleClose: () => void
-  onSubmit?: () => void
-  loading: boolean
-  title: string
-}
+  handleClose: () => void;
+  onSubmit?: () => void;
+  loading: boolean;
+  title: string;
+};
 
 const ExportModal: React.FC<ExportModalProps> = ({
   handleClose,
@@ -55,7 +55,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default ExportModal
+export default ExportModal;

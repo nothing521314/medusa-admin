@@ -61,6 +61,7 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
     gotoPage,
     nextPage,
     previousPage,
+    toggleSortBy,
     // Get the state from the instance
     state: { pageIndex },
   } = useTable(
@@ -84,17 +85,36 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
     usePagination
   );
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (canNextPage) {
+      setFilters((pre) => ({
+        ...pre,
+        offset: pre.offset--,
+      }));
       nextPage();
     }
-  };
+  }, [canNextPage, nextPage]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (canPreviousPage) {
+      setFilters((pre) => ({
+        ...pre,
+        offset: pre.offset++,
+      }));
       previousPage();
     }
-  };
+  }, [canPreviousPage, previousPage]);
+
+  const handleSorting = useCallback(
+    (
+      columnId: string,
+      descending?: boolean | undefined,
+      isMulti?: boolean | undefined
+    ) => {
+      toggleSortBy(columnId, !descending, isMulti);
+    },
+    [toggleSortBy]
+  );
 
   const handleDelete = useCallback((id: number | string) => {
     return id;
@@ -131,7 +151,7 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
   }, [refreshWithFilters]);
 
   return (
-    <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full ">
+    <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full">
       <Table
         enableSearch
         handleSearch={handleSetQuery}
@@ -145,6 +165,7 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
               {headerGroup.headers.map((col) => (
                 <Table.HeadCell
                   {...col.getHeaderProps(col.getSortByToggleProps())}
+                  onClick={() => handleSorting(col.id, col.isSortedDesc, true)}
                 >
                   <div className="flex items-center">
                     {col.render("Header")}

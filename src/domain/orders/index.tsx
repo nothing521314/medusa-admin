@@ -1,24 +1,17 @@
 import { RouteComponentProps, Router } from "@reach/router";
-import React, { useMemo } from "react";
-import { useAdminCreateBatchJob } from "../../../medusa-react";
+import React, { useCallback, useMemo } from "react";
+import CanNotMakeQuotationModal from "src/components/organisms/can-not-make-quotation-modal";
 import Button from "../../components/fundamentals/button";
-import ExportIcon from "../../components/fundamentals/icons/export-icon";
 import BodyCard from "../../components/organisms/body-card";
-import ExportModal from "../../components/organisms/export-modal";
 import OrderTable from "../../components/templates/order-table";
-import useNotification from "../../hooks/use-notification";
 import useToggleState from "../../hooks/use-toggle-state";
-import { getErrorMessage } from "../../utils/error-messages";
 import Details from "./details";
 
 const OrderIndex: React.FC<RouteComponentProps> = () => {
-  const createBatchJob = useAdminCreateBatchJob();
-  const notification = useNotification();
-
   const {
-    open: openExportModal,
-    close: closeExportModal,
-    state: exportModalOpen,
+    open: openCanNotMakeQuoteModal,
+    close: closeCanNotMakeQuoteModal,
+    state: canNotMakeQuoteModalOpen,
   } = useToggleState(false);
 
   const actions = useMemo(() => {
@@ -26,32 +19,16 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
       <Button
         variant="secondary"
         size="small"
-        onClick={() => openExportModal()}
+        onClick={() => openCanNotMakeQuoteModal()}
       >
-        <ExportIcon size={20} />
         Make quotation
       </Button>,
     ];
-  }, [openExportModal]);
+  }, [openCanNotMakeQuoteModal]);
 
-  const handleCreateExport = () => {
-    const reqObj = {
-      type: "order-export",
-      context: {},
-      dry_run: false,
-    };
-
-    createBatchJob.mutate(reqObj, {
-      onSuccess: () => {
-        notification("Success", "Successfully initiated export", "success");
-      },
-      onError: (err) => {
-        notification("Error", getErrorMessage(err), "error");
-      },
-    });
-
-    closeExportModal();
-  };
+  const handleConfirmModal = useCallback(() => {
+    closeCanNotMakeQuoteModal();
+  }, [closeCanNotMakeQuoteModal]);
 
   return (
     <>
@@ -65,19 +42,17 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
           </BodyCard>
         </div>
       </div>
-      {exportModalOpen && (
-        <ExportModal
-          title="Export Orders"
-          handleClose={() => closeExportModal()}
-          onSubmit={handleCreateExport}
-          loading={createBatchJob.isLoading}
+      {canNotMakeQuoteModalOpen && (
+        <CanNotMakeQuotationModal
+          handleClose={() => closeCanNotMakeQuoteModal()}
+          onSubmit={handleConfirmModal}
         />
       )}
     </>
   );
 };
 
-const Orders = () => {
+const Quotation = () => {
   return (
     <Router>
       <OrderIndex path="/" />
@@ -86,4 +61,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default Quotation;

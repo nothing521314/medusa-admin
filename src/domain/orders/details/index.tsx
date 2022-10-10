@@ -1,7 +1,11 @@
 import { Address, ClaimOrder, Fulfillment, Swap } from "@medusajs/medusa";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
-import { capitalize, sum } from "lodash";
+import { sum } from "lodash";
+import moment from "moment";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import Button from "src/components/fundamentals/button";
 import {
   useAdminCancelOrder,
   useAdminCapturePayment,
@@ -9,19 +13,11 @@ import {
   useAdminRegion,
   useAdminUpdateOrder,
 } from "../../../../medusa-react";
-import moment from "moment";
-import React, { useMemo, useState } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
-import ReactJson from "react-json-view";
 import Avatar from "../../../components/atoms/avatar";
 import CopyToClipboard from "../../../components/atoms/copy-to-clipboard";
 import Spinner from "../../../components/atoms/spinner";
-import Tooltip from "../../../components/atoms/tooltip";
 import Badge from "../../../components/fundamentals/badge";
-import Button from "../../../components/fundamentals/button";
 import DetailsIcon from "../../../components/fundamentals/details-icon";
-import CancelIcon from "../../../components/fundamentals/icons/cancel-icon";
-import ClipboardCopyIcon from "../../../components/fundamentals/icons/clipboard-copy-icon";
 import CornerDownRightIcon from "../../../components/fundamentals/icons/corner-down-right-icon";
 import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon";
 import MailIcon from "../../../components/fundamentals/icons/mail-icon";
@@ -29,14 +25,11 @@ import TruckIcon from "../../../components/fundamentals/icons/truck-icon";
 import { ActionType } from "../../../components/molecules/actionables";
 import Breadcrumb from "../../../components/molecules/breadcrumb";
 import BodyCard from "../../../components/organisms/body-card";
-import RawJSON from "../../../components/organisms/raw-json";
-import Timeline from "../../../components/organisms/timeline";
 import { AddressType } from "../../../components/templates/address-form";
 import useClipboard from "../../../hooks/use-clipboard";
 import useImperativeDialog from "../../../hooks/use-imperative-dialog";
 import useNotification from "../../../hooks/use-notification";
 import { isoAlpha2Countries } from "../../../utils/countries";
-import { getErrorMessage } from "../../../utils/error-messages";
 import extractCustomerName from "../../../utils/extract-customer-name";
 import { formatAmountWithSymbol } from "../../../utils/prices";
 import AddressModal from "./address-modal";
@@ -48,9 +41,6 @@ import CreateRefundModal from "./refund";
 import {
   DisplayTotal,
   FormattedAddress,
-  FormattedFulfillment,
-  FulfillmentStatusComponent,
-  OrderStatusComponent,
   PaymentActionables,
   PaymentDetails,
   PaymentStatusComponent,
@@ -194,34 +184,22 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
     };
   }, [order]);
 
-  const handleDeleteOrder = async () => {
-    const shouldDelete = await dialog({
-      heading: "Cancel order",
-      text: "Are you sure you want to cancel the order?",
-    });
-
-    if (!shouldDelete) {
-      return;
-    }
-
-    return cancelOrder.mutate(undefined, {
-      onSuccess: () =>
-        notification("Success", "Successfully canceled order", "success"),
-      onError: (err) => notification("Error", getErrorMessage(err), "error"),
-    });
-  };
-
   const allFulfillments = gatherAllFulfillments(order);
 
-  const customerActionables: ActionType[] = [
-    {
-      label: "Go to Customer",
-      icon: <DetailsIcon size={"20"} />,
-      onClick: () => navigate(`/a/customers/${order?.customer.id}`),
-    },
-  ];
+  const customerActionables: ActionType[] = useMemo(() => {
+    return [
+      {
+        label: "Go to Customer",
+        icon: <DetailsIcon size={"20"} />,
+        onClick: () => navigate(`/a/customers/${order?.customer.id}`),
+      },
+    ];
+  }, [order?.customer.id]);
 
-  if (order?.shipping_address) {
+  useEffect(() => {
+    if (!order?.shipping_address) {
+      return;
+    }
     customerActionables.push({
       label: "Edit Shipping Address",
       icon: <TruckIcon size={"20"} />,
@@ -231,9 +209,12 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
           type: AddressType.SHIPPING,
         }),
     });
-  }
+  }, [customerActionables, order?.shipping_address]);
 
-  if (order?.billing_address) {
+  useEffect(() => {
+    if (!order?.billing_address) {
+      return;
+    }
     customerActionables.push({
       label: "Edit Billing Address",
       icon: <DollarSignIcon size={"20"} />,
@@ -246,9 +227,12 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
         }
       },
     });
-  }
+  }, [customerActionables, order?.billing_address]);
 
-  if (order?.email) {
+  useEffect(() => {
+    if (!order?.email) {
+      return;
+    }
     customerActionables.push({
       label: "Edit Email Address",
       icon: <MailIcon size={"20"} />,
@@ -258,15 +242,95 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
         });
       },
     });
-  }
+  }, [customerActionables, order?.email]);
+
+  const renderFooterDetails = useCallback(() => {
+    return (
+      <div className="flex flex-col items-center py-6">
+        <div className="text italic text-blue-50 cursor-pointer">
+          Show preview
+        </div>
+        <div className="text italic mt-4">Or</div>
+        <div className="text italic text-blue-50 flex mt-4">
+          <div className="mr-1 cursor-pointer">Download/</div>
+          <div className="cursor-pointer">Email</div>
+        </div>
+        <Button variant="secondary" size="small" className="w-[200px] mt-5">
+          Make quotation
+        </Button>
+      </div>
+    );
+  }, []);
+
+  const renderModal = useCallback(
+    (order: { id: string }) => {
+      return (
+        <>
+          {addressModal && (
+            <AddressModal
+              handleClose={() => setAddressModal(null)}
+              submit={updateOrder}
+              address={addressModal.address}
+              type={addressModal.type}
+              allowedCountries={region?.countries}
+            />
+          )}
+          {emailModal && (
+            <EmailModal
+              handleClose={() => setEmailModal(null)}
+              email={emailModal.email}
+              orderId={order.id}
+            />
+          )}
+          {showFulfillment && (
+            <CreateFulfillmentModal
+              orderToFulfill={order as any}
+              handleCancel={() => setShowFulfillment(false)}
+              orderId={order.id}
+            />
+          )}
+          {showRefund && (
+            <CreateRefundModal
+              order={order}
+              onDismiss={() => setShowRefund(false)}
+            />
+          )}
+          {fullfilmentToShip && (
+            <MarkShippedModal
+              handleCancel={() => setFullfilmentToShip(null)}
+              fulfillment={fullfilmentToShip}
+              orderId={order.id}
+            />
+          )}
+        </>
+      );
+    },
+    [
+      addressModal,
+      emailModal,
+      fullfilmentToShip,
+      region?.countries,
+      showFulfillment,
+      showRefund,
+      updateOrder,
+    ]
+  );
 
   return (
     <div>
-      <Breadcrumb
-        currentPage={"Order Details"}
-        previousBreadcrumb={"Orders"}
-        previousRoute="/a/orders"
-      />
+      <div className="flex flex-row justify-between items-center mb-4">
+        <Breadcrumb
+          currentPage={"Quotation Details"}
+          previousBreadcrumb={"Quotation"}
+          previousRoute="/a/orders"
+          className="!m-0"
+        />
+        <div>
+          <Button variant="danger" size="small">
+            Cancel
+          </Button>
+        </div>
+      </div>
       {isLoading || !order ? (
         <BodyCard className="w-full pt-2xlarge flex items-center justify-center">
           <Spinner size={"large"} variant={"secondary"} />
@@ -274,7 +338,7 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
       ) : (
         <>
           <div className="flex flex-col h-full">
-            <BodyCard
+            {/* <BodyCard
               className={"w-full mb-4 min-h-[200px]"}
               customHeader={
                 <Tooltip side="top" content={"Copy ID"}>
@@ -328,7 +392,7 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
                   </div>
                 </div>
               </div>
-            </BodyCard>
+            </BodyCard> */}
             <BodyCard
               className={"w-full mb-4 min-h-0 h-auto"}
               title="Customer"
@@ -380,8 +444,14 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
                 </div>
               </div>
             </BodyCard>
-            <BodyCard title="Quotation Heading" className="min-h-fit h-auto mb-4">
-              <textarea className="border rounded resize-none p-3 focus:outline-none outline-none" rows={3} />
+            <BodyCard
+              title="Quotation Heading"
+              className="min-h-fit h-auto mb-4"
+            >
+              <textarea
+                className="border rounded resize-none p-3 focus:outline-none outline-none"
+                rows={3}
+              />
             </BodyCard>
             <BodyCard className={"w-full mb-4 min-h-0 h-auto"} title="Summary">
               <div className="mt-6">
@@ -529,104 +599,96 @@ const OrderDetails = ({ id }: OrderDetailProps) => {
               </div>
             </BodyCard>
             <BodyCard
-              className={"w-full mb-4 min-h-0 h-auto"}
-              title="Fulfillment"
-              status={
-                <FulfillmentStatusComponent status={order.fulfillment_status} />
-              }
-              customActionable={
-                order.fulfillment_status !== "fulfilled" &&
-                order.status !== "canceled" &&
-                order.fulfillment_status !== "shipped" && (
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    onClick={() => setShowFulfillment(true)}
-                  >
-                    Create Fulfillment
-                  </Button>
-                )
-              }
+              className="w-full mb-4 min-h-0 h-auto"
+              title="Quotation Conditions"
             >
-              <div className="mt-6">
-                {order.shipping_methods.map((method) => (
-                  <div className="flex flex-col" key={method.id}>
-                    <span className="inter-small-regular text-grey-50">
-                      Shipping Method
-                    </span>
-                    <span className="inter-small-regular text-grey-90 mt-2">
-                      {method?.shipping_option?.name || ""}
-                    </span>
-                    <div className="flex flex-col min-h-[100px] mt-8 bg-grey-5 px-3 py-2 h-full">
-                      <span className="inter-base-semibold">
-                        Data{" "}
-                        <span className="text-grey-50 inter-base-regular">
-                          (1 item)
-                        </span>
-                      </span>
-                      <div className="flex flex-grow items-center mt-4">
-                        <ReactJson
-                          name={false}
-                          collapsed={true}
-                          src={method?.data}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                <div className="mt-6 inter-small-regular ">
-                  {allFulfillments.map((fulfillmentObj, i) => (
-                    <FormattedFulfillment
-                      key={i}
-                      order={order}
-                      fulfillmentObj={fulfillmentObj}
-                      setFullfilmentToShip={setFullfilmentToShip}
-                    />
-                  ))}
-                </div>
+              <div className="py-5 px-8 border rounded-2xl text-justify">
+                All prices quoted are in US Dollars, Ex Works Australia. Prices
+                quoted are valid for 30 days. The Customer shall be responsible
+                for payment of all necessary duties such as import duties and
+                VAT or Withholding Tax applicable or required to be deducted
+                under the law of Philippines. The Customer shall responsible for
+                all local & overseas remittance charges. Title to the product
+                passes on to the Buyer Ex-Work (Incoterm 2010) Australia,
+                subject to Seller’s lien until full payment has been made.
+                Should a specific product include a signage package, the gaming
+                machines will be installed including the signage package, or
+                should the Customer wish to have alternative signage, it will
+                require pre-approval by RGB. This quotation is issued subject to
+                due diligence compliance by the Customer or third party (if
+                any), and the supply of this quotation is not to be construed as
+                a commitment or obligation, express or implied to supply on the
+                part of RGB. Due diligence is to be completed and submitted for
+                manufacturers’ approval before the acceptance of Customer’s
+                confirmation or placement of goods. The manufacturer reserves
+                the rights to audit Customer’s books and records to verify
+                Customer’s compliance with its obligations.
               </div>
             </BodyCard>
-
-            <div className="mt-large">
-              <RawJSON data={order} title="Raw order" />
-            </div>
+            <BodyCard
+              className="w-full mb-4 min-h-0 h-auto"
+              title="Payment Terms"
+            >
+              <div className="py-5 px-8 border rounded-2xl text-justify">
+                50% upon confirmation of order. Advance payment received shall
+                be forfeited should there be any cancellation of order
+                subsequently. Should payment is not received within 14 days
+                after order confirmation, RGB reserve the rights to revise the
+                price quoted in this quotation. Balance 50% before pick-up of
+                items. Banking Details for Remittance Pay to : RGB (Macau)
+                Limited Account No : 011 9100 2000 0753 0567 (Multi Currency)
+                Swift Code : ICBKMOMX Industrial and Commercial Bank of China
+                (Macau) Limited 18/F, ICBC Tower, Macau Landmark, 555 Avenida da
+                Amizade, Macau Purpose of payment: Purchase of casino machines
+              </div>
+            </BodyCard>
+            <BodyCard
+              className="w-full mb-4 min-h-0 h-auto"
+              title="Delivery Lead Time"
+            >
+              <div className="py-5 px-8 border rounded-2xl text-justify">
+                12 – 16 weeks upon order confirmation and payment duly received
+                by RGB, subject to variable component availability.
+              </div>
+            </BodyCard>
+            <BodyCard className="w-full mb-4 min-h-0 h-auto" title="Warranty">
+              <div className="py-5 px-8 border rounded-2xl text-justify">
+                SG EGMs: Hardware Warranty. Subject to BEPS Warranty clause
+                stated below, RGB warrants that the Products shall be free from
+                defects in materials and workmanship for a period of one hundred
+                and eighty (180) days from the delivery of the Products to
+                Customer. RGB will replace defective parts returned to RGB,
+                provided always however that such warranty shall not apply to
+                touch screen lens, any fluorescent tubes or fuses or in the
+                event of any adjustment or replacement of parts to the Products
+                being carried out by any person or party other than RGB, its
+                personnel, accredited technical support persons or nominated
+                service agents. The replacement of defective parts, if any
+                provided by RGB shall be under Incoterms CIF and the Customer
+                shall be responsible for all the charges on clearance and
+                transporting the replacement parts to its destination. Game
+                Warranty. If a game warranty is specified herein on the Customer
+                Order, RGB warrants that the game provided as part of the
+                Products will perform to at least at the average theoretical net
+                win (“ATNW”) described below installed at the same venue, having
+                the same denomination, and located on the same category of floor
+                (ie, smoking or non-smoking, mass floor and VIP rooms) (the
+                “Floor Average”) for a period of one hundred and eighty (180)
+                days. If the game performs below this performance criteria, RGB
+                will supply a like-for-like game free of charge Ex-works basis.
+                Customer is eligible for one (1) game conversion per game during
+                the Game Performance Warranty period. Standalone Spinning Reel
+                Gaming Machines (Video and Stepper): one hundred percent (100%)
+                of ATNW for such standalone spinning reel gaming machines; and
+                Link Spinning Reel Gaming Machines (Video and Stepper): one
+                hundred twenty percent (120%) of the ATNW for all spinning reel
+                game machines. BEPS Warranty. No warranty is provided for BEPS
+                Software.
+              </div>
+            </BodyCard>
           </div>
-          {addressModal && (
-            <AddressModal
-              handleClose={() => setAddressModal(null)}
-              submit={updateOrder}
-              address={addressModal.address}
-              type={addressModal.type}
-              allowedCountries={region?.countries}
-            />
-          )}
-          {emailModal && (
-            <EmailModal
-              handleClose={() => setEmailModal(null)}
-              email={emailModal.email}
-              orderId={order.id}
-            />
-          )}
-          {showFulfillment && (
-            <CreateFulfillmentModal
-              orderToFulfill={order as any}
-              handleCancel={() => setShowFulfillment(false)}
-              orderId={order.id}
-            />
-          )}
-          {showRefund && (
-            <CreateRefundModal
-              order={order}
-              onDismiss={() => setShowRefund(false)}
-            />
-          )}
-          {fullfilmentToShip && (
-            <MarkShippedModal
-              handleCancel={() => setFullfilmentToShip(null)}
-              fulfillment={fullfilmentToShip}
-              orderId={order.id}
-            />
-          )}
+          {renderFooterDetails()}
+          {renderModal(order)}
         </>
       )}
     </div>

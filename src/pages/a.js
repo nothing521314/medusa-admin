@@ -13,12 +13,12 @@ import Salesman from "../domain/salesman";
 import Discounts from "../domain/discounts";
 import GiftCards from "../domain/gift-cards";
 import Oauth from "../domain/oauth";
-import Orders from "../domain/orders";
 import DraftOrders from "../domain/orders/draft-orders";
 import Pricing from "../domain/pricing";
 import ProductsRoute from "../domain/products";
 import SalesChannels from "../domain/sales-channels";
 import Settings from "../domain/settings";
+import Quotation from "src/domain/orders";
 
 const IndexPage = () => {
   useHotkeys("g + o", () => navigate("/a/orders"));
@@ -32,7 +32,7 @@ const IndexPage = () => {
           <PrivateRoute path="products/*" component={ProductsRoute} />
           <PrivateRoute path="collections/*" component={Collections} />
           <PrivateRoute path="gift-cards/*" component={GiftCards} />
-          <PrivateRoute path="orders/*" component={Orders} />
+          <PrivateRoute path="orders/*" component={Quotation} />
           <PrivateRoute path="draft-orders/*" component={DraftOrders} />
           <PrivateRoute path="discounts/*" component={Discounts} />
           <PrivateRoute path="customers/*" component={Customers} />
