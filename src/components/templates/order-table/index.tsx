@@ -1,3 +1,4 @@
+import { useAdminOrders } from "@medusa-react";
 import { RouteComponentProps, useLocation } from "@reach/router";
 import clsx from "clsx";
 import { navigate } from "gatsby";
@@ -13,7 +14,11 @@ import TrashIcon from "src/components/fundamentals/icons/trash-icon";
 import { useDebounce } from "src/hooks/use-debounce";
 import Spinner from "../../atoms/spinner";
 import Table, { TablePagination } from "../../molecules/table";
-import { parseQuotationQueryString } from "./quotation-filters";
+import {
+  parseQuotationQueryString,
+  removeEmptyProperties,
+  TQuotationFilters,
+} from "./quotation-filters";
 import useOrderTableColumns from "./use-order-column";
 
 const DEFAULT_PAGE_SIZE = 15;
@@ -29,31 +34,13 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
     return parseQuotationQueryString(location.search);
   }, [location]);
 
-  const [filters, setFilters] = useState(defaultFilter);
+  const [filters, setFilters] = useState<TQuotationFilters>(
+    defaultFilter as TQuotationFilters
+  );
 
   const filtersDebounce = useDebounce(filters, 400);
 
-  // const { orders, isLoading, count } = useAdminOrders(queryObject);
-
-  const { orders, isLoading, count } = {
-    orders: [
-      {
-        cart_id: "123",
-        customer: {
-          first_name: "nothing",
-          last_name: "nguyen",
-        },
-        display_id: 1,
-        created_at: "2022-10-02",
-        total: 111111,
-        currency_code: "VND",
-        currency: "usd",
-        id: "order_01FG1DWV8Y6K4K72KBR6KA74DN",
-      },
-    ],
-    isLoading: false,
-    count: 10,
-  };
+  const { orders, isLoading, count } = useAdminOrders(filtersDebounce);
 
   const numPages = useMemo(() => {
     const controlledPageCount = Math.ceil(count! / filters.limit);
@@ -129,17 +116,6 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
     window.history.replaceState("/a/orders", "", `${`?${stringified}`}`);
   }, []);
 
-  const removeEmptyProperties = useCallback(
-    (obj: {
-      [key: string]: string | number | Array<string> | undefined | boolean;
-    }) => {
-      return Object.fromEntries(
-        Object.entries(obj).filter(([, value]) => value !== "")
-      );
-    },
-    []
-  );
-
   const refreshWithFilters = useCallback(() => {
     const filterObj = removeEmptyProperties(filtersDebounce);
 
@@ -148,7 +124,7 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
     } else {
       updateUrlFromFilter(filterObj);
     }
-  }, [filtersDebounce, removeEmptyProperties, updateUrlFromFilter]);
+  }, [filtersDebounce, updateUrlFromFilter]);
 
   useEffect(() => {
     refreshWithFilters();

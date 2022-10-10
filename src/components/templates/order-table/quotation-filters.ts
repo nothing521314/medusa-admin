@@ -12,7 +12,7 @@ const DEFAULT_PAGE_SIZE = 15;
 
 export const parseQuotationQueryString = (
   queryString?: string
-): TQuotationFilters => {
+): unknown => {
   const defaultVal: TQuotationFilters = {
     offset: 0,
     limit: DEFAULT_PAGE_SIZE,
@@ -50,5 +50,13 @@ export const parseQuotationQueryString = (
     }
   }
 
-  return defaultVal;
+  return removeEmptyProperties(defaultVal);
+};
+
+export const removeEmptyProperties = (obj: {
+  [key: string]: string | number | Array<string> | undefined | boolean;
+}) => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, value]) => value !== "")
+  );
 };

@@ -1,6 +1,8 @@
 import { RouteComponentProps, Router } from "@reach/router";
-import React from "react";
+import React, { useMemo } from "react";
 import { useAdminCreateBatchJob } from "../../../medusa-react";
+import Button from "../../components/fundamentals/button";
+import ExportIcon from "../../components/fundamentals/icons/export-icon";
 import BodyCard from "../../components/organisms/body-card";
 import ExportModal from "../../components/organisms/export-modal";
 import OrderTable from "../../components/templates/order-table";
@@ -13,9 +15,24 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
   const createBatchJob = useAdminCreateBatchJob();
   const notification = useNotification();
 
-  const { close: closeExportModal, state: exportModalOpen } = useToggleState(
-    false
-  );
+  const {
+    open: openExportModal,
+    close: closeExportModal,
+    state: exportModalOpen,
+  } = useToggleState(false);
+
+  const actions = useMemo(() => {
+    return [
+      <Button
+        variant="secondary"
+        size="small"
+        onClick={() => openExportModal()}
+      >
+        <ExportIcon size={20} />
+        Make quotation
+      </Button>,
+    ];
+  }, [openExportModal]);
 
   const handleCreateExport = () => {
     const reqObj = {
@@ -42,6 +59,7 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
         <div className="w-full flex flex-col grow">
           <BodyCard
             customHeader={<div className="inter-large-semibold">Quotation</div>}
+            customActionable={actions}
           >
             <OrderTable />
           </BodyCard>
