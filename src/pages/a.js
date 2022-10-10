@@ -13,12 +13,12 @@ import Salesman from "../domain/salesman";
 import Discounts from "../domain/discounts";
 import GiftCards from "../domain/gift-cards";
 import Oauth from "../domain/oauth";
-import DraftOrders from "../domain/orders/draft-orders";
+import DraftOrders from "../domain/quotations/draft-orders";
 import Pricing from "../domain/pricing";
 import ProductsRoute from "../domain/products";
 import SalesChannels from "../domain/sales-channels";
 import Settings from "../domain/settings";
-import Quotation from "src/domain/orders";
+import Quotation from "src/domain/quotations";
 
 const IndexPage = () => {
   useHotkeys("g + o", () => navigate("/a/orders"));

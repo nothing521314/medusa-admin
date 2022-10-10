@@ -2,9 +2,9 @@ import {
   StoreCartsRes,
   StorePostCartsCartLineItemsReq,
   StorePostCartsCartLineItemsItemReq,
-} from "@medusajs/medusa"
-import { useMutation, UseMutationOptions } from "react-query"
-import { useMedusa } from "../../../contexts"
+} from "@medusajs/medusa";
+import { useMutation, UseMutationOptions } from "react-query";
+import { useMedusa } from "../../../contexts";
 
 export const useCreateLineItem = (
   cartId: string,
@@ -14,13 +14,11 @@ export const useCreateLineItem = (
     StorePostCartsCartLineItemsReq
   >
 ) => {
-  const { client } = useMedusa()
-  return useMutation(
-    (data: StorePostCartsCartLineItemsReq) =>
-      client.carts.lineItems.create(cartId, data),
-    options
-  )
-}
+  const { client } = useMedusa();
+  return useMutation((data: StorePostCartsCartLineItemsReq) => {
+    return client.carts.lineItems.create(cartId, data);
+  }, options);
+};
 
 export const useUpdateLineItem = (
   cartId: string,
@@ -30,7 +28,7 @@ export const useUpdateLineItem = (
     StorePostCartsCartLineItemsItemReq & { lineId: string }
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   return useMutation(
     ({
       lineId,
@@ -38,17 +36,17 @@ export const useUpdateLineItem = (
     }: StorePostCartsCartLineItemsItemReq & { lineId: string }) =>
       client.carts.lineItems.update(cartId, lineId, data),
     options
-  )
-}
+  );
+};
 
 export const useDeleteLineItem = (
   cartId: string,
   options?: UseMutationOptions<StoreCartsRes, Error, { lineId: string }>
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   return useMutation(
     ({ lineId }: { lineId: string }) =>
       client.carts.lineItems.delete(cartId, lineId),
     options
-  )
-}
+  );
+};

@@ -1,6 +1,6 @@
 import { useAdminCancelClaim } from "../../../../../medusa-react"
 import React, { useState } from "react"
-import CreateFulfillmentModal from "../../../../domain/orders/details/create-fulfillment"
+import CreateFulfillmentModal from "../../../../domain/quotations/details/create-fulfillment"
 import { ClaimEvent } from "../../../../hooks/use-build-timeline"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
 import AlertIcon from "../../../fundamentals/icons/alert-icon"

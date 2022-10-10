@@ -1,42 +1,72 @@
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-import { navigate } from "gatsby"
-import React, { useContext, useState } from "react"
-import { AccountContext } from "../../../context/account"
-import { PollingContext } from "../../../context/polling"
-import useToggleState from "../../../hooks/use-toggle-state"
-import Avatar from "../../atoms/avatar"
-import Button from "../../fundamentals/button"
-import GearIcon from "../../fundamentals/icons/gear-icon"
-import HelpCircleIcon from "../../fundamentals/icons/help-circle"
-import SignOutIcon from "../../fundamentals/icons/log-out-icon"
-import NotificationBell from "../../molecules/notification-bell"
-import SearchBar from "../../molecules/search-bar"
-import ActivityDrawer from "../activity-drawer"
-import MailDialog from "../help-dialog"
+import { useCart, useCreateLineItem } from "@medusa-react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { navigate } from "gatsby";
+import React, { useCallback, useContext, useMemo, useState } from "react";
+import CartIcon from "src/components/fundamentals/icons/cart-icon";
+import useToggleState from "src/hooks/use-toggle-state";
+import { AccountContext } from "../../../context/account";
+import Avatar from "../../atoms/avatar";
+import Button from "../../fundamentals/button";
+import GearIcon from "../../fundamentals/icons/gear-icon";
+import HelpCircleIcon from "../../fundamentals/icons/help-circle";
+import SignOutIcon from "../../fundamentals/icons/log-out-icon";
+import SearchBar from "../../molecules/search-bar";
+import CanNotMakeQuotationModal from "../can-not-make-quotation-modal";
+import MailDialog from "../help-dialog";
 
 const Topbar: React.FC = () => {
-  const {
-    state: activityDrawerState,
-    toggle: toggleActivityDrawer,
-    close: activityDrawerClose,
-  } = useToggleState(false)
-
   const { first_name, last_name, email, handleLogout } = useContext(
     AccountContext
-  )
-  const { batchJobs } = useContext(PollingContext)
+  );
 
-  const [showSupportform, setShowSupportForm] = useState(false)
+  const { cart } = useCart();
 
-  const logOut = () => {
-    handleLogout()
-    navigate("/login")
-  }
+  const {
+    open: openCanNotMakeQuoteModal,
+    close: closeCanNotMakeQuoteModal,
+    state: canNotMakeQuoteModalOpen,
+  } = useToggleState(false);
+
+  const totalCart = useMemo(() => {
+    if (!cart) {
+      return 0;
+    }
+    return cart.items.reduce((sum, i) => sum + i.quantity, 0);
+  }, [cart]);
+
+  const { mutate } = useCreateLineItem("cart_01GF12Y9SE92CAABPPXPHR7JVM");
+
+  const [showSupportform, setShowSupportForm] = useState(false);
+
+  const handleClickCartIcon = useCallback(() => {
+    if (totalCart) {
+      console.log("aa");
+    } else {
+      openCanNotMakeQuoteModal();
+    }
+  }, [openCanNotMakeQuoteModal, totalCart]);
+
+  const logOut = useCallback(() => {
+    handleLogout();
+    navigate("/login");
+  }, [handleLogout]);
 
   return (
     <div className="w-full min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-b border-grey-20 sticky top-0 flex items-center justify-between z-40">
       <SearchBar />
       <div className="flex items-center">
+        <Button
+          size="small"
+          variant="primary"
+          onClick={() =>
+            mutate({
+              variant_id: "variant_01GEY3SVY9QS2CMEGXWNSTAH0M",
+              quantity: 1,
+            })
+          }
+        >
+          Add Item
+        </Button>
         <Button
           size="small"
           variant="ghost"
@@ -46,11 +76,15 @@ const Topbar: React.FC = () => {
           <HelpCircleIcon size={24} />
         </Button>
 
-        <NotificationBell
-          onClick={toggleActivityDrawer}
-          variant={"ghost"}
-          hasNotifications={!!batchJobs}
-        />
+        <Button
+          size="small"
+          variant="ghost"
+          className="w-8 h-8 mr-3"
+          onClick={handleClickCartIcon}
+        >
+          <CartIcon size={24} />
+          <span>{totalCart ? totalCart : ""}</span>
+        </Button>
 
         <div className="ml-large w-large h-large">
           <DropdownMenu.Root>
@@ -96,14 +130,14 @@ const Topbar: React.FC = () => {
           onClose={() => setShowSupportForm(false)}
         />
       )}
-      {activityDrawerState && (
-        <ActivityDrawer onDismiss={activityDrawerClose} />
-      )}
-      {activityDrawerState && (
-        <ActivityDrawer onDismiss={activityDrawerClose} />
+      {canNotMakeQuoteModalOpen && (
+        <CanNotMakeQuotationModal
+          handleClose={closeCanNotMakeQuoteModal}
+          onSubmit={closeCanNotMakeQuoteModal}
+        />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Topbar
+export default Topbar;

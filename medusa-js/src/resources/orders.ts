@@ -1,7 +1,7 @@
-import { StoreGetOrdersParams, StoreOrdersRes } from "@medusajs/medusa"
-import qs from "qs"
-import { ResponsePromise } from "../typings"
-import BaseResource from "./base"
+import { StoreGetOrdersParams, StoreOrdersRes } from "@medusajs/medusa";
+import qs from "qs";
+import { ResponsePromise } from "../typings";
+import BaseResource from "./base";
 
 class OrdersResource extends BaseResource {
   /**
@@ -14,8 +14,8 @@ class OrdersResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreOrdersRes> {
-    const path = `/store/orders/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/store/orders/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -28,8 +28,8 @@ class OrdersResource extends BaseResource {
     cart_id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreOrdersRes> {
-    const path = `/store/orders/cart/${cart_id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/store/orders/cart/${cart_id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -42,13 +42,13 @@ class OrdersResource extends BaseResource {
     payload: StoreGetOrdersParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreOrdersRes> {
-    let path = `/store/orders?`
+    let path = `/store/orders?`;
 
-    const queryString = qs.stringify(payload)
-    path = `/store/orders?${queryString}`
+    const queryString = qs.stringify(payload);
+    path = `/store/orders?${queryString}`;
 
-    return this.client.request("GET", path, payload, {}, customHeaders)
+    return this.client.request("GET", path, payload, {}, customHeaders);
   }
 }
 
-export default OrdersResource
+export default OrdersResource;

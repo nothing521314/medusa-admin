@@ -5,7 +5,7 @@ import {
   useAdminReceiveReturn,
 } from "../../../../medusa-react"
 import React, { useState } from "react"
-import ReceiveMenu from "../../../domain/orders/details/returns/receive-menu"
+import ReceiveMenu from "../../../domain/quotations/details/returns/receive-menu"
 import { ReturnEvent } from "../../../hooks/use-build-timeline"
 import Button from "../../fundamentals/button"
 import AlertIcon from "../../fundamentals/icons/alert-icon"

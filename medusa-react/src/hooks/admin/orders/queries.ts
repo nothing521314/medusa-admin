@@ -23,8 +23,6 @@ export const useAdminOrders = (
     ReturnType<OrderQueryKeys["list"]>
   >
 ) => {
-  console.log("999");
-  
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminOrderKeys.list(query),

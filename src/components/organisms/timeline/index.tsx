@@ -1,9 +1,9 @@
 import clsx from "clsx"
 import { useAdminCreateNote, useAdminOrder } from "../../../../medusa-react"
 import React, { useState } from "react"
-import ClaimMenu from "../../../domain/orders/details/claim/create"
-import ReturnMenu from "../../../domain/orders/details/returns"
-import SwapMenu from "../../../domain/orders/details/swap/create"
+import ClaimMenu from "../../../domain/quotations/details/claim/create"
+import ReturnMenu from "../../../domain/quotations/details/returns"
+import SwapMenu from "../../../domain/quotations/details/swap/create"
 import {
   ClaimEvent,
   ExchangeEvent,

@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const SignOutIcon: React.FC<IconProps> = ({
   size = "16",
@@ -37,7 +37,7 @@ const SignOutIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default SignOutIcon
+export default SignOutIcon;

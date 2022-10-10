@@ -1,28 +1,28 @@
-import React, { useState } from "react"
-import Button from "../../fundamentals/button"
-import DiscordIcon from "../../fundamentals/icons/discord-icon"
-import InputField from "../../molecules/input"
-import TextArea from "../../molecules/textarea"
+import React, { useState } from "react";
+import Button from "../../fundamentals/button";
+import DiscordIcon from "../../fundamentals/icons/discord-icon";
+import InputField from "../../molecules/input";
+import TextArea from "../../molecules/textarea";
 
-import * as Dialog from "@radix-ui/react-dialog"
+import * as Dialog from "@radix-ui/react-dialog";
 
 type MailDialogProps = {
-  onClose: () => void
-  open: boolean
-}
+  onClose: () => void;
+  open: boolean;
+};
 
 const MailDialog = ({ open, onClose }: MailDialogProps) => {
-  const [subject, setSubject] = useState("")
-  const [body, setBody] = useState("")
-  const [link, setLink] = useState("mailto:support@medusajs.com")
+  const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("");
+  const [link, setLink] = useState("mailto:support@medusajs.com");
 
   React.useEffect(() => {
     setLink(
       `mailto:support@medusajs.com?subject=${encodeURI(
         subject
       )}&body=${encodeURI(body)}`
-    )
-  }, [subject, body])
+    );
+  }, [subject, body]);
 
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
@@ -47,7 +47,7 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
               placeholder="Write a message..."
               value={body}
               onChange={(e) => {
-                setBody(e.target.value)
+                setBody(e.target.value);
               }}
               rows={8}
               enableEmoji
@@ -80,7 +80,7 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
         </Dialog.Content>
       </Dialog.Overlay>
     </Dialog.Root>
-  )
-}
+  );
+};
 
-export default MailDialog
+export default MailDialog;

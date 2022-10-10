@@ -1,7 +1,7 @@
 import { LineItem, Order } from "@medusajs/medusa"
 import clsx from "clsx"
 import React, { Fragment, useContext } from "react"
-import RMAReturnReasonSubModal from "../../../domain/orders/details/rma-sub-modals/return-reasons"
+import RMAReturnReasonSubModal from "../../../domain/quotations/details/rma-sub-modals/return-reasons"
 import Medusa from "../../../services/api"
 import { isLineItemCanceled } from "../../../utils/is-line-item"
 import { formatAmountWithSymbol } from "../../../utils/prices"

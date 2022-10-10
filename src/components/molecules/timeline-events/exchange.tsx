@@ -6,8 +6,8 @@ import {
   useAdminStore,
 } from "../../../../medusa-react"
 import React, { useEffect, useState } from "react"
-import CreateFulfillmentModal from "../../../domain/orders/details/create-fulfillment"
-import ReceiveMenu from "../../../domain/orders/details/returns/receive-menu"
+import CreateFulfillmentModal from "../../../domain/quotations/details/create-fulfillment"
+import ReceiveMenu from "../../../domain/quotations/details/returns/receive-menu"
 import { ExchangeEvent } from "../../../hooks/use-build-timeline"
 import useNotification from "../../../hooks/use-notification"
 import Medusa from "../../../services/api"

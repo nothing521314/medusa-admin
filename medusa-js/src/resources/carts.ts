@@ -6,13 +6,13 @@ import {
   StorePostCartsCartPaymentSessionUpdateReq,
   StorePostCartsCartReq,
   StorePostCartsCartShippingMethodReq,
-} from "@medusajs/medusa"
-import { ResponsePromise } from "../typings"
-import BaseResource from "./base"
-import LineItemsResource from "./line-items"
+} from "@medusajs/medusa";
+import { ResponsePromise } from "../typings";
+import BaseResource from "./base";
+import LineItemsResource from "./line-items";
 
 class CartsResource extends BaseResource {
-  public lineItems = new LineItemsResource(this.client)
+  public lineItems = new LineItemsResource(this.client);
 
   /**
    * Adds a shipping method to cart
@@ -26,8 +26,8 @@ class CartsResource extends BaseResource {
     payload: StorePostCartsCartShippingMethodReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}/shipping-methods`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/store/carts/${cart_id}/shipping-methods`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -44,8 +44,8 @@ class CartsResource extends BaseResource {
     cart_id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCompleteCartRes> {
-    const path = `/store/carts/${cart_id}/complete`
-    return this.client.request("POST", path, undefined, {}, customHeaders)
+    const path = `/store/carts/${cart_id}/complete`;
+    return this.client.request("POST", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -59,8 +59,8 @@ class CartsResource extends BaseResource {
     payload?: StorePostCartReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = "/store/carts";
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -75,8 +75,8 @@ class CartsResource extends BaseResource {
     cart_id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}/payment-sessions`
-    return this.client.request("POST", path, undefined, {}, customHeaders)
+    const path = `/store/carts/${cart_id}/payment-sessions`;
+    return this.client.request("POST", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -91,8 +91,8 @@ class CartsResource extends BaseResource {
     code: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}/discounts/${code}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/store/carts/${cart_id}/discounts/${code}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -108,8 +108,8 @@ class CartsResource extends BaseResource {
     provider_id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -124,8 +124,8 @@ class CartsResource extends BaseResource {
     provider_id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}/refresh`
-    return this.client.request("POST", path, undefined, {}, customHeaders)
+    const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}/refresh`;
+    return this.client.request("POST", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -138,8 +138,8 @@ class CartsResource extends BaseResource {
     cart_id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/store/carts/${cart_id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -154,8 +154,8 @@ class CartsResource extends BaseResource {
     payload: StorePostCartsCartPaymentSessionReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}/payment-session`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/store/carts/${cart_id}/payment-session`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -170,8 +170,8 @@ class CartsResource extends BaseResource {
     payload: StorePostCartsCartReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/store/carts/${cart_id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -188,9 +188,9 @@ class CartsResource extends BaseResource {
     payload: StorePostCartsCartPaymentSessionUpdateReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 }
 
-export default CartsResource
+export default CartsResource;
