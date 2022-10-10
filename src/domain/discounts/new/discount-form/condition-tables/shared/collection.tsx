@@ -1,8 +1,8 @@
-import { ProductCollection } from "@medusajs/medusa"
-import React, { useMemo } from "react"
-import { Column, HeaderGroup, Row } from "react-table"
-import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
-import Table from "../../../../../../components/molecules/table"
+import { ProductCollection } from "@medusajs/medusa";
+import React, { useMemo } from "react";
+import { Column, HeaderGroup, Row } from "react-table";
+import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon";
+import Table from "../../../../../../components/molecules/table";
 
 export const CollectionRow = ({ row }: { row: Row<ProductCollection> }) => {
   return (
@@ -12,16 +12,16 @@ export const CollectionRow = ({ row }: { row: Row<ProductCollection> }) => {
           <Table.Cell {...cell.getCellProps()}>
             {cell.render("Cell")}
           </Table.Cell>
-        )
+        );
       })}
     </Table.Row>
-  )
-}
+  );
+};
 
 export const CollectionsHeader = ({
   headerGroup,
 }: {
-  headerGroup: HeaderGroup<ProductCollection>
+  headerGroup: HeaderGroup<ProductCollection>;
 }) => {
   return (
     <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
@@ -34,8 +34,8 @@ export const CollectionsHeader = ({
         </Table.HeadCell>
       ))}
     </Table.HeadRow>
-  )
-}
+  );
+};
 
 export const useCollectionColumns = () => {
   const columns = useMemo<Column<ProductCollection>[]>(() => {
@@ -48,7 +48,7 @@ export const useCollectionColumns = () => {
         ),
         accessor: "title",
         Cell: ({ row: { original } }) => {
-          return <span>{original.title}</span>
+          return <span>{original.title}</span>;
         },
       },
       {
@@ -60,11 +60,11 @@ export const useCollectionColumns = () => {
         id: "products",
         accessor: (row) => row.products.length,
         Cell: ({ cell: { value } }) => {
-          return <div className="text-right">{value}</div>
+          return <div className="text-right">{value}</div>;
         },
       },
-    ]
-  }, [])
+    ];
+  }, []);
 
-  return columns
-}
+  return columns;
+};

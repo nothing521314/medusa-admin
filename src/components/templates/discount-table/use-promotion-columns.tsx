@@ -1,9 +1,9 @@
-import { end, parse } from "iso8601-duration"
-import React, { useMemo } from "react"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import Badge from "../../fundamentals/badge"
-import StatusDot from "../../fundamentals/status-indicator"
-import Table from "../../molecules/table"
+import { end, parse } from "iso8601-duration";
+import React, { useMemo } from "react";
+import { formatAmountWithSymbol } from "../../../utils/prices";
+import Badge from "../../fundamentals/badge";
+import StatusDot from "../../fundamentals/status-indicator";
+import Table from "../../molecules/table";
 
 enum PromotionStatus {
   SCHEDULED = "SCHEDULED",
@@ -14,9 +14,9 @@ enum PromotionStatus {
 
 const getPromotionStatus = (promotion) => {
   if (!promotion.is_disabled) {
-    const date = new Date()
+    const date = new Date();
     if (new Date(promotion.starts_at) > date) {
-      return PromotionStatus.SCHEDULED
+      return PromotionStatus.SCHEDULED;
     } else if (
       (promotion.ends_at && new Date(promotion.ends_at) < date) ||
       (promotion.valid_duration &&
@@ -27,58 +27,58 @@ const getPromotionStatus = (promotion) => {
           )) ||
       promotion.usage_count === promotion.usage_limit
     ) {
-      return PromotionStatus.EXPIRED
+      return PromotionStatus.EXPIRED;
     } else {
-      return PromotionStatus.ACTIVE
+      return PromotionStatus.ACTIVE;
     }
   }
-  return PromotionStatus.DISABLED
-}
+  return PromotionStatus.DISABLED;
+};
 
 const getPromotionStatusDot = (promotion) => {
-  const status = getPromotionStatus(promotion)
+  const status = getPromotionStatus(promotion);
   switch (status) {
     case PromotionStatus.SCHEDULED:
-      return <StatusDot title="Scheduled" variant="warning" />
+      return <StatusDot title="Scheduled" variant="warning" />;
     case PromotionStatus.EXPIRED:
-      return <StatusDot title="Expired" variant="danger" />
+      return <StatusDot title="Expired" variant="danger" />;
     case PromotionStatus.ACTIVE:
-      return <StatusDot title="Active" variant="success" />
+      return <StatusDot title="Active" variant="success" />;
     case PromotionStatus.DISABLED:
-      return <StatusDot title="Disabled" variant="default" />
+      return <StatusDot title="Disabled" variant="default" />;
     default:
-      return <StatusDot title="Disabled" variant="default" />
+      return <StatusDot title="Disabled" variant="default" />;
   }
-}
+};
 
 const getCurrencySymbol = (promotion) => {
   if (promotion.rule.type === "fixed") {
     if (!promotion.regions?.length) {
-      return ""
+      return "";
     }
-    return promotion.regions[0].currency_code.toUpperCase()
+    return promotion.regions[0].currency_code.toUpperCase();
   }
-  return ""
-}
+  return "";
+};
 
 const getPromotionAmount = (promotion) => {
   switch (promotion.rule.type) {
     case "fixed":
       if (!promotion.regions?.length) {
-        return ""
+        return "";
       }
       return formatAmountWithSymbol({
         currency: promotion.regions[0].currency_code,
         amount: promotion.rule.value,
-      })
+      });
     case "percentage":
-      return `${promotion.rule.value}%`
+      return `${promotion.rule.value}%`;
     case "free_shipping":
-      return "Free Shipping"
+      return "Free Shipping";
     default:
-      return ""
+      return "";
   }
-}
+};
 
 export const usePromotionTableColumns = () => {
   const columns = useMemo(
@@ -111,7 +111,7 @@ export const usePromotionTableColumns = () => {
             <Table.Cell className="text-right" key={index}>
               {getPromotionAmount(original)}
             </Table.Cell>
-          )
+          );
         },
       },
       {
@@ -140,23 +140,23 @@ export const usePromotionTableColumns = () => {
                 ? getUsageCount(original.usage_count)
                 : "-"}
             </Table.Cell>
-          )
+          );
         },
       },
     ],
     []
-  )
+  );
 
-  return [columns]
-}
+  return [columns];
+};
 
 const getUsageCount = (usageCount: number) => {
   switch (true) {
     case usageCount > 9999999:
-      return `${Math.floor(usageCount / 1000000)}m`
+      return `${Math.floor(usageCount / 1000000)}m`;
     case usageCount > 9999:
-      return `${Math.floor(usageCount / 1000)}k`
+      return `${Math.floor(usageCount / 1000)}k`;
     default:
-      return usageCount
+      return usageCount;
   }
-}
+};

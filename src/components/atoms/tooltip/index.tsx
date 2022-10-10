@@ -1,16 +1,16 @@
-import * as RadixTooltip from "@radix-ui/react-tooltip"
-import clsx from "clsx"
-import React from "react"
+import * as RadixTooltip from "@radix-ui/react-tooltip";
+import clsx from "clsx";
+import React from "react";
 
 export type TooltipProps = RadixTooltip.TooltipContentProps &
   Pick<
     RadixTooltip.TooltipProps,
     "open" | "defaultOpen" | "onOpenChange" | "delayDuration"
   > & {
-    content: React.ReactNode
-    side?: "bottom" | "left" | "top" | "right"
-    onClick?: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"]
-  }
+    content: React.ReactNode;
+    side?: "bottom" | "left" | "top" | "right";
+    onClick?: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"];
+  };
 
 const Tooltip = ({
   children,
@@ -52,7 +52,7 @@ const Tooltip = ({
         </RadixTooltip.Content>
       </RadixTooltip.Root>
     </RadixTooltip.Provider>
-  )
-}
+  );
+};
 
-export default Tooltip
+export default Tooltip;

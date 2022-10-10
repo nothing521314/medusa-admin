@@ -1,37 +1,37 @@
-import clsx from "clsx"
-import { navigate } from "gatsby"
-import React, { useContext, useState } from "react"
-import { useForm } from "react-hook-form"
-import Avatar from "../../components/atoms/avatar"
-import Spinner from "../../components/atoms/spinner"
-import BreadCrumb from "../../components/molecules/breadcrumb"
-import Input from "../../components/molecules/input"
-import BodyCard from "../../components/organisms/body-card"
-import FileUploadModal from "../../components/organisms/file-upload-modal"
-import TwoSplitPane from "../../components/templates/two-split-pane"
-import { AccountContext } from "../../context/account"
-import useNotification from "../../hooks/use-notification"
-import { getErrorMessage } from "../../utils/error-messages"
+import clsx from "clsx";
+import { navigate } from "gatsby";
+import React, { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import Avatar from "../../components/atoms/avatar";
+import Spinner from "../../components/atoms/spinner";
+import BreadCrumb from "../../components/molecules/breadcrumb";
+import Input from "../../components/molecules/input";
+import BodyCard from "../../components/organisms/body-card";
+import FileUploadModal from "../../components/organisms/file-upload-modal";
+import TwoSplitPane from "../../components/templates/two-split-pane";
+import { AccountContext } from "../../context/account";
+import useNotification from "../../hooks/use-notification";
+import { getErrorMessage } from "../../utils/error-messages";
 
 const PersonalInformation = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [isLoadingProfilePicture, setIsLoadingProfilePicture] = useState(false)
-  const { register, setValue, handleSubmit } = useForm()
-  const { handleUpdateUser, ...user } = useContext(AccountContext)
-  const notification = useNotification()
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isLoadingProfilePicture, setIsLoadingProfilePicture] = useState(false);
+  const { register, setValue, handleSubmit } = useForm();
+  const { handleUpdateUser, ...user } = useContext(AccountContext);
+  const notification = useNotification();
 
-  register("first_name")
-  register("last_name")
+  register("first_name");
+  register("last_name");
 
   const submit = (data) => {
     handleUpdateUser(user.id, data)
       .then(() => {
-        notification("Success", "Successfully updated user", "success")
+        notification("Success", "Successfully updated user", "success");
       })
       .catch((err) => {
-        notification("Error", getErrorMessage(err), "error")
-      })
-  }
+        notification("Error", getErrorMessage(err), "error");
+      });
+  };
 
   const events = [
     {
@@ -42,15 +42,15 @@ const PersonalInformation = () => {
       label: "Cancel changes",
       onClick: () => navigate("/a/settings"),
     },
-  ]
+  ];
 
   const handleFileUpload = async (files) => {
-    setModalIsOpen(false)
-    setIsLoadingProfilePicture(true)
+    setModalIsOpen(false);
+    setIsLoadingProfilePicture(true);
     // TODO upload files
-    await new Promise((r) => setTimeout(r, 2000))
-    setIsLoadingProfilePicture(false)
-  }
+    await new Promise((r) => setTimeout(r, 2000));
+    setIsLoadingProfilePicture(false);
+  };
 
   return (
     <div>
@@ -121,7 +121,7 @@ const PersonalInformation = () => {
         </BodyCard>
       </TwoSplitPane>
     </div>
-  )
-}
+  );
+};
 
-export default PersonalInformation
+export default PersonalInformation;

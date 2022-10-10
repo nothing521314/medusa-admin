@@ -1,26 +1,26 @@
-import React from "react"
-import { Controller } from "react-hook-form"
-import { NextSelect } from "../../../../../components/molecules/select/next-select"
-import { Option } from "../../../../../types/shared"
-import { NestedForm } from "../../../../../utils/nested-form"
-import { useStoreData } from "./use-store-data"
+import React from "react";
+import { Controller } from "react-hook-form";
+import { NextSelect } from "../../../../../components/molecules/select/next-select";
+import { Option } from "../../../../../types/shared";
+import { NestedForm } from "../../../../../utils/nested-form";
+import { useStoreData } from "./use-store-data";
 
 export type RegionProvidersFormType = {
-  payment_providers: Option[]
-  fulfillment_providers: Option[]
-}
+  payment_providers: Option[];
+  fulfillment_providers: Option[];
+};
 
 type Props = {
-  form: NestedForm<RegionProvidersFormType>
-}
+  form: NestedForm<RegionProvidersFormType>;
+};
 
 const RegionProvidersForm = ({ form }: Props) => {
   const {
     control,
     path,
     formState: { errors },
-  } = form
-  const { fulfillmentProviderOptions, paymentProviderOptions } = useStoreData()
+  } = form;
+  const { fulfillmentProviderOptions, paymentProviderOptions } = useStoreData();
 
   return (
     <div className="grid grid-cols-2 gap-large">
@@ -50,7 +50,7 @@ const RegionProvidersForm = ({ form }: Props) => {
               name={path("payment_providers")}
               errors={errors}
             />
-          )
+          );
         }}
       />
       <Controller
@@ -79,11 +79,11 @@ const RegionProvidersForm = ({ form }: Props) => {
               name={path("fulfillment_providers")}
               errors={errors}
             />
-          )
+          );
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default RegionProvidersForm
+export default RegionProvidersForm;

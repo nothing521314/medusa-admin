@@ -1,60 +1,60 @@
-import { Discount } from "@medusajs/medusa"
-import { useAdminRegions } from "../../../../../../medusa-react"
-import React, { useEffect, useMemo, useState } from "react"
-import { Controller, useWatch } from "react-hook-form"
-import Checkbox from "../../../../../components/atoms/checkbox"
-import IconTooltip from "../../../../../components/molecules/icon-tooltip"
-import InputField from "../../../../../components/molecules/input"
-import Select from "../../../../../components/molecules/select"
-import TextArea from "../../../../../components/molecules/textarea"
-import CurrencyInput from "../../../../../components/organisms/currency-input"
-import { useDiscountForm } from "../form/discount-form-context"
+import { Discount } from "@medusajs/medusa";
+import { useAdminRegions } from "../../../../../../medusa-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Controller, useWatch } from "react-hook-form";
+import Checkbox from "../../../../../components/atoms/checkbox";
+import IconTooltip from "../../../../../components/molecules/icon-tooltip";
+import InputField from "../../../../../components/molecules/input";
+import Select from "../../../../../components/molecules/select";
+import TextArea from "../../../../../components/molecules/textarea";
+import CurrencyInput from "../../../../../components/organisms/currency-input";
+import { useDiscountForm } from "../form/discount-form-context";
 
 type GeneralProps = {
-  discount?: Discount
-}
+  discount?: Discount;
+};
 
 const General: React.FC<GeneralProps> = ({ discount }) => {
-  const initialCurrency = discount?.regions?.[0].currency_code || undefined
+  const initialCurrency = discount?.regions?.[0].currency_code || undefined;
 
   const [fixedRegionCurrency, setFixedRegionCurrency] = useState<
     string | undefined
-  >(initialCurrency)
+  >(initialCurrency);
 
-  const { regions: opts } = useAdminRegions()
-  const { register, control, type } = useDiscountForm()
+  const { regions: opts } = useAdminRegions();
+  const { register, control, type } = useDiscountForm();
 
   const regions = useWatch({
     control,
     name: "regions",
-  })
+  });
 
   useEffect(() => {
     if (type === "fixed" && regions) {
-      let id: string
+      let id: string;
 
       if (Array.isArray(regions) && regions.length) {
-        id = regions[0].value
+        id = regions[0].value;
       } else {
-        id = ((regions as unknown) as { label: string; value: string }).value // if you change from fixed to percentage, unselect and select a region, and then change back to fixed it is possible to make useForm set regions to an object instead of an array
+        id = ((regions as unknown) as { label: string; value: string }).value; // if you change from fixed to percentage, unselect and select a region, and then change back to fixed it is possible to make useForm set regions to an object instead of an array
       }
 
-      const reg = opts?.find((r) => r.id === id)
+      const reg = opts?.find((r) => r.id === id);
 
       if (reg) {
-        setFixedRegionCurrency(reg.currency_code)
+        setFixedRegionCurrency(reg.currency_code);
       }
     }
-  }, [type, opts, regions])
+  }, [type, opts, regions]);
 
   const regionOptions = useMemo(() => {
-    return opts?.map((r) => ({ value: r.id, label: r.name })) || []
-  }, [opts])
+    return opts?.map((r) => ({ value: r.id, label: r.name })) || [];
+  }, [opts]);
 
-  const [render, setRender] = useState(false)
+  const [render, setRender] = useState(false);
   useEffect(() => {
-    setTimeout(() => setRender(true), 100)
-  }, [])
+    setTimeout(() => setRender(true), 100);
+  }, []);
 
   return (
     <div className="pt-5">
@@ -73,7 +73,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                 <Select
                   value={value || null}
                   onChange={(value) => {
-                    onChange(type === "fixed" ? [value] : value)
+                    onChange(type === "fixed" ? [value] : value);
                   }}
                   label="Choose valid regions"
                   isMultiSelect={type !== "fixed"}
@@ -82,7 +82,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                   required
                   options={regionOptions}
                 />
-              )
+              );
             }}
           />
           <div className="flex gap-x-base gap-y-base my-base">
@@ -119,7 +119,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                               amount={value}
                               onChange={onChange}
                             />
-                          )
+                          );
                         }}
                       />
                     </CurrencyInput.Root>
@@ -173,7 +173,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                     checked={value}
                     onChange={(e) => onChange(e.target.checked)}
                   />
-                )
+                );
               }}
             />
             <IconTooltip
@@ -185,7 +185,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default General
+export default General;

@@ -7,6 +7,6 @@ export const getColor = (index: number): string => {
     "bg-cyan-40",
     "bg-blue-40",
     "bg-indigo-40",
-  ]
-  return colors[index % colors.length]
-}
+  ];
+  return colors[index % colors.length];
+};

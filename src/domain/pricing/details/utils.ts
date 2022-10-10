@@ -5,7 +5,7 @@ export const mergeExistingWithDefault = (
   return defaultPrices.map((pr) => {
     const price = variantPrices.find(
       (vpr) => vpr?.currency_code === pr.currency_code
-    )
-    return price || pr
-  })
-}
+    );
+    return price || pr;
+  });
+};

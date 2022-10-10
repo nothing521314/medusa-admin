@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const CrosshairIcon: React.FC<IconProps> = ({
   size = "24",
@@ -51,7 +51,7 @@ const CrosshairIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default CrosshairIcon
+export default CrosshairIcon;

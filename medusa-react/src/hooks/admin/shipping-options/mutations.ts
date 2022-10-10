@@ -1,13 +1,13 @@
-import { adminShippingOptionKeys } from "./queries"
+import { adminShippingOptionKeys } from "./queries";
 import {
   AdminPostShippingOptionsOptionReq,
   AdminPostShippingOptionsReq,
   AdminShippingOptionsRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminCreateShippingOption = (
   options?: UseMutationOptions<
@@ -16,15 +16,15 @@ export const useAdminCreateShippingOption = (
     AdminPostShippingOptionsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostShippingOptionsReq) =>
       client.admin.shippingOptions.create(payload),
     buildOptions(queryClient, adminShippingOptionKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdateShippingOption = (
   id: string,
@@ -34,8 +34,8 @@ export const useAdminUpdateShippingOption = (
     AdminPostShippingOptionsOptionReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostShippingOptionsOptionReq) =>
@@ -45,15 +45,15 @@ export const useAdminUpdateShippingOption = (
       [adminShippingOptionKeys.lists(), adminShippingOptionKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteShippingOption = (
   id: string,
   options?: UseMutationOptions
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.shippingOptions.delete(id),
@@ -62,5 +62,5 @@ export const useAdminDeleteShippingOption = (
       [adminShippingOptionKeys.lists(), adminShippingOptionKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};

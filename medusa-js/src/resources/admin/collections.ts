@@ -7,10 +7,10 @@ import {
   AdminGetCollectionsParams,
   AdminPostProductsToCollectionReq,
   AdminDeleteProductsFromCollectionReq,
-} from "@medusajs/medusa"
-import qs from "qs"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
+} from "@medusajs/medusa";
+import qs from "qs";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
 
 class AdminCollectionsResource extends BaseResource {
   /**
@@ -23,8 +23,8 @@ class AdminCollectionsResource extends BaseResource {
     payload: AdminPostCollectionsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsRes> {
-    const path = `/admin/collections`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/collections`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -39,8 +39,8 @@ class AdminCollectionsResource extends BaseResource {
     payload: AdminPostCollectionsCollectionReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsRes> {
-    const path = `/admin/collections/${id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/collections/${id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -53,8 +53,8 @@ class AdminCollectionsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsDeleteRes> {
-    const path = `/admin/collections/${id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/collections/${id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -67,8 +67,8 @@ class AdminCollectionsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsRes> {
-    const path = `/admin/collections/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/collections/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -81,14 +81,14 @@ class AdminCollectionsResource extends BaseResource {
     query?: AdminGetCollectionsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsListRes> {
-    let path = `/admin/collections`
+    let path = `/admin/collections`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/collections?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/collections?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -102,8 +102,8 @@ class AdminCollectionsResource extends BaseResource {
     payload: AdminPostProductsToCollectionReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsRes> {
-    const path = `/admin/collections/${id}/products/batch`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/collections/${id}/products/batch`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -117,9 +117,9 @@ class AdminCollectionsResource extends BaseResource {
     payload: AdminDeleteProductsFromCollectionReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsDeleteRes> {
-    const path = `/admin/collections/${id}/products/batch`
-    return this.client.request("DELETE", path, payload, {}, customHeaders)
+    const path = `/admin/collections/${id}/products/batch`;
+    return this.client.request("DELETE", path, payload, {}, customHeaders);
   }
 }
 
-export default AdminCollectionsResource
+export default AdminCollectionsResource;

@@ -1,4 +1,4 @@
-import { QueryClient, QueryKey, UseMutationOptions } from "react-query"
+import { QueryClient, QueryKey, UseMutationOptions } from "react-query";
 
 export const buildOptions = <
   TData,
@@ -15,16 +15,16 @@ export const buildOptions = <
     ...options,
     onSuccess: (...args) => {
       if (options?.onSuccess) {
-        return options.onSuccess(...args)
+        return options.onSuccess(...args);
       }
 
       if (queryKey !== undefined) {
         if (queryKey.filter(Array.isArray).length > 0) {
-          queryKey.forEach(key => queryClient.invalidateQueries(key))
+          queryKey.forEach((key) => queryClient.invalidateQueries(key));
         } else {
-          queryClient.invalidateQueries(queryKey)
+          queryClient.invalidateQueries(queryKey);
         }
       }
     },
-  }
-}
+  };
+};

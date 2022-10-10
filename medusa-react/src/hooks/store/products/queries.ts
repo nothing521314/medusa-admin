@@ -1,21 +1,21 @@
-import { Response } from "../../../../../medusa-js"
+import { Response } from "../../../../../medusa-js";
 import {
   StoreGetProductsParams,
   StoreProductsListRes,
   StoreProductsRes,
-} from "@medusajs/medusa"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const PRODUCTS_QUERY_KEY = `products` as const
+const PRODUCTS_QUERY_KEY = `products` as const;
 
 export const productKeys = queryKeysFactory<
   typeof PRODUCTS_QUERY_KEY,
   StoreGetProductsParams
->(PRODUCTS_QUERY_KEY)
-type ProductQueryKey = typeof productKeys
+>(PRODUCTS_QUERY_KEY);
+type ProductQueryKey = typeof productKeys;
 
 export const useProducts = (
   query?: StoreGetProductsParams,
@@ -25,14 +25,14 @@ export const useProducts = (
     ReturnType<ProductQueryKey["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     productKeys.list(query),
     () => client.products.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useProduct = (
   id: string,
@@ -42,12 +42,12 @@ export const useProduct = (
     ReturnType<ProductQueryKey["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     productKeys.detail(id),
     () => client.products.retrieve(id),
     options
-  )
+  );
 
-  return { ...data, ...rest } as const
-}
+  return { ...data, ...rest } as const;
+};

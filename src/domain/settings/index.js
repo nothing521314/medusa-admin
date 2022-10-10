@@ -1,26 +1,26 @@
-import { Router } from "@reach/router"
-import React from "react"
-import SettingsCard from "../../components/atoms/settings-card"
-import FeatureToggle from "../../components/fundamentals/feature-toggle"
-import ChannelsIcon from "../../components/fundamentals/icons/channels-icon"
-import CoinsIcon from "../../components/fundamentals/icons/coins-icon"
-import CrosshairIcon from "../../components/fundamentals/icons/crosshair-icon"
-import DollarSignIcon from "../../components/fundamentals/icons/dollar-sign-icon"
-import HappyIcon from "../../components/fundamentals/icons/happy-icon"
-import MailIcon from "../../components/fundamentals/icons/mail-icon"
-import MapPinIcon from "../../components/fundamentals/icons/map-pin-icon"
-import TaxesIcon from "../../components/fundamentals/icons/taxes-icon"
-import TruckIcon from "../../components/fundamentals/icons/truck-icon"
-import UsersIcon from "../../components/fundamentals/icons/users-icon"
-import SettingsOverview from "../../components/templates/settings-overview"
-import CurrencySettings from "./currencies"
-import Details from "./details"
-import PersonalInformation from "./personal-information"
-import Regions from "./regions"
-import NewRegion from "./regions/new"
-import ReturnReasons from "./return-reasons"
-import Taxes from "./taxes"
-import Users from "./users"
+import { Router } from "@reach/router";
+import React from "react";
+import SettingsCard from "../../components/atoms/settings-card";
+import FeatureToggle from "../../components/fundamentals/feature-toggle";
+import ChannelsIcon from "../../components/fundamentals/icons/channels-icon";
+import CoinsIcon from "../../components/fundamentals/icons/coins-icon";
+import CrosshairIcon from "../../components/fundamentals/icons/crosshair-icon";
+import DollarSignIcon from "../../components/fundamentals/icons/dollar-sign-icon";
+import HappyIcon from "../../components/fundamentals/icons/happy-icon";
+import MailIcon from "../../components/fundamentals/icons/mail-icon";
+import MapPinIcon from "../../components/fundamentals/icons/map-pin-icon";
+import TaxesIcon from "../../components/fundamentals/icons/taxes-icon";
+import TruckIcon from "../../components/fundamentals/icons/truck-icon";
+import UsersIcon from "../../components/fundamentals/icons/users-icon";
+import SettingsOverview from "../../components/templates/settings-overview";
+import CurrencySettings from "./currencies";
+import Details from "./details";
+import PersonalInformation from "./personal-information";
+import Regions from "./regions";
+import NewRegion from "./regions/new";
+import ReturnReasons from "./return-reasons";
+import Taxes from "./taxes";
+import Users from "./users";
 
 const SettingsIndex = () => {
   return (
@@ -89,8 +89,8 @@ const SettingsIndex = () => {
         />
       </FeatureToggle>
     </SettingsOverview>
-  )
-}
+  );
+};
 
 const Settings = () => (
   <Router className="h-full">
@@ -111,6 +111,6 @@ const Settings = () => (
 
     <PersonalInformation path="personal-information" />
   </Router>
-)
+);
 
-export default Settings
+export default Settings;

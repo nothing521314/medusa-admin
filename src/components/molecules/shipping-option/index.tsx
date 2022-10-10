@@ -1,5 +1,5 @@
-import React from "react"
-import Badge from "../../fundamentals/badge"
+import React from "react";
+import Badge from "../../fundamentals/badge";
 
 enum RequirementType {
   MAX_SUBTOTAL = "max_subtotal",
@@ -7,24 +7,24 @@ enum RequirementType {
 }
 
 type OptionType = {
-  name: string
-  price_type: "flat_rate" | "calculated"
+  name: string;
+  price_type: "flat_rate" | "calculated";
   data: {
-    name?: string
-  }
-  amount: number
-  admin_only: boolean
+    name?: string;
+  };
+  amount: number;
+  admin_only: boolean;
   requirements: {
-    type: RequirementType
-    amount: number
-  }[]
-}
+    type: RequirementType;
+    amount: number;
+  }[];
+};
 
 type ShippingOptionProps = {
-  option: OptionType
-  currency_code: string
-  onEdit: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"]
-}
+  option: OptionType;
+  currency_code: string;
+  onEdit: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"];
+};
 
 const ShippingOption: React.FC<ShippingOptionProps> = ({
   option,
@@ -45,12 +45,12 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
           {option.amount !== undefined &&
             `${option.amount / 100} ${currency_code.toUpperCase()}`}
           {option.requirements.length
-            ? option.requirements.map(r => {
+            ? option.requirements.map((r) => {
                 const type =
-                  r.type === "max_subtotal" ? "Max. subtotal" : "Min. subtotal"
+                  r.type === "max_subtotal" ? "Max. subtotal" : "Min. subtotal";
                 return ` - ${type}: ${
                   r.amount / 100
-                } ${currency_code.toUpperCase()}`
+                } ${currency_code.toUpperCase()}`;
               })
             : null}
         </p>
@@ -64,7 +64,7 @@ const ShippingOption: React.FC<ShippingOptionProps> = ({
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ShippingOption
+export default ShippingOption;

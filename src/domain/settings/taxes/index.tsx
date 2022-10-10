@@ -1,51 +1,51 @@
-import { useAdminRegions } from "../../../../medusa-react"
-import { navigate } from "gatsby"
-import React, { useEffect, useState } from "react"
-import Spinner from "../../../components/atoms/spinner"
-import GearIcon from "../../../components/fundamentals/icons/gear-icon"
-import BreadCrumb from "../../../components/molecules/breadcrumb"
-import BodyCard from "../../../components/organisms/body-card"
-import RadioGroup from "../../../components/organisms/radio-group"
-import TwoSplitPane from "../../../components/templates/two-split-pane"
-import TaxDetails from "./details"
+import { useAdminRegions } from "../../../../medusa-react";
+import { navigate } from "gatsby";
+import React, { useEffect, useState } from "react";
+import Spinner from "../../../components/atoms/spinner";
+import GearIcon from "../../../components/fundamentals/icons/gear-icon";
+import BreadCrumb from "../../../components/molecules/breadcrumb";
+import BodyCard from "../../../components/organisms/body-card";
+import RadioGroup from "../../../components/organisms/radio-group";
+import TwoSplitPane from "../../../components/templates/two-split-pane";
+import TaxDetails from "./details";
 
 const Taxes = () => {
-  const { regions, isLoading, refetch } = useAdminRegions()
+  const { regions, isLoading, refetch } = useAdminRegions();
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
     undefined
-  )
+  );
 
   useEffect(() => {
     if (!isLoading && regions && selectedRegion === null) {
-      setSelectedRegion(regions[0].id)
+      setSelectedRegion(regions[0].id);
     }
-  }, [regions, isLoading, selectedRegion])
+  }, [regions, isLoading, selectedRegion]);
 
   const handleDelete = () => {
     refetch().then(({ data }) => {
-      const id = data?.regions?.[0]?.id
+      const id = data?.regions?.[0]?.id;
 
       if (!id) {
-        return
+        return;
       }
 
-      setSelectedRegion(id)
+      setSelectedRegion(id);
       document.getElementById(id)?.scrollIntoView({
         behavior: "smooth",
         block: "start",
         inline: "nearest",
-      })
-    })
-  }
+      });
+    });
+  };
 
   const handleSelect = (id: string) => {
     refetch().then(() => {
-      setSelectedRegion(id)
+      setSelectedRegion(id);
       document.getElementById(id)?.scrollIntoView({
         behavior: "smooth",
-      })
-    })
-  }
+      });
+    });
+  };
 
   return (
     <>
@@ -92,7 +92,7 @@ const Taxes = () => {
                       key={r.id}
                       id={r.id}
                     />
-                  )
+                  );
                 })}
               </RadioGroup.Root>
             )}
@@ -105,7 +105,7 @@ const Taxes = () => {
         </TwoSplitPane>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Taxes
+export default Taxes;

@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import HappyIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import HappyIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/HappyIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof HappyIcon>
+} as ComponentMeta<typeof HappyIcon>;
 
-const Template = args => <HappyIcon {...args} />
+const Template = (args) => <HappyIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

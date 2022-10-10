@@ -1,60 +1,60 @@
-import { omit } from "lodash"
-import qs from "qs"
-import { useMemo, useReducer, useState } from "react"
-import { setsEqual } from "../../../utils/equals-set"
-import { relativeDateFormatToTimestamp } from "../../../utils/time"
+import { omit } from "lodash";
+import qs from "qs";
+import { useMemo, useReducer, useState } from "react";
+import { setsEqual } from "../../../utils/equals-set";
+import { relativeDateFormatToTimestamp } from "../../../utils/time";
 
 type DateFilter = null | {
-  gt?: string
-  lt?: string
-}
+  gt?: string;
+  lt?: string;
+};
 
 type PriceListFilterAction =
   | { type: "setQuery"; payload: string | null }
   | { type: "setFilters"; payload: PriceListFilterState }
   | { type: "reset"; payload: PriceListFilterState }
   | { type: "setOffset"; payload: number }
-  | { type: "setDefaults"; payload: PriceListDefaultFilters | null }
+  | { type: "setDefaults"; payload: PriceListDefaultFilters | null };
 
 interface PriceListFilterState {
-  query?: string | null
+  query?: string | null;
   status: {
-    open: boolean
-    filter: null | string[] | string
-  }
+    open: boolean;
+    filter: null | string[] | string;
+  };
   type: {
-    open: boolean
-    filter: null | string[] | string
-  }
+    open: boolean;
+    filter: null | string[] | string;
+  };
   customer_groups: {
-    open: boolean
-    filter: null | string[] | string
-  }
-  limit: number
-  offset: number
-  additionalFilters: PriceListDefaultFilters | null
+    open: boolean;
+    filter: null | string[] | string;
+  };
+  limit: number;
+  offset: number;
+  additionalFilters: PriceListDefaultFilters | null;
 }
 
-const allowedFilters = ["type", "customer_groups", "status", "offset", "limit"]
+const allowedFilters = ["type", "customer_groups", "status", "offset", "limit"];
 
-const DefaultTabs = {}
+const DefaultTabs = {};
 
 const formatDateFilter = (filter: DateFilter) => {
   if (filter === null) {
-    return filter
+    return filter;
   }
 
   const dateFormatted = Object.entries(filter).reduce((acc, [key, value]) => {
     if (value.includes("|")) {
-      acc[key] = relativeDateFormatToTimestamp(value)
+      acc[key] = relativeDateFormatToTimestamp(value);
     } else {
-      acc[key] = value
+      acc[key] = value;
     }
-    return acc
-  }, {})
+    return acc;
+  }, {});
 
-  return dateFormatted
-}
+  return dateFormatted;
+};
 
 const reducer = (
   state: PriceListFilterState,
@@ -68,51 +68,51 @@ const reducer = (
         status: action.payload.status,
         type: action.payload.type,
         customer_groups: action.payload.customer_groups,
-      }
+      };
     }
     case "setQuery": {
       return {
         ...state,
         query: action.payload,
-      }
+      };
     }
     case "setOffset": {
       return {
         ...state,
         offset: action.payload,
-      }
+      };
     }
     case "reset": {
-      return action.payload
+      return action.payload;
     }
     default: {
-      return state
+      return state;
     }
   }
-}
+};
 
 type PriceListDefaultFilters = {
-  expand?: string
-  fields?: string
-}
+  expand?: string;
+  fields?: string;
+};
 
 export const usePriceListFilters = (
   existing?: string,
   defaultFilters: PriceListDefaultFilters | null = null
 ) => {
   if (existing && existing[0] === "?") {
-    existing = existing.substring(1)
+    existing = existing.substring(1);
   }
 
   const initial = useMemo(() => parseQueryString(existing, defaultFilters), [
     existing,
     defaultFilters,
-  ])
+  ]);
 
   const initialTabs = useMemo(() => {
-    const storageString = localStorage.getItem("priceLists::filters")
+    const storageString = localStorage.getItem("priceLists::filters");
     if (storageString) {
-      const savedTabs = JSON.parse(storageString)
+      const savedTabs = JSON.parse(storageString);
 
       if (savedTabs) {
         return Object.entries(savedTabs).map(([key, value]) => {
@@ -121,31 +121,31 @@ export const usePriceListFilters = (
             value: key,
             removable: true,
             representationString: value,
-          }
-        })
+          };
+        });
       }
     }
 
-    return []
-  }, [])
+    return [];
+  }, []);
 
-  const [state, dispatch] = useReducer(reducer, initial)
-  const [tabs, setTabs] = useState(initialTabs)
+  const [state, dispatch] = useReducer(reducer, initial);
+  const [tabs, setTabs] = useState(initialTabs);
 
   const setDefaultFilters = (filters: PriceListDefaultFilters | null) => {
-    dispatch({ type: "setDefaults", payload: filters })
-  }
+    dispatch({ type: "setDefaults", payload: filters });
+  };
 
   const paginate = (direction: 1 | -1) => {
     if (direction > 0) {
-      const nextOffset = state.offset + state.limit
+      const nextOffset = state.offset + state.limit;
 
-      dispatch({ type: "setOffset", payload: nextOffset })
+      dispatch({ type: "setOffset", payload: nextOffset });
     } else {
-      const nextOffset = Math.max(state.offset - state.limit, 0)
-      dispatch({ type: "setOffset", payload: nextOffset })
+      const nextOffset = Math.max(state.offset - state.limit, 0);
+      dispatch({ type: "setOffset", payload: nextOffset });
     }
-  }
+  };
 
   const reset = () => {
     dispatch({
@@ -167,87 +167,91 @@ export const usePriceListFilters = (
         },
         query: null,
       },
-    })
-  }
+    });
+  };
 
   const setFilters = (filters: PriceListFilterState) => {
-    dispatch({ type: "setFilters", payload: filters })
-  }
+    dispatch({ type: "setFilters", payload: filters });
+  };
 
   const setQuery = (queryString: string | null) => {
-    dispatch({ type: "setQuery", payload: queryString })
-  }
+    dispatch({ type: "setQuery", payload: queryString });
+  };
 
   const getQueryObject = () => {
-    const toQuery: any = { ...state.additionalFilters }
+    const toQuery: any = { ...state.additionalFilters };
     for (const [key, value] of Object.entries(state)) {
       if (key === "query") {
         if (value && typeof value === "string") {
-          toQuery["q"] = value
+          toQuery["q"] = value;
         }
       } else if (key === "offset" || key === "limit") {
-        toQuery[key] = value
+        toQuery[key] = value;
       } else if (value.open) {
         if (key === "date") {
-          toQuery[stateFilterMap[key]] = formatDateFilter(value.filter)
+          toQuery[stateFilterMap[key]] = formatDateFilter(value.filter);
         } else {
-          toQuery[stateFilterMap[key]] = value.filter
+          toQuery[stateFilterMap[key]] = value.filter;
         }
       }
     }
 
-    return toQuery
-  }
+    return toQuery;
+  };
 
   const getQueryString = () => {
-    const obj = getQueryObject()
-    return qs.stringify(obj, { skipNulls: true })
-  }
+    const obj = getQueryObject();
+    return qs.stringify(obj, { skipNulls: true });
+  };
 
   const getRepresentationObject = (fromObject?: PriceListFilterState) => {
-    const objToUse = fromObject ?? state
+    const objToUse = fromObject ?? state;
 
-    const toQuery: any = {}
+    const toQuery: any = {};
     for (const [key, value] of Object.entries(objToUse)) {
       if (key === "query") {
         if (value && typeof value === "string") {
-          toQuery["q"] = value
+          toQuery["q"] = value;
         }
       } else if (key === "offset" || key === "limit") {
-        toQuery[key] = value
+        toQuery[key] = value;
       } else if (value.open) {
-        toQuery[stateFilterMap[key]] = value.filter
+        toQuery[stateFilterMap[key]] = value.filter;
       }
     }
 
-    return toQuery
-  }
+    return toQuery;
+  };
 
   const getRepresentationString = () => {
-    const obj = getRepresentationObject()
-    return qs.stringify(obj, { skipNulls: true })
-  }
+    const obj = getRepresentationObject();
+    return qs.stringify(obj, { skipNulls: true });
+  };
 
-  const queryObject = useMemo(() => getQueryObject(), [state])
-  const representationObject = useMemo(() => getRepresentationObject(), [state])
-  const representationString = useMemo(() => getRepresentationString(), [state])
+  const queryObject = useMemo(() => getQueryObject(), [state]);
+  const representationObject = useMemo(() => getRepresentationObject(), [
+    state,
+  ]);
+  const representationString = useMemo(() => getRepresentationString(), [
+    state,
+  ]);
 
   const activeFilterTab = useMemo(() => {
-    const clean = omit(representationObject, ["limit", "offset"])
-    const stringified = qs.stringify(clean)
+    const clean = omit(representationObject, ["limit", "offset"]);
+    const stringified = qs.stringify(clean);
 
     const existsInSaved = tabs.find(
       (el) => el.representationString === stringified
-    )
+    );
     if (existsInSaved) {
-      return existsInSaved.value
+      return existsInSaved.value;
     }
 
     for (const [tab, conditions] of Object.entries(DefaultTabs)) {
-      let match = true
+      let match = true;
 
       if (Object.keys(clean).length !== Object.keys(conditions).length) {
-        continue
+        continue;
       }
 
       for (const [filter, value] of Object.entries(conditions)) {
@@ -255,39 +259,39 @@ export const usePriceListFilters = (
           if (Array.isArray(value)) {
             match =
               Array.isArray(clean[filter]) &&
-              setsEqual(new Set(clean[filter]), new Set(value))
+              setsEqual(new Set(clean[filter]), new Set(value));
           } else {
-            match = clean[filter] === value
+            match = clean[filter] === value;
           }
         } else {
-          match = false
+          match = false;
         }
 
         if (!match) {
-          break
+          break;
         }
       }
 
       if (match) {
-        return tab
+        return tab;
       }
     }
 
-    return null
-  }, [representationObject, tabs])
+    return null;
+  }, [representationObject, tabs]);
 
   const availableTabs = useMemo(() => {
-    return [...tabs]
-  }, [tabs])
+    return [...tabs];
+  }, [tabs]);
 
   const setTab = (tabName: string) => {
-    let tabToUse: object | null = null
+    let tabToUse: object | null = null;
     if (tabName in DefaultTabs) {
-      tabToUse = DefaultTabs[tabName]
+      tabToUse = DefaultTabs[tabName];
     } else {
-      const tabFound = tabs.find((t) => t.value === tabName)
+      const tabFound = tabs.find((t) => t.value === tabName);
       if (tabFound) {
-        tabToUse = qs.parse(tabFound.representationString)
+        tabToUse = qs.parse(tabFound.representationString);
       }
     }
 
@@ -306,38 +310,38 @@ export const usePriceListFilters = (
           open: false,
           filter: null,
         },
-      }
+      };
 
       for (const [filter, val] of Object.entries(tabToUse)) {
         toSubmit[filterStateMap[filter]] = {
           open: true,
           filter: val,
-        }
+        };
       }
-      dispatch({ type: "setFilters", payload: toSubmit })
+      dispatch({ type: "setFilters", payload: toSubmit });
     }
-  }
+  };
 
   const saveTab = (tabName: string, filters: PriceListFilterState) => {
-    const repObj = getRepresentationObject({ ...filters })
-    const clean = omit(repObj, ["limit", "offset"])
-    const repString = qs.stringify(clean, { skipNulls: true })
+    const repObj = getRepresentationObject({ ...filters });
+    const clean = omit(repObj, ["limit", "offset"]);
+    const repString = qs.stringify(clean, { skipNulls: true });
 
-    const storedString = localStorage.getItem("priceLists::filters")
+    const storedString = localStorage.getItem("priceLists::filters");
 
-    let existing: null | object = null
+    let existing: null | object = null;
 
     if (storedString) {
-      existing = JSON.parse(storedString)
+      existing = JSON.parse(storedString);
     }
 
     if (existing) {
-      existing[tabName] = repString
-      localStorage.setItem("priceLists::filters", JSON.stringify(existing))
+      existing[tabName] = repString;
+      localStorage.setItem("priceLists::filters", JSON.stringify(existing));
     } else {
-      const newFilters = {}
-      newFilters[tabName] = repString
-      localStorage.setItem("priceLists::filters", JSON.stringify(newFilters))
+      const newFilters = {};
+      newFilters[tabName] = repString;
+      localStorage.setItem("priceLists::filters", JSON.stringify(newFilters));
     }
 
     setTabs((prev) => {
@@ -349,31 +353,31 @@ export const usePriceListFilters = (
           representationString: repString,
           removable: true,
         },
-      ]
-    })
+      ];
+    });
 
-    dispatch({ type: "setFilters", payload: filters })
-  }
+    dispatch({ type: "setFilters", payload: filters });
+  };
 
   const removeTab = (tabValue: string) => {
-    const storedString = localStorage.getItem("priceLists::filters")
+    const storedString = localStorage.getItem("priceLists::filters");
 
-    let existing: null | object = null
+    let existing: null | object = null;
 
     if (storedString) {
-      existing = JSON.parse(storedString)
+      existing = JSON.parse(storedString);
     }
 
     if (existing) {
-      delete existing[tabValue]
-      localStorage.setItem("priceLists::filters", JSON.stringify(existing))
+      delete existing[tabValue];
+      localStorage.setItem("priceLists::filters", JSON.stringify(existing));
     }
 
     setTabs((prev) => {
-      const newTabs = prev.filter((p) => p.value !== tabValue)
-      return newTabs
-    })
-  }
+      const newTabs = prev.filter((p) => p.value !== tabValue);
+      return newTabs;
+    });
+  };
 
   return {
     ...state,
@@ -395,20 +399,20 @@ export const usePriceListFilters = (
     setFilters,
     setDefaultFilters,
     reset,
-  }
-}
+  };
+};
 
 const filterStateMap = {
   status: "status",
   type: "type",
   customer_groups: "customer_groups",
-}
+};
 
 const stateFilterMap = {
   status: "status",
   type: "type",
   customer_groups: "customer_groups",
-}
+};
 
 const parseQueryString = (
   queryString?: string,
@@ -430,65 +434,65 @@ const parseQueryString = (
     offset: 0,
     limit: 15,
     additionalFilters: additionals,
-  }
+  };
 
   if (queryString) {
-    const filters = qs.parse(queryString)
+    const filters = qs.parse(queryString);
     for (const [key, value] of Object.entries(filters)) {
       if (allowedFilters.includes(key)) {
         switch (key) {
           case "offset": {
             if (typeof value === "string") {
-              defaultVal.offset = parseInt(value)
+              defaultVal.offset = parseInt(value);
             }
-            break
+            break;
           }
           case "limit": {
             if (typeof value === "string") {
-              defaultVal.limit = parseInt(value)
+              defaultVal.limit = parseInt(value);
             }
-            break
+            break;
           }
           case "q": {
             if (typeof value === "string") {
-              defaultVal.query = value
+              defaultVal.query = value;
             }
-            break
+            break;
           }
           case "status": {
             if (typeof value === "string") {
               defaultVal.status = {
                 open: true,
                 filter: value,
-              }
+              };
             }
-            break
+            break;
           }
           case "type": {
             if (typeof value === "string") {
               defaultVal.status = {
                 open: true,
                 filter: value,
-              }
+              };
             }
-            break
+            break;
           }
           case "customer_groups": {
             if (Array.isArray(value)) {
               defaultVal.customer_groups = {
                 open: true,
                 filter: value,
-              }
+              };
             }
-            break
+            break;
           }
           default: {
-            break
+            break;
           }
         }
       }
     }
   }
 
-  return defaultVal
-}
+  return defaultVal;
+};

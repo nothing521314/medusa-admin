@@ -1,17 +1,17 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import clsx from "clsx"
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import clsx from "clsx";
 
-import TableFieldsFilters from "./index"
+import TableFieldsFilters from "./index";
 
 export default {
   title: "Molecules/TableFieldFilters",
   component: TableFieldsFilters,
-} as ComponentMeta<typeof TableFieldsFilters>
+} as ComponentMeta<typeof TableFieldsFilters>;
 
-const Template = (args) => <TableFieldsFilters {...args} />
+const Template = (args) => <TableFieldsFilters {...args} />;
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
   onChange: console.log,
   fields: [
@@ -58,4 +58,4 @@ Default.args = {
       ),
     },
   ],
-}
+};

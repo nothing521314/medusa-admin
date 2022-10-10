@@ -1,36 +1,36 @@
-import { useAdminUpdateOrder } from "../../../../medusa-react"
-import React from "react"
-import { useForm } from "react-hook-form"
+import { useAdminUpdateOrder } from "../../../../medusa-react";
+import React from "react";
+import { useForm } from "react-hook-form";
 
-import Button from "../../../components/fundamentals/button"
-import Input from "../../../components/molecules/input"
-import Modal from "../../../components/molecules/modal"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
+import Button from "../../../components/fundamentals/button";
+import Input from "../../../components/molecules/input";
+import Modal from "../../../components/molecules/modal";
+import useNotification from "../../../hooks/use-notification";
+import { getErrorMessage } from "../../../utils/error-messages";
 
 type EmailModalProps = {
-  handleClose: () => void
-  email?: string
-  orderId: string
-}
+  handleClose: () => void;
+  email?: string;
+  orderId: string;
+};
 
 type EmailModalFormData = {
-  email: string
-}
+  email: string;
+};
 
 const EmailModal: React.FC<EmailModalProps> = ({
   orderId,
   email,
   handleClose,
 }) => {
-  const { mutate: updateEmail, isLoading } = useAdminUpdateOrder(orderId)
+  const { mutate: updateEmail, isLoading } = useAdminUpdateOrder(orderId);
   const { register, handleSubmit } = useForm<EmailModalFormData>({
     defaultValues: { email },
-  })
-  const notification = useNotification()
+  });
+  const notification = useNotification();
 
   const handleUpdateEmail = (data: EmailModalFormData) => {
-    const updateObj = { email: data.email }
+    const updateObj = { email: data.email };
 
     return updateEmail(updateObj, {
       onSuccess: () => {
@@ -38,12 +38,12 @@ const EmailModal: React.FC<EmailModalProps> = ({
           "Success",
           "Successfully updated the email address",
           "success"
-        )
-        handleClose()
+        );
+        handleClose();
       },
       onError: (err) => notification("Error", getErrorMessage(err), "error"),
-    })
-  }
+    });
+  };
 
   return (
     <Modal handleClose={handleClose} isLargeModal>
@@ -88,7 +88,7 @@ const EmailModal: React.FC<EmailModalProps> = ({
         </Modal.Body>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
-export default EmailModal
+export default EmailModal;

@@ -1,37 +1,37 @@
-import React from "react"
-import { Controller, useFieldArray } from "react-hook-form"
-import { NextCreateableSelect } from "../../../../../components/molecules/select/next-select"
-import { NestedForm } from "../../../../../utils/nested-form"
+import React from "react";
+import { Controller, useFieldArray } from "react-hook-form";
+import { NextCreateableSelect } from "../../../../../components/molecules/select/next-select";
+import { NestedForm } from "../../../../../utils/nested-form";
 
 export type VariantOptionValueType = {
-  option_id: string
-  value: string
-  label: string
-  isDisabled?: boolean
-}
+  option_id: string;
+  value: string;
+  label: string;
+  isDisabled?: boolean;
+};
 
 export type VariantOptionType = {
-  option_id: string
-  title: string
-  option: VariantOptionValueType | null
-}
+  option_id: string;
+  title: string;
+  option: VariantOptionValueType | null;
+};
 
-export type VariantSelectOptionsFormType = VariantOptionType[]
+export type VariantSelectOptionsFormType = VariantOptionType[];
 
 type Props = {
-  form: NestedForm<VariantSelectOptionsFormType>
-  options: VariantOptionValueType[]
-  onCreateOption: (optionId: string, value: string) => void
-}
+  form: NestedForm<VariantSelectOptionsFormType>;
+  options: VariantOptionValueType[];
+  onCreateOption: (optionId: string, value: string) => void;
+};
 
 const VariantSelectOptionsForm = ({ form, options, onCreateOption }: Props) => {
-  const { control, path } = form
+  const { control, path } = form;
 
   const { fields } = useFieldArray({
     control: form.control,
     name: path(),
     keyName: "fieldId",
-  })
+  });
 
   return (
     <div className="grid grid-cols-2 gap-large pb-2xsmall">
@@ -59,20 +59,20 @@ const VariantSelectOptionsForm = ({ form, options, onCreateOption }: Props) => {
                       option_id: field.option_id,
                       value: value,
                       label: value,
-                    }
+                    };
 
-                    onCreateOption(field.option_id, value)
+                    onCreateOption(field.option_id, value);
 
-                    onChange(newOption)
+                    onChange(newOption);
                   }}
                 />
-              )
+              );
             }}
           />
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default VariantSelectOptionsForm
+export default VariantSelectOptionsForm;

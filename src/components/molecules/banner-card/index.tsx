@@ -1,22 +1,22 @@
-import React from "react"
-import Actionables, { ActionType } from "../../molecules/actionables"
+import React from "react";
+import Actionables, { ActionType } from "../../molecules/actionables";
 
 type BannerCardProps = {
-  actions?: ActionType[]
-  title: string
-  thumbnail: string | null
-} & React.RefAttributes<HTMLDivElement>
+  actions?: ActionType[];
+  title: string;
+  thumbnail: string | null;
+} & React.RefAttributes<HTMLDivElement>;
 
 type BannerCardDescriptionProps = {
   cta?: {
-    label: string
-    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
-  }
-}
+    label: string;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  };
+};
 
 const BannerCard: React.FC<BannerCardProps> & {
-  Description: React.FC<BannerCardDescriptionProps>
-  Footer: React.FC
+  Description: React.FC<BannerCardDescriptionProps>;
+  Footer: React.FC;
 } = ({ title, thumbnail, actions, children }) => {
   return (
     <div className="rounded-rounded border bg-grey-0 border-grey-20 w-full p-base medium:p-xlarge">
@@ -39,8 +39,8 @@ const BannerCard: React.FC<BannerCardProps> & {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Description: React.FC<BannerCardDescriptionProps> = ({
   cta,
@@ -60,14 +60,14 @@ const Description: React.FC<BannerCardDescriptionProps> = ({
         </button>
       )}
     </div>
-  )
-}
+  );
+};
 
 const Footer: React.FC = ({ children }) => {
-  return <div className="mt-base">{children}</div>
-}
+  return <div className="mt-base">{children}</div>;
+};
 
-BannerCard.Description = Description
-BannerCard.Footer = Footer
+BannerCard.Description = Description;
+BannerCard.Footer = Footer;
 
-export default BannerCard
+export default BannerCard;

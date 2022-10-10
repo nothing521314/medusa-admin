@@ -1,34 +1,34 @@
-import { AdminPostRegionsReq } from "@medusajs/medusa"
-import { navigate } from "gatsby"
-import { useAdminCreateRegion } from "../../../../../medusa-react"
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../components/fundamentals/button"
-import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
-import FocusModal from "../../../../components/molecules/modal/focus-modal"
-import Accordion from "../../../../components/organisms/accordion"
-import { useFeatureFlag } from "../../../../context/feature-flag"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import { nestedForm } from "../../../../utils/nested-form"
+import { AdminPostRegionsReq } from "@medusajs/medusa";
+import { navigate } from "gatsby";
+import { useAdminCreateRegion } from "../../../../../medusa-react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../components/fundamentals/button";
+import CrossIcon from "../../../../components/fundamentals/icons/cross-icon";
+import FocusModal from "../../../../components/molecules/modal/focus-modal";
+import Accordion from "../../../../components/organisms/accordion";
+import { useFeatureFlag } from "../../../../context/feature-flag";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import { nestedForm } from "../../../../utils/nested-form";
 import RegionDetailsForm, {
   RegionDetailsFormType,
-} from "../components/region-form/region-details-form"
+} from "../components/region-form/region-details-form";
 import RegionProvidersForm, {
   RegionProvidersFormType,
-} from "../components/region-form/region-providers-form"
+} from "../components/region-form/region-providers-form";
 
 type Props = {
-  onClose: () => void
-}
+  onClose: () => void;
+};
 
 type NewRegionFormType = {
-  details: RegionDetailsFormType
-  providers: RegionProvidersFormType
-}
+  details: RegionDetailsFormType;
+  providers: RegionProvidersFormType;
+};
 
 const NewRegion = ({ onClose }: Props) => {
-  const [sections, setSections] = useState(["details"])
+  const [sections, setSections] = useState(["details"]);
   const form = useForm<NewRegionFormType>({
     defaultValues: {
       providers: {
@@ -36,21 +36,21 @@ const NewRegion = ({ onClose }: Props) => {
         fulfillment_providers: undefined,
       },
     },
-  })
+  });
   const {
     formState: { isDirty },
     handleSubmit,
     reset,
-  } = form
-  const { mutate, isLoading } = useAdminCreateRegion()
-  const notification = useNotification()
+  } = form;
+  const { mutate, isLoading } = useAdminCreateRegion();
+  const notification = useNotification();
 
-  const { isFeatureEnabled } = useFeatureFlag()
+  const { isFeatureEnabled } = useFeatureFlag();
 
   const closeAndReset = () => {
-    reset()
-    onClose()
-  }
+    reset();
+    onClose();
+  };
 
   const onSubmit = handleSubmit(
     (data) => {
@@ -66,29 +66,29 @@ const NewRegion = ({ onClose }: Props) => {
         ),
         tax_rate: data.details.tax_rate!,
         tax_code: data.details.tax_code || undefined,
-      }
+      };
 
       if (isFeatureEnabled("tax_inclusive_pricing")) {
-        payload.includes_tax = data.details.includes_tax
+        payload.includes_tax = data.details.includes_tax;
       }
 
       mutate(payload, {
         onSuccess: ({ region }) => {
-          notification("Success", "Region created", "success")
-          navigate(`/a/settings/regions/${region.id}`)
-          closeAndReset()
+          notification("Success", "Region created", "success");
+          navigate(`/a/settings/regions/${region.id}`);
+          closeAndReset();
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification("Error", getErrorMessage(error), "error");
         },
-      })
+      });
     },
     (errors) => {
       if (errors.providers && !sections.includes("providers")) {
-        setSections((oldSections) => [...oldSections, "providers"])
+        setSections((oldSections) => [...oldSections, "providers"]);
       }
     }
-  )
+  );
 
   return (
     <form className="w-full" onSubmit={onSubmit} noValidate>
@@ -154,7 +154,7 @@ const NewRegion = ({ onClose }: Props) => {
         </FocusModal.Main>
       </FocusModal>
     </form>
-  )
-}
+  );
+};
 
-export default NewRegion
+export default NewRegion;

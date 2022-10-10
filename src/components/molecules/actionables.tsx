@@ -1,22 +1,22 @@
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-import clsx from "clsx"
-import React from "react"
-import Button from "../fundamentals/button"
-import MoreHorizontalIcon from "../fundamentals/icons/more-horizontal-icon"
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import clsx from "clsx";
+import React from "react";
+import Button from "../fundamentals/button";
+import MoreHorizontalIcon from "../fundamentals/icons/more-horizontal-icon";
 
 export type ActionType = {
-  label: string
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
-  variant?: "normal" | "danger"
-  disabled?: boolean
-  icon?: React.ReactNode
-}
+  label: string;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  variant?: "normal" | "danger";
+  disabled?: boolean;
+  icon?: React.ReactNode;
+};
 
 type ActionablesProps = {
-  actions?: ActionType[]
-  customTrigger?: React.ReactNode
-  forceDropdown?: boolean
-}
+  actions?: ActionType[];
+  customTrigger?: React.ReactNode;
+  forceDropdown?: boolean;
+};
 
 const Actionables: React.FC<ActionablesProps> = ({
   actions,
@@ -24,7 +24,7 @@ const Actionables: React.FC<ActionablesProps> = ({
   forceDropdown = false,
 }) => {
   if ((!actions || !actions.length) && !customTrigger) {
-    return null
+    return null;
   }
 
   return actions && (forceDropdown || actions.length > 1) ? (
@@ -67,7 +67,7 @@ const Actionables: React.FC<ActionablesProps> = ({
                   </Button>
                 }
               </DropdownMenu.Item>
-            )
+            );
           })}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
@@ -95,7 +95,7 @@ const Actionables: React.FC<ActionablesProps> = ({
         </Button>
       ) : null}
     </div>
-  )
-}
+  );
+};
 
-export default Actionables
+export default Actionables;

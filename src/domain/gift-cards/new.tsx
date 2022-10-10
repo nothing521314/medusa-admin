@@ -1,103 +1,103 @@
-import { navigate } from "gatsby"
+import { navigate } from "gatsby";
 import {
   useAdminCreateProduct,
   useAdminProducts,
   useAdminStore,
-} from "../../../medusa-react"
-import React from "react"
-import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
-import FileUploadField from "../../components/atoms/file-upload-field"
-import Button from "../../components/fundamentals/button"
-import PlusIcon from "../../components/fundamentals/icons/plus-icon"
-import TrashIcon from "../../components/fundamentals/icons/trash-icon"
-import InputField from "../../components/molecules/input"
-import Modal from "../../components/molecules/modal"
-import TextArea from "../../components/molecules/textarea"
-import CurrencyInput from "../../components/organisms/currency-input"
-import useNotification from "../../hooks/use-notification"
-import Medusa from "../../services/api"
-import { ProductStatus } from "../../types/shared"
-import { getErrorMessage } from "../../utils/error-messages"
-import { focusByName } from "../../utils/focus-by-name"
+} from "../../../medusa-react";
+import React from "react";
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
+import FileUploadField from "../../components/atoms/file-upload-field";
+import Button from "../../components/fundamentals/button";
+import PlusIcon from "../../components/fundamentals/icons/plus-icon";
+import TrashIcon from "../../components/fundamentals/icons/trash-icon";
+import InputField from "../../components/molecules/input";
+import Modal from "../../components/molecules/modal";
+import TextArea from "../../components/molecules/textarea";
+import CurrencyInput from "../../components/organisms/currency-input";
+import useNotification from "../../hooks/use-notification";
+import Medusa from "../../services/api";
+import { ProductStatus } from "../../types/shared";
+import { getErrorMessage } from "../../utils/error-messages";
+import { focusByName } from "../../utils/focus-by-name";
 
 type NewGiftCardProps = {
-  onClose: () => void
-}
+  onClose: () => void;
+};
 
 type NewGiftCardFormData = {
-  title: string
-  description: string | undefined
+  title: string;
+  description: string | undefined;
   thumbnail: {
-    url: string
-    name: string
-    size: number
-    nativeFile: File
-  } | null
+    url: string;
+    name: string;
+    size: number;
+    nativeFile: File;
+  } | null;
   denominations: {
-    amount: number | null
-  }[]
-}
+    amount: number | null;
+  }[];
+};
 
 const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
-  const { store } = useAdminStore()
-  const { refetch } = useAdminProducts()
-  const { mutate } = useAdminCreateProduct()
-  const notification = useNotification()
+  const { store } = useAdminStore();
+  const { refetch } = useAdminProducts();
+  const { mutate } = useAdminCreateProduct();
+  const notification = useNotification();
 
   const { register, setValue, handleSubmit, control } = useForm<
     NewGiftCardFormData
   >({
     shouldUnregister: true,
-  })
+  });
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "denominations",
-  })
+  });
 
   const handleFileUpload = (files: File[]) => {
-    const file = files[0]
-    const url = URL.createObjectURL(file)
+    const file = files[0];
+    const url = URL.createObjectURL(file);
 
     setValue("thumbnail", {
       url,
       name: file.name,
       size: file.size,
       nativeFile: file,
-    })
-  }
+    });
+  };
 
   const thumbnail = useWatch({
     control,
     name: "thumbnail",
-  })
+  });
 
   const onSubmit = async (data: NewGiftCardFormData) => {
-    const trimmedName = data.title.trim()
+    const trimmedName = data.title.trim();
 
     if (!trimmedName) {
-      notification("Error", "Please enter a name for the Gift Card", "error")
-      focusByName("name")
-      return
+      notification("Error", "Please enter a name for the Gift Card", "error");
+      focusByName("name");
+      return;
     }
 
     if (!data.denominations?.length) {
-      notification("Error", "Please add at least one denomination", "error")
-      focusByName("add-denomination")
-      return
+      notification("Error", "Please add at least one denomination", "error");
+      focusByName("add-denomination");
+      return;
     }
 
-    let images: string[] = []
+    let images: string[] = [];
 
     if (thumbnail) {
       const uploadedImgs = await Medusa.uploads
         .create([thumbnail.nativeFile])
         .then(({ data }) => {
-          const uploaded = data.uploads.map(({ url }) => url)
-          return uploaded
-        })
+          const uploaded = data.uploads.map(({ url }) => url);
+          return uploaded;
+        });
 
-      images = uploadedImgs
+      images = uploadedImgs;
     }
 
     mutate(
@@ -122,16 +122,16 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully created Gift Card", "success")
-          refetch()
-          navigate("/a/gift-cards/manage")
+          notification("Success", "Successfully created Gift Card", "success");
+          refetch();
+          navigate("/a/gift-cards/manage");
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification("Error", getErrorMessage(err), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   return (
     <Modal handleClose={onClose}>
@@ -229,7 +229,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                                 onChange={onChange}
                                 ref={ref}
                               />
-                            )
+                            );
                           }}
                         />
                       </CurrencyInput.Root>
@@ -243,7 +243,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                         <TrashIcon size={20} />
                       </Button>
                     </div>
-                  )
+                  );
                 })}
               </div>
               <Button
@@ -286,7 +286,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
         </Modal.Body>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
-export default NewGiftCard
+export default NewGiftCard;

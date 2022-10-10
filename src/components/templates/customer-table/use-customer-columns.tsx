@@ -1,7 +1,7 @@
-import moment from "moment"
-import React, { useMemo } from "react"
-import { getColor } from "../../../utils/color"
-import CustomerAvatarItem from "../../molecules/customer-avatar-item"
+import moment from "moment";
+import React, { useMemo } from "react";
+import { getColor } from "../../../utils/color";
+import CustomerAvatarItem from "../../molecules/customer-avatar-item";
 
 export const useCustomerColumns = () => {
   const columns = useMemo(
@@ -42,7 +42,7 @@ export const useCustomerColumns = () => {
       // },
     ],
     []
-  )
+  );
 
-  return [columns]
-}
+  return [columns];
+};

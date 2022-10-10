@@ -1,4 +1,4 @@
-import clsx from "clsx"
+import clsx from "clsx";
 import React, {
   ChangeEventHandler,
   FocusEventHandler,
@@ -6,17 +6,17 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
-} from "react"
-import EyeIcon from "../../fundamentals/icons/eye-icon"
-import EyeOffIcon from "../../fundamentals/icons/eye-off-icon"
-import LockIcon from "../../fundamentals/icons/lock-icon"
+} from "react";
+import EyeIcon from "../../fundamentals/icons/eye-icon";
+import EyeOffIcon from "../../fundamentals/icons/eye-off-icon";
+import LockIcon from "../../fundamentals/icons/lock-icon";
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  key?: string
-  onChange?: ChangeEventHandler<HTMLInputElement>
-  onFocus?: FocusEventHandler<HTMLInputElement>
-  props?: React.HTMLAttributes<HTMLDivElement>
-}
+  key?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
+  props?: React.HTMLAttributes<HTMLDivElement>;
+};
 
 const SigninInput = React.forwardRef(
   (
@@ -33,21 +33,21 @@ const SigninInput = React.forwardRef(
     }: InputProps,
     ref
   ) => {
-    const inputRef = useRef(null)
-    const [showPassword, setShowPassword] = useState(false)
-    const [inputType, setInputType] = useState(type)
+    const inputRef = useRef(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const [inputType, setInputType] = useState(type);
 
     useEffect(() => {
       if (type === "password" && showPassword) {
-        setInputType("text")
+        setInputType("text");
       }
 
       if (type === "password" && !showPassword) {
-        setInputType("password")
+        setInputType("password");
       }
-    }, [type, showPassword])
+    }, [type, showPassword]);
 
-    useImperativeHandle(ref, () => inputRef.current)
+    useImperativeHandle(ref, () => inputRef.current);
 
     return (
       <div
@@ -92,8 +92,8 @@ const SigninInput = React.forwardRef(
           </button>
         )}
       </div>
-    )
+    );
   }
-)
+);
 
-export default SigninInput
+export default SigninInput;

@@ -1,18 +1,18 @@
-import { ErrorMessage } from "@hookform/error-message"
-import clsx from "clsx"
-import React from "react"
-import { MultipleFieldErrors } from "react-hook-form"
-import Tooltip from "../tooltip"
+import { ErrorMessage } from "@hookform/error-message";
+import clsx from "clsx";
+import React from "react";
+import { MultipleFieldErrors } from "react-hook-form";
+import Tooltip from "../tooltip";
 
 type InputErrorProps = {
-  errors?: { [x: string]: unknown }
-  name?: string
-  className?: string
-}
+  errors?: { [x: string]: unknown };
+  name?: string;
+  className?: string;
+};
 
 const InputError = ({ errors, name, className }: InputErrorProps) => {
   if (!errors || !name) {
-    return null
+    return null;
   }
 
   return (
@@ -30,17 +30,17 @@ const InputError = ({ errors, name, className }: InputErrorProps) => {
               <p>{message}</p>
             )}
           </div>
-        )
+        );
       }}
     />
-  )
-}
+  );
+};
 
 const MultipleMessages = ({ messages }: { messages: MultipleFieldErrors }) => {
-  const errors = Object.entries(messages).map(([_, message]) => message)
+  const errors = Object.entries(messages).map(([_, message]) => message);
 
-  const displayedError = errors[0]
-  const remainderErrors = errors.slice(1)
+  const displayedError = errors[0];
+  const remainderErrors = errors.slice(1);
 
   return (
     <div className="flex items-center gap-x-1 cursor-default">
@@ -55,7 +55,7 @@ const MultipleMessages = ({ messages }: { messages: MultipleFieldErrors }) => {
                     {Array.from(Array(i + 1)).map((_) => "*")}
                     {e}
                   </p>
-                )
+                );
               })}
             </div>
           }
@@ -67,7 +67,7 @@ const MultipleMessages = ({ messages }: { messages: MultipleFieldErrors }) => {
         </Tooltip>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default InputError
+export default InputError;

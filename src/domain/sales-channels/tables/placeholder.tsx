@@ -1,7 +1,7 @@
-import React from "react"
+import React from "react";
 
-import Button from "../../../components/fundamentals/button"
-import SidedMouthFaceIcon from "../../../components/fundamentals/icons/sided-mouth-face"
+import Button from "../../../components/fundamentals/button";
+import SidedMouthFaceIcon from "../../../components/fundamentals/icons/sided-mouth-face";
 
 function Placeholder({ showAddModal }) {
   return (
@@ -22,7 +22,7 @@ function Placeholder({ showAddModal }) {
         Add products
       </Button>
     </div>
-  )
+  );
 }
 
-export default Placeholder
+export default Placeholder;

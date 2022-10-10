@@ -1,62 +1,62 @@
-import { Product } from "@medusajs/medusa"
-import React, { useCallback, useContext, useEffect } from "react"
+import { Product } from "@medusajs/medusa";
+import React, { useCallback, useContext, useEffect } from "react";
 import {
   FieldArrayWithId,
   FormProvider,
   useFieldArray,
   useForm,
-} from "react-hook-form"
-import Button from "../../../../../../components/fundamentals/button"
-import Modal from "../../../../../../components/molecules/modal"
+} from "react-hook-form";
+import Button from "../../../../../../components/fundamentals/button";
+import Modal from "../../../../../../components/molecules/modal";
 import LayeredModal, {
   LayeredModalContext,
-} from "../../../../../../components/molecules/modal/layered-modal"
-import useEditProductActions from "../../../hooks/use-edit-product-actions"
-import { EditVariantsModalContext } from "./use-edit-variants-modal"
-import { VariantCard } from "./variant-card"
+} from "../../../../../../components/molecules/modal/layered-modal";
+import useEditProductActions from "../../../hooks/use-edit-product-actions";
+import { EditVariantsModalContext } from "./use-edit-variants-modal";
+import { VariantCard } from "./variant-card";
 
 type Props = {
-  open: boolean
-  onClose: () => void
-  product: Product
-}
+  open: boolean;
+  onClose: () => void;
+  product: Product;
+};
 
 export type VariantItem = {
-  id: string
-  title: string | null
-  ean: string | null
-  sku: string | null
-  inventory_quantity: number
-}
+  id: string;
+  title: string | null;
+  ean: string | null;
+  sku: string | null;
+  inventory_quantity: number;
+};
 
 export type EditVariantsForm = {
-  variants: VariantItem[]
-}
+  variants: VariantItem[];
+};
 
 const EditVariantsModal = ({ open, onClose, product }: Props) => {
-  const context = useContext(LayeredModalContext)
-  const { onUpdate, updating } = useEditProductActions(product.id)
+  const context = useContext(LayeredModalContext);
+  const { onUpdate, updating } = useEditProductActions(product.id);
 
   const form = useForm<EditVariantsForm>({
     defaultValues: getDefaultValues(product),
-  })
+  });
 
   const {
     control,
     handleSubmit,
     reset,
     formState: { isDirty },
-  } = form
+  } = form;
 
   const { fields, move } = useFieldArray({
     control,
     name: "variants",
     keyName: "fieldId",
-  })
+  });
 
   const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-    move(dragIndex, hoverIndex)
-  }, [])
+    move(dragIndex, hoverIndex);
+  }, []);
 
   const renderCard = useCallback(
     (
@@ -75,24 +75,24 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
           moveCard={moveCard}
           product={product}
         />
-      )
+      );
     },
     [product]
-  )
+  );
 
   const handleFormReset = () => {
-    reset(getDefaultValues(product))
-  }
+    reset(getDefaultValues(product));
+  };
 
   const resetAndClose = () => {
-    handleFormReset()
-    context.reset()
-    onClose()
-  }
+    handleFormReset();
+    context.reset();
+    onClose();
+  };
 
   useEffect(() => {
-    handleFormReset()
-  }, [product])
+    handleFormReset();
+  }, [product]);
 
   const onSubmit = handleSubmit((data) => {
     onUpdate(
@@ -102,15 +102,15 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
           return {
             id: variant.id,
             inventory_quantity: variant.inventory_quantity,
-          }
+          };
         }),
       },
       () => {
-        resetAndClose()
+        resetAndClose();
       },
       "Variants were successfully updated"
-    )
-  })
+    );
+  });
 
   return (
     <EditVariantsModalContext.Provider
@@ -164,15 +164,15 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
         </Modal.Body>
       </LayeredModal>
     </EditVariantsModalContext.Provider>
-  )
-}
+  );
+};
 
 const getDefaultValues = (product: Product): EditVariantsForm => {
-  const variants = product.variants || []
+  const variants = product.variants || [];
 
   const sortedVariants = variants.sort(
     (a, b) => a.variant_rank - b.variant_rank
-  )
+  );
 
   return {
     variants: sortedVariants.map((variant, i) => ({
@@ -183,7 +183,7 @@ const getDefaultValues = (product: Product): EditVariantsForm => {
       variant_rank: variant.variant_rank || i + 1,
       inventory_quantity: variant.inventory_quantity,
     })),
-  }
-}
+  };
+};
 
-export default EditVariantsModal
+export default EditVariantsModal;

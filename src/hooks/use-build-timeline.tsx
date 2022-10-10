@@ -1,17 +1,17 @@
-import { Return, Swap } from "@medusajs/medusa"
+import { Return, Swap } from "@medusajs/medusa";
 import {
   useAdminNotes,
   useAdminNotifications,
   useAdminOrder,
-} from "../../medusa-react"
-import { useMemo } from "react"
+} from "../../medusa-react";
+import { useMemo } from "react";
 
 export interface TimelineEvent {
-  id: string
-  time: Date
-  first?: boolean
-  orderId: string
-  noNotification?: boolean
+  id: string;
+  time: Date;
+  first?: boolean;
+  orderId: string;
+  noNotification?: boolean;
   type:
     | "payment"
     | "note"
@@ -26,51 +26,51 @@ export interface TimelineEvent {
     | "exchange_fulfilled"
     | "notification"
     | "claim"
-    | "refund"
+    | "refund";
 }
 
 interface CancelableEvent {
-  canceledAt?: Date
-  isCanceled?: boolean
+  canceledAt?: Date;
+  isCanceled?: boolean;
 }
 
 export interface OrderPlacedEvent extends TimelineEvent {
-  amount: number
-  currency_code: string
-  tax?: number
+  amount: number;
+  currency_code: string;
+  tax?: number;
 }
 
 interface OrderItem {
-  title: string
-  quantity: number
-  thumbnail?: string
+  title: string;
+  quantity: number;
+  thumbnail?: string;
   variant: {
-    title: string
-  }
+    title: string;
+  };
 }
 
 interface ReturnItem extends OrderItem {
-  requestedQuantity: number
-  receivedQuantity: number
+  requestedQuantity: number;
+  receivedQuantity: number;
 }
 
 interface FulfillmentEvent extends TimelineEvent {
-  sourceType: "claim" | "exchange" | undefined
+  sourceType: "claim" | "exchange" | undefined;
 }
 
 export interface ItemsFulfilledEvent extends FulfillmentEvent {
-  items: OrderItem[]
+  items: OrderItem[];
 }
 
 export interface ItemsShippedEvent extends FulfillmentEvent {
-  items: OrderItem[]
+  items: OrderItem[];
 }
 
 export interface RefundEvent extends TimelineEvent {
-  amount: number
-  reason: string
-  currencyCode: string
-  note?: string
+  amount: number;
+  reason: string;
+  currencyCode: string;
+  note?: string;
 }
 
 enum ReturnStatus {
@@ -81,44 +81,44 @@ enum ReturnStatus {
 }
 
 export interface ReturnEvent extends TimelineEvent {
-  items: ReturnItem[]
-  status: ReturnStatus
-  currentStatus?: ReturnStatus
-  raw: Return
-  refunded?: boolean
+  items: ReturnItem[];
+  status: ReturnStatus;
+  currentStatus?: ReturnStatus;
+  raw: Return;
+  refunded?: boolean;
 }
 
 export interface NoteEvent extends TimelineEvent {
-  value: string
-  authorId: string
+  value: string;
+  authorId: string;
 }
 
 export interface ExchangeEvent extends TimelineEvent, CancelableEvent {
-  paymentStatus: string
-  fulfillmentStatus: string
-  returnStatus: string
-  returnId: string
-  returnItems: ReturnItem[]
-  newItems: OrderItem[]
-  exchangeCartId?: string
-  raw: Swap
+  paymentStatus: string;
+  fulfillmentStatus: string;
+  returnStatus: string;
+  returnId: string;
+  returnItems: ReturnItem[];
+  newItems: OrderItem[];
+  exchangeCartId?: string;
+  raw: Swap;
 }
 
 export interface ClaimEvent extends TimelineEvent, CancelableEvent {
-  fulfillmentStatus?: string
-  refundStatus?: string
-  refundAmount?: number
-  currencyCode: string
-  claimItems: OrderItem[]
-  newItems: OrderItem[]
-  claimType: string
-  claim: any
-  order: any
+  fulfillmentStatus?: string;
+  refundStatus?: string;
+  refundAmount?: number;
+  currencyCode: string;
+  claimItems: OrderItem[];
+  newItems: OrderItem[];
+  claimType: string;
+  claim: any;
+  order: any;
 }
 
 export interface NotificationEvent extends TimelineEvent {
-  to: string
-  title: string
+  to: string;
+  title: string;
 }
 
 export const useBuildTimelime = (orderId: string) => {
@@ -127,38 +127,38 @@ export const useBuildTimelime = (orderId: string) => {
     isLoading: orderLoading,
     isError: orderError,
     refetch,
-  } = useAdminOrder(orderId)
+  } = useAdminOrder(orderId);
   const {
     notes,
     isLoading: notesLoading,
     isError: notesError,
-  } = useAdminNotes({ resource_id: orderId, limit: 100, offset: 0 })
+  } = useAdminNotes({ resource_id: orderId, limit: 100, offset: 0 });
   const {
     notifications,
     isLoading: notificationsLoading,
     isError: notificationsError,
-  } = useAdminNotifications({ resource_id: orderId })
+  } = useAdminNotifications({ resource_id: orderId });
 
   const events: TimelineEvent[] | undefined = useMemo(() => {
     if (!order) {
-      return undefined
+      return undefined;
     }
 
-    let allItems = [...order.items]
+    let allItems = [...order.items];
 
     if (order.swaps && order.swaps.length) {
       for (const swap of order.swaps) {
-        allItems = [...allItems, ...swap.additional_items]
+        allItems = [...allItems, ...swap.additional_items];
       }
     }
 
     if (order.claims && order.claims.length) {
       for (const claim of order.claims) {
-        allItems = [...allItems, ...claim.additional_items]
+        allItems = [...allItems, ...claim.additional_items];
       }
     }
 
-    const events: TimelineEvent[] = []
+    const events: TimelineEvent[] = [];
 
     events.push({
       id: `${order.id}-placed`,
@@ -168,7 +168,7 @@ export const useBuildTimelime = (orderId: string) => {
       tax: order.tax_rate,
       type: "placed",
       orderId: order.id,
-    } as OrderPlacedEvent)
+    } as OrderPlacedEvent);
 
     if (order.status === "canceled") {
       events.push({
@@ -176,7 +176,7 @@ export const useBuildTimelime = (orderId: string) => {
         time: order.updated_at,
         type: "canceled",
         orderId: order.id,
-      } as TimelineEvent)
+      } as TimelineEvent);
     }
 
     if (notes) {
@@ -188,7 +188,7 @@ export const useBuildTimelime = (orderId: string) => {
           authorId: note.author_id,
           value: note.value,
           orderId: order.id,
-        } as NoteEvent)
+        } as NoteEvent);
       }
     }
 
@@ -201,7 +201,7 @@ export const useBuildTimelime = (orderId: string) => {
         reason: event.reason,
         time: event.created_at,
         type: "refund",
-      } as RefundEvent)
+      } as RefundEvent);
     }
 
     for (const event of order.fulfillments) {
@@ -212,7 +212,7 @@ export const useBuildTimelime = (orderId: string) => {
         items: event.items.map((item) => getLineItem(allItems, item.item_id)),
         noNotification: event.no_notification,
         orderId: order.id,
-      } as ItemsFulfilledEvent)
+      } as ItemsFulfilledEvent);
 
       if (event.shipped_at) {
         events.push({
@@ -222,7 +222,7 @@ export const useBuildTimelime = (orderId: string) => {
           items: event.items.map((item) => getLineItem(allItems, item.item_id)),
           noNotification: event.no_notification,
           orderId: order.id,
-        } as ItemsShippedEvent)
+        } as ItemsShippedEvent);
       }
     }
 
@@ -238,7 +238,7 @@ export const useBuildTimelime = (orderId: string) => {
         orderId: order.id,
         raw: (event as unknown) as Return,
         refunded: getWasRefundClaim(event.claim_order_id, order),
-      } as ReturnEvent)
+      } as ReturnEvent);
 
       if (event.status !== "requested") {
         events.push({
@@ -250,7 +250,7 @@ export const useBuildTimelime = (orderId: string) => {
           currentStatus: event.status,
           noNotification: event.no_notification,
           orderId: order.id,
-        } as ReturnEvent)
+        } as ReturnEvent);
       }
     }
 
@@ -273,7 +273,7 @@ export const useBuildTimelime = (orderId: string) => {
         canceledAt: event.canceled_at,
         orderId: event.order_id,
         raw: (event as unknown) as Swap,
-      } as ExchangeEvent)
+      } as ExchangeEvent);
 
       if (
         event.fulfillment_status === "fulfilled" ||
@@ -287,7 +287,7 @@ export const useBuildTimelime = (orderId: string) => {
           noNotification: event.no_notification,
           orderId: order.id,
           sourceType: "exchange",
-        } as ItemsFulfilledEvent)
+        } as ItemsFulfilledEvent);
 
         if (event.fulfillments[0].shipped_at) {
           events.push({
@@ -298,7 +298,7 @@ export const useBuildTimelime = (orderId: string) => {
             noNotification: event.no_notification,
             orderId: order.id,
             sourceType: "exchange",
-          } as ItemsShippedEvent)
+          } as ItemsShippedEvent);
         }
       }
     }
@@ -328,7 +328,7 @@ export const useBuildTimelime = (orderId: string) => {
           orderId: order.id,
           claim,
           order,
-        } as ClaimEvent)
+        } as ClaimEvent);
 
         if (
           claim.fulfillment_status === "fulfilled" ||
@@ -342,7 +342,7 @@ export const useBuildTimelime = (orderId: string) => {
             noNotification: claim.no_notification,
             orderId: order.id,
             sourceType: "claim",
-          } as ItemsFulfilledEvent)
+          } as ItemsFulfilledEvent);
 
           if (claim.fulfillments[0].shipped_at) {
             events.push({
@@ -353,7 +353,7 @@ export const useBuildTimelime = (orderId: string) => {
               noNotification: claim.no_notification,
               orderId: order.id,
               sourceType: "claim",
-            } as ItemsShippedEvent)
+            } as ItemsShippedEvent);
           }
         }
         if (claim.canceled_at) {
@@ -378,7 +378,7 @@ export const useBuildTimelime = (orderId: string) => {
             claimType: claim.type,
             isCanceled: true,
             orderId: order.id,
-          } as ClaimEvent)
+          } as ClaimEvent);
         }
       }
     }
@@ -392,25 +392,25 @@ export const useBuildTimelime = (orderId: string) => {
           type: "notification",
           title: notification.event_name,
           orderId: order.id,
-        } as NotificationEvent)
+        } as NotificationEvent);
       }
     }
 
     events.sort((a, b) => {
       if (a.time > b.time) {
-        return -1
+        return -1;
       }
 
       if (a.time < b.time) {
-        return 1
+        return 1;
       }
 
-      return 0
-    })
+      return 0;
+    });
 
-    events[events.length - 1].first = true
+    events[events.length - 1].first = true;
 
-    return events
+    return events;
   }, [
     order,
     orderLoading,
@@ -421,16 +421,16 @@ export const useBuildTimelime = (orderId: string) => {
     notifications,
     notificationsLoading,
     notificationsError,
-  ])
+  ]);
 
-  return { events, refetch }
-}
+  return { events, refetch };
+};
 
 function getLineItem(allItems, itemId) {
-  const line = allItems.find((line) => line.id === itemId)
+  const line = allItems.find((line) => line.id === itemId);
 
   if (!line) {
-    return
+    return;
   }
 
   return {
@@ -438,14 +438,14 @@ function getLineItem(allItems, itemId) {
     quantity: line.quantity,
     thumbnail: line.thumbnail,
     variant: { title: line?.variant?.title || "-" },
-  }
+  };
 }
 
 function getReturnItems(allItems, item) {
-  const line = allItems.find((li) => li.id === item.item_id)
+  const line = allItems.find((li) => li.id === item.item_id);
 
   if (!line) {
-    return
+    return;
   }
 
   return {
@@ -457,7 +457,7 @@ function getReturnItems(allItems, item) {
       title: line?.variant?.title || "-",
     },
     thumbnail: line.thumbnail,
-  }
+  };
 }
 
 function getClaimItem(claimItem) {
@@ -468,7 +468,7 @@ function getClaimItem(claimItem) {
     variant: {
       title: claimItem.item.variant?.title,
     },
-  }
+  };
 }
 
 function getSwapItem(item) {
@@ -477,15 +477,15 @@ function getSwapItem(item) {
     quantity: item.quantity,
     thumbnail: item.thumbnail,
     variant: { title: item.variant?.title },
-  }
+  };
 }
 
 function getWasRefundClaim(claimId, order) {
-  const claim = order.claims.find((c) => c.id === claimId)
+  const claim = order.claims.find((c) => c.id === claimId);
 
   if (!claim) {
-    return false
+    return false;
   }
 
-  return claim.type === "refund"
+  return claim.type === "refund";
 }

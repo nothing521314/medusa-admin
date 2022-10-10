@@ -2,12 +2,12 @@ import {
   AdminGiftCardsDeleteRes,
   AdminGiftCardsRes,
   AdminPostGiftCardsReq,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { adminGiftCardKeys } from "."
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { adminGiftCardKeys } from ".";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminCreateGiftCard = (
   options?: UseMutationOptions<
@@ -16,13 +16,13 @@ export const useAdminCreateGiftCard = (
     AdminPostGiftCardsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostGiftCardsReq) => client.admin.giftCards.create(payload),
     buildOptions(queryClient, adminGiftCardKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdateGiftCard = (
   id: string,
@@ -32,8 +32,8 @@ export const useAdminUpdateGiftCard = (
     AdminPostGiftCardsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostGiftCardsReq) =>
@@ -43,15 +43,15 @@ export const useAdminUpdateGiftCard = (
       [adminGiftCardKeys.lists(), adminGiftCardKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteGiftCard = (
   id: string,
   options?: UseMutationOptions<Response<AdminGiftCardsDeleteRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     () => client.admin.giftCards.delete(id),
     buildOptions(
@@ -59,5 +59,5 @@ export const useAdminDeleteGiftCard = (
       [adminGiftCardKeys.lists(), adminGiftCardKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};

@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "./types/icon-type"
+import React from "react";
+import IconProps from "./types/icon-type";
 
 const GripIcon: React.FC<IconProps> = ({
   size = "24px",
@@ -58,7 +58,7 @@ const GripIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default GripIcon
+export default GripIcon;

@@ -1,40 +1,40 @@
-import { AdminPostProductsProductVariantsReq, Product } from "@medusajs/medusa"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
+import { AdminPostProductsProductVariantsReq, Product } from "@medusajs/medusa";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../../components/fundamentals/button";
+import Modal from "../../../../../components/molecules/modal";
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
-} from "../../../components/variant-form/edit-flow-variant-form"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
+} from "../../../components/variant-form/edit-flow-variant-form";
+import useEditProductActions from "../../hooks/use-edit-product-actions";
 
 type Props = {
-  onClose: () => void
-  open: boolean
-  product: Product
-}
+  onClose: () => void;
+  open: boolean;
+  product: Product;
+};
 
 const AddVariantModal = ({ open, onClose, product }: Props) => {
   const form = useForm<EditFlowVariantFormType>({
     defaultValues: getDefaultValues(product),
-  })
+  });
 
-  const { onAddVariant, addingVariant } = useEditProductActions(product.id)
+  const { onAddVariant, addingVariant } = useEditProductActions(product.id);
 
-  const { handleSubmit, reset } = form
+  const { handleSubmit, reset } = form;
 
   useEffect(() => {
-    reset(getDefaultValues(product))
-  }, [product])
+    reset(getDefaultValues(product));
+  }, [product]);
 
   const resetAndClose = () => {
-    reset(getDefaultValues(product))
-    onClose()
-  }
+    reset(getDefaultValues(product));
+    onClose();
+  };
 
   const onSubmit = handleSubmit((data) => {
-    onAddVariant(createAddPayload(data), resetAndClose)
-  })
+    onAddVariant(createAddPayload(data), resetAndClose);
+  });
 
   return (
     <Modal open={open} handleClose={resetAndClose}>
@@ -69,15 +69,15 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const getDefaultValues = (product: Product): EditFlowVariantFormType => {
   const options = product.options.map((option) => ({
     title: option.title,
     id: option.id,
     value: "",
-  }))
+  }));
 
   return {
     general: {
@@ -108,8 +108,8 @@ const getDefaultValues = (product: Product): EditFlowVariantFormType => {
       hs_code: null,
       origin_country: null,
     },
-  }
-}
+  };
+};
 
 export const createAddPayload = (
   data: EditFlowVariantFormType
@@ -140,7 +140,7 @@ export const createAddPayload = (
       option_id: option.id,
       value: option.value,
     })),
-  }
-}
+  };
+};
 
-export default AddVariantModal
+export default AddVariantModal;

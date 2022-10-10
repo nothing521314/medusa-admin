@@ -1,17 +1,17 @@
-import clsx from "clsx"
-import { Link } from "gatsby"
-import React from "react"
-import SectionCollapsible from "../section-collapsible"
-import { useAdminCustomers } from "../../../../../medusa-react"
-import useKeyboardNavigationList from "../use-keyboard-navigation-list"
-import Avatar from "../../../atoms/avatar"
+import clsx from "clsx";
+import { Link } from "gatsby";
+import React from "react";
+import SectionCollapsible from "../section-collapsible";
+import { useAdminCustomers } from "../../../../../medusa-react";
+import useKeyboardNavigationList from "../use-keyboard-navigation-list";
+import Avatar from "../../../atoms/avatar";
 
 type CustomerResultsProps = {
-  customers: ReturnType<typeof useAdminCustomers>["customers"]
-  getLIProps: ReturnType<typeof useKeyboardNavigationList>["getLIProps"]
-  offset: number
-  selected: number
-}
+  customers: ReturnType<typeof useAdminCustomers>["customers"];
+  getLIProps: ReturnType<typeof useKeyboardNavigationList>["getLIProps"];
+  offset: number;
+  selected: number;
+};
 
 const CustomerResults = ({
   customers = [],
@@ -63,7 +63,7 @@ const CustomerResults = ({
         </div>
       </div>
     </SectionCollapsible>
-  ) : null
-}
+  ) : null;
+};
 
-export default CustomerResults
+export default CustomerResults;

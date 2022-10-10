@@ -1,9 +1,9 @@
-import clsx from "clsx"
-import React, { useState } from "react"
-import Tooltip from "../../atoms/tooltip"
-import BellOffIcon from "../../fundamentals/icons/bell-off-icon"
-import ChevronDownIcon from "../../fundamentals/icons/chevron-down"
-import ChevronUpIcon from "../../fundamentals/icons/chevron-up"
+import clsx from "clsx";
+import React, { useState } from "react";
+import Tooltip from "../../atoms/tooltip";
+import BellOffIcon from "../../fundamentals/icons/bell-off-icon";
+import ChevronDownIcon from "../../fundamentals/icons/chevron-down";
+import ChevronUpIcon from "../../fundamentals/icons/chevron-up";
 
 export enum EventIconColor {
   GREEN = "text-emerald-40",
@@ -13,16 +13,16 @@ export enum EventIconColor {
 }
 
 type EventContainerProps = {
-  icon: React.ReactNode
-  iconColor?: EventIconColor
-  title: string
-  time: Date
-  noNotification?: boolean
-  topNode?: React.ReactNode
-  midNode?: React.ReactNode
-  isFirst?: boolean
-  expandable?: boolean
-}
+  icon: React.ReactNode;
+  iconColor?: EventIconColor;
+  title: string;
+  time: Date;
+  noNotification?: boolean;
+  topNode?: React.ReactNode;
+  midNode?: React.ReactNode;
+  isFirst?: boolean;
+  expandable?: boolean;
+};
 
 const EventContainer: React.FC<EventContainerProps> = ({
   icon,
@@ -36,11 +36,11 @@ const EventContainer: React.FC<EventContainerProps> = ({
   expandable = false,
   children,
 }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(!expandable)
+  const [isExpanded, setIsExpanded] = useState<boolean>(!expandable);
 
   const toggleExpand = () => {
-    setIsExpanded((prev) => !prev)
-  }
+    setIsExpanded((prev) => !prev);
+  };
 
   return (
     <div>
@@ -82,7 +82,7 @@ const EventContainer: React.FC<EventContainerProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EventContainer
+export default EventContainer;

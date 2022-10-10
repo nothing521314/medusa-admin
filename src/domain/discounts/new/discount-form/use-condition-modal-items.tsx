@@ -1,34 +1,34 @@
-import React, { useContext, useMemo } from "react"
-import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal"
-import { DiscountConditionType } from "../../types"
-import AddCollectionConditionSelector from "./condition-tables/add-condition-tables/collections"
-import AddCustomerGroupConditionSelector from "./condition-tables/add-condition-tables/customer-groups"
-import AddProductConditionSelector from "./condition-tables/add-condition-tables/products"
-import AddTagConditionSelector from "./condition-tables/add-condition-tables/tags"
-import AddTypeConditionSelector from "./condition-tables/add-condition-tables/types"
-import DetailsCollectionConditionSelector from "./condition-tables/details-condition-tables/collections"
-import DetailsCustomerGroupConditionSelector from "./condition-tables/details-condition-tables/customer-groups"
-import DetailsProductConditionSelector from "./condition-tables/details-condition-tables/products"
-import DetailsTagConditionSelector from "./condition-tables/details-condition-tables/tags"
-import DetailsTypeConditionSelector from "./condition-tables/details-condition-tables/types"
+import React, { useContext, useMemo } from "react";
+import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal";
+import { DiscountConditionType } from "../../types";
+import AddCollectionConditionSelector from "./condition-tables/add-condition-tables/collections";
+import AddCustomerGroupConditionSelector from "./condition-tables/add-condition-tables/customer-groups";
+import AddProductConditionSelector from "./condition-tables/add-condition-tables/products";
+import AddTagConditionSelector from "./condition-tables/add-condition-tables/tags";
+import AddTypeConditionSelector from "./condition-tables/add-condition-tables/types";
+import DetailsCollectionConditionSelector from "./condition-tables/details-condition-tables/collections";
+import DetailsCustomerGroupConditionSelector from "./condition-tables/details-condition-tables/customer-groups";
+import DetailsProductConditionSelector from "./condition-tables/details-condition-tables/products";
+import DetailsTagConditionSelector from "./condition-tables/details-condition-tables/tags";
+import DetailsTypeConditionSelector from "./condition-tables/details-condition-tables/types";
 
 export type ConditionItem = {
-  label: string
-  value: DiscountConditionType
-  description: string
-  onClick: () => void
-}
+  label: string;
+  value: DiscountConditionType;
+  description: string;
+  onClick: () => void;
+};
 
 type UseConditionModalItemsProps = {
-  onClose: () => void
-  isDetails?: boolean
-}
+  onClose: () => void;
+  isDetails?: boolean;
+};
 
 const useConditionModalItems = ({
   isDetails,
   onClose,
 }: UseConditionModalItemsProps) => {
-  const layeredModalContext = useContext(LayeredModalContext)
+  const layeredModalContext = useContext(LayeredModalContext);
 
   const items: ConditionItem[] = useMemo(
     () => [
@@ -60,7 +60,7 @@ const useConditionModalItems = ({
             ) : (
               <AddCustomerGroupConditionSelector onClose={onClose} />
             ),
-          })
+          });
         },
       },
       {
@@ -110,9 +110,9 @@ const useConditionModalItems = ({
       },
     ],
     [isDetails]
-  )
+  );
 
-  return items
-}
+  return items;
+};
 
-export default useConditionModalItems
+export default useConditionModalItems;

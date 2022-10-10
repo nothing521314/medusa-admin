@@ -5,10 +5,10 @@ import {
   AdminShippingOptionsDeleteRes,
   AdminShippingOptionsListRes,
   AdminGetShippingOptionsParams,
-} from "@medusajs/medusa"
-import qs from "qs"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
+} from "@medusajs/medusa";
+import qs from "qs";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
 
 class AdminShippingOptionsResource extends BaseResource {
   /**
@@ -21,8 +21,8 @@ class AdminShippingOptionsResource extends BaseResource {
     payload: AdminPostShippingOptionsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminShippingOptionsRes> {
-    const path = `/admin/shipping-options`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/shipping-options`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -37,8 +37,8 @@ class AdminShippingOptionsResource extends BaseResource {
     payload: AdminPostShippingOptionsOptionReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminShippingOptionsRes> {
-    const path = `/admin/shipping-options/${id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/shipping-options/${id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -51,8 +51,8 @@ class AdminShippingOptionsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminShippingOptionsDeleteRes> {
-    const path = `/admin/shipping-options/${id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/shipping-options/${id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -65,8 +65,8 @@ class AdminShippingOptionsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminShippingOptionsRes> {
-    const path = `/admin/shipping-options/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/shipping-options/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -79,15 +79,15 @@ class AdminShippingOptionsResource extends BaseResource {
     query?: AdminGetShippingOptionsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminShippingOptionsListRes> {
-    let path = `/admin/shipping-options`
+    let path = `/admin/shipping-options`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/shipping-options?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/shipping-options?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 }
 
-export default AdminShippingOptionsResource
+export default AdminShippingOptionsResource;

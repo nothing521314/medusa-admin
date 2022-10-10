@@ -1,15 +1,15 @@
 // import * as Yup from "yup"
-import { validateEmail } from "./validate-email"
-import { validatePass } from "./validate-pass"
+import { validateEmail } from "./validate-email";
+import { validatePass } from "./validate-pass";
 
 const ERRORS = {
   REQUIRED: "This field is required",
   INVALID_EMAIL: "Not a valid email",
-}
+};
 
 const Validator = {
   phone: (phone) => {
-    return !Number.isNaN(Number(phone)) && phone.length > 8
+    return !Number.isNaN(Number(phone)) && phone.length > 8;
   },
   pass: validatePass,
   email: validateEmail,
@@ -55,6 +55,6 @@ const Validator = {
   //     option_id: Yup.string().required(ERRORS.REQUIRED),
   //   }).required(),
   // },
-}
+};
 
-export default Validator
+export default Validator;

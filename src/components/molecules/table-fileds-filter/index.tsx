@@ -1,40 +1,40 @@
-import React, { useEffect, useRef, useState } from "react"
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-import { sortBy } from "lodash"
+import React, { useEffect, useRef, useState } from "react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { sortBy } from "lodash";
 
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import Button from "../../fundamentals/button"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
-import Checkbox from "../../atoms/checkbox"
+import PlusIcon from "../../fundamentals/icons/plus-icon";
+import Button from "../../fundamentals/button";
+import CrossIcon from "../../fundamentals/icons/cross-icon";
+import Checkbox from "../../atoms/checkbox";
 
 /******************** TYPES ********************/
 
 type Field = {
-  id: string
-  short: string
-  label: React.ReactChild | ((args: { isSelected: boolean }) => void)
-}
+  id: string;
+  short: string;
+  label: React.ReactChild | ((args: { isSelected: boolean }) => void);
+};
 
 type ChipProps = Field & {
-  remove: () => void
-}
+  remove: () => void;
+};
 
 type TableFieldsFilterProps = {
-  fields: Field[]
-  onChange: (selectedFieldIds: string[]) => void
-}
+  fields: Field[];
+  onChange: (selectedFieldIds: string[]) => void;
+};
 
 type FieldsMenuProps = {
-  fields: Field[]
-  onBlur: (ids: string[]) => void
-  selectedFields: string[]
-}
+  fields: Field[];
+  onBlur: (ids: string[]) => void;
+  selectedFields: string[];
+};
 
 type FieldMenuItemProps = {
-  field: Field
-  checked: boolean
-  onChange: () => void
-}
+  field: Field;
+  checked: boolean;
+  onChange: () => void;
+};
 
 /******************** COMPONENTS ********************/
 
@@ -42,7 +42,7 @@ type FieldMenuItemProps = {
  * Table field chip component.
  */
 function Chip(props: ChipProps) {
-  const { remove, short } = props
+  const { remove, short } = props;
   return (
     <div className="rounded-lg h-[32px] inline-flex gap-1 shrink-0 items-center text-small text-grey-70 border border-gray-70 px-3 mr-1 last:mr-2">
       {short}
@@ -52,14 +52,14 @@ function Chip(props: ChipProps) {
         size={13}
       />
     </div>
-  )
+  );
 }
 
 /**
  * `FieldMenu` item component.
  */
 function FieldMenuItem(props: FieldMenuItemProps) {
-  const { checked, field, onChange } = props
+  const { checked, field, onChange } = props;
   return (
     <DropdownMenu.Item>
       <Checkbox
@@ -73,7 +73,7 @@ function FieldMenuItem(props: FieldMenuItemProps) {
         }
       />
     </DropdownMenu.Item>
-  )
+  );
 }
 
 /******************** CONTAINERS ********************/
@@ -82,49 +82,49 @@ function FieldMenuItem(props: FieldMenuItemProps) {
  * The dropdown menu for selecting currently active table fields.
  */
 function FieldsMenu(props: FieldsMenuProps) {
-  const { fields, onBlur, selectedFields } = props
+  const { fields, onBlur, selectedFields } = props;
 
-  const contentRef = useRef<HTMLDivElement>(null)
-  const [open, setOpen] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
   // local copy of selected filters which is synced with the container list on blur
-  const [currentlySelected, setCurrentlySelected] = useState<string[]>([])
+  const [currentlySelected, setCurrentlySelected] = useState<string[]>([]);
 
   const onTriggerClick = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const toggleCheck = (id: string) => {
     if (currentlySelected.includes(id)) {
-      setCurrentlySelected(currentlySelected.filter((f) => f !== id))
+      setCurrentlySelected(currentlySelected.filter((f) => f !== id));
     } else {
-      setCurrentlySelected([...currentlySelected, id])
+      setCurrentlySelected([...currentlySelected, id]);
     }
-  }
+  };
 
   useEffect(() => {
     if (open) {
-      setCurrentlySelected(selectedFields)
+      setCurrentlySelected(selectedFields);
     }
-  }, [open, selectedFields])
+  }, [open, selectedFields]);
 
   useEffect(() => {
     if (!open) {
-      onBlur(currentlySelected)
+      onBlur(currentlySelected);
     }
-  }, [open])
+  }, [open]);
 
   // close dropdown "manually" on click outside the menu
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!contentRef.current?.contains(event.target)) {
-        setOpen(false)
+        setOpen(false);
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
+    };
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [contentRef])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [contentRef]);
 
   return (
     <DropdownMenu.Root open={open}>
@@ -154,29 +154,29 @@ function FieldsMenu(props: FieldsMenuProps) {
         ))}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
-  )
+  );
 }
 
 /**
  * Table fields filter root container.
  */
 function TableFieldsFilters(props: TableFieldsFilterProps) {
-  const { fields, onChange } = props
+  const { fields, onChange } = props;
 
-  const [selectedFields, setSelectedFields] = useState<Field["id"][]>([])
+  const [selectedFields, setSelectedFields] = useState<Field["id"][]>([]);
 
   useEffect(() => {
-    onChange(selectedFields)
-  }, [selectedFields])
+    onChange(selectedFields);
+  }, [selectedFields]);
 
   const removeSelected = (id: string) => {
-    setSelectedFields(selectedFields.filter((f) => f !== id))
-  }
+    setSelectedFields(selectedFields.filter((f) => f !== id));
+  };
 
-  const _selected = [...selectedFields]
-  _selected.sort((a, b) => a.localeCompare(b))
+  const _selected = [...selectedFields];
+  _selected.sort((a, b) => a.localeCompare(b));
 
-  const visibleFields = _selected.map((id) => fields.find((f) => f.id === id))
+  const visibleFields = _selected.map((id) => fields.find((f) => f.id === id));
 
   return (
     <div className="flex-wrap flex items-center gap-y-2">
@@ -194,7 +194,7 @@ function TableFieldsFilters(props: TableFieldsFilterProps) {
         selectedFields={_selected}
       />
     </div>
-  )
+  );
 }
 
-export default TableFieldsFilters
+export default TableFieldsFilters;

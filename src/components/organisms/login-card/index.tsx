@@ -1,35 +1,35 @@
-import { navigate } from "gatsby"
-import { useAdminLogin } from "../../../../medusa-react"
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../fundamentals/button"
-import SigninInput from "../../molecules/input-signin"
+import { navigate } from "gatsby";
+import { useAdminLogin } from "../../../../medusa-react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../fundamentals/button";
+import SigninInput from "../../molecules/input-signin";
 
 type FormValues = {
-  email: string
-  password: string
-}
+  email: string;
+  password: string;
+};
 
 type LoginCardProps = {
-  toResetPassword: () => void
-}
+  toResetPassword: () => void;
+};
 
 const LoginCard: React.FC<LoginCardProps> = ({ toResetPassword }) => {
-  const [isInvalidLogin, setIsInvalidLogin] = useState(false)
-  const { register, handleSubmit, reset } = useForm<FormValues>()
-  const login = useAdminLogin()
+  const [isInvalidLogin, setIsInvalidLogin] = useState(false);
+  const { register, handleSubmit, reset } = useForm<FormValues>();
+  const login = useAdminLogin();
 
   const onSubmit = (values: FormValues) => {
     login.mutate(values, {
       onSuccess: () => {
-        navigate("/a/orders")
+        navigate("/a/orders");
       },
       onError: () => {
-        setIsInvalidLogin(true)
-        reset()
+        setIsInvalidLogin(true);
+        reset();
       },
-    })
-  }
+    });
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center">
@@ -44,13 +44,15 @@ const LoginCard: React.FC<LoginCardProps> = ({ toResetPassword }) => {
         </span>
         <SigninInput
           placeholder="Email..."
-          {...register('email', { required: true })}
-          autoComplete="email" />
+          {...register("email", { required: true })}
+          autoComplete="email"
+        />
         <SigninInput
           placeholder="Password..."
           type={"password"}
-          {...register('password', { required: true })}
-          autoComplete="current-password" />
+          {...register("password", { required: true })}
+          autoComplete="current-password"
+        />
         {isInvalidLogin && (
           <span className="text-rose-50 w-full mt-2 inter-small-regular">
             These credentials do not match our records
@@ -74,6 +76,6 @@ const LoginCard: React.FC<LoginCardProps> = ({ toResetPassword }) => {
       </div>
     </form>
   );
-}
+};
 
-export default LoginCard
+export default LoginCard;

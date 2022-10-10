@@ -6,12 +6,12 @@ import {
   AdminPostDraftOrdersDraftOrderRegisterPaymentRes,
   AdminPostDraftOrdersDraftOrderReq,
   AdminPostDraftOrdersReq,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
-import { adminDraftOrderKeys } from "./queries"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
+import { adminDraftOrderKeys } from "./queries";
 
 export const useAdminCreateDraftOrder = (
   options?: UseMutationOptions<
@@ -20,14 +20,14 @@ export const useAdminCreateDraftOrder = (
     AdminPostDraftOrdersReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostDraftOrdersReq) =>
       client.admin.draftOrders.create(payload),
     buildOptions(queryClient, adminDraftOrderKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdateDraftOrder = (
   id: string,
@@ -37,8 +37,8 @@ export const useAdminUpdateDraftOrder = (
     AdminPostDraftOrdersDraftOrderReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostDraftOrdersDraftOrderReq) =>
       client.admin.draftOrders.update(id, payload),
@@ -47,15 +47,15 @@ export const useAdminUpdateDraftOrder = (
       [adminDraftOrderKeys.detail(id), adminDraftOrderKeys.lists()],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteDraftOrder = (
   id: string,
   options?: UseMutationOptions<Response<AdminDraftOrdersDeleteRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     () => client.admin.draftOrders.delete(id),
     buildOptions(
@@ -63,8 +63,8 @@ export const useAdminDeleteDraftOrder = (
       [adminDraftOrderKeys.detail(id), adminDraftOrderKeys.lists()],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDraftOrderRegisterPayment = (
   id: string,
@@ -74,13 +74,13 @@ export const useAdminDraftOrderRegisterPayment = (
     void
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     () => client.admin.draftOrders.markPaid(id),
     buildOptions(queryClient, adminDraftOrderKeys.detail(id), options)
-  )
-}
+  );
+};
 
 export const useAdminDraftOrderAddLineItem = (
   id: string,
@@ -90,26 +90,26 @@ export const useAdminDraftOrderAddLineItem = (
     AdminPostDraftOrdersDraftOrderLineItemsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostDraftOrdersDraftOrderLineItemsReq) =>
       client.admin.draftOrders.addLineItem(id, payload),
     buildOptions(queryClient, adminDraftOrderKeys.detail(id), options)
-  )
-}
+  );
+};
 
 export const useAdminDraftOrderRemoveLineItem = (
   id: string,
   options?: UseMutationOptions<Response<AdminDraftOrdersRes>, Error, string>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (itemId: string) => client.admin.draftOrders.removeLineItem(id, itemId),
     buildOptions(queryClient, adminDraftOrderKeys.detail(id), options)
-  )
-}
+  );
+};
 
 export const useAdminDraftOrderUpdateLineItem = (
   id: string,
@@ -119,8 +119,8 @@ export const useAdminDraftOrderUpdateLineItem = (
     AdminPostDraftOrdersDraftOrderLineItemsItemReq & { item_id: string }
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     ({
       item_id,
@@ -128,5 +128,5 @@ export const useAdminDraftOrderUpdateLineItem = (
     }: AdminPostDraftOrdersDraftOrderLineItemsItemReq & { item_id: string }) =>
       client.admin.draftOrders.updateLineItem(id, item_id, payload),
     buildOptions(queryClient, adminDraftOrderKeys.detail(id), options)
-  )
-}
+  );
+};

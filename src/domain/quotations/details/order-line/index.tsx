@@ -1,12 +1,12 @@
-import { LineItem } from "@medusajs/medusa"
-import React from "react"
-import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
-import { formatAmountWithSymbol } from "../../../../utils/prices"
+import { LineItem } from "@medusajs/medusa";
+import React from "react";
+import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder";
+import { formatAmountWithSymbol } from "../../../../utils/prices";
 
 type OrderLineProps = {
-  item: LineItem
-  currencyCode: string
-}
+  item: LineItem;
+  currencyCode: string;
+};
 
 const OrderLine = ({ item, currencyCode }: OrderLineProps) => {
   return (
@@ -59,7 +59,7 @@ const OrderLine = ({ item, currencyCode }: OrderLineProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OrderLine
+export default OrderLine;

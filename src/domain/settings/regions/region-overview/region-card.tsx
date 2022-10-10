@@ -1,12 +1,12 @@
-import { Region } from "@medusajs/medusa"
-import React from "react"
-import RadioGroup from "../../../../components/organisms/radio-group"
-import fulfillmentProvidersMapper from "../../../../utils/fulfillment-providers.mapper"
-import paymentProvidersMapper from "../../../../utils/payment-providers-mapper"
+import { Region } from "@medusajs/medusa";
+import React from "react";
+import RadioGroup from "../../../../components/organisms/radio-group";
+import fulfillmentProvidersMapper from "../../../../utils/fulfillment-providers.mapper";
+import paymentProvidersMapper from "../../../../utils/payment-providers-mapper";
 
 type Props = {
-  region: Region
-}
+  region: Region;
+};
 
 const RegionCard = ({ region }: Props) => {
   return (
@@ -42,7 +42,7 @@ const RegionCard = ({ region }: Props) => {
         </p>
       </div>
     </RadioGroup.Item>
-  )
-}
+  );
+};
 
-export default RegionCard
+export default RegionCard;

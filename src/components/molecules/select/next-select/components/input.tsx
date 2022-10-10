@@ -1,7 +1,7 @@
-import clsx from "clsx"
-import React from "react"
-import { GroupBase, InputProps } from "react-select"
-import SelectPrimitives from "./select-primitives"
+import clsx from "clsx";
+import React from "react";
+import { GroupBase, InputProps } from "react-select";
+import SelectPrimitives from "./select-primitives";
 
 const Input = <
   Option,
@@ -10,7 +10,7 @@ const Input = <
 >(
   props: InputProps<Option, IsMulti, Group>
 ) => {
-  const { className, cx, value, inputClassName } = props
+  const { className, cx, value, inputClassName } = props;
 
   return (
     <div
@@ -31,7 +31,7 @@ const Input = <
         )}
       />
     </div>
-  )
-}
+  );
+};
 
-export default Input
+export default Input;

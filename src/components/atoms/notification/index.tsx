@@ -1,21 +1,21 @@
-import React from "react"
-import type { Toast } from "react-hot-toast"
-import { toast as global } from "react-hot-toast"
-import AlertIcon from "../../fundamentals/icons/alert-icon"
-import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
-import InfoIcon from "../../fundamentals/icons/info-icon"
-import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
-import ToasterContainer from "../toaster-container"
+import React from "react";
+import type { Toast } from "react-hot-toast";
+import { toast as global } from "react-hot-toast";
+import AlertIcon from "../../fundamentals/icons/alert-icon";
+import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon";
+import CrossIcon from "../../fundamentals/icons/cross-icon";
+import InfoIcon from "../../fundamentals/icons/info-icon";
+import XCircleIcon from "../../fundamentals/icons/x-circle-icon";
+import ToasterContainer from "../toaster-container";
 
-export type NotificationTypes = "success" | "warning" | "error" | "info"
+export type NotificationTypes = "success" | "warning" | "error" | "info";
 
 type NotificationProps = {
-  toast: Toast
-  type: NotificationTypes
-  title: string
-  message: string
-}
+  toast: Toast;
+  type: NotificationTypes;
+  title: string;
+  message: string;
+};
 
 const Notification: React.FC<NotificationProps> = ({
   toast,
@@ -24,8 +24,8 @@ const Notification: React.FC<NotificationProps> = ({
   message,
 }) => {
   const onDismiss = () => {
-    global.dismiss(toast.id)
-  }
+    global.dismiss(toast.id);
+  };
 
   return (
     <ToasterContainer visible={toast.visible} className="w-[380px]">
@@ -41,22 +41,22 @@ const Notification: React.FC<NotificationProps> = ({
         <span className="sr-only">Close</span>
       </div>
     </ToasterContainer>
-  )
-}
+  );
+};
 
-const ICON_SIZE = 20
+const ICON_SIZE = 20;
 
 function getIcon(type: NotificationTypes) {
   switch (type) {
     case "success":
-      return <CheckCircleIcon size={ICON_SIZE} className="text-emerald-40" />
+      return <CheckCircleIcon size={ICON_SIZE} className="text-emerald-40" />;
     case "warning":
-      return <AlertIcon size={ICON_SIZE} className="text-orange-40" />
+      return <AlertIcon size={ICON_SIZE} className="text-orange-40" />;
     case "error":
-      return <XCircleIcon size={ICON_SIZE} className="text-rose-40" />
+      return <XCircleIcon size={ICON_SIZE} className="text-rose-40" />;
     default:
-      return <InfoIcon size={ICON_SIZE} className="text-grey-40" />
+      return <InfoIcon size={ICON_SIZE} className="text-grey-40" />;
   }
 }
 
-export default Notification
+export default Notification;

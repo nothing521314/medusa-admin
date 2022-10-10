@@ -1,36 +1,36 @@
-import { navigate } from "gatsby"
-import { useAdminCreateDraftOrder } from "../../../../medusa-react"
-import React from "react"
-import { LayeredModalContext } from "../../../components/molecules/modal/layered-modal"
+import { navigate } from "gatsby";
+import { useAdminCreateDraftOrder } from "../../../../medusa-react";
+import React from "react";
+import { LayeredModalContext } from "../../../components/molecules/modal/layered-modal";
 import SteppedModal, {
   SteppedContext,
-} from "../../../components/molecules/modal/stepped-modal"
-import useNotification from "../../../hooks/use-notification"
-import isNullishObject from "../../../utils/is-nullish-object"
-import { persistedPrice } from "../../../utils/prices"
-import Billing from "./components/billing-details"
-import Items from "./components/items"
-import SelectRegionScreen from "./components/select-region"
-import SelectShippingMethod from "./components/select-shipping"
-import ShippingDetails from "./components/shipping-details"
-import Summary from "./components/summary"
-import { useNewOrderForm } from "./form"
+} from "../../../components/molecules/modal/stepped-modal";
+import useNotification from "../../../hooks/use-notification";
+import isNullishObject from "../../../utils/is-nullish-object";
+import { persistedPrice } from "../../../utils/prices";
+import Billing from "./components/billing-details";
+import Items from "./components/items";
+import SelectRegionScreen from "./components/select-region";
+import SelectShippingMethod from "./components/select-shipping";
+import ShippingDetails from "./components/shipping-details";
+import Summary from "./components/summary";
+import { useNewOrderForm } from "./form";
 
 type NewOrderProps = {
-  onDismiss: () => void
-}
+  onDismiss: () => void;
+};
 
 const NewOrder = ({ onDismiss }: NewOrderProps) => {
-  const steppedContext = React.useContext(SteppedContext)
-  const layeredContext = React.useContext(LayeredModalContext)
+  const steppedContext = React.useContext(SteppedContext);
+  const layeredContext = React.useContext(LayeredModalContext);
 
-  const notification = useNotification()
-  const { mutate } = useAdminCreateDraftOrder()
+  const notification = useNotification();
+  const { mutate } = useAdminCreateDraftOrder();
 
   const {
     form: { handleSubmit, reset },
     context: { region },
-  } = useNewOrderForm()
+  } = useNewOrderForm();
 
   const onSubmit = handleSubmit((data) => {
     mutate(
@@ -41,13 +41,13 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
             return {
               quantity: i.quantity,
               variant_id: i.variant_id,
-            }
+            };
           } else {
             return {
               quantity: i.quantity,
               title: i.title,
               unit_price: i.unit_price,
-            }
+            };
           }
         }),
         region_id: data.region.value,
@@ -101,17 +101,17 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
       },
       {
         onSuccess: ({ draft_order }) => {
-          notification("Success", "Order created", "success")
-          reset()
-          onDismiss()
-          navigate(`/a/draft-orders/${draft_order.id}`)
+          notification("Success", "Order created", "success");
+          reset();
+          onDismiss();
+          navigate(`/a/draft-orders/${draft_order.id}`);
         },
         onError: (error) => {
-          notification("Error", error.message, "error")
+          notification("Error", error.message, "error");
         },
       }
-    )
-  })
+    );
+  });
 
   return (
     <SteppedModal
@@ -130,7 +130,7 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
       title={"Create Draft Order"}
       handleClose={onDismiss}
     />
-  )
-}
+  );
+};
 
-export default NewOrder
+export default NewOrder;

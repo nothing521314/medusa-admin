@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import BellIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import BellIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/BellIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof BellIcon>
+} as ComponentMeta<typeof BellIcon>;
 
-const Template = args => <BellIcon {...args} />
+const Template = (args) => <BellIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

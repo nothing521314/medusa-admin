@@ -1,45 +1,45 @@
-import clsx from "clsx"
-import React from "react"
-import { useWatch } from "react-hook-form"
-import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
+import clsx from "clsx";
+import React from "react";
+import { useWatch } from "react-hook-form";
+import CheckIcon from "../../../../components/fundamentals/icons/check-icon";
 import AddressForm, {
   AddressType,
-} from "../../../../components/templates/address-form"
-import isNullishObject from "../../../../utils/is-nullish-object"
-import { nestedForm } from "../../../../utils/nested-form"
-import { useNewOrderForm } from "../form"
+} from "../../../../components/templates/address-form";
+import isNullishObject from "../../../../utils/is-nullish-object";
+import { nestedForm } from "../../../../utils/nested-form";
+import { useNewOrderForm } from "../form";
 
 const Billing = () => {
   const {
     context: { validCountries },
     form,
-  } = useNewOrderForm()
+  } = useNewOrderForm();
   const shippingAddress = useWatch({
     control: form.control,
     name: "shipping_address",
-  })
+  });
 
   const shippingAddressId = useWatch({
     control: form.control,
     name: "shipping_address_id",
-  })
+  });
 
   const sameAsShipping = useWatch({
     control: form.control,
     name: "same_as_shipping",
-  })
+  });
 
   const updateSameAsShipping = () => {
     if (!sameAsShipping) {
-      form.setValue("billing_address", shippingAddress)
-      form.setValue("billing_address_id", shippingAddressId)
+      form.setValue("billing_address", shippingAddress);
+      form.setValue("billing_address_id", shippingAddressId);
     } else {
-      form.resetField("billing_address")
-      form.resetField("billing_address_id")
+      form.resetField("billing_address");
+      form.resetField("billing_address_id");
     }
 
-    form.setValue("same_as_shipping", !sameAsShipping)
-  }
+    form.setValue("same_as_shipping", !sameAsShipping);
+  };
 
   return (
     <div className="min-h-[705px]">
@@ -78,7 +78,7 @@ const Billing = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Billing
+export default Billing;

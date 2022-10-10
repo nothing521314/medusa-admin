@@ -1,22 +1,22 @@
-import { Region } from "@medusajs/medusa"
-import { useAdminShippingOptions } from "../../../../../../medusa-react"
-import React from "react"
-import Section from "../../../../../components/organisms/section"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import ShippingOptionCard from "../../components/shipping-option-card"
-import CreateReturnShippingOptionModal from "./create-return-shipping-option.modal"
+import { Region } from "@medusajs/medusa";
+import { useAdminShippingOptions } from "../../../../../../medusa-react";
+import React from "react";
+import Section from "../../../../../components/organisms/section";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import ShippingOptionCard from "../../components/shipping-option-card";
+import CreateReturnShippingOptionModal from "./create-return-shipping-option.modal";
 
 type Props = {
-  region: Region
-}
+  region: Region;
+};
 
 const ReturnShippingOptions = ({ region }: Props) => {
   const { shipping_options: returnShippingOptions } = useAdminShippingOptions({
     region_id: region.id,
     is_return: true,
-  })
+  });
 
-  const { state, toggle, close } = useToggleState()
+  const { state, toggle, close } = useToggleState();
 
   return (
     <>
@@ -35,7 +35,7 @@ const ReturnShippingOptions = ({ region }: Props) => {
           </p>
           <div className="flex flex-col gap-y-small">
             {returnShippingOptions?.map((option) => {
-              return <ShippingOptionCard option={option} key={option.id} />
+              return <ShippingOptionCard option={option} key={option.id} />;
             })}
           </div>
         </div>
@@ -46,7 +46,7 @@ const ReturnShippingOptions = ({ region }: Props) => {
         region={region}
       />
     </>
-  )
-}
+  );
+};
 
-export default ReturnShippingOptions
+export default ReturnShippingOptions;

@@ -1,16 +1,16 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
-import * as React from "react"
-import EditDenominationsModal from "."
-import Button from "../../fundamentals/button"
-import { v4 as uuidv4 } from "uuid"
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import * as React from "react";
+import EditDenominationsModal from ".";
+import Button from "../../fundamentals/button";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   title: "Organisms/EditDenominationModal",
   component: EditDenominationsModal,
-} as ComponentMeta<typeof EditDenominationsModal>
+} as ComponentMeta<typeof EditDenominationsModal>;
 
 const Template: ComponentStory<typeof EditDenominationsModal> = (args) => {
-  const [isOpen, setOpen] = React.useState(false)
+  const [isOpen, setOpen] = React.useState(false);
 
   return (
     <>
@@ -21,12 +21,12 @@ const Template: ComponentStory<typeof EditDenominationsModal> = (args) => {
         <EditDenominationsModal {...args} handleClose={() => setOpen(false)} />
       )}
     </>
-  )
-}
+  );
+};
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
   denominations: [],
   onSubmit: console.log,
   currencyCodes: ["USD", "EUR", "GBP", "DKK", "NOK", "SEK"],
-}
+};

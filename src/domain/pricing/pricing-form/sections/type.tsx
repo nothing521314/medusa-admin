@@ -1,12 +1,12 @@
-import React from "react"
-import { Controller } from "react-hook-form"
-import Accordion from "../../../../components/organisms/accordion"
-import RadioGroup from "../../../../components/organisms/radio-group"
-import { usePriceListForm } from "../form/pricing-form-context"
-import { PriceListType } from "../types"
+import React from "react";
+import { Controller } from "react-hook-form";
+import Accordion from "../../../../components/organisms/accordion";
+import RadioGroup from "../../../../components/organisms/radio-group";
+import { usePriceListForm } from "../form/pricing-form-context";
+import { PriceListType } from "../types";
 
 const Type = () => {
-  const { control } = usePriceListForm()
+  const { control } = usePriceListForm();
 
   return (
     <Accordion.Item
@@ -41,11 +41,11 @@ const Type = () => {
                 description="Use this to override prices."
               />
             </RadioGroup.Root>
-          )
+          );
         }}
       />
     </Accordion.Item>
-  )
-}
+  );
+};
 
-export default Type
+export default Type;

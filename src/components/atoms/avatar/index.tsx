@@ -1,31 +1,31 @@
-import React from "react"
-import * as RadixAvatar from "@radix-ui/react-avatar"
-import clsx from "clsx"
+import React from "react";
+import * as RadixAvatar from "@radix-ui/react-avatar";
+import clsx from "clsx";
 
 type AvatarProps = {
   user?: {
-    img?: string
-    first_name?: string
-    last_name?: string
-    email: string
-  }
-  font?: string
-  color?: string
-}
+    img?: string;
+    first_name?: string;
+    last_name?: string;
+    email: string;
+  };
+  font?: string;
+  color?: string;
+};
 
 const Avatar: React.FC<AvatarProps> = ({
   user,
   font = "inter-small-semibold",
   color = "bg-violet-60",
 }) => {
-  let username: string
+  let username: string;
 
   if (user?.first_name && user?.last_name) {
-    username = user.first_name + " " + user.last_name
+    username = user.first_name + " " + user.last_name;
   } else if (user?.email) {
-    username = user.email
+    username = user.email;
   } else {
-    username = "Medusa user"
+    username = "Medusa user";
   }
 
   return (
@@ -49,7 +49,7 @@ const Avatar: React.FC<AvatarProps> = ({
         {username.slice(0, 1).toUpperCase()}
       </RadixAvatar.Fallback>
     </RadixAvatar.Root>
-  )
-}
+  );
+};
 
-export default Avatar
+export default Avatar;

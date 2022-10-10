@@ -1,47 +1,47 @@
-import { Product } from "@medusajs/medusa"
+import { Product } from "@medusajs/medusa";
 import {
   useAdminCreateProductOption,
   useAdminDeleteProductOption,
   useAdminUpdateProductOption,
-} from "../../../../../../medusa-react"
-import React, { useEffect, useMemo } from "react"
-import { useFieldArray, useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
-import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
-import InputField from "../../../../../components/molecules/input"
-import Modal from "../../../../../components/molecules/modal"
-import useNotification from "../../../../../hooks/use-notification"
-import FormValidator from "../../../../../utils/form-validator"
-import { useOptionsContext } from "./options-provider"
+} from "../../../../../../medusa-react";
+import React, { useEffect, useMemo } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import Button from "../../../../../components/fundamentals/button";
+import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon";
+import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon";
+import InputField from "../../../../../components/molecules/input";
+import Modal from "../../../../../components/molecules/modal";
+import useNotification from "../../../../../hooks/use-notification";
+import FormValidator from "../../../../../utils/form-validator";
+import { useOptionsContext } from "./options-provider";
 
 type Props = {
-  product: Product
-  open: boolean
-  onClose: () => void
-}
+  product: Product;
+  open: boolean;
+  onClose: () => void;
+};
 
 type Option = {
-  id: string | null
-  title: string
-}
+  id: string | null;
+  title: string;
+};
 
 type OptionsForm = {
-  options: Option[]
-}
+  options: Option[];
+};
 
 const OptionsModal = ({ product, open, onClose }: Props) => {
   const { mutate: update, isLoading: updating } = useAdminUpdateProductOption(
     product.id
-  )
+  );
   const { mutate: create, isLoading: creating } = useAdminCreateProductOption(
     product.id
-  )
+  );
   const { mutate: del, isLoading: deleting } = useAdminDeleteProductOption(
     product.id
-  )
+  );
 
-  const { refetch } = useOptionsContext()
+  const { refetch } = useOptionsContext();
 
   const {
     control,
@@ -51,49 +51,49 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
     formState: { isDirty, errors },
   } = useForm<OptionsForm>({
     defaultValues: getDefaultValues(product),
-  })
+  });
 
   const { fields, remove, append } = useFieldArray({
     name: "options",
     control,
     shouldUnregister: true,
-  })
+  });
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   useEffect(() => {
-    reset(getDefaultValues(product))
-  }, [product])
+    reset(getDefaultValues(product));
+  }, [product]);
 
   const handleClose = () => {
-    reset(getDefaultValues(product))
-    onClose()
-  }
+    reset(getDefaultValues(product));
+    onClose();
+  };
 
   const handleAddAnOption = () => {
-    append({ title: "", id: null })
-  }
+    append({ title: "", id: null });
+  };
 
   const isSubmitting = useMemo(() => {
-    return updating || creating || deleting
-  }, [updating, creating, deleting])
+    return updating || creating || deleting;
+  }, [updating, creating, deleting]);
 
   const onSubmit = handleSubmit((data) => {
-    const errors: string[] = []
+    const errors: string[] = [];
 
-    const toCreate: Option[] = []
-    const toUpdate: Option[] = []
+    const toCreate: Option[] = [];
+    const toUpdate: Option[] = [];
     const toDelete: Option[] = product.options.filter(
       (o) => data.options.find((d) => d.id === o.id) === undefined
-    )
+    );
 
     data.options.forEach((option) => {
       if (option.id) {
-        toUpdate.push(option)
+        toUpdate.push(option);
       } else {
-        toCreate.push(option)
+        toCreate.push(option);
       }
-    })
+    });
 
     toCreate.forEach((option) => {
       create(
@@ -102,14 +102,14 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
         },
         {
           onError: () => {
-            errors.push(`create ${option.title}`)
+            errors.push(`create ${option.title}`);
           },
           onSuccess: () => {
-            refetch()
+            refetch();
           },
         }
-      )
-    })
+      );
+    });
 
     toUpdate.forEach((option) => {
       update(
@@ -119,29 +119,29 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
         },
         {
           onError: () => {
-            errors.push(`update ${option.title}`)
+            errors.push(`update ${option.title}`);
           },
           onSuccess: () => {
-            refetch()
+            refetch();
           },
         }
-      )
-    })
+      );
+    });
 
     toDelete.forEach((option) => {
       del(option.id!, {
         onError: () => {
-          errors.push(`delete ${option.title}`)
+          errors.push(`delete ${option.title}`);
         },
         onSuccess: () => {
-          refetch()
+          refetch();
         },
-      })
-    })
+      });
+    });
 
     if (errors.length === toCreate.length + toUpdate.length + toDelete.length) {
-      notification("Error", "Failed to update product options", "error")
-      return
+      notification("Error", "Failed to update product options", "error");
+      return;
     }
 
     if (errors.length > 0) {
@@ -149,13 +149,13 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
         "Warning",
         "Failed to; " + errors.join(", ") + ".",
         "warning"
-      )
+      );
     }
 
-    refetch()
-    notification("Success", "Successfully updated product options", "success")
-    handleClose()
-  })
+    refetch();
+    notification("Success", "Successfully updated product options", "success");
+    handleClose();
+  });
 
   return (
     <Modal open={open} handleClose={handleClose}>
@@ -196,7 +196,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
                         <TrashIcon className="text-grey-40" size="20" />
                       </Button>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </div>
@@ -228,8 +228,8 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const getDefaultValues = (product: Product) => {
   return {
@@ -237,7 +237,7 @@ const getDefaultValues = (product: Product) => {
       title: option.title,
       id: option.id,
     })),
-  }
-}
+  };
+};
 
-export default OptionsModal
+export default OptionsModal;

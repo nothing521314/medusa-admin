@@ -1,15 +1,15 @@
-import clsx from "clsx"
-import React from "react"
+import clsx from "clsx";
+import React from "react";
 import {
   ClearIndicatorProps,
   ControlProps,
   DropdownIndicatorProps,
   GroupBase,
   LoadingIndicatorProps,
-} from "react-select"
-import Spinner from "../../../../atoms/spinner"
-import ChevronDownIcon from "../../../../fundamentals/icons/chevron-down"
-import XCircleIcon from "../../../../fundamentals/icons/x-circle-icon"
+} from "react-select";
+import Spinner from "../../../../atoms/spinner";
+import ChevronDownIcon from "../../../../fundamentals/icons/chevron-down";
+import XCircleIcon from "../../../../fundamentals/icons/x-circle-icon";
 
 const Control = <
   Option,
@@ -50,10 +50,10 @@ const Control = <
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default Control
+export default Control;
 
 export const DropdownIndicator = <
   Option,
@@ -85,8 +85,8 @@ export const DropdownIndicator = <
     >
       {children || <ChevronDownIcon size={16} />}
     </div>
-  )
-}
+  );
+};
 
 export const LoadingIndicator = <
   Option,
@@ -110,8 +110,8 @@ export const LoadingIndicator = <
     >
       <Spinner size="small" variant="secondary" />
     </div>
-  )
-}
+  );
+};
 
 export const ClearIndicator = <
   Option,
@@ -138,5 +138,5 @@ export const ClearIndicator = <
     >
       {children || <XCircleIcon size={16} />}
     </div>
-  )
-}
+  );
+};

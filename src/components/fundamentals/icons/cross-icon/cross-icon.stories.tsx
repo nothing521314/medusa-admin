@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import CrossIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import CrossIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/CrossIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof CrossIcon>
+} as ComponentMeta<typeof CrossIcon>;
 
-const Template = args => <CrossIcon {...args} />
+const Template = (args) => <CrossIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

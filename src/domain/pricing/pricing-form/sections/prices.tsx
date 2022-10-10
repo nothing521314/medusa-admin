@@ -1,19 +1,19 @@
-import { Product } from "@medusajs/medusa"
-import { useAdminPriceListProducts } from "../../../../../medusa-react"
-import * as React from "react"
-import Accordion from "../../../../components/organisms/accordion"
-import { merge } from "../../details/sections/prices-details/utils"
-import ProductPrices from "./product-prices"
+import { Product } from "@medusajs/medusa";
+import { useAdminPriceListProducts } from "../../../../../medusa-react";
+import * as React from "react";
+import Accordion from "../../../../components/organisms/accordion";
+import { merge } from "../../details/sections/prices-details/utils";
+import ProductPrices from "./product-prices";
 
 type PricesSectionProps = {
-  isEdit?: boolean
-  id?: string
-}
+  isEdit?: boolean;
+  id?: string;
+};
 
 const defaultQueryFilters = {
   limit: 50,
   offset: 0,
-}
+};
 
 const PricesSection = ({ isEdit = false, id }: PricesSectionProps) => {
   const { products = [], isLoading } = useAdminPriceListProducts(
@@ -22,10 +22,10 @@ const PricesSection = ({ isEdit = false, id }: PricesSectionProps) => {
     {
       enabled: isEdit,
     }
-  )
+  );
 
-  const [selectedProducts, setSelectedProducts] = React.useState<Product[]>([])
-  const mergedProducts = merge(products, selectedProducts)
+  const [selectedProducts, setSelectedProducts] = React.useState<Product[]>([]);
+  const mergedProducts = merge(products, selectedProducts);
 
   return (
     <Accordion.Item
@@ -43,7 +43,7 @@ const PricesSection = ({ isEdit = false, id }: PricesSectionProps) => {
         onFileChosen={console.log}
       />
     </Accordion.Item>
-  )
-}
+  );
+};
 
-export default PricesSection
+export default PricesSection;

@@ -1,37 +1,37 @@
-import clsx from "clsx"
-import React, { ChangeEvent, useImperativeHandle } from "react"
-import CheckIcon from "../../fundamentals/icons/check-icon"
+import clsx from "clsx";
+import React, { ChangeEvent, useImperativeHandle } from "react";
+import CheckIcon from "../../fundamentals/icons/check-icon";
 
 type IndeterminateCheckboxProps = {
-  onChange?: (e: ChangeEvent) => void
-  checked?: boolean
-  title?: string
-  indeterminate?: boolean
-  className?: React.HTMLAttributes<HTMLInputElement>["className"]
-}
+  onChange?: (e: ChangeEvent) => void;
+  checked?: boolean;
+  title?: string;
+  indeterminate?: boolean;
+  className?: React.HTMLAttributes<HTMLInputElement>["className"];
+};
 
 const IndeterminateCheckbox = React.forwardRef<
   HTMLInputElement,
   IndeterminateCheckboxProps
 >(({ indeterminate = false, className, checked, ...rest }, ref) => {
-  const innerRef = React.useRef<HTMLInputElement | null>(null)
+  const innerRef = React.useRef<HTMLInputElement | null>(null);
 
   useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
     ref,
     () => innerRef.current
-  )
+  );
 
   React.useEffect(() => {
     if (innerRef.current) {
-      innerRef.current.indeterminate = indeterminate
+      innerRef.current.indeterminate = indeterminate;
     }
-  }, [innerRef, indeterminate])
+  }, [innerRef, indeterminate]);
 
   const handleClick = () => {
     if (innerRef.current) {
-      innerRef.current.click()
+      innerRef.current.click();
     }
-  }
+  };
 
   return (
     <div className="items-center h-full flex">
@@ -53,7 +53,7 @@ const IndeterminateCheckbox = React.forwardRef<
         {...rest}
       />
     </div>
-  )
-})
+  );
+});
 
-export default IndeterminateCheckbox
+export default IndeterminateCheckbox;

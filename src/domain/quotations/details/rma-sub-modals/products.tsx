@@ -1,61 +1,61 @@
-import { useAdminVariants } from "../../../../../medusa-react"
-import React, { useContext, useEffect, useMemo, useState } from "react"
-import { usePagination, useRowSelect, useTable } from "react-table"
-import Spinner from "../../../../components/atoms/spinner"
-import Button from "../../../../components/fundamentals/button"
-import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
-import StatusIndicator from "../../../../components/fundamentals/status-indicator"
-import IndeterminateCheckbox from "../../../../components/molecules/indeterminate-checkbox"
-import Modal from "../../../../components/molecules/modal"
-import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal"
-import Table, { TablePagination } from "../../../../components/molecules/table"
-import { useDebounce } from "../../../../hooks/use-debounce"
+import { useAdminVariants } from "../../../../../medusa-react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { usePagination, useRowSelect, useTable } from "react-table";
+import Spinner from "../../../../components/atoms/spinner";
+import Button from "../../../../components/fundamentals/button";
+import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder";
+import StatusIndicator from "../../../../components/fundamentals/status-indicator";
+import IndeterminateCheckbox from "../../../../components/molecules/indeterminate-checkbox";
+import Modal from "../../../../components/molecules/modal";
+import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal";
+import Table, { TablePagination } from "../../../../components/molecules/table";
+import { useDebounce } from "../../../../hooks/use-debounce";
 
 const getProductStatusVariant = (status) => {
   switch (status) {
     case "proposed":
-      return "warning"
+      return "warning";
     case "published":
-      return "success"
+      return "success";
     case "rejected":
-      return "danger"
+      return "danger";
     case "draft":
     default:
-      return "default"
+      return "default";
   }
-}
+};
 
 type RMASelectProductSubModalProps = {
-  onSubmit: (selectItems) => void
-  selectedItems?: any
-}
+  onSubmit: (selectItems) => void;
+  selectedItems?: any;
+};
 
 const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
   onSubmit,
   selectedItems,
 }) => {
-  const PAGE_SIZE = 12
-  const { pop } = useContext(LayeredModalContext)
-  const [query, setQuery] = useState("")
-  const [offset, setOffset] = useState(0)
-  const [numPages, setNumPages] = useState(0)
-  const [currentPage, setCurrentPage] = useState(0)
+  const PAGE_SIZE = 12;
+  const { pop } = useContext(LayeredModalContext);
+  const [query, setQuery] = useState("");
+  const [offset, setOffset] = useState(0);
+  const [numPages, setNumPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const [selectedVariants, setSelectedVariants] = useState<any[]>([])
+  const [selectedVariants, setSelectedVariants] = useState<any[]>([]);
 
-  const debouncedSearchTerm = useDebounce(query, 500)
+  const debouncedSearchTerm = useDebounce(query, 500);
 
   const { isLoading, count, variants } = useAdminVariants({
     q: debouncedSearchTerm,
     limit: PAGE_SIZE,
     offset,
-  })
+  });
 
   useEffect(() => {
     if (typeof count !== "undefined") {
-      setNumPages(Math.ceil(count / PAGE_SIZE))
+      setNumPages(Math.ceil(count / PAGE_SIZE));
     }
-  }, [count])
+  }, [count]);
 
   const columns = useMemo(() => {
     return [
@@ -80,7 +80,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
                 {original.title}
               </div>
             </div>
-          )
+          );
         },
       },
       {
@@ -102,8 +102,8 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
           <div className="text-right">{original.inventory_quantity}</div>
         ),
       },
-    ]
-  }, [])
+    ];
+  }, []);
 
   const {
     getTableProps,
@@ -126,8 +126,8 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
         pageIndex: currentPage,
         pageSize: PAGE_SIZE,
         selectedRowIds: selectedItems.reduce((prev, { id }) => {
-          prev[id] = true
-          return prev
+          prev[id] = true;
+          return prev;
         }, {}),
       },
       pageCount: numPages,
@@ -149,7 +149,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
               <div>
                 <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
               </div>
-            )
+            );
           },
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
@@ -158,13 +158,13 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
               <div>
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </div>
-            )
+            );
           },
         },
         ...columns,
-      ])
+      ]);
     }
-  )
+  );
 
   useEffect(() => {
     setSelectedVariants((selectedVariants) => [
@@ -176,35 +176,35 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
           selectedVariants.findIndex((sv) => sv.id === v.id) < 0 &&
           Object.keys(selectedRowIds).findIndex((id) => id === v.id) > -1
       ) || []),
-    ])
-  }, [selectedRowIds])
+    ]);
+  }, [selectedRowIds]);
 
   const handleNext = () => {
     if (canNextPage) {
-      setOffset((old) => old + pageSize)
-      setCurrentPage((old) => old + 1)
-      nextPage()
+      setOffset((old) => old + pageSize);
+      setCurrentPage((old) => old + 1);
+      nextPage();
     }
-  }
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      setOffset((old) => Math.max(old - pageSize, 0))
-      setCurrentPage((old) => old - 1)
-      previousPage()
+      setOffset((old) => Math.max(old - pageSize, 0));
+      setCurrentPage((old) => old - 1);
+      previousPage();
     }
-  }
+  };
 
   const handleSearch = (q) => {
-    setOffset(0)
-    setCurrentPage(0)
-    setQuery(q)
-  }
+    setOffset(0);
+    setCurrentPage(0);
+    setQuery(q);
+  };
 
   const handleSubmit = () => {
-    onSubmit(selectedVariants)
-    pop()
-  }
+    onSubmit(selectedVariants);
+    pop();
+  };
 
   return (
     <>
@@ -222,7 +222,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
                 <Spinner size="large" />
               ) : (
                 rows.map((row, i) => {
-                  prepareRow(row)
+                  prepareRow(row);
                   return (
                     <Table.Row {...row.getRowProps()}>
                       {row.cells.map((cell) => {
@@ -230,10 +230,10 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
                           <Table.Cell {...cell.getCellProps()}>
                             {cell.render("Cell")}
                           </Table.Cell>
-                        )
+                        );
                       })}
                     </Table.Row>
-                  )
+                  );
                 })
               )}
             </Table.Body>
@@ -274,7 +274,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
         </div>
       </Modal.Footer>
     </>
-  )
-}
+  );
+};
 
-export default RMASelectProductSubModal
+export default RMASelectProductSubModal;

@@ -1,26 +1,29 @@
-import { Region } from "@medusajs/medusa"
-import { useAdminStoreTaxProviders, useAdminUpdateRegion } from "../../../../medusa-react"
-import React, { useEffect, useMemo } from "react"
-import { Controller, useForm } from "react-hook-form"
-import Checkbox from "../../../components/atoms/checkbox"
-import Button from "../../../components/fundamentals/button"
-import IconTooltip from "../../../components/molecules/icon-tooltip"
-import Select from "../../../components/molecules/select"
-import useNotification from "../../../hooks/use-notification"
-import { Option } from "../../../types/shared"
-import { getErrorMessage } from "../../../utils/error-messages"
+import { Region } from "@medusajs/medusa";
+import {
+  useAdminStoreTaxProviders,
+  useAdminUpdateRegion,
+} from "../../../../medusa-react";
+import React, { useEffect, useMemo } from "react";
+import { Controller, useForm } from "react-hook-form";
+import Checkbox from "../../../components/atoms/checkbox";
+import Button from "../../../components/fundamentals/button";
+import IconTooltip from "../../../components/molecules/icon-tooltip";
+import Select from "../../../components/molecules/select";
+import useNotification from "../../../hooks/use-notification";
+import { Option } from "../../../types/shared";
+import { getErrorMessage } from "../../../utils/error-messages";
 
 type RegionTaxFormProps = {
-  region: Region
-}
+  region: Region;
+};
 
-type TaxProviderOption = Option | { label: string; value: null }
+type TaxProviderOption = Option | { label: string; value: null };
 
 type RegionTaxFormData = {
-  automatic_taxes: boolean
-  gift_cards_taxable: boolean
-  tax_provider_id: TaxProviderOption
-}
+  automatic_taxes: boolean;
+  gift_cards_taxable: boolean;
+  tax_provider_id: TaxProviderOption;
+};
 
 export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
   const {
@@ -41,8 +44,8 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
         value: region.tax_provider_id,
       },
     },
-  })
-  const notification = useNotification()
+  });
+  const notification = useNotification();
 
   useEffect(() => {
     reset({
@@ -55,15 +58,15 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
             : region.tax_provider_id,
         value: region.tax_provider_id,
       },
-    })
-  }, [region])
+    });
+  }, [region]);
 
   const {
     isLoading: isProvidersLoading,
     tax_providers,
-  } = useAdminStoreTaxProviders()
+  } = useAdminStoreTaxProviders();
 
-  const updateRegion = useAdminUpdateRegion(region.id)
+  const updateRegion = useAdminUpdateRegion(region.id);
 
   const providerOptions = useMemo(() => {
     if (tax_providers) {
@@ -76,7 +79,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
           label: tp.id,
           value: tp.id,
         })),
-      ]
+      ];
     }
 
     return [
@@ -84,14 +87,14 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
         label: "System Tax Provider",
         value: null,
       },
-    ]
-  }, [tax_providers])
+    ];
+  }, [tax_providers]);
 
   const onSubmit = (data) => {
     const toSubmit = {
       ...data,
       tax_provider_id: data.tax_provider_id.value,
-    }
+    };
 
     updateRegion.mutate(toSubmit, {
       onSuccess: () => {
@@ -99,13 +102,13 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
           "Success",
           "Region tax settings were successfully updated.",
           "success"
-        )
+        );
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification("Error", getErrorMessage(error), "error");
       },
-    })
-  }
+    });
+  };
 
   return (
     <form className="flex flex-col flex-1" onSubmit={handleSubmit(onSubmit)}>
@@ -163,5 +166,5 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
         )}
       </div>
     </form>
-  )
-}
+  );
+};

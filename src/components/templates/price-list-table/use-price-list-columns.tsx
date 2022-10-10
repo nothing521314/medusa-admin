@@ -1,11 +1,11 @@
-import { PriceList } from "@medusajs/medusa"
-import { isArray } from "lodash"
-import React, { useMemo } from "react"
-import { Column } from "react-table"
-import Actionables from "../../molecules/actionables"
-import Table from "../../molecules/table"
-import usePriceListActions from "./use-price-list-actions"
-import { formatPriceListGroups, getPriceListStatus } from "./utils"
+import { PriceList } from "@medusajs/medusa";
+import { isArray } from "lodash";
+import React, { useMemo } from "react";
+import { Column } from "react-table";
+import Actionables from "../../molecules/actionables";
+import Table from "../../molecules/table";
+import usePriceListActions from "./use-price-list-actions";
+import { formatPriceListGroups, getPriceListStatus } from "./utils";
 
 export const usePriceListTableColumns = () => {
   const columns = useMemo<Column<PriceList>[]>(
@@ -37,20 +37,20 @@ export const usePriceListTableColumns = () => {
         Cell: ({ cell: { value } }) => {
           const groups: string[] = isArray(value)
             ? value.map((v) => v.name)
-            : []
-          const [group, other] = formatPriceListGroups(groups)
+            : [];
+          const [group, other] = formatPriceListGroups(groups);
           return (
             <Table.Cell>
               {group}
               {other && <span className="text-grey-40"> + {other} more</span>}
             </Table.Cell>
-          )
+          );
         },
       },
       {
         accessor: "created_at",
         Cell: ({ row: { original: priceList } }) => {
-          const { getActions } = usePriceListActions(priceList)
+          const { getActions } = usePriceListActions(priceList);
           return (
             <Table.Cell
               onClick={(e) => e.stopPropagation()}
@@ -60,12 +60,12 @@ export const usePriceListTableColumns = () => {
                 <Actionables forceDropdown actions={getActions()} />
               </div>
             </Table.Cell>
-          )
+          );
         },
       },
     ],
     []
-  )
+  );
 
-  return [columns] as const
-}
+  return [columns] as const;
+};

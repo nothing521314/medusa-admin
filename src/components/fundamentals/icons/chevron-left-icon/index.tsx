@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const ChevronLeftIcon: React.FC<IconProps> = ({
   size = "24",
@@ -23,7 +23,7 @@ const ChevronLeftIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default ChevronLeftIcon
+export default ChevronLeftIcon;

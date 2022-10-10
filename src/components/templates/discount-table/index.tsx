@@ -1,19 +1,19 @@
-import clsx from "clsx"
-import { isEmpty } from "lodash"
-import { useAdminDiscounts } from "../../../../medusa-react"
-import qs from "qs"
-import React, { useEffect, useState } from "react"
-import { usePagination, useTable } from "react-table"
-import Spinner from "../../atoms/spinner"
-import Table, { TablePagination } from "../../molecules/table"
-import DiscountFilters from "../discount-filter-dropdown"
-import { usePromotionTableColumns } from "./use-promotion-columns"
-import { usePromotionFilters } from "./use-promotion-filters"
-import usePromotionActions from "./use-promotion-row-actions"
+import clsx from "clsx";
+import { isEmpty } from "lodash";
+import { useAdminDiscounts } from "../../../../medusa-react";
+import qs from "qs";
+import React, { useEffect, useState } from "react";
+import { usePagination, useTable } from "react-table";
+import Spinner from "../../atoms/spinner";
+import Table, { TablePagination } from "../../molecules/table";
+import DiscountFilters from "../discount-filter-dropdown";
+import { usePromotionTableColumns } from "./use-promotion-columns";
+import { usePromotionFilters } from "./use-promotion-filters";
+import usePromotionActions from "./use-promotion-row-actions";
 
-const DEFAULT_PAGE_SIZE = 15
+const DEFAULT_PAGE_SIZE = 15;
 
-const defaultQueryProps = {}
+const defaultQueryProps = {};
 
 const DiscountTable: React.FC = () => {
   const {
@@ -29,30 +29,30 @@ const DiscountTable: React.FC = () => {
     setQuery: setFreeText,
     queryObject,
     representationObject,
-  } = usePromotionFilters(location.search, defaultQueryProps)
+  } = usePromotionFilters(location.search, defaultQueryProps);
 
-  const offs = parseInt(queryObject?.offset) || 0
-  const lim = parseInt(queryObject.limit) || DEFAULT_PAGE_SIZE
+  const offs = parseInt(queryObject?.offset) || 0;
+  const lim = parseInt(queryObject.limit) || DEFAULT_PAGE_SIZE;
 
   const { discounts, isLoading, count } = useAdminDiscounts({
     is_dynamic: false,
     expand: "rule,rule.conditions,rule.conditions.products",
     ...queryObject,
-  })
+  });
 
-  const [query, setQuery] = useState("")
-  const [numPages, setNumPages] = useState(0)
+  const [query, setQuery] = useState("");
+  const [numPages, setNumPages] = useState(0);
 
   useEffect(() => {
     if (count && queryObject.limit) {
-      const controlledPageCount = Math.ceil(count! / queryObject.limit)
+      const controlledPageCount = Math.ceil(count! / queryObject.limit);
       if (controlledPageCount !== numPages) {
-        setNumPages(controlledPageCount)
+        setNumPages(controlledPageCount);
       }
     }
-  }, [count, queryObject.limit])
+  }, [count, queryObject.limit]);
 
-  const [columns] = usePromotionTableColumns()
+  const [columns] = usePromotionTableColumns();
 
   const {
     getTableProps,
@@ -81,60 +81,60 @@ const DiscountTable: React.FC = () => {
       autoResetPage: false,
     },
     usePagination
-  )
+  );
 
   // Debounced search
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (query) {
-        setFreeText(query)
-        gotoPage(0)
+        setFreeText(query);
+        gotoPage(0);
       } else {
         // if we delete query string, we reset the table view
-        reset()
+        reset();
       }
-    }, 400)
+    }, 400);
 
-    return () => clearTimeout(delayDebounceFn)
-  }, [query])
+    return () => clearTimeout(delayDebounceFn);
+  }, [query]);
 
   const handleNext = () => {
     if (canNextPage) {
-      paginate(1)
-      nextPage()
+      paginate(1);
+      nextPage();
     }
-  }
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      paginate(-1)
-      previousPage()
+      paginate(-1);
+      previousPage();
     }
-  }
+  };
 
   const updateUrlFromFilter = (obj = {}) => {
-    const stringified = qs.stringify(obj)
-    window.history.replaceState(`/a/discounts`, "", `${`?${stringified}`}`)
-  }
+    const stringified = qs.stringify(obj);
+    window.history.replaceState(`/a/discounts`, "", `${`?${stringified}`}`);
+  };
 
   const refreshWithFilters = () => {
-    const filterObj = representationObject
+    const filterObj = representationObject;
 
     if (isEmpty(filterObj)) {
-      updateUrlFromFilter({ offset: 0, limit: DEFAULT_PAGE_SIZE })
+      updateUrlFromFilter({ offset: 0, limit: DEFAULT_PAGE_SIZE });
     } else {
-      updateUrlFromFilter(filterObj)
+      updateUrlFromFilter(filterObj);
     }
-  }
+  };
 
   const clearFilters = () => {
-    reset()
-    setQuery("")
-  }
+    reset();
+    setQuery("");
+  };
 
   useEffect(() => {
-    refreshWithFilters()
-  }, [representationObject])
+    refreshWithFilters();
+  }, [representationObject]);
 
   return (
     <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full ">
@@ -178,8 +178,8 @@ const DiscountTable: React.FC = () => {
         ) : (
           <Table.Body {...getTableBodyProps()}>
             {rows.map((row, rowIndex) => {
-              prepareRow(row)
-              return <PromotionRow row={row} />
+              prepareRow(row);
+              return <PromotionRow row={row} />;
             })}
           </Table.Body>
         )}
@@ -198,13 +198,13 @@ const DiscountTable: React.FC = () => {
         hasPrev={canPreviousPage}
       />
     </div>
-  )
-}
+  );
+};
 
 const PromotionRow = ({ row }) => {
-  const promotion = row.original
+  const promotion = row.original;
 
-  const { getRowActions } = usePromotionActions(promotion)
+  const { getRowActions } = usePromotionActions(promotion);
 
   return (
     <Table.Row
@@ -215,10 +215,10 @@ const PromotionRow = ({ row }) => {
       className="group"
     >
       {row.cells.map((cell, index) => {
-        return cell.render("Cell", { index })
+        return cell.render("Cell", { index });
       })}
     </Table.Row>
-  )
-}
+  );
+};
 
-export default DiscountTable
+export default DiscountTable;

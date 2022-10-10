@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const CheckCircleFillIcon: React.FC<IconProps> = ({
   size = "24",
@@ -22,7 +22,7 @@ const CheckCircleFillIcon: React.FC<IconProps> = ({
         fill={color}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default CheckCircleFillIcon
+export default CheckCircleFillIcon;

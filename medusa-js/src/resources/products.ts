@@ -4,14 +4,14 @@ import {
   StorePostSearchRes,
   StoreProductsListRes,
   StoreProductsRes,
-} from "@medusajs/medusa"
-import qs from "qs"
-import { ResponsePromise } from "../typings"
-import BaseResource from "./base"
-import ProductVariantsResource from "./product-variants"
+} from "@medusajs/medusa";
+import qs from "qs";
+import { ResponsePromise } from "../typings";
+import BaseResource from "./base";
+import ProductVariantsResource from "./product-variants";
 
 class ProductsResource extends BaseResource {
-  public variants = new ProductVariantsResource(this.client)
+  public variants = new ProductVariantsResource(this.client);
 
   /**
    * @description Retrieves a single Product
@@ -23,8 +23,8 @@ class ProductsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreProductsRes> {
-    const path = `/store/products/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/store/products/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -37,8 +37,8 @@ class ProductsResource extends BaseResource {
     searchOptions: StorePostSearchReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StorePostSearchRes> {
-    const path = `/store/products/search`
-    return this.client.request("POST", path, searchOptions, {}, customHeaders)
+    const path = `/store/products/search`;
+    return this.client.request("POST", path, searchOptions, {}, customHeaders);
   }
 
   /**
@@ -51,15 +51,15 @@ class ProductsResource extends BaseResource {
     query?: StoreGetProductsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreProductsListRes> {
-    let path = `/store/products`
+    let path = `/store/products`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/store/products?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/store/products?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 }
 
-export default ProductsResource
+export default ProductsResource;

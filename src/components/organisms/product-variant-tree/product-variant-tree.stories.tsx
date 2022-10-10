@@ -1,29 +1,29 @@
-import { Product } from "@medusajs/medusa"
-import { ComponentMeta, ComponentStory } from "@storybook/react"
-import React from "react"
-import ProductVariantTree from "."
+import { Product } from "@medusajs/medusa";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import React from "react";
+import ProductVariantTree from ".";
 
 export default {
   title: "Organisms/ProductVariantTree",
   component: ProductVariantTree,
-} as ComponentMeta<typeof ProductVariantTree>
+} as ComponentMeta<typeof ProductVariantTree>;
 
 const Template: ComponentStory<typeof ProductVariantTree> = (args) => (
   <div className="max-w-md">
     <ProductVariantTree {...args} />
   </div>
-)
+);
 const testProduct: Pick<Product, "title" | "id" | "thumbnail"> & {
   variants: {
-    id: string
-    title: string
-    sku: string
+    id: string;
+    title: string;
+    sku: string;
     prices: {
-      id: string
-      currency_code: string
-      amount: number
-    }[]
-  }[]
+      id: string;
+      currency_code: string;
+      amount: number;
+    }[];
+  }[];
 } = {
   id: "prod_01FY6FS3VB39G5GPB75S7RYQW6",
   title: "Medusa Sweatshirt",
@@ -88,9 +88,9 @@ const testProduct: Pick<Product, "title" | "id" | "thumbnail"> & {
       prices: [],
     },
   ],
-}
+};
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
   product: testProduct,
-}
+};

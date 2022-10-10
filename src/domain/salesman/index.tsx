@@ -1,15 +1,15 @@
-import { RouteComponentProps, Router } from "@reach/router"
-import React, { useState } from "react"
+import { RouteComponentProps, Router } from "@reach/router";
+import React, { useState } from "react";
 
-import BodyCard from "../../components/organisms/body-card"
-import CustomerTable from "../../components/templates/customer-table"
-import Details from "./details"
-import SalesmanPageTableHeader from "./header"
-import CreateSalesmanModal from "./create"
-import Button from "../../components/fundamentals/button"
+import BodyCard from "../../components/organisms/body-card";
+import CustomerTable from "../../components/templates/customer-table";
+import Details from "./details";
+import SalesmanPageTableHeader from "./header";
+import CreateSalesmanModal from "./create";
+import Button from "../../components/fundamentals/button";
 
 const SalesmanIndex: React.FC<RouteComponentProps> = () => {
-  const [showCreate, setShowCreate] = useState(false)
+  const [showCreate, setShowCreate] = useState(false);
 
   return (
     <div>
@@ -35,8 +35,8 @@ const SalesmanIndex: React.FC<RouteComponentProps> = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Salesman = () => {
   return (
@@ -44,7 +44,7 @@ const Salesman = () => {
       <SalesmanIndex path="/" />
       <Details path=":id" />
     </Router>
-  )
-}
+  );
+};
 
-export default Salesman
+export default Salesman;

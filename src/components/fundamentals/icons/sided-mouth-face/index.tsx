@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const SidedMouthFaceIcon: React.FC<IconProps> = ({
   size = "24",
@@ -43,9 +43,8 @@ const SidedMouthFaceIcon: React.FC<IconProps> = ({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-
     </svg>
-  )
-}
+  );
+};
 
-export default SidedMouthFaceIcon
+export default SidedMouthFaceIcon;

@@ -1,35 +1,38 @@
-import React from "react"
-import { navigate } from "gatsby"
-import { useAdminDeleteDiscount, useAdminUpdateDiscount } from "../../../../medusa-react"
-import useImperativeDialog from "../../../hooks/use-imperative-dialog"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
-import DuplicateIcon from "../../fundamentals/icons/duplicate-icon"
-import PublishIcon from "../../fundamentals/icons/publish-icon"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import UnpublishIcon from "../../fundamentals/icons/unpublish-icon"
-import EditIcon from "../../fundamentals/icons/edit-icon"
-import useCopyPromotion from "./use-copy-promotion"
+import React from "react";
+import { navigate } from "gatsby";
+import {
+  useAdminDeleteDiscount,
+  useAdminUpdateDiscount,
+} from "../../../../medusa-react";
+import useImperativeDialog from "../../../hooks/use-imperative-dialog";
+import useNotification from "../../../hooks/use-notification";
+import { getErrorMessage } from "../../../utils/error-messages";
+import DuplicateIcon from "../../fundamentals/icons/duplicate-icon";
+import PublishIcon from "../../fundamentals/icons/publish-icon";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import UnpublishIcon from "../../fundamentals/icons/unpublish-icon";
+import EditIcon from "../../fundamentals/icons/edit-icon";
+import useCopyPromotion from "./use-copy-promotion";
 
 const usePromotionActions = (promotion) => {
-  const notification = useNotification()
-  const dialog = useImperativeDialog()
+  const notification = useNotification();
+  const dialog = useImperativeDialog();
 
-  const copyPromotion = useCopyPromotion()
+  const copyPromotion = useCopyPromotion();
 
-  const updatePromotion = useAdminUpdateDiscount(promotion.id)
-  const deletePromotion = useAdminDeleteDiscount(promotion?.id)
+  const updatePromotion = useAdminUpdateDiscount(promotion.id);
+  const deletePromotion = useAdminDeleteDiscount(promotion?.id);
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
       heading: "Delete Discount",
       text: "Are you sure you want to delete this Discount?",
-    })
+    });
 
     if (shouldDelete) {
-      deletePromotion.mutate()
+      deletePromotion.mutate();
     }
-  }
+  };
 
   const getRowActions = () => {
     return [
@@ -58,12 +61,12 @@ const usePromotionActions = (promotion) => {
                     promotion.is_disabled ? "published" : "unpublished"
                   } discount`,
                   "success"
-                )
+                );
               },
               onError: (err) =>
                 notification("Error", getErrorMessage(err), "error"),
             }
-          )
+          );
         },
       },
       {
@@ -77,10 +80,10 @@ const usePromotionActions = (promotion) => {
         variant: "danger",
         onClick: handleDelete,
       },
-    ]
-  }
+    ];
+  };
 
-  return { getRowActions }
-}
+  return { getRowActions };
+};
 
-export default usePromotionActions
+export default usePromotionActions;

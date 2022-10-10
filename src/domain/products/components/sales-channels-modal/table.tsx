@@ -1,31 +1,31 @@
-import { SalesChannel } from "@medusajs/medusa"
-import clsx from "clsx"
-import React, { useMemo } from "react"
-import { TableInstance } from "react-table"
-import Button from "../../../../components/fundamentals/button"
-import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
-import IndeterminateCheckbox from "../../../../components/molecules/indeterminate-checkbox"
-import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal"
-import Table, { TablePagination } from "../../../../components/molecules/table"
-import { useAddChannelsModalScreen } from "./add-screen"
+import { SalesChannel } from "@medusajs/medusa";
+import clsx from "clsx";
+import React, { useMemo } from "react";
+import { TableInstance } from "react-table";
+import Button from "../../../../components/fundamentals/button";
+import PlusIcon from "../../../../components/fundamentals/icons/plus-icon";
+import IndeterminateCheckbox from "../../../../components/molecules/indeterminate-checkbox";
+import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal";
+import Table, { TablePagination } from "../../../../components/molecules/table";
+import { useAddChannelsModalScreen } from "./add-screen";
 
 type SalesChannelsTableProps = {
-  salesChannels: SalesChannel[]
-  count: number
-  limit: number
-  offset: number
-  setOffset: (offset: number) => void
-  setQuery: (query: string) => void
-  setSelectedRowIds?: (selectedRowIds: string[]) => void
-  tableAction?: React.ReactNode
-  tableState: TableInstance<SalesChannel>
-}
+  salesChannels: SalesChannel[];
+  count: number;
+  limit: number;
+  offset: number;
+  setOffset: (offset: number) => void;
+  setQuery: (query: string) => void;
+  setSelectedRowIds?: (selectedRowIds: string[]) => void;
+  tableAction?: React.ReactNode;
+  tableState: TableInstance<SalesChannel>;
+};
 
 type SalesChannelTableActionProps = {
-  numberOfSelectedRows: number
-  onDeselect: () => void
-  onRemove: () => void
-}
+  numberOfSelectedRows: number;
+  onDeselect: () => void;
+  onRemove: () => void;
+};
 
 export const useSalesChannelsTableColumns = () => {
   const columns = useMemo(
@@ -46,7 +46,7 @@ export const useSalesChannelsTableColumns = () => {
             >
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
             </span>
-          )
+          );
         },
       },
       {
@@ -59,10 +59,10 @@ export const useSalesChannelsTableColumns = () => {
       },
     ],
     []
-  )
+  );
 
-  return [columns] as const
-}
+  return [columns] as const;
+};
 
 const SalesChannelTable = ({
   salesChannels,
@@ -88,27 +88,27 @@ const SalesChannelTable = ({
     previousPage,
     // Get the state from the instance
     state: { pageIndex, ...state },
-  } = tableState
+  } = tableState;
 
   React.useEffect(() => {
     if (setSelectedRowIds) {
-      setSelectedRowIds(Object.keys(state.selectedRowIds))
+      setSelectedRowIds(Object.keys(state.selectedRowIds));
     }
-  }, [Object.keys(state.selectedRowIds).length])
+  }, [Object.keys(state.selectedRowIds).length]);
 
   const handleNext = () => {
     if (canNextPage) {
-      setOffset(offset + limit)
-      nextPage()
+      setOffset(offset + limit);
+      nextPage();
     }
-  }
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      setOffset(Math.max(offset - limit, 0))
-      previousPage()
+      setOffset(Math.max(offset - limit, 0));
+      previousPage();
     }
-  }
+  };
 
   return (
     <div className="min-h-[350px] flex flex-col justify-between">
@@ -131,7 +131,7 @@ const SalesChannelTable = ({
         </Table.Head>
         <Table.Body {...getTableBodyProps()}>
           {rows.map((row) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <Table.Row color={"inherit"} {...row.getRowProps()}>
                 {row.cells.map((cell) => {
@@ -139,10 +139,10 @@ const SalesChannelTable = ({
                     <Table.Cell {...cell.getCellProps()}>
                       {cell.render("Cell")}
                     </Table.Cell>
-                  )
+                  );
                 })}
               </Table.Row>
-            )
+            );
           })}
         </Table.Body>
       </Table>
@@ -160,24 +160,24 @@ const SalesChannelTable = ({
         hasPrev={canPreviousPage}
       />
     </div>
-  )
-}
+  );
+};
 
 export const SalesChannelTableActions = ({
   numberOfSelectedRows,
   onDeselect,
   onRemove,
 }: SalesChannelTableActionProps) => {
-  const addChannelModalScreen = useAddChannelsModalScreen()
+  const addChannelModalScreen = useAddChannelsModalScreen();
 
-  const showAddChannels = !!numberOfSelectedRows
+  const showAddChannels = !!numberOfSelectedRows;
 
   const classes = {
     "translate-y-[-42px]": !showAddChannels,
     "translate-y-[0px]": showAddChannels,
-  }
+  };
 
-  const { push } = React.useContext(LayeredModalContext)
+  const { push } = React.useContext(LayeredModalContext);
 
   return (
     <div className="flex space-x-xsmall h-[34px] overflow-hidden">
@@ -217,7 +217,7 @@ export const SalesChannelTableActions = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SalesChannelTable
+export default SalesChannelTable;

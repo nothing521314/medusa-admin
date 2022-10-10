@@ -1,22 +1,22 @@
-import { RouteComponentProps, useLocation } from "@reach/router"
-import clsx from "clsx"
-import { isEmpty } from "lodash"
-import { useAdminGiftCards } from "../../../../medusa-react"
-import qs from "qs"
-import React, { useEffect, useState } from "react"
-import { usePagination, useTable } from "react-table"
-import Spinner from "../../atoms/spinner"
-import Table, { TablePagination } from "../../molecules/table"
-import GiftCardFilters from "../gift-card-filter-dropdown"
-import useGiftCardTableColums from "./use-gift-card-column"
-import { useGiftCardFilters } from "./use-gift-card-filters"
+import { RouteComponentProps, useLocation } from "@reach/router";
+import clsx from "clsx";
+import { isEmpty } from "lodash";
+import { useAdminGiftCards } from "../../../../medusa-react";
+import qs from "qs";
+import React, { useEffect, useState } from "react";
+import { usePagination, useTable } from "react-table";
+import Spinner from "../../atoms/spinner";
+import Table, { TablePagination } from "../../molecules/table";
+import GiftCardFilters from "../gift-card-filter-dropdown";
+import useGiftCardTableColums from "./use-gift-card-column";
+import { useGiftCardFilters } from "./use-gift-card-filters";
 
-const DEFAULT_PAGE_SIZE = 15
+const DEFAULT_PAGE_SIZE = 15;
 
-const defaultQueryProps = {}
+const defaultQueryProps = {};
 
 const GiftCardTable: React.FC<RouteComponentProps> = () => {
-  const location = useLocation()
+  const location = useLocation();
 
   const {
     removeTab,
@@ -31,23 +31,23 @@ const GiftCardTable: React.FC<RouteComponentProps> = () => {
     setQuery: setFreeText,
     queryObject,
     representationObject,
-  } = useGiftCardFilters(location.search, defaultQueryProps)
-  const filtersOnLoad = queryObject
+  } = useGiftCardFilters(location.search, defaultQueryProps);
+  const filtersOnLoad = queryObject;
 
-  const offs = parseInt(filtersOnLoad?.offset) || 0
-  const lim = parseInt(filtersOnLoad.limit) || DEFAULT_PAGE_SIZE
+  const offs = parseInt(filtersOnLoad?.offset) || 0;
+  const lim = parseInt(filtersOnLoad.limit) || DEFAULT_PAGE_SIZE;
 
-  const [query, setQuery] = useState(filtersOnLoad?.query)
-  const [numPages, setNumPages] = useState(0)
+  const [query, setQuery] = useState(filtersOnLoad?.query);
+  const [numPages, setNumPages] = useState(0);
 
-  const { gift_cards, isLoading, count } = useAdminGiftCards(queryObject)
+  const { gift_cards, isLoading, count } = useAdminGiftCards(queryObject);
 
   useEffect(() => {
-    const controlledPageCount = Math.ceil(count! / queryObject.limit)
-    setNumPages(controlledPageCount)
-  }, [gift_cards])
+    const controlledPageCount = Math.ceil(count! / queryObject.limit);
+    setNumPages(controlledPageCount);
+  }, [gift_cards]);
 
-  const [columns] = useGiftCardTableColums()
+  const [columns] = useGiftCardTableColums();
 
   const {
     getTableProps,
@@ -76,60 +76,60 @@ const GiftCardTable: React.FC<RouteComponentProps> = () => {
       autoResetPage: false,
     },
     usePagination
-  )
+  );
 
   // Debounced search
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (query) {
-        setFreeText(query)
-        gotoPage(0)
+        setFreeText(query);
+        gotoPage(0);
       } else {
         // if we delete query string, we reset the table view
-        reset()
+        reset();
       }
-    }, 400)
+    }, 400);
 
-    return () => clearTimeout(delayDebounceFn)
-  }, [query])
+    return () => clearTimeout(delayDebounceFn);
+  }, [query]);
 
   const handleNext = () => {
     if (canNextPage) {
-      paginate(1)
-      nextPage()
+      paginate(1);
+      nextPage();
     }
-  }
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      paginate(-1)
-      previousPage()
+      paginate(-1);
+      previousPage();
     }
-  }
+  };
 
   const updateUrlFromFilter = (obj = {}) => {
-    const stringified = qs.stringify(obj)
-    window.history.replaceState(`/a/gift-cards`, "", `${`?${stringified}`}`)
-  }
+    const stringified = qs.stringify(obj);
+    window.history.replaceState(`/a/gift-cards`, "", `${`?${stringified}`}`);
+  };
 
   const refreshWithFilters = () => {
-    const filterObj = representationObject
+    const filterObj = representationObject;
 
     if (isEmpty(filterObj)) {
-      updateUrlFromFilter({ offset: 0, limit: DEFAULT_PAGE_SIZE })
+      updateUrlFromFilter({ offset: 0, limit: DEFAULT_PAGE_SIZE });
     } else {
-      updateUrlFromFilter(filterObj)
+      updateUrlFromFilter(filterObj);
     }
-  }
+  };
 
   const clearFilters = () => {
-    reset()
-    setQuery("")
-  }
+    reset();
+    setQuery("");
+  };
 
   useEffect(() => {
-    refreshWithFilters()
-  }, [representationObject])
+    refreshWithFilters();
+  }, [representationObject]);
 
   return (
     <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full ">
@@ -161,7 +161,7 @@ const GiftCardTable: React.FC<RouteComponentProps> = () => {
         ) : (
           <Table.Body {...getTableBodyProps()}>
             {rows.map((row) => {
-              prepareRow(row)
+              prepareRow(row);
               return (
                 <Table.Row
                   color={"inherit"}
@@ -170,10 +170,10 @@ const GiftCardTable: React.FC<RouteComponentProps> = () => {
                   className="group"
                 >
                   {row.cells.map((cell, index) => {
-                    return cell.render("Cell", { index })
+                    return cell.render("Cell", { index });
                   })}
                 </Table.Row>
-              )
+              );
             })}
           </Table.Body>
         )}
@@ -192,7 +192,7 @@ const GiftCardTable: React.FC<RouteComponentProps> = () => {
         hasPrev={canPreviousPage}
       />
     </div>
-  )
-}
+  );
+};
 
-export default GiftCardTable
+export default GiftCardTable;

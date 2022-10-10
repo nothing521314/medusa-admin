@@ -1,43 +1,43 @@
-import { useAdminProducts } from "../../../../medusa-react"
-import React, { useEffect, useState } from "react"
-import { usePagination, useRowSelect, useTable } from "react-table"
-import { useDebounce } from "../../../hooks/use-debounce"
-import Spinner from "../../atoms/spinner"
-import Button from "../../fundamentals/button"
-import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox"
-import Modal from "../../molecules/modal"
-import Table, { TablePagination } from "../../molecules/table"
-import useCollectionProductColumns from "./use-collection-product-columns"
+import { useAdminProducts } from "../../../../medusa-react";
+import React, { useEffect, useState } from "react";
+import { usePagination, useRowSelect, useTable } from "react-table";
+import { useDebounce } from "../../../hooks/use-debounce";
+import Spinner from "../../atoms/spinner";
+import Button from "../../fundamentals/button";
+import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox";
+import Modal from "../../molecules/modal";
+import Table, { TablePagination } from "../../molecules/table";
+import useCollectionProductColumns from "./use-collection-product-columns";
 
 type AddProductsTableProps = {
-  existingRelations: any[]
-  onSubmit: (selectedIds: string[], removedIds: string[]) => void
-  onClose: () => void
-}
+  existingRelations: any[];
+  onSubmit: (selectedIds: string[], removedIds: string[]) => void;
+  onClose: () => void;
+};
 
 const AddProductsTable: React.FC<AddProductsTableProps> = ({
   existingRelations,
   onSubmit,
   onClose,
 }) => {
-  const PAGE_SIZE = 10
-  const [query, setQuery] = useState("")
-  const [offset, setOffset] = useState(0)
-  const [numPages, setNumPages] = useState(0)
-  const [currentPage, setCurrentPage] = useState(0)
+  const PAGE_SIZE = 10;
+  const [query, setQuery] = useState("");
+  const [offset, setOffset] = useState(0);
+  const [numPages, setNumPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const [selectedProducts, setSelectedProducts] = useState<any[]>([])
-  const [removedProducts, setRemovedProducts] = useState<any[]>([])
+  const [selectedProducts, setSelectedProducts] = useState<any[]>([]);
+  const [removedProducts, setRemovedProducts] = useState<any[]>([]);
 
-  const debouncedSearchTerm = useDebounce(query, 500)
+  const debouncedSearchTerm = useDebounce(query, 500);
 
   const { isLoading, count, products } = useAdminProducts({
     q: debouncedSearchTerm,
     limit: PAGE_SIZE,
     offset,
-  })
+  });
 
-  const columns = useCollectionProductColumns()
+  const columns = useCollectionProductColumns();
 
   const {
     rows,
@@ -59,8 +59,8 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
         pageIndex: currentPage,
         pageSize: PAGE_SIZE,
         selectedRowIds: existingRelations.reduce((prev, { id }) => {
-          prev[id] = true
-          return prev
+          prev[id] = true;
+          return prev;
         }, {}),
       },
       pageCount: numPages,
@@ -79,13 +79,13 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               <Table.Cell className="w-[5%] pl-base">
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </Table.Cell>
-            )
+            );
           },
         },
         ...columns,
-      ])
+      ]);
     }
-  )
+  );
 
   useEffect(() => {
     setSelectedProducts((selectedProducts) =>
@@ -100,58 +100,58 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
             Object.keys(selectedRowIds).findIndex((id) => id === p.id) > -1
         ) || []),
       ].filter((p) => existingRelations.findIndex((ap) => ap.id === p.id) < 0)
-    )
+    );
 
     setRemovedProducts([
       ...existingRelations.filter(
         (ap) => Object.keys(selectedRowIds).findIndex((id) => id === ap.id) < 0
       ),
-    ])
-  }, [selectedRowIds])
+    ]);
+  }, [selectedRowIds]);
 
   useEffect(() => {
-    const controlledPageCount = Math.ceil(count! / PAGE_SIZE)
-    setNumPages(controlledPageCount)
-  }, [products, count, PAGE_SIZE])
+    const controlledPageCount = Math.ceil(count! / PAGE_SIZE);
+    setNumPages(controlledPageCount);
+  }, [products, count, PAGE_SIZE]);
 
   const handleNext = () => {
     if (canNextPage) {
-      setOffset((old) => old + pageSize)
-      setCurrentPage((old) => old + 1)
-      nextPage()
+      setOffset((old) => old + pageSize);
+      setCurrentPage((old) => old + 1);
+      nextPage();
     }
-  }
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      setOffset((old) => old - pageSize)
-      setCurrentPage((old) => old - 1)
-      previousPage()
+      setOffset((old) => old - pageSize);
+      setCurrentPage((old) => old - 1);
+      previousPage();
     }
-  }
+  };
 
   const handleSearch = (q) => {
-    setOffset(0)
-    setQuery(q)
-  }
+    setOffset(0);
+    setQuery(q);
+  };
 
-  const [disabled, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     if (selectedProducts.length > 0 || removedProducts.length > 0) {
-      setDisabled(false)
-      return
+      setDisabled(false);
+      return;
     }
 
-    setDisabled(true)
-  }, [selectedProducts, removedProducts])
+    setDisabled(true);
+  }, [selectedProducts, removedProducts]);
 
   const handleSubmit = () => {
     onSubmit(
       selectedProducts.map((p) => p.id),
       removedProducts.map((p) => p.id)
-    )
-  }
+    );
+  };
 
   return (
     <Modal handleClose={onClose}>
@@ -175,7 +175,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               ) : (
                 <Table.Body {...getTableBodyProps()}>
                   {rows.map((row) => {
-                    prepareRow(row)
+                    prepareRow(row);
                     return (
                       <Table.Row
                         color={"inherit"}
@@ -183,10 +183,10 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
                         className="px-base"
                       >
                         {row.cells.map((cell, index) => {
-                          return cell.render("Cell", { index })
+                          return cell.render("Cell", { index });
                         })}
                       </Table.Row>
-                    )
+                    );
                   })}
                 </Table.Body>
               )}
@@ -229,7 +229,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default AddProductsTable
+export default AddProductsTable;

@@ -1,20 +1,20 @@
-import React, { ReactNode } from "react"
-import type { Toast } from "react-hot-toast"
-import { toast as global } from "react-hot-toast"
-import RefreshIcon from "../../fundamentals/icons/refresh-icon"
-import ToasterContainer from "../toaster-container"
-import ErrorState from "./error-state"
-import SavingState from "./saving-state"
-import SuccessState from "./success-state"
+import React, { ReactNode } from "react";
+import type { Toast } from "react-hot-toast";
+import { toast as global } from "react-hot-toast";
+import RefreshIcon from "../../fundamentals/icons/refresh-icon";
+import ToasterContainer from "../toaster-container";
+import ErrorState from "./error-state";
+import SavingState from "./saving-state";
+import SuccessState from "./success-state";
 
 type SaveNotificationProps = {
-  toast: Toast
-  icon?: ReactNode
-  title?: string
-  message?: string
-  onSave: () => Promise<void>
-  reset: () => void
-}
+  toast: Toast;
+  icon?: ReactNode;
+  title?: string;
+  message?: string;
+  onSave: () => Promise<void>;
+  reset: () => void;
+};
 
 const SaveNotification: React.FC<SaveNotificationProps> = ({
   toast,
@@ -25,27 +25,27 @@ const SaveNotification: React.FC<SaveNotificationProps> = ({
   reset,
 }) => {
   const onDismiss = () => {
-    reset()
-    global.dismiss(toast.id)
-  }
+    reset();
+    global.dismiss(toast.id);
+  };
 
   const handleSave = () => {
     global.custom((t) => <SavingState toast={t} />, {
       id: toast.id,
-    })
+    });
 
     onSave()
       .then(() => {
         global.custom((t) => <SuccessState toast={t} onDismiss={onDismiss} />, {
           id: toast.id,
-        })
+        });
       })
       .catch((_err) => {
         global.custom((t) => <ErrorState toast={t} onDismiss={onDismiss} />, {
           id: toast.id,
-        })
-      })
-  }
+        });
+      });
+  };
 
   return (
     <ToasterContainer visible={toast.visible} className="p-0 pl-base w-[448px]">
@@ -69,20 +69,20 @@ const SaveNotification: React.FC<SaveNotificationProps> = ({
         </button>
       </div>
     </ToasterContainer>
-  )
-}
+  );
+};
 
-const ICON_SIZE = 20
+const ICON_SIZE = 20;
 
 function getIcon(icon?: any) {
   if (icon) {
     return React.cloneElement(icon, {
       size: ICON_SIZE,
       className: "text-grey-90",
-    })
+    });
   } else {
-    return <RefreshIcon size={20} className="text-grey-90" />
+    return <RefreshIcon size={20} className="text-grey-90" />;
   }
 }
 
-export default SaveNotification
+export default SaveNotification;

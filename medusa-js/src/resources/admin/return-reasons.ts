@@ -4,9 +4,9 @@ import {
   AdminReturnReasonsDeleteRes,
   AdminReturnReasonsListRes,
   AdminPostReturnReasonsReasonReq,
-} from "@medusajs/medusa"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
+} from "@medusajs/medusa";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
 
 class AdminReturnReasonsResource extends BaseResource {
   /**
@@ -19,8 +19,8 @@ class AdminReturnReasonsResource extends BaseResource {
     payload: AdminPostReturnReasonsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminReturnReasonsRes> {
-    const path = `/admin/return-reasons`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/return-reasons`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -35,8 +35,8 @@ class AdminReturnReasonsResource extends BaseResource {
     payload: AdminPostReturnReasonsReasonReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminReturnReasonsRes> {
-    const path = `/admin/return-reasons/${id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/return-reasons/${id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -49,8 +49,8 @@ class AdminReturnReasonsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminReturnReasonsDeleteRes> {
-    const path = `/admin/return-reasons/${id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/return-reasons/${id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -63,8 +63,8 @@ class AdminReturnReasonsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminReturnReasonsRes> {
-    const path = `/admin/return-reasons/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/return-reasons/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -75,10 +75,10 @@ class AdminReturnReasonsResource extends BaseResource {
   list(
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminReturnReasonsListRes> {
-    const path = `/admin/return-reasons`
+    const path = `/admin/return-reasons`;
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 }
 
-export default AdminReturnReasonsResource
+export default AdminReturnReasonsResource;

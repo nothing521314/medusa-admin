@@ -1,23 +1,23 @@
-import { navigate } from "gatsby"
-import { useAdminDeletePriceList } from "../../../../../medusa-react"
-import moment from "moment"
-import * as React from "react"
-import Fade from "../../../../components/atoms/fade-wrapper"
-import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
-import BodyCard from "../../../../components/organisms/body-card"
+import { navigate } from "gatsby";
+import { useAdminDeletePriceList } from "../../../../../medusa-react";
+import moment from "moment";
+import * as React from "react";
+import Fade from "../../../../components/atoms/fade-wrapper";
+import EditIcon from "../../../../components/fundamentals/icons/edit-icon";
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon";
+import BodyCard from "../../../../components/organisms/body-card";
 import {
   formatPriceListGroups,
   getPriceListStatus,
-} from "../../../../components/templates/price-list-table/utils"
-import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import PriceListForm from "../../pricing-form"
-import { ViewType } from "../../pricing-form/types"
+} from "../../../../components/templates/price-list-table/utils";
+import useImperativeDialog from "../../../../hooks/use-imperative-dialog";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import PriceListForm from "../../pricing-form";
+import { ViewType } from "../../pricing-form/types";
 
 const Header = ({ priceList }) => {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(false);
   return (
     <HeadingBodyCard priceList={priceList} setIsOpen={setIsOpen}>
       <div className="flex gap-12">
@@ -58,41 +58,41 @@ const Header = ({ priceList }) => {
         </Fade>
       )}
     </HeadingBodyCard>
-  )
-}
+  );
+};
 
 const PriceListCustomerGroupsFormatter = ({ groups }) => {
-  const [group, other] = formatPriceListGroups(groups.map((cg) => cg.name))
+  const [group, other] = formatPriceListGroups(groups.map((cg) => cg.name));
   return (
     <>
       {group}
       {other && <span className="text-grey-40"> + {other} more</span>}
     </>
-  )
-}
+  );
+};
 
 const HeadingBodyCard = ({ priceList, setIsOpen, ...props }) => {
-  const dialog = useImperativeDialog()
-  const notification = useNotification()
-  const deletePriceList = useAdminDeletePriceList(priceList?.id)
+  const dialog = useImperativeDialog();
+  const notification = useNotification();
+  const deletePriceList = useAdminDeletePriceList(priceList?.id);
 
   const onDelete = async () => {
     const shouldDelete = await dialog({
       heading: "Delete Price list",
       text: "Are you sure you want to delete this price list?",
-    })
+    });
     if (shouldDelete) {
       deletePriceList.mutate(undefined, {
         onSuccess: () => {
-          notification("Success", "Price list deleted successfully", "success")
-          navigate("/a/pricing/")
+          notification("Success", "Price list deleted successfully", "success");
+          navigate("/a/pricing/");
         },
         onError: (err) => {
-          notification("Ooops", getErrorMessage(err), "error")
+          notification("Ooops", getErrorMessage(err), "error");
         },
-      })
+      });
     }
-  }
+  };
 
   const actionables = [
     {
@@ -106,7 +106,7 @@ const HeadingBodyCard = ({ priceList, setIsOpen, ...props }) => {
       variant: "danger" as const,
       icon: <TrashIcon size={20} />,
     },
-  ]
+  ];
 
   return (
     <BodyCard
@@ -122,7 +122,7 @@ const HeadingBodyCard = ({ priceList, setIsOpen, ...props }) => {
       subtitle={priceList.description}
       {...props}
     />
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

@@ -1,18 +1,18 @@
-import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import clsx from "clsx"
-import React from "react"
-import IconTooltip from "../../molecules/icon-tooltip"
+import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import clsx from "clsx";
+import React from "react";
+import IconTooltip from "../../molecules/icon-tooltip";
 
 type AccordionItemProps = AccordionPrimitive.AccordionItemProps & {
-  title: string
-  subtitle?: string
-  description?: string
-  required?: boolean
-  tooltip?: string
-  forceMountContent?: true
-  headingSize?: "small" | "medium" | "large"
-  customTrigger?: React.ReactNode
-}
+  title: string;
+  subtitle?: string;
+  description?: string;
+  required?: boolean;
+  tooltip?: string;
+  forceMountContent?: true;
+  headingSize?: "small" | "medium" | "large";
+  customTrigger?: React.ReactNode;
+};
 
 const Accordion: React.FC<
   | (AccordionPrimitive.AccordionSingleProps &
@@ -20,12 +20,12 @@ const Accordion: React.FC<
   | (AccordionPrimitive.AccordionMultipleProps &
       React.RefAttributes<HTMLDivElement>)
 > & {
-  Item: React.FC<AccordionItemProps>
+  Item: React.FC<AccordionItemProps>;
 } = ({ children, ...props }) => {
   return (
     <AccordionPrimitive.Root {...props}>{children}</AccordionPrimitive.Root>
-  )
-}
+  );
+};
 
 const Item: React.FC<AccordionItemProps> = ({
   title,
@@ -44,12 +44,12 @@ const Item: React.FC<AccordionItemProps> = ({
     "inter-small-semibold": headingSize === "small",
     "inter-base-semibold": headingSize === "medium",
     "inter-large-semibold": headingSize === "large",
-  })
+  });
 
   const paddingClasses = clsx({
     "pb-0 mb-6 ": headingSize === "medium",
     "pb-5 radix-state-open:pb-5xlarge mb-5 ": headingSize === "large",
-  })
+  });
 
   return (
     <AccordionPrimitive.Item
@@ -94,10 +94,10 @@ const Item: React.FC<AccordionItemProps> = ({
         </div>
       </AccordionPrimitive.Content>
     </AccordionPrimitive.Item>
-  )
-}
+  );
+};
 
-Accordion.Item = Item
+Accordion.Item = Item;
 
 const MorphingTrigger = () => {
   return (
@@ -107,7 +107,7 @@ const MorphingTrigger = () => {
         <span className="absolute bg-grey-50 rounded-circle inset-x-[31.75%] top-[48%] bottom-1/2 h-[1.5px] group-radix-state-open:rotate-90 group-radix-state-open:left-1/2 group-radix-state-open:right-1/2 duration-300" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Accordion
+export default Accordion;

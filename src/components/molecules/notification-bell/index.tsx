@@ -1,11 +1,11 @@
-import React from "react"
-import Button, { ButtonProps } from "../../fundamentals/button"
-import BellIcon from "../../fundamentals/icons/bell-icon"
-import BellNotiIcon from "../../fundamentals/icons/bell-noti-icon"
+import React from "react";
+import Button, { ButtonProps } from "../../fundamentals/button";
+import BellIcon from "../../fundamentals/icons/bell-icon";
+import BellNotiIcon from "../../fundamentals/icons/bell-noti-icon";
 
 type NotificationBellProps = ButtonProps & {
-  hasNotifications?: boolean
-}
+  hasNotifications?: boolean;
+};
 
 const NotificationBell: React.FC<NotificationBellProps> = ({
   hasNotifications = false,
@@ -15,7 +15,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({
     <Button className="w-8 h-8 mr-3" size="small" {...attributes}>
       {hasNotifications ? <BellNotiIcon /> : <BellIcon />}
     </Button>
-  )
-}
+  );
+};
 
-export default NotificationBell
+export default NotificationBell;

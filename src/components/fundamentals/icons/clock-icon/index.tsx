@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const ClockIcon: React.FC<IconProps> = ({
   size = "20",
@@ -30,7 +30,7 @@ const ClockIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default ClockIcon
+export default ClockIcon;

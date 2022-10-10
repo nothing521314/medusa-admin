@@ -1,39 +1,39 @@
-import { Product } from "@medusajs/medusa"
-import { debounce } from "lodash"
-import { useAdminPriceListProducts } from "../../../../../../medusa-react"
-import * as React from "react"
-import Tooltip from "../../../../../components/atoms/tooltip"
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
-import InfoIcon from "../../../../../components/fundamentals/icons/info-icon"
-import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
-import FocusModal from "../../../../../components/molecules/modal/focus-modal"
-import useQueryFilters from "../../../../../hooks/use-query-filters"
-import FormHeader from "../../../pricing-form/form-header/"
-import ProductPrices from "../../../pricing-form/sections/product-prices"
-import { ViewType } from "../../../pricing-form/types"
-import { merge } from "./utils"
+import { Product } from "@medusajs/medusa";
+import { debounce } from "lodash";
+import { useAdminPriceListProducts } from "../../../../../../medusa-react";
+import * as React from "react";
+import Tooltip from "../../../../../components/atoms/tooltip";
+import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
+import InfoIcon from "../../../../../components/fundamentals/icons/info-icon";
+import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon";
+import FocusModal from "../../../../../components/molecules/modal/focus-modal";
+import useQueryFilters from "../../../../../hooks/use-query-filters";
+import FormHeader from "../../../pricing-form/form-header/";
+import ProductPrices from "../../../pricing-form/sections/product-prices";
+import { ViewType } from "../../../pricing-form/types";
+import { merge } from "./utils";
 
 const defaultQueryFilters = {
   limit: 50,
   offset: 0,
-}
+};
 
 const EditPrices = ({ close, id }) => {
-  const params = useQueryFilters(defaultQueryFilters)
-  const [selectedProducts, setSelectedProducts] = React.useState<Product[]>([])
+  const params = useQueryFilters(defaultQueryFilters);
+  const [selectedProducts, setSelectedProducts] = React.useState<Product[]>([]);
   const { products, isLoading } = useAdminPriceListProducts(
     id,
     params.queryObject
-  )
+  );
   const handleSearch = (query: string) => {
-    params.setQuery(query)
-  }
+    params.setQuery(query);
+  };
 
   React.useEffect(() => {
-    setSelectedProducts((state) => merge(products, state))
-  }, [products, merge])
+    setSelectedProducts((state) => merge(products, state));
+  }, [products, merge]);
 
-  const debouncedSearch = React.useMemo(() => debounce(handleSearch, 300), [])
+  const debouncedSearch = React.useMemo(() => debounce(handleSearch, 300), []);
 
   return (
     <FocusModal>
@@ -68,8 +68,8 @@ const EditPrices = ({ close, id }) => {
         </div>
       </FocusModal.Main>
     </FocusModal>
-  )
-}
+  );
+};
 
 const VariantActions = (product: Product) => {
   return [
@@ -88,7 +88,7 @@ const VariantActions = (product: Product) => {
       },
       variant: "danger" as const,
     },
-  ]
-}
+  ];
+};
 
-export default EditPrices
+export default EditPrices;

@@ -1,25 +1,25 @@
-import { SalesChannel } from "@medusajs/medusa"
-import React from "react"
-import Button from "../../../../components/fundamentals/button"
-import Modal from "../../../../components/molecules/modal"
+import { SalesChannel } from "@medusajs/medusa";
+import React from "react";
+import Button from "../../../../components/fundamentals/button";
+import Modal from "../../../../components/molecules/modal";
 import LayeredModal, {
   LayeredModalContext,
-} from "../../../../components/molecules/modal/layered-modal"
-import AvailableScreen from "./available-screen"
-import { SalesChannelsModalContext } from "./use-sales-channels-modal"
+} from "../../../../components/molecules/modal/layered-modal";
+import AvailableScreen from "./available-screen";
+import { SalesChannelsModalContext } from "./use-sales-channels-modal";
 
 type Props = {
-  open: boolean
-  source?: SalesChannel[]
-  onClose: () => void
-  onSave: (salesChannels: SalesChannel[]) => void
-}
+  open: boolean;
+  source?: SalesChannel[];
+  onClose: () => void;
+  onSave: (salesChannels: SalesChannel[]) => void;
+};
 
 /**
  * Re-usable Sales Channels Modal, used for adding and editing sales channels both when creating a new product and editing an existing product.
  */
 const SalesChannelsModal = ({ open, source = [], onClose, onSave }: Props) => {
-  const context = React.useContext(LayeredModalContext)
+  const context = React.useContext(LayeredModalContext);
 
   return (
     <SalesChannelsModalContext.Provider
@@ -50,7 +50,7 @@ const SalesChannelsModal = ({ open, source = [], onClose, onSave }: Props) => {
         </Modal.Body>
       </LayeredModal>
     </SalesChannelsModalContext.Provider>
-  )
-}
+  );
+};
 
-export default SalesChannelsModal
+export default SalesChannelsModal;

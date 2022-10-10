@@ -1,47 +1,47 @@
-import { useAdminCreateTaxRate } from "../../../../medusa-react"
-import React, { useContext } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../components/fundamentals/button"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import Modal from "../../../components/molecules/modal"
+import { useAdminCreateTaxRate } from "../../../../medusa-react";
+import React, { useContext } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../components/fundamentals/button";
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
+import Modal from "../../../components/molecules/modal";
 import LayeredModal, {
   LayeredModalContext,
-} from "../../../components/molecules/modal/layered-modal"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { nestedForm } from "../../../utils/nested-form"
+} from "../../../components/molecules/modal/layered-modal";
+import useNotification from "../../../hooks/use-notification";
+import { getErrorMessage } from "../../../utils/error-messages";
+import { nestedForm } from "../../../utils/nested-form";
 import {
   EditTaxRateDetails,
   EditTaxRateFormType,
-} from "./edit-tax-rate-details"
-import { TaxRuleItem } from "./tax-rule-item"
-import TaxRuleSelector from "./tax-rule-selector"
+} from "./edit-tax-rate-details";
+import { TaxRuleItem } from "./tax-rule-item";
+import TaxRuleSelector from "./tax-rule-selector";
 
 type NewTaxRateProps = {
-  regionId: string
-  onDismiss: () => void
-}
+  regionId: string;
+  onDismiss: () => void;
+};
 
 type NewTaxRateFormData = {
-  details: EditTaxRateFormType
-  shipping_options: string[]
-  product_types: string[]
-  products: string[]
-}
+  details: EditTaxRateFormType;
+  shipping_options: string[];
+  product_types: string[];
+  products: string[];
+};
 
 const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
-  const createTaxRate = useAdminCreateTaxRate()
+  const createTaxRate = useAdminCreateTaxRate();
   const form = useForm<NewTaxRateFormData>({
     defaultValues: {
       products: [],
       product_types: [],
       shipping_options: [],
     },
-  })
-  const { setValue, handleSubmit, watch } = form
-  const notification = useNotification()
+  });
+  const { setValue, handleSubmit, watch } = form;
+  const notification = useNotification();
 
-  const layeredModalContext = useContext(LayeredModalContext)
+  const layeredModalContext = useContext(LayeredModalContext);
 
   const onSave = (data: NewTaxRateFormData) => {
     createTaxRate.mutate(
@@ -54,37 +54,37 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully created tax rate.", "success")
-          onDismiss()
+          notification("Success", "Successfully created tax rate.", "success");
+          onDismiss();
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification("Error", getErrorMessage(error), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   const [products, product_types, shipping_options] = watch([
     "products",
     "product_types",
     "shipping_options",
-  ])
+  ]);
 
   const handleOverridesSelected = (rule) => {
     switch (rule.type) {
       case "products":
-        setValue("products", rule.items)
-        break
+        setValue("products", rule.items);
+        break;
       case "product_types":
-        setValue("product_types", rule.items)
-        break
+        setValue("product_types", rule.items);
+        break;
       case "shipping_options":
-        setValue("shipping_options", rule.items)
-        break
+        setValue("shipping_options", rule.items);
+        break;
       default:
-        break
+        break;
     }
-  }
+  };
 
   return (
     <LayeredModal
@@ -123,7 +123,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                               type: "products",
                             }
                           )
-                        )
+                        );
                       }}
                       index={1}
                       name="Product Rules"
@@ -151,7 +151,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                               type: "product_types",
                             }
                           )
-                        )
+                        );
                       }}
                       index={2}
                       name="Product Type Rules"
@@ -179,7 +179,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                               type: "shipping_options",
                             }
                           )
-                        )
+                        );
                       }}
                       index={3}
                       name="Shipping Option Rules"
@@ -206,7 +206,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                         regionId,
                         handleOverridesSelected
                       )
-                    )
+                    );
                   }}
                   className="w-full mt-base"
                   size="medium"
@@ -241,8 +241,8 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
         </Modal.Body>
       </form>
     </LayeredModal>
-  )
-}
+  );
+};
 
 const SelectOverridesScreen = (
   pop,
@@ -260,7 +260,7 @@ const SelectOverridesScreen = (
         {...options}
       />
     ),
-  }
-}
+  };
+};
 
-export default NewTaxRate
+export default NewTaxRate;

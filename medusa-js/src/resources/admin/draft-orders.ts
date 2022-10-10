@@ -7,10 +7,10 @@ import {
   AdminPostDraftOrdersDraftOrderLineItemsReq,
   AdminPostDraftOrdersDraftOrderRegisterPaymentRes,
   AdminPostDraftOrdersDraftOrderReq,
-} from "@medusajs/medusa"
-import qs from "qs"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
+} from "@medusajs/medusa";
+import qs from "qs";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
 
 class AdminDraftOrdersResource extends BaseResource {
   /**
@@ -20,8 +20,8 @@ class AdminDraftOrdersResource extends BaseResource {
     payload: AdminPostDraftOrdersDraftOrderReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
-    const path = `/admin/draft-orders`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/draft-orders`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -32,8 +32,8 @@ class AdminDraftOrdersResource extends BaseResource {
     payload: AdminPostDraftOrdersDraftOrderLineItemsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
-    const path = `/admin/draft-orders/${id}/line-items`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/draft-orders/${id}/line-items`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -43,8 +43,8 @@ class AdminDraftOrdersResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersDeleteRes> {
-    const path = `/admin/draft-orders/${id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/draft-orders/${id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -55,8 +55,8 @@ class AdminDraftOrdersResource extends BaseResource {
     itemId: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
-    const path = `/admin/draft-orders/${id}/line-items/${itemId}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/draft-orders/${id}/line-items/${itemId}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -66,8 +66,8 @@ class AdminDraftOrdersResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
-    const path = `/admin/draft-orders/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/draft-orders/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -77,14 +77,14 @@ class AdminDraftOrdersResource extends BaseResource {
     query?: AdminGetDraftOrdersParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersListRes> {
-    let path = `/admin/draft-orders`
+    let path = `/admin/draft-orders`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/draft-orders?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/draft-orders?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -94,8 +94,8 @@ class AdminDraftOrdersResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminPostDraftOrdersDraftOrderRegisterPaymentRes> {
-    const path = `/admin/draft-orders/${id}/pay`
-    return this.client.request("POST", path, undefined)
+    const path = `/admin/draft-orders/${id}/pay`;
+    return this.client.request("POST", path, undefined);
   }
 
   /**
@@ -106,8 +106,8 @@ class AdminDraftOrdersResource extends BaseResource {
     payload: AdminPostDraftOrdersDraftOrderReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
-    const path = `/admin/draft-orders/${id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/draft-orders/${id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -119,9 +119,9 @@ class AdminDraftOrdersResource extends BaseResource {
     payload: AdminPostDraftOrdersDraftOrderLineItemsItemReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
-    const path = `/admin/draft-orders/${id}/line-items/${itemId}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/draft-orders/${id}/line-items/${itemId}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 }
 
-export default AdminDraftOrdersResource
+export default AdminDraftOrdersResource;

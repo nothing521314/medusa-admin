@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const BellOffIcon: React.FC<IconProps> = ({
   size = "20",
@@ -51,7 +51,7 @@ const BellOffIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default BellOffIcon
+export default BellOffIcon;

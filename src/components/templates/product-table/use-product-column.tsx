@@ -1,36 +1,36 @@
-import clsx from "clsx"
-import { useAdminStore } from "../../../../medusa-react"
-import React, { useMemo } from "react"
-import { defaultChannelsSorter } from "../../../utils/sales-channel-compare-operator"
-import Tooltip from "../../atoms/tooltip"
-import ListIcon from "../../fundamentals/icons/list-icon"
-import TileIcon from "../../fundamentals/icons/tile-icon"
-import ImagePlaceholder from "../../fundamentals/image-placeholder"
-import StatusIndicator from "../../fundamentals/status-indicator"
+import clsx from "clsx";
+import { useAdminStore } from "../../../../medusa-react";
+import React, { useMemo } from "react";
+import { defaultChannelsSorter } from "../../../utils/sales-channel-compare-operator";
+import Tooltip from "../../atoms/tooltip";
+import ListIcon from "../../fundamentals/icons/list-icon";
+import TileIcon from "../../fundamentals/icons/tile-icon";
+import ImagePlaceholder from "../../fundamentals/image-placeholder";
+import StatusIndicator from "../../fundamentals/status-indicator";
 
 const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const getProductStatus = (status) => {
     switch (status) {
       case "proposed":
-        return <StatusIndicator title={"Proposed"} variant={"warning"} />
+        return <StatusIndicator title={"Proposed"} variant={"warning"} />;
       case "published":
-        return <StatusIndicator title={"Published"} variant={"success"} />
+        return <StatusIndicator title={"Published"} variant={"success"} />;
       case "rejected":
-        return <StatusIndicator title={"Rejected"} variant={"danger"} />
+        return <StatusIndicator title={"Rejected"} variant={"danger"} />;
       case "draft":
-        return <StatusIndicator title={"Draft"} variant={"default"} />
+        return <StatusIndicator title={"Draft"} variant={"default"} />;
       default:
-        return <StatusIndicator title={status} variant={"default"} />
+        return <StatusIndicator title={status} variant={"default"} />;
     }
-  }
+  };
 
-  const { store } = useAdminStore()
+  const { store } = useAdminStore();
 
   const getProductSalesChannels = (salesChannels) => {
     if (salesChannels?.length) {
       salesChannels.sort(
         defaultChannelsSorter(store?.default_sales_channel_id || "")
-      )
+      );
       return (
         <span className="inter-small-regular">
           {salesChannels[0].name}
@@ -51,10 +51,10 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
             </Tooltip>
           )}
         </span>
-      )
+      );
     }
-    return <></>
-  }
+    return <></>;
+  };
 
   const columns = useMemo(
     () => [
@@ -76,14 +76,14 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
               </div>
               {original.title}
             </div>
-          )
+          );
         },
       },
       {
         Header: "Collection",
         accessor: "collection", // accessor is the "key" in the data
         Cell: ({ cell: { value } }) => {
-          return <div>{value?.title || "-"}</div>
+          return <div>{value?.title || "-"}</div>;
         },
       },
       {
@@ -134,9 +134,9 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
       },
     ],
     [showList]
-  )
+  );
 
-  return [columns] as const
-}
+  return [columns] as const;
+};
 
-export default useProductTableColumn
+export default useProductTableColumn;

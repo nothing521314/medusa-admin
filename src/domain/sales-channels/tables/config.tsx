@@ -1,7 +1,7 @@
-import React from "react"
+import React from "react";
 
-import IndeterminateCheckbox from "../../../components/molecules/indeterminate-checkbox"
-import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
+import IndeterminateCheckbox from "../../../components/molecules/indeterminate-checkbox";
+import ImagePlaceholder from "../../../components/fundamentals/image-placeholder";
 
 export const SALES_CHANNEL_PRODUCTS_TABLE_COLUMNS = [
   {
@@ -20,7 +20,7 @@ export const SALES_CHANNEL_PRODUCTS_TABLE_COLUMNS = [
         >
           <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
         </span>
-      )
+      );
     },
   },
   {
@@ -43,14 +43,14 @@ export const SALES_CHANNEL_PRODUCTS_TABLE_COLUMNS = [
           </div>
           {original.title}
         </div>
-      )
+      );
     },
   },
   {
     Header: "Collection",
     accessor: "collection",
     Cell: ({ cell: { value } }) => {
-      return <div>{value?.title || "-"}</div>
+      return <div>{value?.title || "-"}</div>;
     },
   },
-]
+];

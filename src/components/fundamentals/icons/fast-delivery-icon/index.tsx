@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const FastDeliveryIcon: React.FC<IconProps> = ({
   size = "20",
@@ -58,7 +58,7 @@ const FastDeliveryIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default FastDeliveryIcon
+export default FastDeliveryIcon;

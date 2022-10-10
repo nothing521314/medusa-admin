@@ -1,15 +1,15 @@
-import { AdminAuthRes } from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+import { AdminAuthRes } from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_AUTH_QUERY_KEY = `admin_auth` as const
+const ADMIN_AUTH_QUERY_KEY = `admin_auth` as const;
 
-export const adminAuthKeys = queryKeysFactory(ADMIN_AUTH_QUERY_KEY)
+export const adminAuthKeys = queryKeysFactory(ADMIN_AUTH_QUERY_KEY);
 
-type AuthQueryKey = typeof adminAuthKeys
+type AuthQueryKey = typeof adminAuthKeys;
 
 export const useAdminGetSession = (
   options?: UseQueryOptionsWrapper<
@@ -18,11 +18,11 @@ export const useAdminGetSession = (
     ReturnType<AuthQueryKey["details"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminAuthKeys.details(),
     () => client.admin.auth.getSession(),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

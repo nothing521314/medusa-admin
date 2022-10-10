@@ -1,57 +1,57 @@
-import { AdminPostRegionsRegionReq, Region } from "@medusajs/medusa"
-import { useAdminUpdateRegion } from "../../../../../../medusa-react"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import { useFeatureFlag } from "../../../../../context/feature-flag"
-import useNotification from "../../../../../hooks/use-notification"
-import { currencies } from "../../../../../utils/currencies"
-import { getErrorMessage } from "../../../../../utils/error-messages"
-import fulfillmentProvidersMapper from "../../../../../utils/fulfillment-providers.mapper"
-import { nestedForm } from "../../../../../utils/nested-form"
-import paymentProvidersMapper from "../../../../../utils/payment-providers-mapper"
+import { AdminPostRegionsRegionReq, Region } from "@medusajs/medusa";
+import { useAdminUpdateRegion } from "../../../../../../medusa-react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../../components/fundamentals/button";
+import Modal from "../../../../../components/molecules/modal";
+import { useFeatureFlag } from "../../../../../context/feature-flag";
+import useNotification from "../../../../../hooks/use-notification";
+import { currencies } from "../../../../../utils/currencies";
+import { getErrorMessage } from "../../../../../utils/error-messages";
+import fulfillmentProvidersMapper from "../../../../../utils/fulfillment-providers.mapper";
+import { nestedForm } from "../../../../../utils/nested-form";
+import paymentProvidersMapper from "../../../../../utils/payment-providers-mapper";
 import RegionDetailsForm, {
   RegionDetailsFormType,
-} from "../../components/region-form/region-details-form"
+} from "../../components/region-form/region-details-form";
 import RegionProvidersForm, {
   RegionProvidersFormType,
-} from "../../components/region-form/region-providers-form"
+} from "../../components/region-form/region-providers-form";
 
 type Props = {
-  region: Region
-  open: boolean
-  onClose: () => void
-}
+  region: Region;
+  open: boolean;
+  onClose: () => void;
+};
 
 type RegionEditFormType = {
-  details: RegionDetailsFormType
-  providers: RegionProvidersFormType
-}
+  details: RegionDetailsFormType;
+  providers: RegionProvidersFormType;
+};
 
 const EditRegionModal = ({ region, onClose, open }: Props) => {
   const form = useForm<RegionEditFormType>({
     defaultValues: getDefaultValues(region),
-  })
-  const { isFeatureEnabled } = useFeatureFlag()
+  });
+  const { isFeatureEnabled } = useFeatureFlag();
 
   const {
     reset,
     handleSubmit,
     formState: { isDirty },
-  } = form
+  } = form;
 
   const closeAndReset = () => {
-    reset(getDefaultValues(region))
-    onClose()
-  }
+    reset(getDefaultValues(region));
+    onClose();
+  };
 
   useEffect(() => {
-    reset(getDefaultValues(region))
-  }, [region])
+    reset(getDefaultValues(region));
+  }, [region]);
 
-  const { mutate, isLoading } = useAdminUpdateRegion(region.id)
-  const notifcation = useNotification()
+  const { mutate, isLoading } = useAdminUpdateRegion(region.id);
+  const notifcation = useNotification();
 
   const onSubmit = handleSubmit((data) => {
     const payload: AdminPostRegionsRegionReq = {
@@ -62,22 +62,22 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
         (fp) => fp.value
       ),
       countries: data.details.countries.map((c) => c.value),
-    }
+    };
 
     if (isFeatureEnabled("tax_inclusive_pricing")) {
-      payload.includes_tax = data.details.includes_tax
+      payload.includes_tax = data.details.includes_tax;
     }
 
     mutate(payload, {
       onSuccess: () => {
-        notifcation("Success", "Region was successfully updated", "success")
-        closeAndReset()
+        notifcation("Success", "Region was successfully updated", "success");
+        closeAndReset();
       },
       onError: (err) => {
-        notifcation("Error", getErrorMessage(err), "error")
+        notifcation("Error", getErrorMessage(err), "error");
       },
-    })
-  })
+    });
+  });
 
   return (
     <Modal handleClose={closeAndReset} open={open}>
@@ -121,8 +121,8 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const getDefaultValues = (region: Region): RegionEditFormType => {
   return {
@@ -152,7 +152,7 @@ const getDefaultValues = (region: Region): RegionEditFormType => {
         ? region.payment_providers.map((p) => paymentProvidersMapper(p.id))
         : [],
     },
-  }
-}
+  };
+};
 
-export default EditRegionModal
+export default EditRegionModal;

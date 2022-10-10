@@ -1,13 +1,13 @@
-import clsx from "clsx"
-import React, { useState } from "react"
-import MedusaIcon from "../components/fundamentals/icons/medusa-icon"
-import LoginCard from "../components/organisms/login-card"
-import ResetTokenCard from "../components/organisms/reset-token-card"
-import SEO from "../components/seo"
-import LoginLayout from "../components/templates/login-layout"
+import clsx from "clsx";
+import React, { useState } from "react";
+import MedusaIcon from "../components/fundamentals/icons/medusa-icon";
+import LoginCard from "../components/organisms/login-card";
+import ResetTokenCard from "../components/organisms/reset-token-card";
+import SEO from "../components/seo";
+import LoginLayout from "../components/templates/login-layout";
 
 const LoginPage = () => {
-  const [resetPassword, setResetPassword] = useState(false)
+  const [resetPassword, setResetPassword] = useState(false);
 
   return (
     <LoginLayout>
@@ -32,7 +32,7 @@ const LoginPage = () => {
         </div>
       </div>
     </LoginLayout>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

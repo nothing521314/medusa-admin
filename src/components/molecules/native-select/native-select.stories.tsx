@@ -1,11 +1,11 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import NativeSelect from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import NativeSelect from ".";
 
 export default {
   title: "Atoms/NativeSelect",
   component: NativeSelect,
-} as ComponentMeta<typeof NativeSelect>
+} as ComponentMeta<typeof NativeSelect>;
 
 const NativeSelectTemplate = (args) => (
   <div className="h-[200px] w-[750px]">
@@ -15,9 +15,9 @@ const NativeSelectTemplate = (args) => (
       ))}
     </NativeSelect>
   </div>
-)
+);
 
-export const NativeSelectExample = NativeSelectTemplate.bind({})
+export const NativeSelectExample = NativeSelectTemplate.bind({});
 NativeSelectExample.args = {
   items: [
     "Apple",
@@ -28,4 +28,4 @@ NativeSelectExample.args = {
     "Watermelon",
     "Strawberry",
   ],
-}
+};

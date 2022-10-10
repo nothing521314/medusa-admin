@@ -1,8 +1,8 @@
-import clsx from "clsx"
-import React, { ReactNode, useContext, useReducer } from "react"
-import Button from "../../fundamentals/button"
-import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
-import Modal, { ModalProps } from "../../molecules/modal"
+import clsx from "clsx";
+import React, { ReactNode, useContext, useReducer } from "react";
+import Button from "../../fundamentals/button";
+import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon";
+import Modal, { ModalProps } from "../../molecules/modal";
 
 enum LayeredModalActions {
   PUSH,
@@ -11,73 +11,73 @@ enum LayeredModalActions {
 }
 
 type LayeredModalScreen = {
-  title: string
-  subtitle?: string
-  onBack: () => void
-  onConfirm: () => void
-  view: ReactNode
-}
+  title: string;
+  subtitle?: string;
+  onBack: () => void;
+  onConfirm: () => void;
+  view: ReactNode;
+};
 
 export type ILayeredModalContext = {
-  screens: LayeredModalScreen[]
-  push: (screen: ReactNode) => void
-  pop: () => void
-  reset: () => void
-}
+  screens: LayeredModalScreen[];
+  push: (screen: ReactNode) => void;
+  pop: () => void;
+  reset: () => void;
+};
 
 const defaultContext: ILayeredModalContext = {
   screens: [],
   push: (screen) => {},
   pop: () => {},
   reset: () => {},
-}
+};
 
-export const LayeredModalContext = React.createContext(defaultContext)
+export const LayeredModalContext = React.createContext(defaultContext);
 
 const reducer = (state, action) => {
   switch (action.type) {
     case LayeredModalActions.PUSH: {
-      state.screens.push(action.payload)
-      return { ...state }
+      state.screens.push(action.payload);
+      return { ...state };
     }
     case LayeredModalActions.POP: {
-      state.screens.pop()
-      return { ...state }
+      state.screens.pop();
+      return { ...state };
     }
     case LayeredModalActions.RESET: {
-      return { ...state, screens: [] }
+      return { ...state, screens: [] };
     }
   }
-}
+};
 
 type LayeredModalProps = {
-  context: ILayeredModalContext
-} & ModalProps
+  context: ILayeredModalContext;
+} & ModalProps;
 
 export const LayeredModalProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, defaultContext)
+  const [state, dispatch] = useReducer(reducer, defaultContext);
 
   return (
     <LayeredModalContext.Provider
       value={{
         ...state,
         push: (screen: LayeredModalScreen) => {
-          dispatch({ type: LayeredModalActions.PUSH, payload: screen })
+          dispatch({ type: LayeredModalActions.PUSH, payload: screen });
         },
 
         pop: () => {
-          dispatch({ type: LayeredModalActions.POP })
+          dispatch({ type: LayeredModalActions.POP });
         },
 
         reset: () => {
-          dispatch({ type: LayeredModalActions.RESET })
+          dispatch({ type: LayeredModalActions.RESET });
         },
       }}
     >
       {children}
     </LayeredModalContext.Provider>
-  )
-}
+  );
+};
 
 const LayeredModal: React.FC<LayeredModalProps> = ({
   context,
@@ -87,11 +87,11 @@ const LayeredModal: React.FC<LayeredModalProps> = ({
   isLargeModal = true,
 }) => {
   const emptyScreensAndClose = () => {
-    context.reset()
-    handleClose()
-  }
+    context.reset();
+    handleClose();
+  };
 
-  const screen = context.screens[context.screens.length - 1]
+  const screen = context.screens[context.screens.length - 1];
   return (
     <Modal
       open={open}
@@ -148,17 +148,17 @@ const LayeredModal: React.FC<LayeredModalProps> = ({
         </div>
       </div>
     </Modal>
-  )
-}
+  );
+};
 
 export const useLayeredModal = () => {
-  const context = useContext(LayeredModalContext)
+  const context = useContext(LayeredModalContext);
   if (context === null) {
     throw new Error(
       "useLayeredModal must be used within a LayeredModalProvider"
-    )
+    );
   }
-  return context
-}
+  return context;
+};
 
-export default LayeredModal
+export default LayeredModal;

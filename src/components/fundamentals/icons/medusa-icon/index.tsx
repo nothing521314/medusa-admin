@@ -1,8 +1,8 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const MedusaIcon: React.FC<IconProps> = ({ size = "48", ...attributes }) => {
-  const width = +size * 0.9375 // width relative to height (from size prop)
+  const width = +size * 0.9375; // width relative to height (from size prop)
   return (
     <svg
       width={width}
@@ -17,7 +17,7 @@ const MedusaIcon: React.FC<IconProps> = ({ size = "48", ...attributes }) => {
         fill="#8B5CF6"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default MedusaIcon
+export default MedusaIcon;

@@ -1,11 +1,11 @@
-import * as React from "react"
-import Spinner from "../atoms/spinner"
+import * as React from "react";
+import Spinner from "../atoms/spinner";
 
 type LoadingContainerProps = {
-  isLoading: boolean
-  placeholder?: React.ReactElement
-  children: React.ReactElement | React.ReactElement[]
-}
+  isLoading: boolean;
+  placeholder?: React.ReactElement;
+  children: React.ReactElement | React.ReactElement[];
+};
 
 const LoadingContainer = ({
   isLoading,
@@ -13,7 +13,7 @@ const LoadingContainer = ({
   placeholder,
   ...props
 }: LoadingContainerProps) => {
-  placeholder = placeholder || <Spinner size="large" variant="secondary" />
+  placeholder = placeholder || <Spinner size="large" variant="secondary" />;
 
   if (isLoading) {
     return (
@@ -23,10 +23,10 @@ const LoadingContainer = ({
       >
         {placeholder}
       </div>
-    )
+    );
   }
 
-  return children as React.ReactElement
-}
+  return children as React.ReactElement;
+};
 
-export default LoadingContainer
+export default LoadingContainer;

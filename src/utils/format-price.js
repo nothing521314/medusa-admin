@@ -11,5 +11,5 @@ export const formatPrice = (amount, currencyCode, quantity = 1) => {
     parseFloat(((amount / 100) * quantity * 1).toFixed(2)) +
     " " +
     currencyCode.toUpperCase()
-  )
-}
+  );
+};

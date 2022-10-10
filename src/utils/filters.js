@@ -1,4 +1,4 @@
-export const DateFilterIsInTheLast = "is in the last"
+export const DateFilterIsInTheLast = "is in the last";
 
 export const DateFilters = {
   InTheLast: "is in the last",
@@ -7,7 +7,7 @@ export const DateFilters = {
   After: "is after",
   Before: "is before",
   EqualTo: "is equal to",
-}
+};
 
 export const FulfilmentFilters = {
   NotFulfilled: "not_fulfilled",
@@ -19,7 +19,7 @@ export const FulfilmentFilters = {
   PartiallyShipped: "partially_shipped",
   Canceled: "canceled",
   RequiresAction: "requires_action",
-}
+};
 
 export const PaymentFilters = {
   Awaiting: "awaiting",
@@ -29,7 +29,7 @@ export const PaymentFilters = {
   PartiallyRefunded: "partially_refunded",
   Canceled: "canceled",
   RequiresAction: "requires_action",
-}
+};
 
 export const StatusFilters = {
   Pending: "pending",
@@ -37,4 +37,4 @@ export const StatusFilters = {
   Canceled: "canceled",
   Archived: "archived",
   RequiresAction: "requires_action",
-}
+};

@@ -1,10 +1,10 @@
-import { AdminBatchJobRes, AdminPostBatchesReq } from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+import { AdminBatchJobRes, AdminPostBatchesReq } from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 
-import { useMedusa } from "../../../contexts"
-import { buildOptions } from "../../utils/buildOptions"
-import { adminBatchJobsKeys } from "./queries"
+import { useMedusa } from "../../../contexts";
+import { buildOptions } from "../../utils/buildOptions";
+import { adminBatchJobsKeys } from "./queries";
 
 /**
  * Hook returns functions for creating batch jobs.
@@ -18,14 +18,14 @@ export const useAdminCreateBatchJob = (
     AdminPostBatchesReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostBatchesReq) => client.admin.batchJobs.create(payload),
     buildOptions(queryClient, adminBatchJobsKeys.lists(), options)
-  )
-}
+  );
+};
 
 /**
  * Hook return functions for canceling a batch job
@@ -37,8 +37,8 @@ export const useAdminCancelBatchJob = (
   id: string,
   options?: UseMutationOptions<Response<AdminBatchJobRes>, Error>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.batchJobs.cancel(id),
@@ -47,8 +47,8 @@ export const useAdminCancelBatchJob = (
       [adminBatchJobsKeys.lists(), adminBatchJobsKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 /**
  * Hook return functions for confirming a batch job
@@ -60,8 +60,8 @@ export const useAdminConfirmBatchJob = (
   id: string,
   options?: UseMutationOptions<Response<AdminBatchJobRes>, Error>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.batchJobs.confirm(id),
@@ -70,5 +70,5 @@ export const useAdminConfirmBatchJob = (
       [adminBatchJobsKeys.lists(), adminBatchJobsKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};

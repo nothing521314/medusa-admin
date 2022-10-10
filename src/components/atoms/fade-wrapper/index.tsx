@@ -1,14 +1,14 @@
-import clsx from "clsx"
-import React, { useEffect, useState } from "react"
+import clsx from "clsx";
+import React, { useEffect, useState } from "react";
 
 type FadeProps = {
-  isVisible: boolean
-  isFullScreen?: boolean
-  start?: string
-  transitionClass?: string
-  end?: string
-  classname?: string
-}
+  isVisible: boolean;
+  isFullScreen?: boolean;
+  start?: string;
+  transitionClass?: string;
+  end?: string;
+  classname?: string;
+};
 
 const Fade: React.FC<FadeProps> = ({
   isVisible,
@@ -18,21 +18,21 @@ const Fade: React.FC<FadeProps> = ({
   children,
   isFullScreen = false,
 }) => {
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (show && !isVisible) {
-      setTimeout(() => setShow(false), 100)
+      setTimeout(() => setShow(false), 100);
     } else {
-      setShow(isVisible)
+      setShow(isVisible);
     }
-  })
+  });
 
   const classes = {
     [start || "scale-[0.98] opacity-0"]: !isVisible,
     [end || "scale-100 opacity-100"]: isVisible,
     "absolute inset-0": show && isFullScreen,
-  }
+  };
 
   return (
     <div
@@ -40,7 +40,7 @@ const Fade: React.FC<FadeProps> = ({
     >
       {show ? children : null}
     </div>
-  )
-}
+  );
+};
 
-export default Fade
+export default Fade;

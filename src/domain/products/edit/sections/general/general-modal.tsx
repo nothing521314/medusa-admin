@@ -1,50 +1,50 @@
-import { Product } from "@medusajs/medusa"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import { nestedForm } from "../../../../../utils/nested-form"
+import { Product } from "@medusajs/medusa";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../../components/fundamentals/button";
+import Modal from "../../../../../components/molecules/modal";
+import { nestedForm } from "../../../../../utils/nested-form";
 import DiscountableForm, {
   DiscountableFormType,
-} from "../../../components/discountable-form"
-import GeneralForm, { GeneralFormType } from "../../../components/general-form"
+} from "../../../components/discountable-form";
+import GeneralForm, { GeneralFormType } from "../../../components/general-form";
 import OrganizeForm, {
   OrganizeFormType,
-} from "../../../components/organize-form"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
+} from "../../../components/organize-form";
+import useEditProductActions from "../../hooks/use-edit-product-actions";
 
 type Props = {
-  product: Product
-  open: boolean
-  onClose: () => void
-}
+  product: Product;
+  open: boolean;
+  onClose: () => void;
+};
 
 type GeneralForm = {
-  general: GeneralFormType
-  organize: OrganizeFormType
-  discountable: DiscountableFormType
-}
+  general: GeneralFormType;
+  organize: OrganizeFormType;
+  discountable: DiscountableFormType;
+};
 
 const GeneralModal = ({ product, open, onClose }: Props) => {
-  const { onUpdate, updating } = useEditProductActions(product.id)
+  const { onUpdate, updating } = useEditProductActions(product.id);
   const form = useForm<GeneralForm>({
     defaultValues: getDefaultValues(product),
-  })
+  });
 
   const {
     formState: { isDirty },
     handleSubmit,
     reset,
-  } = form
+  } = form;
 
   useEffect(() => {
-    reset(getDefaultValues(product))
-  }, [product])
+    reset(getDefaultValues(product));
+  }, [product]);
 
   const onReset = () => {
-    reset(getDefaultValues(product))
-    onClose()
-  }
+    reset(getDefaultValues(product));
+    onClose();
+  };
 
   const onSubmit = handleSubmit((data) => {
     onUpdate(
@@ -75,8 +75,8 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
         discountable: data.discountable.value,
       },
       onReset
-    )
-  })
+    );
+  });
 
   return (
     <Modal open={open} handleClose={onReset} isLargeModal>
@@ -119,8 +119,8 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const getDefaultValues = (product: Product): GeneralForm => {
   return {
@@ -143,7 +143,7 @@ const getDefaultValues = (product: Product): GeneralForm => {
     discountable: {
       value: product.discountable,
     },
-  }
-}
+  };
+};
 
-export default GeneralModal
+export default GeneralModal;

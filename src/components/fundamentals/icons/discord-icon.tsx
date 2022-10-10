@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "./types/icon-type"
+import React from "react";
+import IconProps from "./types/icon-type";
 
 const DiscordIcon: React.FC<IconProps> = ({
   size = "16",
@@ -20,7 +20,7 @@ const DiscordIcon: React.FC<IconProps> = ({
         fill={color}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default DiscordIcon
+export default DiscordIcon;

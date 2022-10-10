@@ -1,24 +1,24 @@
-import { Product } from "@medusajs/medusa"
-import React, { useMemo } from "react"
-import { Column, HeaderGroup, Row } from "react-table"
-import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
-import ImagePlaceholder from "../../../../../../components/fundamentals/image-placeholder"
-import StatusIndicator from "../../../../../../components/fundamentals/status-indicator"
-import Table from "../../../../../../components/molecules/table"
+import { Product } from "@medusajs/medusa";
+import React, { useMemo } from "react";
+import { Column, HeaderGroup, Row } from "react-table";
+import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon";
+import ImagePlaceholder from "../../../../../../components/fundamentals/image-placeholder";
+import StatusIndicator from "../../../../../../components/fundamentals/status-indicator";
+import Table from "../../../../../../components/molecules/table";
 
 const getProductStatusVariant = (status: string) => {
   switch (status) {
     case "proposed":
-      return "warning"
+      return "warning";
     case "published":
-      return "success"
+      return "success";
     case "rejected":
-      return "danger"
+      return "danger";
     case "draft":
     default:
-      return "default"
+      return "default";
   }
-}
+};
 
 export const ProductRow = ({ row }: { row: Row<Product> }) => {
   return (
@@ -28,16 +28,16 @@ export const ProductRow = ({ row }: { row: Row<Product> }) => {
           <Table.Cell {...cell.getCellProps()}>
             {cell.render("Cell")}
           </Table.Cell>
-        )
+        );
       })}
     </Table.Row>
-  )
-}
+  );
+};
 
 export const ProductsHeader = ({
   headerGroup,
 }: {
-  headerGroup: HeaderGroup<Product>
+  headerGroup: HeaderGroup<Product>;
 }) => {
   return (
     <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
@@ -50,8 +50,8 @@ export const ProductsHeader = ({
         </Table.HeadCell>
       ))}
     </Table.HeadRow>
-  )
-}
+  );
+};
 
 export const useProductColumns = () => {
   const columns = useMemo<Column<Product>[]>(() => {
@@ -80,7 +80,7 @@ export const useProductColumns = () => {
                 <span>{original.title}</span>
               </div>
             </div>
-          )
+          );
         },
       },
       {
@@ -108,11 +108,11 @@ export const useProductColumns = () => {
         id: "variants",
         accessor: (row) => row.variants.length,
         Cell: ({ cell: { value } }) => {
-          return <div className="text-right">{value}</div>
+          return <div className="text-right">{value}</div>;
         },
       },
-    ]
-  }, [])
+    ];
+  }, []);
 
-  return columns
-}
+  return columns;
+};

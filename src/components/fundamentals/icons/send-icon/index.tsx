@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const SendIcon: React.FC<IconProps> = ({
   size = "24",
@@ -27,7 +27,7 @@ const SendIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default SendIcon
+export default SendIcon;

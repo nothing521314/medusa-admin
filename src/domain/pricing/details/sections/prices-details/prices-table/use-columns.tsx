@@ -1,8 +1,8 @@
-import { Product } from "@medusajs/medusa"
-import * as React from "react"
-import { Column } from "react-table"
-import ImagePlaceholder from "../../../../../../components/fundamentals/image-placeholder"
-import Table from "../../../../../../components/molecules/table"
+import { Product } from "@medusajs/medusa";
+import * as React from "react";
+import { Column } from "react-table";
+import ImagePlaceholder from "../../../../../../components/fundamentals/image-placeholder";
+import Table from "../../../../../../components/molecules/table";
 
 const usePricesColumns = () => {
   const columns = React.useMemo<Column<Product>[]>(
@@ -51,8 +51,8 @@ const usePricesColumns = () => {
       },
     ],
     []
-  )
+  );
 
-  return columns
-}
-export default usePricesColumns
+  return columns;
+};
+export default usePricesColumns;

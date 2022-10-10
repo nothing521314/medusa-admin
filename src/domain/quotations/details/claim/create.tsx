@@ -4,73 +4,76 @@ import {
   Order,
   ProductVariant,
   ShippingOption,
-} from "@medusajs/medusa"
-import clsx from "clsx"
+} from "@medusajs/medusa";
+import clsx from "clsx";
 import {
   useAdminCreateClaim,
   useAdminOrder,
   useAdminShippingOptions,
-} from "../../../../../medusa-react"
-import React, { useContext, useEffect, useState } from "react"
-import Button from "../../../../components/fundamentals/button"
-import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
-import IconTooltip from "../../../../components/molecules/icon-tooltip"
-import Modal from "../../../../components/molecules/modal"
+} from "../../../../../medusa-react";
+import React, { useContext, useEffect, useState } from "react";
+import Button from "../../../../components/fundamentals/button";
+import CheckIcon from "../../../../components/fundamentals/icons/check-icon";
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon";
+import IconTooltip from "../../../../components/molecules/icon-tooltip";
+import Modal from "../../../../components/molecules/modal";
 import LayeredModal, {
   LayeredModalContext,
-} from "../../../../components/molecules/modal/layered-modal"
-import RMAShippingPrice from "../../../../components/molecules/rma-select-shipping"
-import Select from "../../../../components/molecules/select"
-import CurrencyInput from "../../../../components/organisms/currency-input"
-import RMAReturnProductsTable from "../../../../components/organisms/rma-return-product-table"
-import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table"
-import useNotification from "../../../../hooks/use-notification"
-import { Option } from "../../../../types/shared"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import RMAEditAddressSubModal from "../rma-sub-modals/address"
-import RMASelectProductSubModal from "../rma-sub-modals/products"
-import { filterItems } from "../utils/create-filtering"
+} from "../../../../components/molecules/modal/layered-modal";
+import RMAShippingPrice from "../../../../components/molecules/rma-select-shipping";
+import Select from "../../../../components/molecules/select";
+import CurrencyInput from "../../../../components/organisms/currency-input";
+import RMAReturnProductsTable from "../../../../components/organisms/rma-return-product-table";
+import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table";
+import useNotification from "../../../../hooks/use-notification";
+import { Option } from "../../../../types/shared";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import RMAEditAddressSubModal from "../rma-sub-modals/address";
+import RMASelectProductSubModal from "../rma-sub-modals/products";
+import { filterItems } from "../utils/create-filtering";
 
 type ClaimMenuProps = {
-  order: Omit<Order, "beforeInsert">
-  onDismiss: () => void
-}
+  order: Omit<Order, "beforeInsert">;
+  onDismiss: () => void;
+};
 
 type ReturnRecord = Record<
   string,
   {
-    images: string[]
-    note: string
-    quantity: number
+    images: string[];
+    note: string;
+    quantity: number;
     reason: {
-      label: string
-      value?: "missing_item" | "wrong_item" | "production_failure" | "other"
-    } | null
+      label: string;
+      value?: "missing_item" | "wrong_item" | "production_failure" | "other";
+    } | null;
   }
->
+>;
 
-type SelectProduct = Omit<ProductVariant & { quantity: number }, "beforeInsert">
+type SelectProduct = Omit<
+  ProductVariant & { quantity: number },
+  "beforeInsert"
+>;
 
 type CustomPrice = {
-  return?: number
-  standard: number
-}
+  return?: number;
+  standard: number;
+};
 
 export type AddressPayload =
   | {
-      address_1: string
-      address_2: string
-      company: string
-      city: string
-      country_code: string
-      first_name: string
-      last_name: string
-      phone: string
-      postal_code: string
-      province: string
+      address_1: string;
+      address_2: string;
+      company: string;
+      city: string;
+      country_code: string;
+      first_name: string;
+      last_name: string;
+      phone: string;
+      postal_code: string;
+      province: string;
     }
-  | undefined
+  | undefined;
 
 const reasonOptions = [
   {
@@ -89,73 +92,75 @@ const reasonOptions = [
     label: "Other",
     value: "other",
   },
-]
+];
 
 const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
-  const { mutate, isLoading } = useAdminCreateClaim(order.id)
-  const { refetch } = useAdminOrder(order.id)
+  const { mutate, isLoading } = useAdminCreateClaim(order.id);
+  const { refetch } = useAdminOrder(order.id);
   const [shippingAddress, setShippingAddress] = useState<AddressPayload>(
     undefined
-  )
+  );
 
-  const [isReplace, toggleReplace] = useState(false)
-  const [noNotification, setNoNotification] = useState(order.no_notification)
-  const [toReturn, setToReturn] = useState<ReturnRecord>({})
+  const [isReplace, toggleReplace] = useState(false);
+  const [noNotification, setNoNotification] = useState(order.no_notification);
+  const [toReturn, setToReturn] = useState<ReturnRecord>({});
 
-  const [itemsToAdd, setItemsToAdd] = useState<SelectProduct[]>([])
+  const [itemsToAdd, setItemsToAdd] = useState<SelectProduct[]>([]);
   const [
     returnShippingMethod,
     setReturnShippingMethod,
-  ] = useState<ShippingOption | null>(null)
+  ] = useState<ShippingOption | null>(null);
   const [returnShippingPrice, setReturnShippingPrice] = useState<
     number | undefined
-  >(undefined)
+  >(undefined);
   const [shippingMethod, setShippingMethod] = useState<ShippingOption | null>(
     null
-  )
+  );
   const [showCustomPrice, setShowCustomPrice] = useState({
     standard: false,
     return: false,
-  })
+  });
   const [customOptionPrice, setCustomOptionPrice] = useState<CustomPrice>({
     standard: 0,
     return: undefined,
-  })
-  const [ready, setReady] = useState(false)
+  });
+  const [ready, setReady] = useState(false);
 
-  const notification = useNotification()
+  const notification = useNotification();
 
-  const layeredModalContext = useContext(LayeredModalContext)
+  const layeredModalContext = useContext(LayeredModalContext);
 
   // Includes both order items and swap items
-  const [allItems, setAllItems] = useState<any[]>([])
+  const [allItems, setAllItems] = useState<any[]>([]);
 
   const formatAddress = (address) => {
-    const addr = [address.address_1]
+    const addr = [address.address_1];
     if (address.address_2) {
-      addr.push(address.address_2)
+      addr.push(address.address_2);
     }
 
-    const city = `${address.postal_code} ${address.city}`
+    const city = `${address.postal_code} ${address.city}`;
 
-    return `${addr.join(", ")}, ${city}, ${address.country_code?.toUpperCase()}`
-  }
+    return `${addr.join(
+      ", "
+    )}, ${city}, ${address.country_code?.toUpperCase()}`;
+  };
 
   useEffect(() => {
     if (order) {
-      setAllItems(filterItems(order, true))
+      setAllItems(filterItems(order, true));
     }
-  }, [order])
+  }, [order]);
 
   const { shipping_options: returnShippingOptions } = useAdminShippingOptions({
     is_return: true,
     region_id: order.region_id,
-  })
+  });
 
   const { shipping_options: shippingOptions } = useAdminShippingOptions({
     region_id: order.region_id,
     is_return: false,
-  })
+  });
 
   useEffect(() => {
     if (toReturn) {
@@ -165,35 +170,35 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
         itemsToAdd.length > 0 &&
         shippingMethod
       ) {
-        setReady(true)
+        setReady(true);
       } else if (!isReplace && Object.keys(toReturn).length !== 0) {
-        setReady(true)
+        setReady(true);
       } else {
-        setReady(false)
+        setReady(false);
       }
     } else {
-      setReady(false)
+      setReady(false);
     }
-  }, [toReturn, isReplace, itemsToAdd, shippingMethod])
+  }, [toReturn, isReplace, itemsToAdd, shippingMethod]);
 
   useEffect(() => {
     if (!isReplace) {
-      setShippingMethod(null)
+      setShippingMethod(null);
       setShowCustomPrice({
         ...showCustomPrice,
         standard: false,
-      })
+      });
     }
-  }, [isReplace])
+  }, [isReplace]);
 
   useEffect(() => {
     setCustomOptionPrice({
       ...customOptionPrice,
       standard: 0,
-    })
-  }, [shippingMethod, showCustomPrice])
+    });
+  }, [shippingMethod, showCustomPrice]);
 
-  useEffect(() => console.log(shippingAddress), [shippingAddress])
+  useEffect(() => console.log(shippingAddress), [shippingAddress]);
 
   const onSubmit = () => {
     const claim_items = Object.entries(toReturn).map(([key, value]) => {
@@ -202,8 +207,8 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
         note: value.note ?? undefined,
         quantity: value.quantity,
         reason: value.reason?.value,
-      }
-    })
+      };
+    });
 
     const data: AdminPostOrdersOrderClaimsReq = {
       type: isReplace ? "replace" : "refund",
@@ -214,10 +219,10 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
       })),
       no_notification:
         noNotification !== order.no_notification ? noNotification : undefined,
-    }
+    };
 
     if (shippingAddress) {
-      data.shipping_address = shippingAddress
+      data.shipping_address = shippingAddress;
     }
 
     if (returnShippingMethod) {
@@ -229,7 +234,7 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
             : Math.round(
                 returnShippingPrice || 0 / (1 + (order.tax_rate || 0 / 100))
               ),
-      }
+      };
     }
 
     if (shippingMethod) {
@@ -238,74 +243,74 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
           option_id: shippingMethod.id,
           price: customOptionPrice.standard * 100,
         },
-      ]
+      ];
     }
 
     mutate(data, {
       onSuccess: () => {
-        refetch()
-        notification("Success", "Successfully created claim", "success")
-        onDismiss()
+        refetch();
+        notification("Success", "Successfully created claim", "success");
+        onDismiss();
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification("Error", getErrorMessage(error), "error");
       },
-    })
-  }
+    });
+  };
 
   const handleToAddQuantity = (value: number, index: number) => {
-    const updated = [...itemsToAdd]
+    const updated = [...itemsToAdd];
     updated[index] = {
       ...itemsToAdd[index],
       quantity: itemsToAdd[index].quantity + value,
-    }
+    };
 
-    setItemsToAdd(updated)
-  }
+    setItemsToAdd(updated);
+  };
 
   const handleRemoveItem = (index) => {
-    const updated = [...itemsToAdd]
-    updated.splice(index, 1)
-    setItemsToAdd(updated)
-  }
+    const updated = [...itemsToAdd];
+    updated.splice(index, 1);
+    setItemsToAdd(updated);
+  };
 
   const handleReturnShippingSelected = (so: Option) => {
     if (!so) {
-      setReturnShippingMethod(null)
-      return
+      setReturnShippingMethod(null);
+      return;
     }
 
-    const selectSo = returnShippingOptions?.find((s) => so.value === s.id)
+    const selectSo = returnShippingOptions?.find((s) => so.value === s.id);
     if (selectSo) {
-      setReturnShippingMethod(selectSo)
+      setReturnShippingMethod(selectSo);
       setReturnShippingPrice(
         selectSo.amount * (1 + (order.tax_rate || 0 / 100))
-      )
+      );
     } else {
-      setReturnShippingMethod(null)
-      setReturnShippingPrice(0)
+      setReturnShippingMethod(null);
+      setReturnShippingPrice(0);
     }
-  }
+  };
 
   const handleShippingSelected = (so: Option) => {
-    const selectSo = shippingOptions?.find((s) => so.value === s.id)
+    const selectSo = shippingOptions?.find((s) => so.value === s.id);
     if (selectSo) {
-      setShippingMethod(selectSo)
+      setShippingMethod(selectSo);
     } else {
-      setShippingMethod(null)
+      setShippingMethod(null);
     }
-  }
+  };
 
   const handleProductSelect = (variants: SelectProduct[]) => {
-    const existingIds = itemsToAdd.map((i) => i.id)
+    const existingIds = itemsToAdd.map((i) => i.id);
 
     setItemsToAdd((itemsToAdd) => [
       ...itemsToAdd,
       ...variants
         .filter((variant) => !existingIds.includes(variant.id))
         .map((variant) => ({ ...variant, quantity: 1 })),
-    ])
-  }
+    ]);
+  };
 
   return (
     <LayeredModal context={layeredModalContext} handleClose={onDismiss}>
@@ -370,12 +375,12 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
                   setCustomOptionPrice({
                     ...customOptionPrice,
                     return: returnShippingMethod.amount,
-                  })
+                  });
 
                   setShowCustomPrice({
                     ...showCustomPrice,
                     return: value,
-                  })
+                  });
                 }}
               />
             )}
@@ -384,7 +389,7 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
             <div
               className="cursor-pointer items-center flex"
               onClick={() => {
-                toggleReplace(true)
+                toggleReplace(true);
               }}
             >
               <div
@@ -405,7 +410,7 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
             <div
               className="cursor-pointer items-center flex"
               onClick={() => {
-                toggleReplace(false)
+                toggleReplace(false);
               }}
             >
               <div
@@ -440,7 +445,7 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
                           itemsToAdd,
                           handleProductSelect
                         )
-                      )
+                      );
                     }}
                   >
                     Add Product
@@ -470,7 +475,7 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
                             itemsToAdd,
                             handleProductSelect
                           )
-                        )
+                        );
                       }}
                     >
                       Add Product
@@ -495,7 +500,7 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
                               order,
                               setShippingAddress
                             )
-                          )
+                          );
                         }}
                         variant="ghost"
                         size="small"
@@ -520,7 +525,7 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
                               order,
                               setShippingAddress
                             )
-                          )
+                          );
                         }}
                         variant="ghost"
                         size="small"
@@ -675,8 +680,8 @@ const ClaimMenu: React.FC<ClaimMenuProps> = ({ order, onDismiss }) => {
         </Modal.Footer>
       </Modal.Body>
     </LayeredModal>
-  )
-}
+  );
+};
 
 const SelectProductsScreen = (pop, itemsToAdd, setSelectedItems) => {
   return {
@@ -688,8 +693,8 @@ const SelectProductsScreen = (pop, itemsToAdd, setSelectedItems) => {
         onSubmit={setSelectedItems}
       />
     ),
-  }
-}
+  };
+};
 
 const showEditAddressScreen = (
   pop: () => void,
@@ -707,8 +712,8 @@ const showEditAddressScreen = (
         order={order}
       />
     ),
-  }
-}
+  };
+};
 
 const mapAddress = (address: Address): AddressPayload => {
   return {
@@ -722,7 +727,7 @@ const mapAddress = (address: Address): AddressPayload => {
     postal_code: address.postal_code || "",
     country_code: address.country_code || "",
     phone: address.phone || "",
-  }
-}
+  };
+};
 
-export default ClaimMenu
+export default ClaimMenu;

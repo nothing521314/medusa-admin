@@ -1,18 +1,18 @@
-import { queryKeysFactory } from "../../utils/index"
+import { queryKeysFactory } from "../../utils/index";
 import {
   StoreReturnReasonsListRes,
   StoreReturnReasonsRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
 
-const RETURNS_REASONS_QUERY_KEY = `return_reasons` as const
+const RETURNS_REASONS_QUERY_KEY = `return_reasons` as const;
 
-const returnReasonsKey = queryKeysFactory(RETURNS_REASONS_QUERY_KEY)
+const returnReasonsKey = queryKeysFactory(RETURNS_REASONS_QUERY_KEY);
 
-type ReturnReasonsQueryKey = typeof returnReasonsKey
+type ReturnReasonsQueryKey = typeof returnReasonsKey;
 
 export const useReturnReasons = (
   options?: UseQueryOptionsWrapper<
@@ -21,14 +21,14 @@ export const useReturnReasons = (
     ReturnType<ReturnReasonsQueryKey["lists"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     returnReasonsKey.lists(),
     () => client.returnReasons.list(),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useReturnReason = (
   id: string,
@@ -38,11 +38,11 @@ export const useReturnReason = (
     ReturnType<ReturnReasonsQueryKey["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     returnReasonsKey.detail(id),
     () => client.returnReasons.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

@@ -1,36 +1,36 @@
-import clsx from "clsx"
-import React from "react"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import Button from "../../fundamentals/button"
-import MinusIcon from "../../fundamentals/icons/minus-icon"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import Table from "../../molecules/table"
+import clsx from "clsx";
+import React from "react";
+import { formatAmountWithSymbol } from "../../../utils/prices";
+import Button from "../../fundamentals/button";
+import MinusIcon from "../../fundamentals/icons/minus-icon";
+import PlusIcon from "../../fundamentals/icons/plus-icon";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import Table from "../../molecules/table";
 
 type RMAReturnProductsTableProps = {
-  isAdditionalItems?: boolean
-  order: any
-  itemsToAdd: any[]
-  handleToAddQuantity: (value, index) => void
-  handleRemoveItem: (index) => void
-}
+  isAdditionalItems?: boolean;
+  order: any;
+  itemsToAdd: any[];
+  handleToAddQuantity: (value, index) => void;
+  handleRemoveItem: (index) => void;
+};
 
 const extractPrice = (prices, order) => {
-  let price = prices.find((ma) => ma.region_id === order.region_id)
+  let price = prices.find((ma) => ma.region_id === order.region_id);
 
   if (!price) {
-    price = prices.find((ma) => ma.currency_code === order.currency_code)
+    price = prices.find((ma) => ma.currency_code === order.currency_code);
   }
 
   if (price) {
     return formatAmountWithSymbol({
       currency: order.currency_code,
       amount: price.amount * (1 + order.tax_rate / 100),
-    })
+    });
   }
 
-  return 0
-}
+  return 0;
+};
 
 const RMAReturnProductsTable: React.FC<RMAReturnProductsTableProps> = ({
   isAdditionalItems,
@@ -108,7 +108,7 @@ const RMAReturnProductsTable: React.FC<RMAReturnProductsTableProps> = ({
         ))}
       </Table.Body>
     </Table>
-  )
-}
+  );
+};
 
-export default RMAReturnProductsTable
+export default RMAReturnProductsTable;

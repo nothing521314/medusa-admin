@@ -1,10 +1,10 @@
-import React from "react"
-import Highlighter from "react-highlight-words"
+import React from "react";
+import Highlighter from "react-highlight-words";
 import type {
   CommonPropsAndClassName,
   FormatOptionLabelMeta,
   GroupBase,
-} from "react-select"
+} from "react-select";
 
 export const cleanCommonProps = <
   Option,
@@ -33,44 +33,44 @@ export const cleanCommonProps = <
     setValue,
     theme,
     ...innerProps
-  } = props
-  return { ...innerProps }
-}
+  } = props;
+  return { ...innerProps };
+};
 
 export const optionIsFixed = (
   option: unknown
 ): option is { isFixed: unknown } =>
-  typeof option === "object" && option !== null && "isFixed" in option
+  typeof option === "object" && option !== null && "isFixed" in option;
 
 export const optionIsDisabled = (
   option: unknown
 ): option is { isDisabled: boolean } =>
-  typeof option === "object" && option !== null && "isDisabled" in option
+  typeof option === "object" && option !== null && "isDisabled" in option;
 
 export const hasLabel = (option: unknown): option is { label: string } => {
-  return typeof option === "object" && option !== null && "label" in option
-}
+  return typeof option === "object" && option !== null && "label" in option;
+};
 
 export const hasPrefix = (option: unknown): option is { prefix: string } => {
-  return typeof option === "object" && option !== null && "prefix" in option
-}
+  return typeof option === "object" && option !== null && "prefix" in option;
+};
 
 export const isCreateOption = (
   option: unknown
 ): option is { __isNew__: true } => {
-  return typeof option === "object" && option !== null && "__isNew__" in option
-}
+  return typeof option === "object" && option !== null && "__isNew__" in option;
+};
 
 export const formatOptionLabel = <Option,>(
   option: Option,
   { inputValue }: FormatOptionLabelMeta<Option>
 ) => {
   if (!hasLabel(option)) {
-    return
+    return;
   }
 
   if (isCreateOption(option)) {
-    return option.label
+    return option.label;
   }
 
   return (
@@ -79,5 +79,5 @@ export const formatOptionLabel = <Option,>(
       textToHighlight={option.label}
       highlightClassName="bg-orange-10"
     />
-  )
-}
+  );
+};

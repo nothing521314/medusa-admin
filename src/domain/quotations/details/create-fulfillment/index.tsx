@@ -5,118 +5,118 @@ import {
   ClaimOrder,
   Order,
   Swap,
-} from "@medusajs/medusa"
+} from "@medusajs/medusa";
 import {
   useAdminCreateFulfillment,
   useAdminFulfillClaim,
   useAdminFulfillSwap,
-} from "../../../../../medusa-react"
-import React, { useState } from "react"
-import Button from "../../../../components/fundamentals/button"
-import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
-import IconTooltip from "../../../../components/molecules/icon-tooltip"
-import Modal from "../../../../components/molecules/modal"
+} from "../../../../../medusa-react";
+import React, { useState } from "react";
+import Button from "../../../../components/fundamentals/button";
+import CheckIcon from "../../../../components/fundamentals/icons/check-icon";
+import IconTooltip from "../../../../components/molecules/icon-tooltip";
+import Modal from "../../../../components/molecules/modal";
 import Metadata, {
   MetadataField,
-} from "../../../../components/organisms/metadata"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import CreateFulfillmentItemsTable from "./item-table"
+} from "../../../../components/organisms/metadata";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import CreateFulfillmentItemsTable from "./item-table";
 
 type CreateFulfillmentModalProps = {
-  handleCancel: () => void
-  address?: object
-  email?: string
-  orderToFulfill: Order | ClaimOrder | Swap
-  orderId: string
-}
+  handleCancel: () => void;
+  address?: object;
+  email?: string;
+  orderToFulfill: Order | ClaimOrder | Swap;
+  orderId: string;
+};
 
 const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   handleCancel,
   orderToFulfill,
   orderId,
 }) => {
-  const [toFulfill, setToFulfill] = useState<string[]>([])
-  const [quantities, setQuantities] = useState({})
-  const [noNotis, setNoNotis] = useState(false)
+  const [toFulfill, setToFulfill] = useState<string[]>([]);
+  const [quantities, setQuantities] = useState({});
+  const [noNotis, setNoNotis] = useState(false);
   const [metadata, setMetadata] = useState<MetadataField[]>([
     { key: "", value: "" },
-  ])
+  ]);
 
   const items =
     "items" in orderToFulfill
       ? orderToFulfill.items
-      : orderToFulfill.additional_items
+      : orderToFulfill.additional_items;
 
-  const createOrderFulfillment = useAdminCreateFulfillment(orderId)
-  const createSwapFulfillment = useAdminFulfillSwap(orderId)
-  const createClaimFulfillment = useAdminFulfillClaim(orderId)
+  const createOrderFulfillment = useAdminCreateFulfillment(orderId);
+  const createSwapFulfillment = useAdminFulfillSwap(orderId);
+  const createClaimFulfillment = useAdminFulfillClaim(orderId);
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   const createFulfillment = () => {
-    const [type] = orderToFulfill.id.split("_")
+    const [type] = orderToFulfill.id.split("_");
 
     type actionType =
       | typeof createOrderFulfillment
       | typeof createSwapFulfillment
-      | typeof createClaimFulfillment
+      | typeof createClaimFulfillment;
 
-    let action: actionType = createOrderFulfillment
-    let successText = "Successfully fulfilled order"
-    let requestObj
+    let action: actionType = createOrderFulfillment;
+    let successText = "Successfully fulfilled order";
+    let requestObj;
 
     const preparedMetadata = metadata.reduce((acc, next) => {
       if (next.key) {
         return {
           ...acc,
           [next.key]: next.value,
-        }
+        };
       } else {
-        return acc
+        return acc;
       }
-    }, {})
+    }, {});
 
     switch (type) {
       case "swap":
-        action = createSwapFulfillment
-        successText = "Successfully fulfilled swap"
+        action = createSwapFulfillment;
+        successText = "Successfully fulfilled swap";
         requestObj = {
           swap_id: orderToFulfill.id,
           metadata: preparedMetadata,
           no_notification: noNotis,
-        } as AdminPostOrdersOrderSwapsSwapFulfillmentsReq
-        break
+        } as AdminPostOrdersOrderSwapsSwapFulfillmentsReq;
+        break;
 
       case "claim":
-        action = createClaimFulfillment
-        successText = "Successfully fulfilled claim"
+        action = createClaimFulfillment;
+        successText = "Successfully fulfilled claim";
         requestObj = {
           claim_id: orderToFulfill.id,
           metadata: preparedMetadata,
           no_notification: noNotis,
-        } as AdminPostOrdersOrderClaimsClaimFulfillmentsReq
-        break
+        } as AdminPostOrdersOrderClaimsClaimFulfillmentsReq;
+        break;
 
       default:
         requestObj = {
           metadata: preparedMetadata,
           no_notification: noNotis,
-        } as AdminPostOrdersOrderFulfillmentsReq
+        } as AdminPostOrdersOrderFulfillmentsReq;
         requestObj.items = toFulfill
           .map((itemId) => ({ item_id: itemId, quantity: quantities[itemId] }))
-          .filter((t) => !!t)
-        break
+          .filter((t) => !!t);
+        break;
     }
 
     action.mutate(requestObj, {
       onSuccess: () => {
-        notification("Success", successText, "success")
-        handleCancel()
+        notification("Success", successText, "success");
+        handleCancel();
       },
       onError: (err) => notification("Error", getErrorMessage(err), "error"),
-    })
-  }
+    });
+  };
 
   return (
     <Modal handleClose={handleCancel}>
@@ -189,7 +189,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default CreateFulfillmentModal
+export default CreateFulfillmentModal;

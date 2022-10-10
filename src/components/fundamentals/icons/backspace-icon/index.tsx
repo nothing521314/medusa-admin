@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const BackspaceIcon: React.FC<IconProps> = ({
   size = "16",
@@ -36,7 +36,7 @@ const BackspaceIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default BackspaceIcon
+export default BackspaceIcon;

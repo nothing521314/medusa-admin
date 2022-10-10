@@ -1,12 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
-import React from "react"
-import Accordion from "."
-import InputField from "../../molecules/input"
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import React from "react";
+import Accordion from ".";
+import InputField from "../../molecules/input";
 
 export default {
   title: "Organisms/Accordion",
   component: Accordion,
-} as ComponentMeta<typeof Accordion>
+} as ComponentMeta<typeof Accordion>;
 
 const Template: ComponentStory<typeof Accordion> = (args) => (
   <div className="max-w-3xl max-h-6xlarge">
@@ -60,10 +60,10 @@ const Template: ComponentStory<typeof Accordion> = (args) => (
       </Accordion.Item>
     </Accordion>
   </div>
-)
+);
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
   defaultValue: ["item.1"],
   type: "multiple",
-}
+};

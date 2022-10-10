@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const UsersIcon: React.FC<IconProps> = ({
   size = "24",
@@ -44,7 +44,7 @@ const UsersIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default UsersIcon
+export default UsersIcon;

@@ -1,19 +1,19 @@
-import React from "react"
+import React from "react";
 
 type EventItemContainerProps = {
   item: {
-    thumbnail?: string
-    title: string
-    quantity: number
+    thumbnail?: string;
+    title: string;
+    quantity: number;
     variant: {
-      title: string
-    }
-  }
-}
+      title: string;
+    };
+  };
+};
 
 const EventItemContainer: React.FC<EventItemContainerProps> = ({ item }) => {
   if (!item) {
-    return null
+    return null;
   }
   return (
     <div className="flex items-center gap-x-small mb-base last:mb-0">
@@ -34,7 +34,7 @@ const EventItemContainer: React.FC<EventItemContainerProps> = ({ item }) => {
         <p className="text-grey-50">{item.variant.title}</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EventItemContainer
+export default EventItemContainer;

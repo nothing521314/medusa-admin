@@ -1,20 +1,20 @@
-import { Discount } from "@medusajs/medusa"
-import { parse } from "iso8601-duration"
-import { useAdminUpdateDiscount } from "../../../../../medusa-react"
-import moment from "moment"
-import React, { ReactNode } from "react"
-import ClockIcon from "../../../../components/fundamentals/icons/clock-icon"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
-import { ActionType } from "../../../../components/molecules/actionables"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import { removeNullish } from "../../../../utils/remove-nullish"
+import { Discount } from "@medusajs/medusa";
+import { parse } from "iso8601-duration";
+import { useAdminUpdateDiscount } from "../../../../../medusa-react";
+import moment from "moment";
+import React, { ReactNode } from "react";
+import ClockIcon from "../../../../components/fundamentals/icons/clock-icon";
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon";
+import { ActionType } from "../../../../components/molecules/actionables";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import { removeNullish } from "../../../../utils/remove-nullish";
 
 type displaySetting = {
-  title: string
-  description: ReactNode
-  actions?: ActionType[]
-}
+  title: string;
+  description: ReactNode;
+  actions?: ActionType[];
+};
 
 const DisplaySettingsDateDescription = ({ date }: { date: Date }) => (
   <div className="flex text-grey-50 inter-small-regular ">
@@ -24,22 +24,22 @@ const DisplaySettingsDateDescription = ({ date }: { date: Date }) => (
       <span className="ml-2.5">{moment.utc(date).format("UTC HH:mm")}</span>
     </span>
   </div>
-)
+);
 
 const CommonDescription = ({ text }) => (
   <span className="text-grey-50 inter-small-regular">{text}</span>
-)
+);
 
 const useDiscountConfigurations = (discount: Discount) => {
-  const updateDiscount = useAdminUpdateDiscount(discount.id)
-  const notification = useNotification()
+  const updateDiscount = useAdminUpdateDiscount(discount.id);
+  const notification = useNotification();
 
-  const conditions: displaySetting[] = []
+  const conditions: displaySetting[] = [];
 
   conditions.push({
     title: "Start date",
     description: <DisplaySettingsDateDescription date={discount.starts_at} />,
-  })
+  });
 
   if (discount.ends_at) {
     conditions.push({
@@ -59,16 +59,16 @@ const useDiscountConfigurations = (discount: Discount) => {
                     "Success",
                     "Discount end date removed",
                     "success"
-                  )
+                  );
                 },
                 onError: (error) => {
-                  notification("Error", getErrorMessage(error), "error")
+                  notification("Error", getErrorMessage(error), "error");
                 },
               }
             ),
         },
       ],
-    })
+    });
   }
   if (discount.usage_limit) {
     conditions.push({
@@ -86,16 +86,20 @@ const useDiscountConfigurations = (discount: Discount) => {
               { usage_limit: null },
               {
                 onSuccess: () => {
-                  notification("Success", "Redemption limit removed", "success")
+                  notification(
+                    "Success",
+                    "Redemption limit removed",
+                    "success"
+                  );
                 },
                 onError: (error) => {
-                  notification("Error", getErrorMessage(error), "error")
+                  notification("Error", getErrorMessage(error), "error");
                 },
               }
             ),
         },
       ],
-    })
+    });
   }
   if (discount.valid_duration) {
     conditions.push({
@@ -121,19 +125,19 @@ const useDiscountConfigurations = (discount: Discount) => {
                     "Success",
                     "Discount duration removed",
                     "success"
-                  )
+                  );
                 },
                 onError: (error) => {
-                  notification("Error", getErrorMessage(error), "error")
+                  notification("Error", getErrorMessage(error), "error");
                 },
               }
             ),
         },
       ],
-    })
+    });
   }
 
-  return conditions
-}
+  return conditions;
+};
 
-export default useDiscountConfigurations
+export default useDiscountConfigurations;

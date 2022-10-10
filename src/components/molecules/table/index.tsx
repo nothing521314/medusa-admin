@@ -1,71 +1,71 @@
-import clsx from "clsx"
-import { navigate } from "gatsby"
-import React from "react"
-import Spinner from "../../atoms/spinner"
-import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
-import ArrowRightIcon from "../../fundamentals/icons/arrow-right-icon"
-import SortingIcon from "../../fundamentals/icons/sorting-icon"
-import Actionables, { ActionType } from "../../molecules/actionables"
-import FilteringOptions, { FilteringOptionProps } from "./filtering-option"
-import TableSearch from "./table-search"
+import clsx from "clsx";
+import { navigate } from "gatsby";
+import React from "react";
+import Spinner from "../../atoms/spinner";
+import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon";
+import ArrowRightIcon from "../../fundamentals/icons/arrow-right-icon";
+import SortingIcon from "../../fundamentals/icons/sorting-icon";
+import Actionables, { ActionType } from "../../molecules/actionables";
+import FilteringOptions, { FilteringOptionProps } from "./filtering-option";
+import TableSearch from "./table-search";
 
 type TableRowProps = React.HTMLAttributes<HTMLTableRowElement> & {
-  forceDropdown?: boolean
-  actions?: ActionType[]
-  linkTo?: string
-}
+  forceDropdown?: boolean;
+  actions?: ActionType[];
+  linkTo?: string;
+};
 
 type TablePaginationProps = React.HTMLAttributes<HTMLDivElement> & {
-  title: string
-  currentPage: number
-  pageSize: number
-  count: number
-  offset: number
-  limit: number
-  pageCount: number
-  nextPage: () => void
-  prevPage: () => void
-  hasNext: boolean
-  hasPrev: boolean
-}
+  title: string;
+  currentPage: number;
+  pageSize: number;
+  count: number;
+  offset: number;
+  limit: number;
+  pageCount: number;
+  nextPage: () => void;
+  prevPage: () => void;
+  hasNext: boolean;
+  hasPrev: boolean;
+};
 
 type TableCellProps = React.TdHTMLAttributes<HTMLTableCellElement> & {
-  linkTo?: string
-  name?: string
-}
+  linkTo?: string;
+  name?: string;
+};
 
 type SortingHeadCellProps = {
-  onSortClicked: () => void
-  sortDirection?: "ASC" | "DESC"
-  setSortDirection: (string) => void
-} & React.HTMLAttributes<HTMLTableCellElement>
+  onSortClicked: () => void;
+  sortDirection?: "ASC" | "DESC";
+  setSortDirection: (string) => void;
+} & React.HTMLAttributes<HTMLTableCellElement>;
 
 export type TableProps = {
-  filteringOptions?: FilteringOptionProps[] | React.ReactNode
-  tableActions?: React.ReactNode
-  enableSearch?: boolean
-  immediateSearchFocus?: boolean
-  searchPlaceholder?: string
-  searchValue?: string
-  containerClassName?: string
-  isLoading?: boolean
-  handleSearch?: (searchTerm: string) => void
-} & React.HTMLAttributes<HTMLTableElement>
+  filteringOptions?: FilteringOptionProps[] | React.ReactNode;
+  tableActions?: React.ReactNode;
+  enableSearch?: boolean;
+  immediateSearchFocus?: boolean;
+  searchPlaceholder?: string;
+  searchValue?: string;
+  containerClassName?: string;
+  isLoading?: boolean;
+  handleSearch?: (searchTerm: string) => void;
+} & React.HTMLAttributes<HTMLTableElement>;
 
 type TableElement<T> = React.ForwardRefExoticComponent<T> &
-  React.RefAttributes<unknown>
+  React.RefAttributes<unknown>;
 
 type TableType = {
-  Head: TableElement<React.HTMLAttributes<HTMLTableSectionElement>>
-  HeadRow: TableElement<React.HTMLAttributes<HTMLTableRowElement>>
-  HeadCell: TableElement<React.ThHTMLAttributes<HTMLTableCellElement>>
-  SortingHeadCell: TableElement<SortingHeadCellProps>
-  Body: TableElement<React.HTMLAttributes<HTMLTableSectionElement>>
-  Row: TableElement<TableRowProps>
-  Cell: TableElement<TableCellProps>
+  Head: TableElement<React.HTMLAttributes<HTMLTableSectionElement>>;
+  HeadRow: TableElement<React.HTMLAttributes<HTMLTableRowElement>>;
+  HeadCell: TableElement<React.ThHTMLAttributes<HTMLTableCellElement>>;
+  SortingHeadCell: TableElement<SortingHeadCellProps>;
+  Body: TableElement<React.HTMLAttributes<HTMLTableSectionElement>>;
+  Row: TableElement<TableRowProps>;
+  Cell: TableElement<TableCellProps>;
   Pagination: React.ForwardRefExoticComponent<TablePaginationProps> &
-    React.RefAttributes<unknown>
-} & TableElement<TableProps>
+    React.RefAttributes<unknown>;
+} & TableElement<TableProps>;
 
 const Table = React.forwardRef<HTMLTableElement, TableProps>(
   (
@@ -86,7 +86,7 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
     ref
   ) => {
     if (enableSearch && !handleSearch) {
-      throw new Error("Table cannot enable search without a search handler")
+      throw new Error("Table cannot enable search without a search handler");
     }
 
     return (
@@ -132,9 +132,9 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
           </table>
         </div>
       </div>
-    )
+    );
   }
-) as TableType
+) as TableType;
 
 Table.Head = React.forwardRef<
   HTMLTableSectionElement,
@@ -150,7 +150,7 @@ Table.Head = React.forwardRef<
   >
     {children}
   </thead>
-))
+));
 
 Table.HeadRow = React.forwardRef<
   HTMLTableRowElement,
@@ -159,7 +159,7 @@ Table.HeadRow = React.forwardRef<
   <tr ref={ref} className={clsx(className)} {...props}>
     {children}
   </tr>
-))
+));
 
 Table.HeadCell = React.forwardRef<
   HTMLTableCellElement,
@@ -168,7 +168,7 @@ Table.HeadCell = React.forwardRef<
   <th ref={ref} className={clsx("text-left h-[40px]", className)} {...props}>
     {children}
   </th>
-))
+));
 
 Table.SortingHeadCell = React.forwardRef<
   HTMLTableCellElement,
@@ -190,17 +190,17 @@ Table.SortingHeadCell = React.forwardRef<
         <div
           className="flex items-center cursor-pointer select-none"
           onClick={(e) => {
-            e.preventDefault()
+            e.preventDefault();
             if (!sortDirection) {
-              setSortDirection("ASC")
+              setSortDirection("ASC");
             } else {
               if (sortDirection === "ASC") {
-                setSortDirection("DESC")
+                setSortDirection("DESC");
               } else {
-                setSortDirection(undefined)
+                setSortDirection(undefined);
               }
             }
-            onSortClicked()
+            onSortClicked();
           }}
         >
           {children}
@@ -211,9 +211,9 @@ Table.SortingHeadCell = React.forwardRef<
           />
         </div>
       </th>
-    )
+    );
   }
-)
+);
 
 Table.Body = React.forwardRef<
   HTMLTableSectionElement,
@@ -222,7 +222,7 @@ Table.Body = React.forwardRef<
   <tbody ref={ref} className={clsx(className)} {...props}>
     {children}
   </tbody>
-))
+));
 
 Table.Cell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
   ({ className, linkTo, children, ...props }, ref) => (
@@ -232,15 +232,15 @@ Table.Cell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
       {...props}
       {...(linkTo && {
         onClick: (e) => {
-          navigate(linkTo)
-          e.stopPropagation()
+          navigate(linkTo);
+          e.stopPropagation();
         },
       })}
     >
       {children}
     </td>
   )
-)
+);
 
 Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
   ({ className, actions, children, linkTo, forceDropdown, ...props }, ref) => (
@@ -254,7 +254,7 @@ Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
       {...props}
       {...(linkTo && {
         onClick: () => {
-          navigate(linkTo)
+          navigate(linkTo);
         },
       })}
     >
@@ -266,7 +266,7 @@ Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
       )}
     </tr>
   )
-)
+);
 
 export const TablePagination = ({
   className,
@@ -281,8 +281,8 @@ export const TablePagination = ({
   hasNext,
   hasPrev,
 }: TablePaginationProps) => {
-  const soothedOffset = count > 0 ? offset + 1 : 0
-  const soothedPageCount = Math.max(1, pageCount)
+  const soothedOffset = count > 0 ? offset + 1 : 0;
+  const soothedPageCount = Math.max(1, pageCount);
 
   return (
     <div
@@ -316,7 +316,7 @@ export const TablePagination = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Table
+export default Table;

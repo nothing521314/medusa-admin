@@ -1,15 +1,15 @@
-import * as RadixCollapsible from "@radix-ui/react-collapsible"
-import clsx from "clsx"
-import React, { useState } from "react"
-import ArrowDownIcon from "../../fundamentals/icons/arrow-down-icon"
-import ArrowUpIcon from "../../fundamentals/icons/arrow-up-icon"
+import * as RadixCollapsible from "@radix-ui/react-collapsible";
+import clsx from "clsx";
+import React, { useState } from "react";
+import ArrowDownIcon from "../../fundamentals/icons/arrow-down-icon";
+import ArrowUpIcon from "../../fundamentals/icons/arrow-up-icon";
 
 type DetailsCollapsibleProps = {
-  rootProps?: RadixCollapsible.CollapsibleProps
-  triggerProps?: RadixCollapsible.CollapsibleTriggerProps
-  contentProps?: RadixCollapsible.CollapsibleContentProps
-  children: React.ReactNode
-}
+  rootProps?: RadixCollapsible.CollapsibleProps;
+  triggerProps?: RadixCollapsible.CollapsibleTriggerProps;
+  contentProps?: RadixCollapsible.CollapsibleContentProps;
+  children: React.ReactNode;
+};
 
 const DetailsCollapsible = ({
   rootProps,
@@ -17,10 +17,10 @@ const DetailsCollapsible = ({
   contentProps,
   children,
 }: DetailsCollapsibleProps) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-  const Icon = open ? ArrowUpIcon : ArrowDownIcon
-  const label = open ? "Hide additional details" : "Show additional details"
+  const Icon = open ? ArrowUpIcon : ArrowDownIcon;
+  const label = open ? "Hide additional details" : "Show additional details";
 
   return (
     <RadixCollapsible.Root
@@ -44,7 +44,7 @@ const DetailsCollapsible = ({
         {children}
       </RadixCollapsible.Content>
     </RadixCollapsible.Root>
-  )
-}
+  );
+};
 
-export default DetailsCollapsible
+export default DetailsCollapsible;

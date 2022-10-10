@@ -4,13 +4,13 @@ import {
   AdminResetPasswordTokenRequest,
   AdminUserRes,
   AdminUsersListRes,
-} from "@medusajs/medusa"
+} from "@medusajs/medusa";
 import {
   ResponsePromise,
   AdminCreateUserPayload,
   AdminUpdateUserPayload,
-} from "../.."
-import BaseResource from "../base"
+} from "../..";
+import BaseResource from "../base";
 
 class AdminUsersResource extends BaseResource {
   /**
@@ -23,8 +23,8 @@ class AdminUsersResource extends BaseResource {
     payload: AdminResetPasswordTokenRequest,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<void> {
-    const path = `/admin/users/password-token`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/users/password-token`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -37,8 +37,8 @@ class AdminUsersResource extends BaseResource {
     payload: AdminResetPasswordRequest,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUserRes> {
-    const path = `admin/users/reset-password`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `admin/users/reset-password`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -51,8 +51,8 @@ class AdminUsersResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUserRes> {
-    const path = `/admin/users/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/users/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -65,8 +65,8 @@ class AdminUsersResource extends BaseResource {
     payload: AdminCreateUserPayload,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUserRes> {
-    const path = `/admin/users`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/users`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -81,8 +81,8 @@ class AdminUsersResource extends BaseResource {
     payload: AdminUpdateUserPayload,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUserRes> {
-    const path = `/admin/users/${id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/users/${id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -95,8 +95,8 @@ class AdminUsersResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDeleteUserRes> {
-    const path = `/admin/users/${id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/users/${id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -106,9 +106,9 @@ class AdminUsersResource extends BaseResource {
   list(
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUsersListRes> {
-    const path = `/admin/users`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/users`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 }
 
-export default AdminUsersResource
+export default AdminUsersResource;

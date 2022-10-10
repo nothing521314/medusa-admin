@@ -1,7 +1,7 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
-import clsx from "clsx"
-import React from "react"
-import Tooltip from "."
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import clsx from "clsx";
+import React from "react";
+import Tooltip from ".";
 
 export default {
   title: "Atoms/Tooltip",
@@ -25,7 +25,7 @@ export default {
       defaultValue: "top left",
     },
   },
-} as ComponentMeta<typeof Tooltip>
+} as ComponentMeta<typeof Tooltip>;
 
 const Template: ComponentStory<any> = ({ triggerPosition, ...props }) => {
   return (
@@ -49,18 +49,18 @@ const Template: ComponentStory<any> = ({ triggerPosition, ...props }) => {
         <button className="btn btn-secondary btn-medium">hover!</button>
       </Tooltip>
     </div>
-  )
-}
+  );
+};
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
   content: "Tags are one word descriptors for the product used for searches",
   sideOffset: 10,
-}
+};
 
-export const Controlled = Template.bind({})
+export const Controlled = Template.bind({});
 Controlled.args = {
   open: true,
   content: "Tags are one word descriptors for the product used for searches",
   sideOffset: 10,
-}
+};

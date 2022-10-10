@@ -1,6 +1,6 @@
-import { GroupBase } from "react-select"
+import { GroupBase } from "react-select";
 
-export type SelectSize = "sm" | "md"
+export type SelectSize = "sm" | "md";
 
 declare module "react-select/dist/declarations/src/Select" {
   export interface Props<
@@ -13,43 +13,43 @@ declare module "react-select/dist/declarations/src/Select" {
      *
      * @defaultValue `undefined`
      */
-    label?: string
+    label?: string;
     /**
      * An optional flag to indicate if the select is required.
      * If set to `true`, an asterisk will be displayed next to the label.
      *
      * @defaultValue `false`
      */
-    required?: boolean
+    required?: boolean;
     /**
      * An optional string to display when multiple options are selected in a Select where isMulti is true.
      *
      * @defaultValue `undefined`
      */
-    selectedPlaceholder?: string
+    selectedPlaceholder?: string;
     /**
      * An optional flag to indicate if the size of the select.
      *
      * @defaultValue `"md"`
      */
-    size?: SelectSize
+    size?: SelectSize;
     /**
      * An optinal helper text to display below the select.
      *
      * @defaultValue `undefined`
      */
-    helperText?: string
+    helperText?: string;
     /**
      * Errors provided by a containing form.
      *
      * @defaultValue `undefined`
      */
-    errors?: Record<string, unknown>
+    errors?: Record<string, unknown>;
     /**
      * An optional flag to indicate if the select should be able to select all options.
      *
      * @defaultValue `false`
      */
-    selectAll?: boolean
+    selectAll?: boolean;
   }
 }

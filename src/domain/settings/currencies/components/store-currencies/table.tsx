@@ -1,20 +1,20 @@
-import { Currency } from "@medusajs/medusa"
-import React, { useEffect } from "react"
-import { TableInstance } from "react-table"
+import { Currency } from "@medusajs/medusa";
+import React, { useEffect } from "react";
+import { TableInstance } from "react-table";
 import Table, {
   TablePagination,
-} from "../../../../../components/molecules/table"
+} from "../../../../../components/molecules/table";
 
 type Props = {
-  count: number
-  limit: number
-  offset: number
-  setOffset: (offset: number) => void
-  setQuery: (query: string) => void
-  setSelectedRowIds: (selectedRowIds: string[]) => void
-  tableAction?: React.ReactNode
-  tableState: TableInstance<Currency>
-}
+  count: number;
+  limit: number;
+  offset: number;
+  setOffset: (offset: number) => void;
+  setQuery: (query: string) => void;
+  setSelectedRowIds: (selectedRowIds: string[]) => void;
+  tableAction?: React.ReactNode;
+  tableState: TableInstance<Currency>;
+};
 
 const CurrenciesTable = ({
   limit,
@@ -37,27 +37,27 @@ const CurrenciesTable = ({
     prepareRow,
     state: { pageSize, pageIndex, selectedRowIds },
     pageCount,
-  } = tableState
+  } = tableState;
 
   const handleNext = () => {
     if (canNextPage) {
-      setOffset(offset + pageSize)
-      nextPage()
+      setOffset(offset + pageSize);
+      nextPage();
     }
-  }
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      setOffset(offset - pageSize)
-      previousPage()
+      setOffset(offset - pageSize);
+      previousPage();
     }
-  }
+  };
 
   useEffect(() => {
     if (setSelectedRowIds) {
-      setSelectedRowIds(Object.keys(selectedRowIds))
+      setSelectedRowIds(Object.keys(selectedRowIds));
     }
-  }, [selectedRowIds])
+  }, [selectedRowIds]);
 
   return (
     <div>
@@ -82,7 +82,7 @@ const CurrenciesTable = ({
         </Table.Head>
         <Table.Body {...getTableBodyProps()}>
           {rows.map((row) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <Table.Row {...row.getRowProps()}>
                 {row.cells.map((cell) => {
@@ -90,10 +90,10 @@ const CurrenciesTable = ({
                     <Table.Cell {...cell.getCellProps()}>
                       {cell.render("Cell")}
                     </Table.Cell>
-                  )
+                  );
                 })}
               </Table.Row>
-            )
+            );
           })}
         </Table.Body>
       </Table>
@@ -111,11 +111,11 @@ const CurrenciesTable = ({
         hasPrev={canPreviousPage}
       />
     </div>
-  )
-}
+  );
+};
 
 const hasClassName = (col: unknown): col is { className: string } => {
-  return (col as { className: string }).className !== undefined
-}
+  return (col as { className: string }).className !== undefined;
+};
 
-export default CurrenciesTable
+export default CurrenciesTable;

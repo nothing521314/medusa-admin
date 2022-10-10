@@ -40,7 +40,9 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
 
   const filtersDebounce = useDebounce(filters, 400);
 
-  const { orders, isLoading, count } = useAdminOrders(filtersDebounce, { cacheTime: Infinity });
+  const { orders, isLoading, count } = useAdminOrders(filtersDebounce, {
+    cacheTime: Infinity,
+  });
 
   const numPages = useMemo(() => {
     const controlledPageCount = Math.ceil(count! / filters.limit);

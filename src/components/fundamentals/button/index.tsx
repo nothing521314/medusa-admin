@@ -1,12 +1,12 @@
-import clsx from "clsx"
-import React, { Children } from "react"
-import Spinner from "../../atoms/spinner"
+import clsx from "clsx";
+import React, { Children } from "react";
+import Spinner from "../../atoms/spinner";
 
 export type ButtonProps = {
-  variant: "primary" | "secondary" | "ghost" | "danger" | "nuclear"
-  size?: "small" | "medium" | "large"
-  loading?: boolean
-} & React.ButtonHTMLAttributes<HTMLButtonElement>
+  variant: "primary" | "secondary" | "ghost" | "danger" | "nuclear";
+  size?: "small" | "medium" | "large";
+  loading?: boolean;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -21,9 +21,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const handleClick = (e) => {
       if (!loading && attributes.onClick) {
-        attributes.onClick(e)
+        attributes.onClick(e);
       }
-    }
+    };
 
     const variantClassname = clsx({
       ["btn-primary"]: variant === "primary",
@@ -31,13 +31,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ["btn-ghost"]: variant === "ghost",
       ["btn-danger"]: variant === "danger",
       ["btn-nuclear"]: variant === "nuclear",
-    })
+    });
 
     const sizeClassname = clsx({
       ["btn-large"]: size === "large",
       ["btn-medium"]: size === "medium",
       ["btn-small"]: size === "small",
-    })
+    });
 
     return (
       <button
@@ -61,12 +61,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               <span key={i} className="mr-xsmall last:mr-0">
                 {child}
               </span>
-            )
+            );
           })
         )}
       </button>
-    )
+    );
   }
-)
+);
 
-export default Button
+export default Button;

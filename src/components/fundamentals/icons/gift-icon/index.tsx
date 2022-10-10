@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const GiftIcon: React.FC<IconProps> = ({
   size = "24",
@@ -51,7 +51,7 @@ const GiftIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default GiftIcon
+export default GiftIcon;

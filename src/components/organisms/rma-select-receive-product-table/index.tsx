@@ -1,24 +1,24 @@
-import { LineItem, Order } from "@medusajs/medusa"
-import clsx from "clsx"
-import React from "react"
+import { LineItem, Order } from "@medusajs/medusa";
+import clsx from "clsx";
+import React from "react";
 import {
   isLineItemCanceled,
   isLineItemReturned,
-} from "../../../utils/is-line-item"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import CheckIcon from "../../fundamentals/icons/check-icon"
-import MinusIcon from "../../fundamentals/icons/minus-icon"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import Table from "../../molecules/table"
+} from "../../../utils/is-line-item";
+import { formatAmountWithSymbol } from "../../../utils/prices";
+import CheckIcon from "../../fundamentals/icons/check-icon";
+import MinusIcon from "../../fundamentals/icons/minus-icon";
+import PlusIcon from "../../fundamentals/icons/plus-icon";
+import Table from "../../molecules/table";
 
-type toReturnType = Record<string, { quantity: number }>
+type toReturnType = Record<string, { quantity: number }>;
 
 type RMASelectProductTableProps = {
-  order: Omit<Order, "beforeInsert">
-  allItems: (Omit<LineItem, "beforeInsert"> | null)[]
-  toReturn: toReturnType
-  setToReturn: (items: toReturnType) => void
-}
+  order: Omit<Order, "beforeInsert">;
+  allItems: (Omit<LineItem, "beforeInsert"> | null)[];
+  toReturn: toReturnType;
+  setToReturn: (items: toReturnType) => void;
+};
 
 const RMASelectReturnProductTable: React.FC<RMASelectProductTableProps> = ({
   order,
@@ -31,7 +31,7 @@ const RMASelectReturnProductTable: React.FC<RMASelectProductTableProps> = ({
       (item.quantity === toReturn[item.id].quantity && change > 0) ||
       (toReturn[item.id].quantity === 1 && change < 0)
     ) {
-      return
+      return;
     }
 
     const newReturns = {
@@ -40,26 +40,26 @@ const RMASelectReturnProductTable: React.FC<RMASelectProductTableProps> = ({
         ...toReturn[item.id],
         quantity: (toReturn[item.id]?.quantity || 0) + change,
       },
-    }
+    };
 
-    setToReturn(newReturns)
-  }
+    setToReturn(newReturns);
+  };
 
   const handleReturnToggle = (item: Omit<LineItem, "beforeInsert">) => {
-    const id = item.id
+    const id = item.id;
 
-    const newReturns = { ...toReturn }
+    const newReturns = { ...toReturn };
 
     if (id in toReturn) {
-      delete newReturns[id]
+      delete newReturns[id];
     } else {
       newReturns[id] = {
         quantity: item.quantity,
-      }
+      };
     }
 
-    setToReturn(newReturns)
-  }
+    setToReturn(newReturns);
+  };
 
   return (
     <Table>
@@ -78,9 +78,9 @@ const RMASelectReturnProductTable: React.FC<RMASelectProductTableProps> = ({
             isLineItemReturned(item) ||
             isLineItemCanceled(item, order)
           ) {
-            return
+            return;
           }
-          const checked = item.id in toReturn
+          const checked = item.id in toReturn;
           return (
             <Table.Row
               className={clsx("border-b-grey-0 hover:bg-grey-0")}
@@ -157,11 +157,11 @@ const RMASelectReturnProductTable: React.FC<RMASelectProductTableProps> = ({
                 {order.currency_code.toUpperCase()}
               </Table.Cell>
             </Table.Row>
-          )
+          );
         })}
       </Table.Body>
     </Table>
-  )
-}
+  );
+};
 
-export default RMASelectReturnProductTable
+export default RMASelectReturnProductTable;

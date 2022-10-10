@@ -1,30 +1,30 @@
-import { Fulfillment } from "@medusajs/medusa"
+import { Fulfillment } from "@medusajs/medusa";
 import {
   useAdminCreateClaimShipment,
   useAdminCreateShipment,
   useAdminCreateSwapShipment,
-} from "../../../../../medusa-react"
-import React, { useState } from "react"
-import { Controller, useFieldArray, useForm } from "react-hook-form"
-import Button from "../../../../components/fundamentals/button"
-import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
-import IconTooltip from "../../../../components/molecules/icon-tooltip"
-import Input from "../../../../components/molecules/input"
-import Modal from "../../../../components/molecules/modal"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
+} from "../../../../../medusa-react";
+import React, { useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import Button from "../../../../components/fundamentals/button";
+import CheckIcon from "../../../../components/fundamentals/icons/check-icon";
+import IconTooltip from "../../../../components/molecules/icon-tooltip";
+import Input from "../../../../components/molecules/input";
+import Modal from "../../../../components/molecules/modal";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
 
 type MarkShippedModalProps = {
-  orderId: string
-  fulfillment: Fulfillment
-  handleCancel: () => void
-}
+  orderId: string;
+  fulfillment: Fulfillment;
+  handleCancel: () => void;
+};
 
 type MarkShippedFormData = {
   tracking_numbers: {
-    value: string | undefined
-  }[]
-}
+    value: string | undefined;
+  }[];
+};
 
 const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
   orderId,
@@ -36,8 +36,8 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
       tracking_numbers: [{ value: "" }],
     },
     shouldUnregister: true,
-  })
-  const [noNotis, setNoNotis] = useState(false)
+  });
+  const [noNotis, setNoNotis] = useState(false);
 
   const {
     fields,
@@ -46,83 +46,83 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
   } = useFieldArray({
     control,
     name: "tracking_numbers",
-  })
+  });
 
-  const watchedFields = watch("tracking_numbers")
+  const watchedFields = watch("tracking_numbers");
 
   // Allows us to listen to onChange events
   const trackingNumbers = fields.map((field, index) => ({
     ...field,
     ...watchedFields[index],
-  }))
+  }));
 
-  const markOrderShipped = useAdminCreateShipment(orderId)
-  const markSwapShipped = useAdminCreateSwapShipment(orderId)
-  const markClaimShipped = useAdminCreateClaimShipment(orderId)
+  const markOrderShipped = useAdminCreateShipment(orderId);
+  const markSwapShipped = useAdminCreateSwapShipment(orderId);
+  const markClaimShipped = useAdminCreateClaimShipment(orderId);
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   const onSubmit = (data: MarkShippedFormData) => {
     const resourceId =
-      fulfillment.claim_order_id || fulfillment.swap_id || fulfillment.order_id
-    const [type] = resourceId.split("_")
+      fulfillment.claim_order_id || fulfillment.swap_id || fulfillment.order_id;
+    const [type] = resourceId.split("_");
 
-    const tracking_numbers = data.tracking_numbers.map((tn) => tn.value)
+    const tracking_numbers = data.tracking_numbers.map((tn) => tn.value);
 
     type actionType =
       | typeof markOrderShipped
       | typeof markSwapShipped
-      | typeof markClaimShipped
+      | typeof markClaimShipped;
 
-    let action: actionType = markOrderShipped
-    let successText = "Successfully marked order as shipped"
-    let requestObj
+    let action: actionType = markOrderShipped;
+    let successText = "Successfully marked order as shipped";
+    let requestObj;
 
     switch (type) {
       case "swap":
-        action = markSwapShipped
+        action = markSwapShipped;
         requestObj = {
           fulfillment_id: fulfillment.id,
           swap_id: resourceId,
           tracking_numbers,
           no_notification: noNotis,
-        }
-        successText = "Successfully marked swap as shipped"
-        break
+        };
+        successText = "Successfully marked swap as shipped";
+        break;
 
       case "claim":
-        action = markClaimShipped
+        action = markClaimShipped;
         requestObj = {
           fulfillment_id: fulfillment.id,
           claim_id: resourceId,
           tracking_numbers,
-        }
-        successText = "Successfully marked claim as shipped"
-        break
+        };
+        successText = "Successfully marked claim as shipped";
+        break;
 
       default:
         requestObj = {
           fulfillment_id: fulfillment.id,
           tracking_numbers,
           no_notification: noNotis,
-        }
-        break
+        };
+        break;
     }
 
     action.mutate(requestObj, {
       onSuccess: () => {
-        notification("Success", successText, "success")
-        handleCancel()
+        notification("Success", successText, "success");
+        handleCancel();
       },
       onError: (err) => notification("Error", getErrorMessage(err), "error"),
-    })
-  }
+    });
+  };
 
   return (
     <Modal handleClose={handleCancel} isLargeModal>
       <form
         onSubmit={handleSubmit(onSubmit, (errors) => {
-          console.log(errors)
+          console.log(errors);
         })}
       >
         <Modal.Body>
@@ -153,7 +153,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                           {...field}
                           onDelete={() => removeTracking(index)}
                         />
-                      )
+                      );
                     }}
                   />
                 ))}
@@ -221,7 +221,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
         </Modal.Body>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
-export default MarkShippedModal
+export default MarkShippedModal;

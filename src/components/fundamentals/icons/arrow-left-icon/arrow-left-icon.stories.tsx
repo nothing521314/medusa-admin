@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import ArrowLeftIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import ArrowLeftIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/ArrowLeftIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof ArrowLeftIcon>
+} as ComponentMeta<typeof ArrowLeftIcon>;
 
-const Template = args => <ArrowLeftIcon {...args} />
+const Template = (args) => <ArrowLeftIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

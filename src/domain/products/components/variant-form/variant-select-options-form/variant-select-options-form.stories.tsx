@@ -1,11 +1,11 @@
-import { storiesOf } from "@storybook/react"
-import React, { useState } from "react"
-import { useForm, useWatch } from "react-hook-form"
+import { storiesOf } from "@storybook/react";
+import React, { useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import VariantSelectOptionsForm, {
   VariantOptionValueType,
   VariantSelectOptionsFormType,
-} from "."
-import { nestedForm } from "../../../../../utils/nested-form"
+} from ".";
+import { nestedForm } from "../../../../../utils/nested-form";
 
 const options: VariantOptionValueType[] = [
   {
@@ -63,20 +63,20 @@ const options: VariantOptionValueType[] = [
     value: "Rayon",
     label: "Rayon",
   },
-]
+];
 
 storiesOf(
   "Domains/Product/Components/VariantForm/VariantOptionsForm",
   module
 ).add("Base", () => {
-  const [opts, setOpts] = useState(options)
+  const [opts, setOpts] = useState(options);
 
   const onCreateOption = (option: VariantOptionValueType) => {
-    setOpts([...opts, option])
-  }
+    setOpts([...opts, option]);
+  };
 
   const form = useForm<{
-    options: VariantSelectOptionsFormType
+    options: VariantSelectOptionsFormType;
   }>({
     defaultValues: {
       options: {
@@ -99,12 +99,12 @@ storiesOf(
         ],
       },
     },
-  })
+  });
 
   const liveData = useWatch({
     control: form.control,
     name: "options.variant_options",
-  })
+  });
 
   return (
     <div>
@@ -119,5 +119,5 @@ storiesOf(
         <pre>{JSON.stringify(liveData, null, 4)}</pre>
       </div>
     </div>
-  )
-})
+  );
+});

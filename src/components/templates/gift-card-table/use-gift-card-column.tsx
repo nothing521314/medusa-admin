@@ -1,9 +1,9 @@
-import moment from "moment"
-import React, { useMemo } from "react"
-import IconTooltip from "../../molecules/icon-tooltip"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import StatusIndicator from "../../fundamentals/status-indicator"
-import Table from "../../molecules/table"
+import moment from "moment";
+import React, { useMemo } from "react";
+import IconTooltip from "../../molecules/icon-tooltip";
+import { formatAmountWithSymbol } from "../../../utils/prices";
+import StatusIndicator from "../../fundamentals/status-indicator";
+import Table from "../../molecules/table";
 
 const useGiftCardTableColums = () => {
   const columns = useMemo(
@@ -29,7 +29,7 @@ const useGiftCardTableColums = () => {
             className="text-grey-90 group-hover:text-violet-60 w-[10%] pl-2"
           >
             {value ? (
-             row.original.order?.display_id
+              row.original.order?.display_id
             ) : (
               <span className="text-grey-90">-</span>
             )}
@@ -95,9 +95,9 @@ const useGiftCardTableColums = () => {
       },
     ],
     []
-  )
+  );
 
-  return [columns]
-}
+  return [columns];
+};
 
-export default useGiftCardTableColums
+export default useGiftCardTableColums;

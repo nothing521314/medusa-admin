@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import CustomerIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import CustomerIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/CustomerIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof CustomerIcon>
+} as ComponentMeta<typeof CustomerIcon>;
 
-const Template = args => <CustomerIcon {...args} />
+const Template = (args) => <CustomerIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

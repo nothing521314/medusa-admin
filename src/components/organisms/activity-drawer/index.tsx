@@ -1,15 +1,15 @@
-import React, { useContext } from "react"
-import { PollingContext } from "../../../context/polling"
-import useOutsideClick from "../../../hooks/use-outside-click"
-import Spinner from "../../atoms/spinner"
-import SadFaceIcon from "../../fundamentals/icons/sad-face-icon"
-import SidedMouthFaceIcon from "../../fundamentals/icons/sided-mouth-face"
-import BatchJobActivityList from "../batch-jobs-activity-list"
+import React, { useContext } from "react";
+import { PollingContext } from "../../../context/polling";
+import useOutsideClick from "../../../hooks/use-outside-click";
+import Spinner from "../../atoms/spinner";
+import SadFaceIcon from "../../fundamentals/icons/sad-face-icon";
+import SidedMouthFaceIcon from "../../fundamentals/icons/sided-mouth-face";
+import BatchJobActivityList from "../batch-jobs-activity-list";
 
 const ActivityDrawer = ({ onDismiss }) => {
-  const ref = React.useRef<HTMLDivElement>(null)
-  const { batchJobs, hasPollingError } = useContext(PollingContext)
-  useOutsideClick(onDismiss, ref)
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { batchJobs, hasPollingError } = useContext(PollingContext);
+  useOutsideClick(onDismiss, ref);
 
   return (
     <div
@@ -28,8 +28,8 @@ const ActivityDrawer = ({ onDismiss }) => {
         <ErrorActivityDrawer />
       )}
     </div>
-  )
-}
+  );
+};
 
 const EmptyActivityDrawer = () => {
   return (
@@ -43,8 +43,8 @@ const EmptyActivityDrawer = () => {
         will live here.
       </span>
     </div>
-  )
-}
+  );
+};
 
 const ErrorActivityDrawer = () => {
   return (
@@ -61,7 +61,7 @@ const ErrorActivityDrawer = () => {
         <span className="ml-2.5">Processing...</span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ActivityDrawer
+export default ActivityDrawer;

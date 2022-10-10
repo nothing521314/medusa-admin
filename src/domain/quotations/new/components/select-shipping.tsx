@@ -1,54 +1,54 @@
-import React, { useContext, useEffect, useState } from "react"
-import { Controller, useWatch } from "react-hook-form"
-import Spinner from "../../../../components/atoms/spinner"
-import Button from "../../../../components/fundamentals/button"
-import AlertIcon from "../../../../components/fundamentals/icons/alert-icon"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
-import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal"
-import Select from "../../../../components/molecules/select"
-import CurrencyInput from "../../../../components/organisms/currency-input"
-import { extractOptionPrice } from "../../../../utils/prices"
-import { useNewOrderForm } from "../form"
+import React, { useContext, useEffect, useState } from "react";
+import { Controller, useWatch } from "react-hook-form";
+import Spinner from "../../../../components/atoms/spinner";
+import Button from "../../../../components/fundamentals/button";
+import AlertIcon from "../../../../components/fundamentals/icons/alert-icon";
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon";
+import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal";
+import Select from "../../../../components/molecules/select";
+import CurrencyInput from "../../../../components/organisms/currency-input";
+import { extractOptionPrice } from "../../../../utils/prices";
+import { useNewOrderForm } from "../form";
 
 const SelectShippingMethod = () => {
-  const { disableNextPage, enableNextPage } = useContext(SteppedContext)
-  const [showCustomPrice, setShowCustomPrice] = useState(false)
+  const { disableNextPage, enableNextPage } = useContext(SteppedContext);
+  const [showCustomPrice, setShowCustomPrice] = useState(false);
 
   const {
     context: { region, shippingOptions },
     form: { control, setValue },
-  } = useNewOrderForm()
+  } = useNewOrderForm();
 
   const currentCustomPrice = useWatch({
     control,
     name: "custom_shipping_price",
-  })
+  });
 
   useEffect(() => {
     if (!showCustomPrice && currentCustomPrice) {
-      setShowCustomPrice(true)
+      setShowCustomPrice(true);
     }
-  }, [currentCustomPrice])
+  }, [currentCustomPrice]);
 
   const selectedShippingOption = useWatch({
     control,
     name: "shipping_option",
-  })
+  });
 
   const removeCustomPrice = () => {
-    setShowCustomPrice(false)
-    setValue("custom_shipping_price", undefined)
-  }
+    setShowCustomPrice(false);
+    setValue("custom_shipping_price", undefined);
+  };
 
   useEffect(() => {
     if (!selectedShippingOption) {
-      disableNextPage()
+      disableNextPage();
     }
 
     if (selectedShippingOption) {
-      enableNextPage()
+      enableNextPage();
     }
-  }, [selectedShippingOption])
+  }, [selectedShippingOption]);
 
   return (
     <div className="min-h-[705px]">
@@ -93,7 +93,7 @@ const SelectShippingMethod = () => {
                       })) || []
                     }
                   />
-                )
+                );
               }}
             />
             <div className="mt-4">
@@ -129,7 +129,7 @@ const SelectShippingMethod = () => {
                               onChange={onChange}
                             />
                           </CurrencyInput.Root>
-                        )
+                        );
                       }}
                     />
                   </div>
@@ -152,7 +152,7 @@ const SelectShippingMethod = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SelectShippingMethod
+export default SelectShippingMethod;

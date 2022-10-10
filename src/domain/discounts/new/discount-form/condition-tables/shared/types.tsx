@@ -1,8 +1,8 @@
-import { ProductType } from "@medusajs/medusa"
-import React, { useMemo } from "react"
-import { Column, HeaderGroup, Row } from "react-table"
-import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
-import Table from "../../../../../../components/molecules/table"
+import { ProductType } from "@medusajs/medusa";
+import React, { useMemo } from "react";
+import { Column, HeaderGroup, Row } from "react-table";
+import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon";
+import Table from "../../../../../../components/molecules/table";
 
 export const TypeRow = ({ row }: { row: Row<ProductType> }) => {
   return (
@@ -12,16 +12,16 @@ export const TypeRow = ({ row }: { row: Row<ProductType> }) => {
           <Table.Cell {...cell.getCellProps()}>
             {cell.render("Cell")}
           </Table.Cell>
-        )
+        );
       })}
     </Table.Row>
-  )
-}
+  );
+};
 
 export const TypesHeader = ({
   headerGroup,
 }: {
-  headerGroup: HeaderGroup<ProductType>
+  headerGroup: HeaderGroup<ProductType>;
 }) => {
   return (
     <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
@@ -34,8 +34,8 @@ export const TypesHeader = ({
         </Table.HeadCell>
       ))}
     </Table.HeadRow>
-  )
-}
+  );
+};
 
 export const useTypesColumns = () => {
   const columns = useMemo<Column<ProductType>[]>(() => {
@@ -48,11 +48,11 @@ export const useTypesColumns = () => {
         ),
         accessor: "value",
         Cell: ({ row: { original } }) => {
-          return <span>{original.value}</span>
+          return <span>{original.value}</span>;
         },
       },
-    ]
-  }, [])
+    ];
+  }, []);
 
-  return columns
-}
+  return columns;
+};

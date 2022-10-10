@@ -1,13 +1,13 @@
-import React from "react"
-import Button from "../../fundamentals/button"
-import InputField from "../input"
-import { trim } from "lodash"
+import React from "react";
+import Button from "../../fundamentals/button";
+import InputField from "../input";
+import { trim } from "lodash";
 
 type SaveFilterItemProps = {
-  saveFilter: () => void
-  name: string
-  setName: (name: string) => void
-}
+  saveFilter: () => void;
+  name: string;
+  setName: (name: string) => void;
+};
 
 const SaveFilterItem: React.FC<SaveFilterItemProps> = ({
   saveFilter,
@@ -15,12 +15,12 @@ const SaveFilterItem: React.FC<SaveFilterItemProps> = ({
   name,
 }) => {
   const onSave = () => {
-    const trimmedName = trim(name)
+    const trimmedName = trim(name);
     if (trimmedName !== "") {
-      saveFilter()
-      setName("")
+      saveFilter();
+      setName("");
     }
-  }
+  };
 
   return (
     <div className="mt-2 flex w-full">
@@ -39,7 +39,7 @@ const SaveFilterItem: React.FC<SaveFilterItemProps> = ({
         Save
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default SaveFilterItem
+export default SaveFilterItem;

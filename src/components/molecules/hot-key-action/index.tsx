@@ -1,15 +1,15 @@
-import React from "react"
-import { useHotkeys } from "react-hotkeys-hook"
+import React from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 
 type HotKeyActionProps = {
-  label: string
-  hotKey: string
-  icon: React.ReactNode
-  onAction: (keyboardEvent: KeyboardEvent, hotkeysEvent: any) => void | boolean
-}
+  label: string;
+  hotKey: string;
+  icon: React.ReactNode;
+  onAction: (keyboardEvent: KeyboardEvent, hotkeysEvent: any) => void | boolean;
+};
 
 const HotKeyAction = ({ label, hotKey, icon, onAction }: HotKeyActionProps) => {
-  useHotkeys(hotKey, onAction, {})
+  useHotkeys(hotKey, onAction, {});
   return (
     <div className="flex items-center gap-2">
       <span className="text-grey-0 inter-small-semibold">{label}</span>
@@ -17,7 +17,7 @@ const HotKeyAction = ({ label, hotKey, icon, onAction }: HotKeyActionProps) => {
         {icon}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HotKeyAction
+export default HotKeyAction;

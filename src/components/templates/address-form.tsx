@@ -1,23 +1,23 @@
-import React from "react"
-import { Controller } from "react-hook-form"
-import { Option } from "../../types/shared"
-import FormValidator from "../../utils/form-validator"
-import { NestedForm } from "../../utils/nested-form"
-import Input from "../molecules/input"
-import { NextSelect } from "../molecules/select/next-select"
+import React from "react";
+import { Controller } from "react-hook-form";
+import { Option } from "../../types/shared";
+import FormValidator from "../../utils/form-validator";
+import { NestedForm } from "../../utils/nested-form";
+import Input from "../molecules/input";
+import { NextSelect } from "../molecules/select/next-select";
 
 export type AddressPayload = {
-  first_name: string
-  last_name: string
-  company: string | null
-  address_1: string
-  address_2: string | null
-  city: string
-  province: string | null
-  country_code: Option
-  postal_code: string
-  phone: string | null
-}
+  first_name: string;
+  last_name: string;
+  company: string | null;
+  address_1: string;
+  address_2: string | null;
+  city: string;
+  province: string | null;
+  country_code: Option;
+  postal_code: string;
+  phone: string | null;
+};
 
 export enum AddressType {
   SHIPPING = "shipping",
@@ -25,11 +25,11 @@ export enum AddressType {
 }
 
 type AddressFormProps = {
-  form: NestedForm<AddressPayload>
-  countryOptions: Option[]
-  type: AddressType
-  required?: boolean
-}
+  form: NestedForm<AddressPayload>;
+  countryOptions: Option[];
+  type: AddressType;
+  required?: boolean;
+};
 
 const AddressForm = ({
   form,
@@ -42,7 +42,7 @@ const AddressForm = ({
     path,
     control,
     formState: { errors },
-  } = form
+  } = form;
 
   return (
     <div>
@@ -161,12 +161,12 @@ const AddressForm = ({
                   name={path("country_code")}
                   errors={errors}
                 />
-              )
+              );
             }}
           />
         </div>
       </div>
     </div>
-  )
-}
-export default AddressForm
+  );
+};
+export default AddressForm;

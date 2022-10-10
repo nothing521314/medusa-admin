@@ -1,12 +1,12 @@
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-import Picker, { SKIN_TONE_NEUTRAL } from "emoji-picker-react"
-import React from "react"
-import Button from "../../fundamentals/button"
-import HappyIcon from "../../fundamentals/icons/happy-icon"
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import Picker, { SKIN_TONE_NEUTRAL } from "emoji-picker-react";
+import React from "react";
+import Button from "../../fundamentals/button";
+import HappyIcon from "../../fundamentals/icons/happy-icon";
 
 type indexProps = {
-  onEmojiClick: (emoji: string) => void
-}
+  onEmojiClick: (emoji: string) => void;
+};
 
 const groupNames = {
   smileys_people: "Smileys & People",
@@ -18,7 +18,7 @@ const groupNames = {
   symbols: "Symbols",
   flags: "Flags",
   recently_used: "Recently Used",
-}
+};
 
 const EmojiPicker: React.FC<indexProps> = ({ onEmojiClick }) => {
   return (
@@ -52,7 +52,7 @@ const EmojiPicker: React.FC<indexProps> = ({ onEmojiClick }) => {
         />
       </DropdownMenu.Content>
     </DropdownMenu.Root>
-  )
-}
+  );
+};
 
-export default EmojiPicker
+export default EmojiPicker;

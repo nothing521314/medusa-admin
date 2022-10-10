@@ -1,85 +1,85 @@
-import { AdminPostProductsReq } from "@medusajs/medusa"
-import { navigate } from "gatsby"
-import { useAdminCreateProduct } from "../../../../medusa-react"
-import React, { useEffect } from "react"
-import { useForm, useWatch } from "react-hook-form"
-import Button from "../../../components/fundamentals/button"
-import FeatureToggle from "../../../components/fundamentals/feature-toggle"
-import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
-import FocusModal from "../../../components/molecules/modal/focus-modal"
-import Accordion from "../../../components/organisms/accordion"
-import { useFeatureFlag } from "../../../context/feature-flag"
-import useNotification from "../../../hooks/use-notification"
-import { FormImage, ProductStatus } from "../../../types/shared"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { prepareImages } from "../../../utils/images"
-import { nestedForm } from "../../../utils/nested-form"
-import CustomsForm, { CustomsFormType } from "../components/customs-form"
+import { AdminPostProductsReq } from "@medusajs/medusa";
+import { navigate } from "gatsby";
+import { useAdminCreateProduct } from "../../../../medusa-react";
+import React, { useEffect } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import Button from "../../../components/fundamentals/button";
+import FeatureToggle from "../../../components/fundamentals/feature-toggle";
+import CrossIcon from "../../../components/fundamentals/icons/cross-icon";
+import FocusModal from "../../../components/molecules/modal/focus-modal";
+import Accordion from "../../../components/organisms/accordion";
+import { useFeatureFlag } from "../../../context/feature-flag";
+import useNotification from "../../../hooks/use-notification";
+import { FormImage, ProductStatus } from "../../../types/shared";
+import { getErrorMessage } from "../../../utils/error-messages";
+import { prepareImages } from "../../../utils/images";
+import { nestedForm } from "../../../utils/nested-form";
+import CustomsForm, { CustomsFormType } from "../components/customs-form";
 import DimensionsForm, {
   DimensionsFormType,
-} from "../components/dimensions-form"
+} from "../components/dimensions-form";
 import DiscountableForm, {
   DiscountableFormType,
-} from "../components/discountable-form"
-import GeneralForm, { GeneralFormType } from "../components/general-form"
-import MediaForm, { MediaFormType } from "../components/media-form"
-import OrganizeForm, { OrganizeFormType } from "../components/organize-form"
-import { PricesFormType } from "../components/prices-form"
-import ThumbnailForm, { ThumbnailFormType } from "../components/thumbnail-form"
+} from "../components/discountable-form";
+import GeneralForm, { GeneralFormType } from "../components/general-form";
+import MediaForm, { MediaFormType } from "../components/media-form";
+import OrganizeForm, { OrganizeFormType } from "../components/organize-form";
+import { PricesFormType } from "../components/prices-form";
+import ThumbnailForm, { ThumbnailFormType } from "../components/thumbnail-form";
 import AddSalesChannelsForm, {
   AddSalesChannelsFormType,
-} from "./add-sales-channels"
-import AddVariantsForm, { AddVariantsFormType } from "./add-variants"
+} from "./add-sales-channels";
+import AddVariantsForm, { AddVariantsFormType } from "./add-variants";
 
 type NewProductForm = {
-  general: GeneralFormType
-  discounted: DiscountableFormType
-  organize: OrganizeFormType
-  variants: AddVariantsFormType
-  customs: CustomsFormType
-  dimensions: DimensionsFormType
-  thumbnail: ThumbnailFormType
-  media: MediaFormType
-  salesChannels: AddSalesChannelsFormType
-}
+  general: GeneralFormType;
+  discounted: DiscountableFormType;
+  organize: OrganizeFormType;
+  variants: AddVariantsFormType;
+  customs: CustomsFormType;
+  dimensions: DimensionsFormType;
+  thumbnail: ThumbnailFormType;
+  media: MediaFormType;
+  salesChannels: AddSalesChannelsFormType;
+};
 
 type Props = {
-  onClose: () => void
-}
+  onClose: () => void;
+};
 
 const NewProduct = ({ onClose }: Props) => {
   const form = useForm<NewProductForm>({
     defaultValues: createBlank(),
-  })
-  const { mutate } = useAdminCreateProduct()
-  const notification = useNotification()
+  });
+  const { mutate } = useAdminCreateProduct();
+  const notification = useNotification();
 
   const watchedCustoms = useWatch({
     control: form.control,
     name: "customs",
-  })
+  });
 
   const watchedDimensions = useWatch({
     control: form.control,
     name: "dimensions",
-  })
+  });
 
   const {
     handleSubmit,
     formState: { isDirty },
     reset,
-  } = form
+  } = form;
 
   const closeAndReset = () => {
-    reset(createBlank())
-    onClose()
-  }
+    reset(createBlank());
+    onClose();
+  };
 
   useEffect(() => {
-    reset(createBlank())
-  }, [])
+    reset(createBlank());
+  }, []);
 
-  const { isFeatureEnabled } = useFeatureFlag()
+  const { isFeatureEnabled } = useFeatureFlag();
 
   const onSubmit = (publish = true) =>
     handleSubmit(async (data) => {
@@ -87,68 +87,68 @@ const NewProduct = ({ onClose }: Props) => {
         data,
         publish,
         isFeatureEnabled("sales_channels")
-      )
+      );
 
       if (data.media?.images?.length) {
-        let preppedImages: FormImage[] = []
+        let preppedImages: FormImage[] = [];
 
         try {
-          preppedImages = await prepareImages(data.media.images)
+          preppedImages = await prepareImages(data.media.images);
         } catch (error) {
           let errorMessage =
-            "Something went wrong while trying to upload images."
-          const response = (error as any).response as Response
+            "Something went wrong while trying to upload images.";
+          const response = (error as any).response as Response;
 
           if (response.status === 500) {
             errorMessage =
               errorMessage +
               " " +
-              "You might not have a file service configured. Please contact your administrator"
+              "You might not have a file service configured. Please contact your administrator";
           }
 
-          notification("Error", errorMessage, "error")
-          return
+          notification("Error", errorMessage, "error");
+          return;
         }
-        const urls = preppedImages.map((image) => image.url)
+        const urls = preppedImages.map((image) => image.url);
 
-        payload.images = urls
+        payload.images = urls;
       }
 
       if (data.thumbnail?.images?.length) {
-        let preppedImages: FormImage[] = []
+        let preppedImages: FormImage[] = [];
 
         try {
-          preppedImages = await prepareImages(data.thumbnail.images)
+          preppedImages = await prepareImages(data.thumbnail.images);
         } catch (error) {
           let errorMessage =
-            "Something went wrong while trying to upload the thumbnail."
-          const response = (error as any).response as Response
+            "Something went wrong while trying to upload the thumbnail.";
+          const response = (error as any).response as Response;
 
           if (response.status === 500) {
             errorMessage =
               errorMessage +
               " " +
-              "You might not have a file service configured. Please contact your administrator"
+              "You might not have a file service configured. Please contact your administrator";
           }
 
-          notification("Error", errorMessage, "error")
-          return
+          notification("Error", errorMessage, "error");
+          return;
         }
-        const urls = preppedImages.map((image) => image.url)
+        const urls = preppedImages.map((image) => image.url);
 
-        payload.thumbnail = urls[0]
+        payload.thumbnail = urls[0];
       }
 
       mutate(payload, {
         onSuccess: ({ product }) => {
-          closeAndReset()
-          navigate(`/a/products/${product.id}`)
+          closeAndReset();
+          navigate(`/a/products/${product.id}`);
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification("Error", getErrorMessage(err), "error");
         },
-      })
-    })
+      });
+    });
 
   return (
     <form className="w-full">
@@ -270,8 +270,8 @@ const NewProduct = ({ onClose }: Props) => {
         </FocusModal.Main>
       </FocusModal>
     </form>
-  )
-}
+  );
+};
 
 const createPayload = (
   data: NewProductForm,
@@ -332,16 +332,16 @@ const createPayload = (
     })),
     // @ts-ignore
     status: publish ? ProductStatus.PUBLISHED : ProductStatus.DRAFT,
-  }
+  };
 
   if (salesChannelsEnabled) {
     payload.sales_channels = data.salesChannels.channels.map((c) => ({
       id: c.id,
-    }))
+    }));
   }
 
-  return payload
-}
+  return payload;
+};
 
 const createBlank = (): NewProductForm => {
   return {
@@ -384,8 +384,8 @@ const createBlank = (): NewProductForm => {
       entries: [],
       options: [],
     },
-  }
-}
+  };
+};
 
 const getVariantPrices = (prices: PricesFormType) => {
   const priceArray = prices.prices
@@ -395,10 +395,10 @@ const getVariantPrices = (prices: PricesFormType) => {
         amount: price.amount as number,
         currency_code: price.region_id ? undefined : price.currency_code,
         region_id: price.region_id || undefined,
-      }
-    })
+      };
+    });
 
-  return priceArray
-}
+  return priceArray;
+};
 
-export default NewProduct
+export default NewProduct;

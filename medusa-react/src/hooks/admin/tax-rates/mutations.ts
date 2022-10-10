@@ -1,4 +1,4 @@
-import { adminTaxRateKeys } from "./queries"
+import { adminTaxRateKeys } from "./queries";
 import {
   AdminTaxRatesRes,
   AdminTaxRatesDeleteRes,
@@ -10,11 +10,11 @@ import {
   AdminPostTaxRatesTaxRateProductsReq,
   AdminPostTaxRatesTaxRateProductTypesReq,
   AdminPostTaxRatesTaxRateShippingOptionsReq,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminCreateTaxRate = (
   options?: UseMutationOptions<
@@ -23,13 +23,13 @@ export const useAdminCreateTaxRate = (
     AdminPostTaxRatesReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostTaxRatesReq) => client.admin.taxRates.create(payload),
     buildOptions(queryClient, adminTaxRateKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdateTaxRate = (
   id: string,
@@ -39,8 +39,8 @@ export const useAdminUpdateTaxRate = (
     AdminPostTaxRatesTaxRateReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostTaxRatesTaxRateReq) =>
@@ -50,15 +50,15 @@ export const useAdminUpdateTaxRate = (
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteTaxRate = (
   id: string,
   options?: UseMutationOptions<Response<AdminTaxRatesDeleteRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.taxRates.delete(id),
@@ -67,8 +67,8 @@ export const useAdminDeleteTaxRate = (
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCreateProductTaxRates = (
   id: string,
@@ -78,8 +78,8 @@ export const useAdminCreateProductTaxRates = (
     AdminPostTaxRatesTaxRateProductsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostTaxRatesTaxRateProductsReq) =>
@@ -89,8 +89,8 @@ export const useAdminCreateProductTaxRates = (
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteProductTaxRates = (
   id: string,
@@ -100,8 +100,8 @@ export const useAdminDeleteProductTaxRates = (
     AdminDeleteTaxRatesTaxRateProductsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminDeleteTaxRatesTaxRateProductsReq) =>
@@ -111,8 +111,8 @@ export const useAdminDeleteProductTaxRates = (
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCreateProductTypeTaxRates = (
   id: string,
@@ -122,8 +122,8 @@ export const useAdminCreateProductTypeTaxRates = (
     AdminPostTaxRatesTaxRateProductTypesReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostTaxRatesTaxRateProductTypesReq) =>
@@ -133,8 +133,8 @@ export const useAdminCreateProductTypeTaxRates = (
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteProductTypeTaxRates = (
   id: string,
@@ -144,8 +144,8 @@ export const useAdminDeleteProductTypeTaxRates = (
     AdminDeleteTaxRatesTaxRateProductTypesReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminDeleteTaxRatesTaxRateProductTypesReq) =>
@@ -155,8 +155,8 @@ export const useAdminDeleteProductTypeTaxRates = (
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCreateShippingTaxRates = (
   id: string,
@@ -166,8 +166,8 @@ export const useAdminCreateShippingTaxRates = (
     AdminPostTaxRatesTaxRateShippingOptionsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostTaxRatesTaxRateShippingOptionsReq) =>
@@ -177,8 +177,8 @@ export const useAdminCreateShippingTaxRates = (
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteShippingTaxRates = (
   id: string,
@@ -188,8 +188,8 @@ export const useAdminDeleteShippingTaxRates = (
     AdminDeleteTaxRatesTaxRateShippingOptionsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminDeleteTaxRatesTaxRateShippingOptionsReq) =>
@@ -199,5 +199,5 @@ export const useAdminDeleteShippingTaxRates = (
       [adminTaxRateKeys.lists(), adminTaxRateKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};

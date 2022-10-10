@@ -1,15 +1,15 @@
-import { Link } from "gatsby"
-import React from "react"
-import ChevronRightIcon from "../../fundamentals/icons/chevron-right-icon"
+import { Link } from "gatsby";
+import React from "react";
+import ChevronRightIcon from "../../fundamentals/icons/chevron-right-icon";
 
 type SettingsCardProps = {
-  icon: React.FC
-  heading: string
-  description: string
-  to?: string
-  externalLink?: string
-  disabled: boolean
-}
+  icon: React.FC;
+  heading: string;
+  description: string;
+  to?: string;
+  externalLink?: string;
+  disabled: boolean;
+};
 
 const SettingsCard: React.FC<SettingsCardProps> = ({
   icon,
@@ -20,7 +20,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
   disabled = false,
 }) => {
   if (disabled) {
-    to = null
+    to = null;
   }
 
   return (
@@ -30,7 +30,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
         disabled={disabled}
         onClick={() => {
           if (externalLink) {
-            window.location.href = externalLink
+            window.location.href = externalLink;
           }
         }}
       >
@@ -50,7 +50,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
         </div>
       </button>
     </Link>
-  )
-}
+  );
+};
 
-export default SettingsCard
+export default SettingsCard;

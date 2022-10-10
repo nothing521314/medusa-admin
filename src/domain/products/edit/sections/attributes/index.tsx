@@ -1,17 +1,17 @@
-import { Product } from "@medusajs/medusa"
-import React from "react"
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
-import { ActionType } from "../../../../../components/molecules/actionables"
-import Section from "../../../../../components/organisms/section"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import AttributeModal from "./attribute-modal"
+import { Product } from "@medusajs/medusa";
+import React from "react";
+import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
+import { ActionType } from "../../../../../components/molecules/actionables";
+import Section from "../../../../../components/organisms/section";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import AttributeModal from "./attribute-modal";
 
 type Props = {
-  product: Product
-}
+  product: Product;
+};
 
 const AttributesSection = ({ product }: Props) => {
-  const { state, toggle, close } = useToggleState()
+  const { state, toggle, close } = useToggleState();
 
   const actions: ActionType[] = [
     {
@@ -19,7 +19,7 @@ const AttributesSection = ({ product }: Props) => {
       onClick: toggle,
       icon: <EditIcon size={20} />,
     },
-  ]
+  ];
 
   return (
     <>
@@ -48,13 +48,13 @@ const AttributesSection = ({ product }: Props) => {
 
       <AttributeModal onClose={close} open={state} product={product} />
     </>
-  )
-}
+  );
+};
 
 type AttributeProps = {
-  attribute: string
-  value: string | number | null
-}
+  attribute: string;
+  value: string | number | null;
+};
 
 const Attribute = ({ attribute, value }: AttributeProps) => {
   return (
@@ -62,7 +62,7 @@ const Attribute = ({ attribute, value }: AttributeProps) => {
       <p>{attribute}</p>
       <p>{value || "–"}</p>
     </div>
-  )
-}
+  );
+};
 
-export default AttributesSection
+export default AttributesSection;

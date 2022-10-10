@@ -1,13 +1,13 @@
-import React from "react"
-import { Customer, CustomerGroup } from "@medusajs/medusa"
-import { Column } from "react-table"
+import React from "react";
+import { Customer, CustomerGroup } from "@medusajs/medusa";
+import { Column } from "react-table";
 
-import CustomerAvatarItem from "../../molecules/customer-avatar-item"
-import { getColor } from "../../../utils/color"
-import SortingIcon from "../../fundamentals/icons/sorting-icon"
-import CustomersGroupsSummary from "../../molecules/customers-groups-summary"
-import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox"
-import Table from "../../molecules/table"
+import CustomerAvatarItem from "../../molecules/customer-avatar-item";
+import { getColor } from "../../../utils/color";
+import SortingIcon from "../../fundamentals/icons/sorting-icon";
+import CustomersGroupsSummary from "../../molecules/customers-groups-summary";
+import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox";
+import Table from "../../molecules/table";
 
 export const CUSTOMER_GROUPS_TABLE_COLUMNS: Column<CustomerGroup>[] = [
   {
@@ -27,7 +27,7 @@ export const CUSTOMER_GROUPS_TABLE_COLUMNS: Column<CustomerGroup>[] = [
     id: "members",
     accessor: (r) => r.customers?.length,
   },
-]
+];
 
 export const CUSTOMER_GROUPS_CUSTOMERS_TABLE_COLUMNS: Column<Customer>[] = [
   {
@@ -40,7 +40,7 @@ export const CUSTOMER_GROUPS_CUSTOMERS_TABLE_COLUMNS: Column<Customer>[] = [
         <Table.Cell onClick={(e) => e.stopPropagation()} className="w-[100px]">
           <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
         </Table.Cell>
-      )
+      );
     },
   },
   {
@@ -67,7 +67,7 @@ export const CUSTOMER_GROUPS_CUSTOMERS_TABLE_COLUMNS: Column<Customer>[] = [
     Header: () => <div className="text-left">Segments</div>,
     Cell: ({ cell: { value } }) => <CustomersGroupsSummary groups={value} />,
   },
-]
+];
 
 export const CUSTOMER_GROUPS_CUSTOMERS_LIST_TABLE_COLUMNS: Column<
   Customer
@@ -101,4 +101,4 @@ export const CUSTOMER_GROUPS_CUSTOMERS_LIST_TABLE_COLUMNS: Column<
     Header: "",
     id: "settings-col",
   },
-]
+];

@@ -1,21 +1,21 @@
-import React from "react"
-import { Controller } from "react-hook-form"
-import InputField from "../../../../components/molecules/input"
-import { NextSelect } from "../../../../components/molecules/select/next-select"
-import { Option } from "../../../../types/shared"
-import { countries } from "../../../../utils/countries"
-import FormValidator from "../../../../utils/form-validator"
-import { NestedForm } from "../../../../utils/nested-form"
+import React from "react";
+import { Controller } from "react-hook-form";
+import InputField from "../../../../components/molecules/input";
+import { NextSelect } from "../../../../components/molecules/select/next-select";
+import { Option } from "../../../../types/shared";
+import { countries } from "../../../../utils/countries";
+import FormValidator from "../../../../utils/form-validator";
+import { NestedForm } from "../../../../utils/nested-form";
 
 export type CustomsFormType = {
-  mid_code: string | null
-  hs_code: string | null
-  origin_country: Option | null
-}
+  mid_code: string | null;
+  hs_code: string | null;
+  origin_country: Option | null;
+};
 
 type CustomsFormProps = {
-  form: NestedForm<CustomsFormType>
-}
+  form: NestedForm<CustomsFormType>;
+};
 
 /**
  * Re-usable nested form used to submit customs information for products and their variants.
@@ -28,12 +28,12 @@ const CustomsForm = ({ form }: CustomsFormProps) => {
     path,
     control,
     formState: { errors },
-  } = form
+  } = form;
 
   const countryOptions = countries.map((c) => ({
     label: c.name,
     value: c.alpha2,
-  }))
+  }));
 
   return (
     <div className="grid grid-cols-2 gap-large pb-2xsmall">
@@ -66,11 +66,11 @@ const CustomsForm = ({ form }: CustomsFormProps) => {
               isClearable
               {...field}
             />
-          )
+          );
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default CustomsForm
+export default CustomsForm;

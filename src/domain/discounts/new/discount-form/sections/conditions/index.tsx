@@ -1,18 +1,18 @@
-import { Discount } from "@medusajs/medusa"
-import React, { useEffect, useMemo, useState } from "react"
-import Button from "../../../../../../components/fundamentals/button"
-import PlusIcon from "../../../../../../components/fundamentals/icons/plus-icon"
-import AddConditionsModal from "../../add-conditions-modal"
-import { useDiscountForm } from "../../form/discount-form-context"
-import ConditionItem from "./condition-item"
+import { Discount } from "@medusajs/medusa";
+import React, { useEffect, useMemo, useState } from "react";
+import Button from "../../../../../../components/fundamentals/button";
+import PlusIcon from "../../../../../../components/fundamentals/icons/plus-icon";
+import AddConditionsModal from "../../add-conditions-modal";
+import { useDiscountForm } from "../../form/discount-form-context";
+import ConditionItem from "./condition-item";
 
 type ConditionsProps = {
-  discount?: Discount
-}
+  discount?: Discount;
+};
 
 const Conditions: React.FC<ConditionsProps> = ({ discount }) => {
-  const { setConditions, conditions, updateCondition } = useDiscountForm()
-  const [showConditionsModal, setShowConditionsModal] = useState(false)
+  const { setConditions, conditions, updateCondition } = useDiscountForm();
+  const [showConditionsModal, setShowConditionsModal] = useState(false);
 
   useEffect(() => {
     if (discount?.rule?.conditions) {
@@ -25,23 +25,23 @@ const Conditions: React.FC<ConditionsProps> = ({ discount }) => {
             operator: condtion.operator,
             type: condtion.type,
           },
-        }))
+        }));
       }
     }
-  }, [discount?.rule?.conditions])
+  }, [discount?.rule?.conditions]);
 
   const allSet = useMemo(() => {
     const allSet = Object.values(conditions).every((condition) => {
-      return condition.items.length
-    })
-    return allSet
-  }, [conditions])
+      return condition.items.length;
+    });
+    return allSet;
+  }, [conditions]);
 
   const filteredConditions = useMemo(() => {
     return Object.values(conditions).filter((condition) => {
-      return condition.id || condition.items.length
-    })
-  }, [conditions])
+      return condition.id || condition.items.length;
+    });
+  }, [conditions]);
 
   return (
     <div className="pt-5">
@@ -76,7 +76,7 @@ const Conditions: React.FC<ConditionsProps> = ({ discount }) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Conditions
+export default Conditions;

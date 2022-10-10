@@ -1,77 +1,77 @@
-import { RouteComponentProps } from "@reach/router"
-import { navigate } from "gatsby"
+import { RouteComponentProps } from "@reach/router";
+import { navigate } from "gatsby";
 import {
   useAdminCollection,
   useAdminDeleteCollection,
   useAdminUpdateCollection,
-} from "../../../../medusa-react"
-import React, { useEffect, useState } from "react"
-import Spinner from "../../../components/atoms/spinner"
-import EditIcon from "../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
-import Actionables from "../../../components/molecules/actionables"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import ViewRaw from "../../../components/molecules/view-raw"
-import BodyCard from "../../../components/organisms/body-card"
-import DeletePrompt from "../../../components/organisms/delete-prompt"
-import { MetadataField } from "../../../components/organisms/metadata"
-import CollectionModal from "../../../components/templates/collection-modal"
-import AddProductsTable from "../../../components/templates/collection-product-table/add-product-table"
-import ViewProductsTable from "../../../components/templates/collection-product-table/view-products-table"
-import useNotification from "../../../hooks/use-notification"
-import Medusa from "../../../services/api"
-import { getErrorMessage } from "../../../utils/error-messages"
+} from "../../../../medusa-react";
+import React, { useEffect, useState } from "react";
+import Spinner from "../../../components/atoms/spinner";
+import EditIcon from "../../../components/fundamentals/icons/edit-icon";
+import TrashIcon from "../../../components/fundamentals/icons/trash-icon";
+import Actionables from "../../../components/molecules/actionables";
+import Breadcrumb from "../../../components/molecules/breadcrumb";
+import ViewRaw from "../../../components/molecules/view-raw";
+import BodyCard from "../../../components/organisms/body-card";
+import DeletePrompt from "../../../components/organisms/delete-prompt";
+import { MetadataField } from "../../../components/organisms/metadata";
+import CollectionModal from "../../../components/templates/collection-modal";
+import AddProductsTable from "../../../components/templates/collection-product-table/add-product-table";
+import ViewProductsTable from "../../../components/templates/collection-product-table/view-products-table";
+import useNotification from "../../../hooks/use-notification";
+import Medusa from "../../../services/api";
+import { getErrorMessage } from "../../../utils/error-messages";
 
 const CollectionDetails: React.FC<RouteComponentProps> = ({ location }) => {
-  const ensuredPath = location!.pathname.replace("/a/collections/", ``)
-  const { collection, isLoading, refetch } = useAdminCollection(ensuredPath)
-  const deleteCollection = useAdminDeleteCollection(ensuredPath)
-  const updateCollection = useAdminUpdateCollection(ensuredPath)
-  const [showEdit, setShowEdit] = useState(false)
-  const [showDelete, setShowDelete] = useState(false)
-  const [showAddProducts, setShowAddProducts] = useState(false)
-  const notification = useNotification()
-  const [updates, setUpdates] = useState(0)
+  const ensuredPath = location!.pathname.replace("/a/collections/", ``);
+  const { collection, isLoading, refetch } = useAdminCollection(ensuredPath);
+  const deleteCollection = useAdminDeleteCollection(ensuredPath);
+  const updateCollection = useAdminUpdateCollection(ensuredPath);
+  const [showEdit, setShowEdit] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showAddProducts, setShowAddProducts] = useState(false);
+  const notification = useNotification();
+  const [updates, setUpdates] = useState(0);
 
   const handleDelete = () => {
     deleteCollection.mutate(undefined, {
       onSuccess: () => navigate(`/a/collections`),
-    })
-  }
+    });
+  };
 
   const handleUpdateDetails = (data: any, metadata: MetadataField[]) => {
     const payload: {
-      title: string
-      handle?: string
-      metadata?: object
+      title: string;
+      handle?: string;
+      metadata?: object;
     } = {
       title: data.title,
       handle: data.handle,
-    }
+    };
 
     if (metadata) {
       const base = Object.keys(collection?.metadata ?? {}).reduce(
         (acc, next) => ({ ...acc, [next]: null }),
         {}
-      )
+      );
 
       const payloadMetadata = metadata.reduce((acc, next) => {
         return {
           ...acc,
           [next.key]: next.value ?? null,
-        }
-      }, base)
+        };
+      }, base);
 
-      payload.metadata = payloadMetadata // deleting metadata will not work as it's not supported by the core
+      payload.metadata = payloadMetadata; // deleting metadata will not work as it's not supported by the core
     }
 
     updateCollection.mutate(payload, {
       onSuccess: () => {
-        setShowEdit(false)
-        refetch()
+        setShowEdit(false);
+        refetch();
       },
-    })
-  }
+    });
+  };
 
   const handleAddProducts = async (
     addedIds: string[],
@@ -81,28 +81,28 @@ const CollectionDetails: React.FC<RouteComponentProps> = ({ location }) => {
       if (addedIds.length > 0) {
         await Medusa.collections.addProducts(collection?.id, {
           product_ids: addedIds,
-        })
+        });
       }
 
       if (removedIds.length > 0) {
         await Medusa.collections.removeProducts(collection?.id, {
           product_ids: removedIds,
-        })
+        });
       }
 
-      setShowAddProducts(false)
-      notification("Success", "Updated products in collection", "success")
-      refetch()
+      setShowAddProducts(false);
+      notification("Success", "Updated products in collection", "success");
+      refetch();
     } catch (error) {
-      notification("Error", getErrorMessage(error), "error")
+      notification("Error", getErrorMessage(error), "error");
     }
-  }
+  };
 
   useEffect(() => {
     if (collection?.products?.length) {
-      setUpdates(updates + 1) // force re-render product table when products are added/removed
+      setUpdates(updates + 1); // force re-render product table when products are added/removed
     }
-  }, [collection?.products])
+  }, [collection?.products]);
 
   return (
     <>
@@ -208,7 +208,7 @@ const CollectionDetails: React.FC<RouteComponentProps> = ({ location }) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default CollectionDetails
+export default CollectionDetails;

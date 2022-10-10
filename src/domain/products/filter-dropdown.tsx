@@ -1,17 +1,20 @@
-import clsx from "clsx"
-import React, { useMemo, useEffect, useState } from "react"
-import { useAdminProductTags, useAdminCollections } from "../../../medusa-react"
-import CheckIcon from "../../components/fundamentals/icons/check-icon"
-import PlusIcon from "../../components/fundamentals/icons/plus-icon"
-import FilterDropdownContainer from "../../components/molecules/filter-dropdown/container"
-import FilterDropdownItem from "../../components/molecules/filter-dropdown/item"
-import SaveFilterItem from "../../components/molecules/filter-dropdown/save-field"
-import TagInput from "../../components/molecules/tag-input"
-import TabFilter from "../../components/molecules/filter-tab"
+import clsx from "clsx";
+import React, { useMemo, useEffect, useState } from "react";
+import {
+  useAdminProductTags,
+  useAdminCollections,
+} from "../../../medusa-react";
+import CheckIcon from "../../components/fundamentals/icons/check-icon";
+import PlusIcon from "../../components/fundamentals/icons/plus-icon";
+import FilterDropdownContainer from "../../components/molecules/filter-dropdown/container";
+import FilterDropdownItem from "../../components/molecules/filter-dropdown/item";
+import SaveFilterItem from "../../components/molecules/filter-dropdown/save-field";
+import TagInput from "../../components/molecules/tag-input";
+import TabFilter from "../../components/molecules/filter-tab";
 
-const statusFilters = ["proposed", "draft", "published", "rejected"]
+const statusFilters = ["proposed", "draft", "published", "rejected"];
 
-const COLLECTION_PAGE_SIZE = 10
+const COLLECTION_PAGE_SIZE = 10;
 
 const ProductsFilter = ({
   filters,
@@ -23,83 +26,83 @@ const ProductsFilter = ({
   onRemoveTab,
   onSaveTab,
 }) => {
-  const [tempState, setTempState] = useState(filters)
-  const [name, setName] = useState("")
+  const [tempState, setTempState] = useState(filters);
+  const [name, setName] = useState("");
 
   const handleRemoveTab = (val) => {
     if (onRemoveTab) {
-      onRemoveTab(val)
+      onRemoveTab(val);
     }
-  }
+  };
 
   const handleSaveTab = () => {
     if (onSaveTab) {
-      onSaveTab(name, tempState)
+      onSaveTab(name, tempState);
     }
-  }
+  };
 
   const handleTabClick = (tabName: string) => {
     if (onTabClick) {
-      onTabClick(tabName)
+      onTabClick(tabName);
     }
-  }
+  };
 
   useEffect(() => {
-    setTempState(filters)
-  }, [filters])
+    setTempState(filters);
+  }, [filters]);
 
   const onSubmit = () => {
-    submitFilters(tempState)
-  }
+    submitFilters(tempState);
+  };
 
   const onClear = () => {
-    clearFilters()
-  }
+    clearFilters();
+  };
 
   const numberOfFilters = useMemo(
     () =>
       Object.entries(filters || {}).reduce((acc, [, value]) => {
         if (value?.open) {
-          acc = acc + 1
+          acc = acc + 1;
         }
-        return acc
+        return acc;
       }, 0),
     [filters]
-  )
+  );
 
   const setSingleFilter = (filterKey, filterVal) => {
     setTempState((prevState) => ({
       ...prevState,
       [filterKey]: filterVal,
-    }))
-  }
+    }));
+  };
 
   const [collectionsPagination, setCollectionsPagination] = useState({
     offset: 0,
     limit: COLLECTION_PAGE_SIZE,
-  })
+  });
 
   const {
     collections,
     count,
     isLoading: isLoadingCollections,
-  } = useAdminCollections(collectionsPagination)
+  } = useAdminCollections(collectionsPagination);
 
-  const { product_tags } = useAdminProductTags()
+  const { product_tags } = useAdminProductTags();
 
   const handlePaginateCollections = (direction) => {
     if (direction > 0) {
       setCollectionsPagination((prev) => ({
         ...prev,
         offset: prev.offset + prev.limit,
-      }))
+      }));
     } else if (direction < 0) {
       setCollectionsPagination((prev) => ({
         ...prev,
         offset: Math.max(prev.offset - prev.limit, 0),
-      }))
+      }));
     }
-  }
+  };
 
   return (
     <div className="flex space-x-1">
@@ -157,7 +160,7 @@ const ProductsFilter = ({
               setSingleFilter("tags", {
                 open: !tempState.tags.open,
                 filter: tempState.tags.filter,
-              })
+              });
             }}
           >
             <div
@@ -198,21 +201,23 @@ const ProductsFilter = ({
                 placeholder="Spring, summer..."
                 values={(tempState.tags.filter || [])
                   .map((t) => {
-                    const found = (product_tags || []).find((pt) => pt.id === t)
-                    return found && found.value
+                    const found = (product_tags || []).find(
+                      (pt) => pt.id === t
+                    );
+                    return found && found.value;
                   })
                   .filter(Boolean)}
                 onValidate={(newVal) => {
                   const found = (product_tags || []).find(
                     (pt) => pt.value.toLowerCase() === newVal.toLowerCase()
-                  )
-                  return found && found.id
+                  );
+                  return found && found.id;
                 }}
                 onChange={(values) => {
                   setSingleFilter("tags", {
                     open: tempState.tags.open,
                     filter: values,
-                  })
+                  });
                 }}
               />
             </div>
@@ -236,7 +241,7 @@ const ProductsFilter = ({
           />
         ))}
     </div>
-  )
-}
+  );
+};
 
-export default ProductsFilter
+export default ProductsFilter;

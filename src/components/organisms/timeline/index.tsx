@@ -1,9 +1,9 @@
-import clsx from "clsx"
-import { useAdminCreateNote, useAdminOrder } from "../../../../medusa-react"
-import React, { useState } from "react"
-import ClaimMenu from "../../../domain/quotations/details/claim/create"
-import ReturnMenu from "../../../domain/quotations/details/returns"
-import SwapMenu from "../../../domain/quotations/details/swap/create"
+import clsx from "clsx";
+import { useAdminCreateNote, useAdminOrder } from "../../../../medusa-react";
+import React, { useState } from "react";
+import ClaimMenu from "../../../domain/quotations/details/claim/create";
+import ReturnMenu from "../../../domain/quotations/details/returns";
+import SwapMenu from "../../../domain/quotations/details/swap/create";
 import {
   ClaimEvent,
   ExchangeEvent,
@@ -16,38 +16,38 @@ import {
   ReturnEvent,
   TimelineEvent,
   useBuildTimelime,
-} from "../../../hooks/use-build-timeline"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
-import Spinner from "../../atoms/spinner"
-import AlertIcon from "../../fundamentals/icons/alert-icon"
-import BackIcon from "../../fundamentals/icons/back-icon"
-import RefreshIcon from "../../fundamentals/icons/refresh-icon"
-import Actionables, { ActionType } from "../../molecules/actionables"
-import NoteInput from "../../molecules/note-input"
-import Claim from "../../molecules/timeline-events/claim"
-import Exchange from "../../molecules/timeline-events/exchange"
-import ItemsFulfilled from "../../molecules/timeline-events/items-fulfilled"
-import ItemsShipped from "../../molecules/timeline-events/items-shipped"
-import Note from "../../molecules/timeline-events/note"
-import Notification from "../../molecules/timeline-events/notification"
-import OrderCanceled from "../../molecules/timeline-events/order-canceled"
-import OrderPlaced from "../../molecules/timeline-events/order-placed"
-import Refund from "../../molecules/timeline-events/refund"
-import Return from "../../molecules/timeline-events/return"
+} from "../../../hooks/use-build-timeline";
+import useNotification from "../../../hooks/use-notification";
+import { getErrorMessage } from "../../../utils/error-messages";
+import Spinner from "../../atoms/spinner";
+import AlertIcon from "../../fundamentals/icons/alert-icon";
+import BackIcon from "../../fundamentals/icons/back-icon";
+import RefreshIcon from "../../fundamentals/icons/refresh-icon";
+import Actionables, { ActionType } from "../../molecules/actionables";
+import NoteInput from "../../molecules/note-input";
+import Claim from "../../molecules/timeline-events/claim";
+import Exchange from "../../molecules/timeline-events/exchange";
+import ItemsFulfilled from "../../molecules/timeline-events/items-fulfilled";
+import ItemsShipped from "../../molecules/timeline-events/items-shipped";
+import Note from "../../molecules/timeline-events/note";
+import Notification from "../../molecules/timeline-events/notification";
+import OrderCanceled from "../../molecules/timeline-events/order-canceled";
+import OrderPlaced from "../../molecules/timeline-events/order-placed";
+import Refund from "../../molecules/timeline-events/refund";
+import Return from "../../molecules/timeline-events/return";
 
 type TimelineProps = {
-  orderId: string
-}
+  orderId: string;
+};
 
 const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
-  const { events, refetch } = useBuildTimelime(orderId)
-  const notification = useNotification()
-  const createNote = useAdminCreateNote()
-  const { order } = useAdminOrder(orderId)
-  const [showRequestReturn, setShowRequestReturn] = useState(false)
-  const [showCreateSwap, setshowCreateSwap] = useState(false)
-  const [showCreateClaim, setshowCreateClaim] = useState(false)
+  const { events, refetch } = useBuildTimelime(orderId);
+  const notification = useNotification();
+  const createNote = useAdminCreateNote();
+  const { order } = useAdminOrder(orderId);
+  const [showRequestReturn, setShowRequestReturn] = useState(false);
+  const [showCreateSwap, setshowCreateSwap] = useState(false);
+  const [showCreateClaim, setshowCreateClaim] = useState(false);
 
   const actions: ActionType[] = [
     {
@@ -65,11 +65,11 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
       label: "Register Claim",
       onClick: () => setshowCreateClaim(true),
     },
-  ]
+  ];
 
   const handleCreateNote = (value: string | undefined) => {
     if (!value) {
-      return
+      return;
     }
     createNote.mutate(
       {
@@ -81,8 +81,8 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
         onSuccess: () => notification("Success", "Added note", "success"),
         onError: (err) => notification("Error", getErrorMessage(err), "error"),
       }
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -114,7 +114,7 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
           ) : (
             <div className="flex flex-col gap-y-base">
               {events.map((event, i) => {
-                return <div key={i}>{switchOnType(event, refetch)}</div>
+                return <div key={i}>{switchOnType(event, refetch)}</div>;
               })}
             </div>
           )}
@@ -133,34 +133,34 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
         <ClaimMenu order={order} onDismiss={() => setshowCreateClaim(false)} />
       )}
     </>
-  )
-}
+  );
+};
 
 function switchOnType(event: TimelineEvent, refetch: () => void) {
   switch (event.type) {
     case "placed":
-      return <OrderPlaced event={event as OrderPlacedEvent} />
+      return <OrderPlaced event={event as OrderPlacedEvent} />;
     case "fulfilled":
-      return <ItemsFulfilled event={event as ItemsFulfilledEvent} />
+      return <ItemsFulfilled event={event as ItemsFulfilledEvent} />;
     case "note":
-      return <Note event={event as NoteEvent} />
+      return <Note event={event as NoteEvent} />;
     case "shipped":
-      return <ItemsShipped event={event as ItemsShippedEvent} />
+      return <ItemsShipped event={event as ItemsShippedEvent} />;
     case "canceled":
-      return <OrderCanceled event={event as TimelineEvent} />
+      return <OrderCanceled event={event as TimelineEvent} />;
     case "return":
-      return <Return event={event as ReturnEvent} refetch={refetch} />
+      return <Return event={event as ReturnEvent} refetch={refetch} />;
     case "exchange":
-      return <Exchange event={event as ExchangeEvent} refetch={refetch} />
+      return <Exchange event={event as ExchangeEvent} refetch={refetch} />;
     case "claim":
-      return <Claim event={event as ClaimEvent} refetch={refetch} />
+      return <Claim event={event as ClaimEvent} refetch={refetch} />;
     case "notification":
-      return <Notification event={event as NotificationEvent} />
+      return <Notification event={event as NotificationEvent} />;
     case "refund":
-      return <Refund event={event as RefundEvent} />
+      return <Refund event={event as RefundEvent} />;
     default:
-      return null
+      return null;
   }
 }
 
-export default Timeline
+export default Timeline;

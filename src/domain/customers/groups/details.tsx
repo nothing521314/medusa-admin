@@ -1,27 +1,27 @@
-import React, { useContext, useEffect, useState } from "react"
-import { difference } from "lodash"
-import { navigate } from "gatsby"
-import { CustomerGroup } from "@medusajs/medusa"
+import React, { useContext, useEffect, useState } from "react";
+import { difference } from "lodash";
+import { navigate } from "gatsby";
+import { CustomerGroup } from "@medusajs/medusa";
 import {
   useAdminAddCustomersToCustomerGroup,
   useAdminCustomerGroup,
   useAdminCustomerGroupCustomers,
   useAdminDeleteCustomerGroup,
   useAdminRemoveCustomersFromCustomerGroup,
-} from "../../../../medusa-react"
+} from "../../../../medusa-react";
 
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import BodyCard from "../../../components/organisms/body-card"
-import EditIcon from "../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import EditCustomersTable from "../../../components/templates/customer-group-table/edit-customers-table"
-import CustomersListTable from "../../../components/templates/customer-group-table/customers-list-table"
+import Breadcrumb from "../../../components/molecules/breadcrumb";
+import BodyCard from "../../../components/organisms/body-card";
+import EditIcon from "../../../components/fundamentals/icons/edit-icon";
+import TrashIcon from "../../../components/fundamentals/icons/trash-icon";
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
+import EditCustomersTable from "../../../components/templates/customer-group-table/edit-customers-table";
+import CustomersListTable from "../../../components/templates/customer-group-table/customers-list-table";
 import CustomerGroupContext, {
   CustomerGroupContextContainer,
-} from "./context/customer-group-context"
-import useQueryFilters from "../../../hooks/use-query-filters"
-import DeletePrompt from "../../../components/organisms/delete-prompt"
+} from "./context/customer-group-context";
+import useQueryFilters from "../../../hooks/use-query-filters";
+import DeletePrompt from "../../../components/organisms/delete-prompt";
 
 /**
  * Default filtering config for querying customer group customers list endpoint.
@@ -30,7 +30,7 @@ const defaultQueryProps = {
   additionalFilters: { expand: "groups" },
   limit: 15,
   offset: 0,
-}
+};
 
 /*
  * Placeholder for the customer groups list.
@@ -42,46 +42,46 @@ function CustomersListPlaceholder() {
         No customers in this group yet
       </span>
     </div>
-  )
+  );
 }
 
-type CustomerGroupCustomersListProps = { group: CustomerGroup }
+type CustomerGroupCustomersListProps = { group: CustomerGroup };
 
 /*
  * Customer groups list container.
  */
 function CustomerGroupCustomersList(props: CustomerGroupCustomersListProps) {
-  const groupId = props.group.id
+  const groupId = props.group.id;
 
   // toggle to show/hide "edit customers" modal
-  const [showCustomersModal, setShowCustomersModal] = useState(false)
+  const [showCustomersModal, setShowCustomersModal] = useState(false);
 
   const { q, queryObject, paginate, setQuery } = useQueryFilters(
     defaultQueryProps
-  )
+  );
 
   const { customers = [], isLoading, count } = useAdminCustomerGroupCustomers(
     groupId,
     queryObject
-  )
+  );
 
-  const { mutate: addCustomers } = useAdminAddCustomersToCustomerGroup(groupId)
+  const { mutate: addCustomers } = useAdminAddCustomersToCustomerGroup(groupId);
   const { mutate: removeCustomers } = useAdminRemoveCustomersFromCustomerGroup(
     groupId
-  )
+  );
 
   // list of currently selected customers of a group
   const [selectedCustomerIds, setSelectedCustomerIds] = useState(
     customers.map((c) => c.id)
-  )
+  );
 
   useEffect(() => {
     if (!isLoading) {
-      setSelectedCustomerIds(customers.map((c) => c.id))
+      setSelectedCustomerIds(customers.map((c) => c.id));
     }
-  }, [isLoading, customers])
+  }, [isLoading, customers]);
 
-  const showPlaceholder = !isLoading && !customers.length && !q
+  const showPlaceholder = !isLoading && !customers.length && !q;
 
   const actions = [
     {
@@ -93,34 +93,34 @@ function CustomerGroupCustomersList(props: CustomerGroupCustomersListProps) {
         </span>
       ),
     },
-  ]
+  ];
 
   /*
    * Calculate which customers need to be added/removed.
    */
   const calculateDiff = () => {
-    const initialIds = customers.map((c) => c.id)
+    const initialIds = customers.map((c) => c.id);
     return {
       toAdd: difference(selectedCustomerIds, initialIds),
       toRemove: difference(initialIds, selectedCustomerIds),
-    }
-  }
+    };
+  };
 
   /**
    * Handle "edit customers" modal form submit.
    */
   const handleSubmit = () => {
-    const { toAdd, toRemove } = calculateDiff()
+    const { toAdd, toRemove } = calculateDiff();
 
     if (toAdd.length) {
-      addCustomers({ customer_ids: toAdd.map((i) => ({ id: i })) })
+      addCustomers({ customer_ids: toAdd.map((i) => ({ id: i })) });
     }
     if (toRemove.length) {
-      removeCustomers({ customer_ids: toRemove.map((i) => ({ id: i })) })
+      removeCustomers({ customer_ids: toRemove.map((i) => ({ id: i })) });
     }
 
-    setShowCustomersModal(false)
-  }
+    setShowCustomersModal(false);
+  };
 
   return (
     <BodyCard
@@ -152,23 +152,23 @@ function CustomerGroupCustomersList(props: CustomerGroupCustomersListProps) {
         />
       )}
     </BodyCard>
-  )
+  );
 }
 
 type CustomerGroupDetailsHeaderProps = {
-  customerGroup: CustomerGroup
-}
+  customerGroup: CustomerGroup;
+};
 
 /*
  * Customers groups details page header.
  */
 function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
-  const { showModal } = useContext(CustomerGroupContext)
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+  const { showModal } = useContext(CustomerGroupContext);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const { mutate: deleteGroup } = useAdminDeleteCustomerGroup(
     props.customerGroup.id
-  )
+  );
 
   const actions = [
     {
@@ -179,19 +179,19 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
     {
       label: "Delete",
       onClick: () => {
-        setShowDeleteConfirmation(true)
+        setShowDeleteConfirmation(true);
       },
       variant: "danger",
       icon: <TrashIcon size={20} />,
     },
-  ]
+  ];
 
   const onDeleteConfirmed = async () => {
-    deleteGroup()
-    navigate("/a/customers/groups")
-  }
+    deleteGroup();
+    navigate("/a/customers/groups");
+  };
 
-  const handleConfirmDialogClose = () => setShowDeleteConfirmation(false)
+  const handleConfirmDialogClose = () => setShowDeleteConfirmation(false);
 
   return (
     <>
@@ -212,19 +212,19 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
         />
       )}
     </>
-  )
+  );
 }
 
-type CustomerGroupDetailsProps = { id: string }
+type CustomerGroupDetailsProps = { id: string };
 
 /*
  * Customer groups details page
  */
 function CustomerGroupDetails(p: CustomerGroupDetailsProps) {
-  const { customer_group } = useAdminCustomerGroup(p.id)
+  const { customer_group } = useAdminCustomerGroup(p.id);
 
   if (!customer_group) {
-    return null
+    return null;
   }
 
   return (
@@ -239,7 +239,7 @@ function CustomerGroupDetails(p: CustomerGroupDetailsProps) {
         <CustomerGroupCustomersList group={customer_group} />
       </div>
     </CustomerGroupContextContainer>
-  )
+  );
 }
 
-export default CustomerGroupDetails
+export default CustomerGroupDetails;

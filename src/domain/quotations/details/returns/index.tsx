@@ -1,60 +1,65 @@
-import { LineItem as RawLineItem, Order } from "@medusajs/medusa"
-import { useAdminRequestReturn, useAdminShippingOptions } from "../../../../../medusa-react"
-import React, { useContext, useEffect, useState } from "react"
-import Spinner from "../../../../components/atoms/spinner"
-import Button from "../../../../components/fundamentals/button"
-import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
-import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
-import IconTooltip from "../../../../components/molecules/icon-tooltip"
-import Modal from "../../../../components/molecules/modal"
+import { LineItem as RawLineItem, Order } from "@medusajs/medusa";
+import {
+  useAdminRequestReturn,
+  useAdminShippingOptions,
+} from "../../../../../medusa-react";
+import React, { useContext, useEffect, useState } from "react";
+import Spinner from "../../../../components/atoms/spinner";
+import Button from "../../../../components/fundamentals/button";
+import CheckIcon from "../../../../components/fundamentals/icons/check-icon";
+import EditIcon from "../../../../components/fundamentals/icons/edit-icon";
+import IconTooltip from "../../../../components/molecules/icon-tooltip";
+import Modal from "../../../../components/molecules/modal";
 import LayeredModal, {
   LayeredModalContext,
-} from "../../../../components/molecules/modal/layered-modal"
-import RMAShippingPrice from "../../../../components/molecules/rma-select-shipping"
-import Select from "../../../../components/molecules/select"
-import CurrencyInput from "../../../../components/organisms/currency-input"
-import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table"
-import useNotification from "../../../../hooks/use-notification"
-import { Option } from "../../../../types/shared"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import { displayAmount } from "../../../../utils/prices"
-import { removeNullish } from "../../../../utils/remove-nullish"
-import { filterItems } from "../utils/create-filtering"
+} from "../../../../components/molecules/modal/layered-modal";
+import RMAShippingPrice from "../../../../components/molecules/rma-select-shipping";
+import Select from "../../../../components/molecules/select";
+import CurrencyInput from "../../../../components/organisms/currency-input";
+import RMASelectProductTable from "../../../../components/organisms/rma-select-product-table";
+import useNotification from "../../../../hooks/use-notification";
+import { Option } from "../../../../types/shared";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import { displayAmount } from "../../../../utils/prices";
+import { removeNullish } from "../../../../utils/remove-nullish";
+import { filterItems } from "../utils/create-filtering";
 
 type ReturnMenuProps = {
-  order: Order
-  onDismiss: () => void
-}
+  order: Order;
+  onDismiss: () => void;
+};
 
-type LineItem = Omit<RawLineItem, "beforeInsert">
+type LineItem = Omit<RawLineItem, "beforeInsert">;
 
 const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
-  const layoutmodalcontext = useContext(LayeredModalContext)
+  const layoutmodalcontext = useContext(LayeredModalContext);
 
-  const [submitting, setSubmitting] = useState(false)
-  const [refundEdited, setRefundEdited] = useState(false)
-  const [refundable, setRefundable] = useState(0)
-  const [refundAmount, setRefundAmount] = useState(0)
+  const [submitting, setSubmitting] = useState(false);
+  const [refundEdited, setRefundEdited] = useState(false);
+  const [refundable, setRefundable] = useState(0);
+  const [refundAmount, setRefundAmount] = useState(0);
   const [toReturn, setToReturn] = useState<
     Record<string, { quantity: number }>
-  >({})
-  const [useCustomShippingPrice, setUseCustomShippingPrice] = useState(false)
+  >({});
+  const [useCustomShippingPrice, setUseCustomShippingPrice] = useState(false);
 
-  const [noNotification, setNoNotification] = useState(order.no_notification)
-  const [shippingPrice, setShippingPrice] = useState<number>()
-  const [shippingMethod, setShippingMethod] = useState<Option | null>(null)
+  const [noNotification, setNoNotification] = useState(order.no_notification);
+  const [shippingPrice, setShippingPrice] = useState<number>();
+  const [shippingMethod, setShippingMethod] = useState<Option | null>(null);
 
-  const [allItems, setAllItems] = useState<Omit<LineItem, "beforeInsert">[]>([])
+  const [allItems, setAllItems] = useState<Omit<LineItem, "beforeInsert">[]>(
+    []
+  );
 
-  const notification = useNotification()
+  const notification = useNotification();
 
-  const requestReturnOrder = useAdminRequestReturn(order.id)
+  const requestReturnOrder = useAdminRequestReturn(order.id);
 
   useEffect(() => {
     if (order) {
-      setAllItems(filterItems(order, false))
+      setAllItems(filterItems(order, false));
     }
-  }, [order])
+  }, [order]);
 
   const {
     isLoading: shippingLoading,
@@ -62,60 +67,60 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
   } = useAdminShippingOptions({
     region_id: order.region_id,
     is_return: true,
-  })
+  });
 
   useEffect(() => {
     const items = Object.keys(toReturn)
       .map((t) => allItems.find((i) => i.id === t))
-      .filter((i) => typeof i !== "undefined") as LineItem[]
+      .filter((i) => typeof i !== "undefined") as LineItem[];
 
     const itemTotal = items.reduce((acc: number, curr: LineItem): number => {
       const unitRefundable =
-        (curr.refundable || 0) / (curr.quantity - curr.returned_quantity)
+        (curr.refundable || 0) / (curr.quantity - curr.returned_quantity);
 
-      return acc + unitRefundable * toReturn[curr.id].quantity
-    }, 0)
+      return acc + unitRefundable * toReturn[curr.id].quantity;
+    }, 0);
 
-    const total = itemTotal - (shippingPrice || 0)
+    const total = itemTotal - (shippingPrice || 0);
 
-    setRefundable(total)
+    setRefundable(total);
 
-    setRefundAmount(total)
-  }, [toReturn, shippingPrice])
+    setRefundAmount(total);
+  }, [toReturn, shippingPrice]);
 
   const onSubmit = async () => {
     const items = Object.entries(toReturn).map(([key, value]) => {
       const toSet = {
         reason_id: value.reason?.value.id,
         ...value,
-      }
-      delete toSet.reason
-      const clean = removeNullish(toSet)
+      };
+      delete toSet.reason;
+      const clean = removeNullish(toSet);
       return {
         item_id: key,
         ...clean,
-      }
-    })
+      };
+    });
 
     const data = {
       items,
       refund: Math.round(refundAmount),
       no_notification:
         noNotification !== order.no_notification ? noNotification : undefined,
-    }
+    };
 
     if (shippingMethod) {
       const taxRate = shippingMethod.tax_rates.reduce((acc, curr) => {
-        return acc + curr.rate / 100
-      }, 0)
+        return acc + curr.rate / 100;
+      }, 0);
 
       data.return_shipping = {
         option_id: shippingMethod.value,
         price: shippingPrice ? Math.round(shippingPrice / (1 + taxRate)) : 0,
-      }
+      };
     }
 
-    setSubmitting(true)
+    setSubmitting(true);
     return requestReturnOrder
       .mutateAsync(data)
       .then(() => onDismiss())
@@ -123,39 +128,41 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
         notification("Success", "Successfully returned order", "success")
       )
       .catch((error) => notification("Error", getErrorMessage(error), "error"))
-      .finally(() => setSubmitting(false))
-  }
+      .finally(() => setSubmitting(false));
+  };
 
   const handleRefundUpdated = (value) => {
     if (value < order.refundable_amount && value >= 0) {
-      setRefundAmount(value)
+      setRefundAmount(value);
     }
-  }
+  };
 
   const handleShippingSelected = (selectedItem) => {
-    setShippingMethod(selectedItem)
-    const method = shippingOptions?.find((o) => selectedItem.value === o.id)
+    setShippingMethod(selectedItem);
+    const method = shippingOptions?.find((o) => selectedItem.value === o.id);
 
     if (method) {
-      setShippingPrice(method.price_incl_tax)
+      setShippingPrice(method.price_incl_tax);
     }
-  }
+  };
 
   useEffect(() => {
     if (!useCustomShippingPrice && shippingMethod) {
-      const method = shippingOptions?.find((o) => shippingMethod.value === o.id)
+      const method = shippingOptions?.find(
+        (o) => shippingMethod.value === o.id
+      );
 
       if (method) {
-        setShippingPrice(method.price_incl_tax)
+        setShippingPrice(method.price_incl_tax);
       }
     }
-  }, [useCustomShippingPrice, shippingMethod])
+  }, [useCustomShippingPrice, shippingMethod]);
 
   const handleUpdateShippingPrice = (value) => {
     if (value >= 0) {
-      setShippingPrice(value)
+      setShippingPrice(value);
     }
-  }
+  };
 
   return (
     <LayeredModal context={layoutmodalcontext} handleClose={onDismiss}>
@@ -310,7 +317,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
         </Modal.Footer>
       </Modal.Body>
     </LayeredModal>
-  )
-}
+  );
+};
 
-export default ReturnMenu
+export default ReturnMenu;

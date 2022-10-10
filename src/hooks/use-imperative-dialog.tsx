@@ -1,7 +1,7 @@
-import * as React from "react"
-import ReactDOM from "react-dom"
-import Button from "../components/fundamentals/button"
-import Modal from "../components/molecules/modal"
+import * as React from "react";
+import ReactDOM from "react-dom";
+import Button from "../components/fundamentals/button";
+import Modal from "../components/molecules/modal";
 
 const DeleteDialog = ({
   open,
@@ -43,29 +43,29 @@ const DeleteDialog = ({
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const useImperativeDialog = () => {
   return ({ heading, text }) => {
     // We want a promise here so we can "await" the user's action (either confirm or cancel)
     return new Promise((resolve) => {
-      const mountNode = document.createElement("div")
-      let open = true
+      const mountNode = document.createElement("div");
+      let open = true;
 
       const onConfirm = () => {
-        open = false
-        resolve(true)
+        open = false;
+        resolve(true);
         // trigger a rerender to close the dialog
-        render()
-      }
+        render();
+      };
 
       const onCancel = () => {
-        open = false
-        resolve(false)
+        open = false;
+        resolve(false);
         // trigger a rerender to close the dialog
-        render()
-      }
+        render();
+      };
 
       // attach the dialog in the mount node
       const render = () => {
@@ -78,12 +78,12 @@ const useImperativeDialog = () => {
             onConfirm={onConfirm}
           />,
           mountNode
-        )
-      }
+        );
+      };
 
-      render()
-    })
-  }
-}
+      render();
+    });
+  };
+};
 
-export default useImperativeDialog
+export default useImperativeDialog;

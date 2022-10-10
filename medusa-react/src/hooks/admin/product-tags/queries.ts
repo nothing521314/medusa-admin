@@ -1,20 +1,20 @@
 import {
   AdminProductTagsListRes,
   AdminGetProductTagsParams,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_PRODUCT_TAGS_QUERY_KEY = `admin_product_tags` as const
+const ADMIN_PRODUCT_TAGS_QUERY_KEY = `admin_product_tags` as const;
 
 export const adminProductTagKeys = queryKeysFactory(
   ADMIN_PRODUCT_TAGS_QUERY_KEY
-)
+);
 
-type ProductQueryKeys = typeof adminProductTagKeys
+type ProductQueryKeys = typeof adminProductTagKeys;
 
 export const useAdminProductTags = (
   query?: AdminGetProductTagsParams,
@@ -24,11 +24,11 @@ export const useAdminProductTags = (
     ReturnType<ProductQueryKeys["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminProductTagKeys.list(query),
     () => client.admin.productTags.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

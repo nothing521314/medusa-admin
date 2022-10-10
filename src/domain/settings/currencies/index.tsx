@@ -1,32 +1,32 @@
-import { RouteComponentProps } from "@reach/router"
-import { navigate } from "gatsby"
-import { useAdminStore } from "../../../../medusa-react"
-import React from "react"
-import ReactJson from "react-json-view"
-import BackButton from "../../../components/atoms/back-button"
-import Spinner from "../../../components/atoms/spinner"
-import Tooltip from "../../../components/atoms/tooltip"
-import FeatureToggle from "../../../components/fundamentals/feature-toggle"
-import Section from "../../../components/organisms/section"
-import { getErrorStatus } from "../../../utils/get-error-status"
-import CurrencyTaxSetting from "./components/currency-tax-setting"
-import DefaultStoreCurrency from "./components/default-store-currency"
-import StoreCurrencies from "./components/store-currencies"
+import { RouteComponentProps } from "@reach/router";
+import { navigate } from "gatsby";
+import { useAdminStore } from "../../../../medusa-react";
+import React from "react";
+import ReactJson from "react-json-view";
+import BackButton from "../../../components/atoms/back-button";
+import Spinner from "../../../components/atoms/spinner";
+import Tooltip from "../../../components/atoms/tooltip";
+import FeatureToggle from "../../../components/fundamentals/feature-toggle";
+import Section from "../../../components/organisms/section";
+import { getErrorStatus } from "../../../utils/get-error-status";
+import CurrencyTaxSetting from "./components/currency-tax-setting";
+import DefaultStoreCurrency from "./components/default-store-currency";
+import StoreCurrencies from "./components/store-currencies";
 
 const CurrencySettings = (_props: RouteComponentProps) => {
-  const { store, status, error } = useAdminStore()
+  const { store, status, error } = useAdminStore();
 
   if (error) {
-    let message = "An unknown error occurred"
+    let message = "An unknown error occurred";
 
-    const errorStatus = getErrorStatus(error)
+    const errorStatus = getErrorStatus(error);
 
     if (errorStatus) {
-      message = errorStatus.message
+      message = errorStatus.message;
 
       if (errorStatus.status === 404) {
-        navigate("/404")
-        return null
+        navigate("/404");
+        return null;
       }
     }
 
@@ -43,7 +43,7 @@ const CurrencySettings = (_props: RouteComponentProps) => {
           />
         </div>
       </Section>
-    )
+    );
   }
 
   if (status === "loading" || !store) {
@@ -52,7 +52,7 @@ const CurrencySettings = (_props: RouteComponentProps) => {
       <div className="w-full h-[calc(100vh-64px)] flex items-center justify-center">
         <Spinner variant="secondary" />
       </div>
-    )
+    );
   }
 
   return (
@@ -90,7 +90,7 @@ const CurrencySettings = (_props: RouteComponentProps) => {
                 <div className="grid grid-cols-1 gap-base">
                   {store.currencies
                     .sort((a, b) => {
-                      return a.code > b.code ? 1 : -1
+                      return a.code > b.code ? 1 : -1;
                     })
                     .map((c, index) => {
                       return (
@@ -99,7 +99,7 @@ const CurrencySettings = (_props: RouteComponentProps) => {
                           isDefault={store.default_currency_code === c.code}
                           key={index}
                         />
-                      )
+                      );
                     })}
                 </div>
               </div>
@@ -113,7 +113,7 @@ const CurrencySettings = (_props: RouteComponentProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CurrencySettings
+export default CurrencySettings;

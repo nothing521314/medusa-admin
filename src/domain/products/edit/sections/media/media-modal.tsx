@@ -1,76 +1,76 @@
-import { Product } from "@medusajs/medusa"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import useNotification from "../../../../../hooks/use-notification"
-import { FormImage } from "../../../../../types/shared"
-import { prepareImages } from "../../../../../utils/images"
-import { nestedForm } from "../../../../../utils/nested-form"
-import MediaForm, { MediaFormType } from "../../../components/media-form"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
+import { Product } from "@medusajs/medusa";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../../components/fundamentals/button";
+import Modal from "../../../../../components/molecules/modal";
+import useNotification from "../../../../../hooks/use-notification";
+import { FormImage } from "../../../../../types/shared";
+import { prepareImages } from "../../../../../utils/images";
+import { nestedForm } from "../../../../../utils/nested-form";
+import MediaForm, { MediaFormType } from "../../../components/media-form";
+import useEditProductActions from "../../hooks/use-edit-product-actions";
 
 type Props = {
-  product: Product
-  open: boolean
-  onClose: () => void
-}
+  product: Product;
+  open: boolean;
+  onClose: () => void;
+};
 
 type MediaForm = {
-  media: MediaFormType
-}
+  media: MediaFormType;
+};
 
 const MediaModal = ({ product, open, onClose }: Props) => {
-  const { onUpdate, updating } = useEditProductActions(product.id)
+  const { onUpdate, updating } = useEditProductActions(product.id);
   const form = useForm<MediaForm>({
     defaultValues: getDefaultValues(product),
-  })
+  });
 
   const {
     formState: { isDirty },
     handleSubmit,
     reset,
-  } = form
+  } = form;
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   useEffect(() => {
-    reset(getDefaultValues(product))
-  }, [product])
+    reset(getDefaultValues(product));
+  }, [product]);
 
   const onReset = () => {
-    reset(getDefaultValues(product))
-    onClose()
-  }
+    reset(getDefaultValues(product));
+    onClose();
+  };
 
   const onSubmit = handleSubmit(async (data) => {
-    let preppedImages: FormImage[] = []
+    let preppedImages: FormImage[] = [];
 
     try {
-      preppedImages = await prepareImages(data.media.images)
+      preppedImages = await prepareImages(data.media.images);
     } catch (error) {
-      let errorMessage = "Something went wrong while trying to upload images."
-      const response = (error as any).response as Response
+      let errorMessage = "Something went wrong while trying to upload images.";
+      const response = (error as any).response as Response;
 
       if (response.status === 500) {
         errorMessage =
           errorMessage +
           " " +
-          "You might not have a file service configured. Please contact your administrator"
+          "You might not have a file service configured. Please contact your administrator";
       }
 
-      notification("Error", errorMessage, "error")
-      return
+      notification("Error", errorMessage, "error");
+      return;
     }
-    const urls = preppedImages.map((image) => image.url)
+    const urls = preppedImages.map((image) => image.url);
 
     onUpdate(
       {
         images: urls,
       },
       onReset
-    )
-  })
+    );
+  });
 
   return (
     <Modal open={open} handleClose={onReset} isLargeModal>
@@ -114,8 +114,8 @@ const MediaModal = ({ product, open, onClose }: Props) => {
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const getDefaultValues = (product: Product): MediaForm => {
   return {
@@ -126,7 +126,7 @@ const getDefaultValues = (product: Product): MediaForm => {
           selected: false,
         })) || [],
     },
-  }
-}
+  };
+};
 
-export default MediaModal
+export default MediaModal;

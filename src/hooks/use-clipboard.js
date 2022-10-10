@@ -1,6 +1,6 @@
 // hugely inspired from @danoc https://github.com/danoc/react-use-clipboard/blob/master/src/index.tsx
-import React from "react"
-import copy from "copy-to-clipboard"
+import React from "react";
+import copy from "copy-to-clipboard";
 
 /**
  * @param {string} text
@@ -10,29 +10,29 @@ import copy from "copy-to-clipboard"
  * @returns {Array} returns tuple containing isCopied state and handleCopy function
  */
 const useClipboard = (text, options = {}) => {
-  const [isCopied, setIsCopied] = React.useState(false)
-  const successDuration = options?.successDuration
-  const onCopied = options?.onCopied || function () {}
+  const [isCopied, setIsCopied] = React.useState(false);
+  const successDuration = options?.successDuration;
+  const onCopied = options?.onCopied || function () {};
 
   React.useEffect(() => {
     if (isCopied && successDuration) {
       const timeout = setTimeout(() => {
-        setIsCopied(false)
-      }, successDuration)
+        setIsCopied(false);
+      }, successDuration);
 
       return () => {
-        clearTimeout(timeout)
-      }
+        clearTimeout(timeout);
+      };
     }
-  }, [isCopied, successDuration])
+  }, [isCopied, successDuration]);
 
   const handleCopy = React.useCallback(() => {
-    copy(text)
-    setIsCopied(true)
-    onCopied()
-  }, [text, onCopied, setIsCopied])
+    copy(text);
+    setIsCopied(true);
+    onCopied();
+  }, [text, onCopied, setIsCopied]);
 
-  return [isCopied, handleCopy]
-}
+  return [isCopied, handleCopy];
+};
 
-export default useClipboard
+export default useClipboard;

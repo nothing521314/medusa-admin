@@ -3,10 +3,10 @@ import {
   AdminCurrenciesRes,
   AdminGetCurrenciesParams,
   AdminPostCurrenciesCurrencyReq,
-} from "@medusajs/medusa"
-import qs from "qs"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
+} from "@medusajs/medusa";
+import qs from "qs";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
 
 class AdminCurrenciesResource extends BaseResource {
   /**
@@ -21,14 +21,14 @@ class AdminCurrenciesResource extends BaseResource {
     query?: AdminGetCurrenciesParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCurrenciesListRes> {
-    let path = `/admin/currencies`
+    let path = `/admin/currencies`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path += `?${queryString}`
+      const queryString = qs.stringify(query);
+      path += `?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -45,9 +45,9 @@ class AdminCurrenciesResource extends BaseResource {
     payload: AdminPostCurrenciesCurrencyReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCurrenciesRes> {
-    const path = `/admin/currencies/${code}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/currencies/${code}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 }
 
-export default AdminCurrenciesResource
+export default AdminCurrenciesResource;

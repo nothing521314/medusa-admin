@@ -3,9 +3,9 @@ import {
   Product,
   ProductCollection,
   ProductTag,
-} from "@medusajs/medusa"
-import { debounce } from "lodash"
-import React, { useEffect } from "react"
+} from "@medusajs/medusa";
+import { debounce } from "lodash";
+import React, { useEffect } from "react";
 import {
   Column,
   HeaderGroup,
@@ -14,29 +14,29 @@ import {
   useRowSelect,
   useSortBy,
   useTable,
-} from "react-table"
-import useQueryFilters from "../../../hooks/use-query-filters"
-import Spinner from "../../atoms/spinner"
-import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox"
-import Table, { TablePagination, TableProps } from "../../molecules/table"
+} from "react-table";
+import useQueryFilters from "../../../hooks/use-query-filters";
+import Spinner from "../../atoms/spinner";
+import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox";
+import Table, { TablePagination, TableProps } from "../../molecules/table";
 
 type SelectableTableProps<T extends object> = {
-  resourceName?: string
-  label?: string
-  isLoading?: boolean
-  totalCount: number
+  resourceName?: string;
+  label?: string;
+  isLoading?: boolean;
+  totalCount: number;
   options: Omit<TableProps, "filteringOptions"> & {
-    filters?: Pick<TableProps, "filteringOptions">
-  }
-  data?: T[]
-  selectedIds?: string[]
-  columns: Column<T>[]
-  onChange?: (items: string[]) => void
-  renderRow: (props: { row: Row<T> }) => React.ReactElement
+    filters?: Pick<TableProps, "filteringOptions">;
+  };
+  data?: T[];
+  selectedIds?: string[];
+  columns: Column<T>[];
+  onChange?: (items: string[]) => void;
+  renderRow: (props: { row: Row<T> }) => React.ReactElement;
   renderHeaderGroup?: (props: {
-    headerGroup: HeaderGroup<T>
-  }) => React.ReactElement
-} & ReturnType<typeof useQueryFilters>
+    headerGroup: HeaderGroup<T>;
+  }) => React.ReactElement;
+} & ReturnType<typeof useQueryFilters>;
 
 export const SelectableTable = <
   T extends Product | CustomerGroup | ProductCollection | ProductTag
@@ -65,8 +65,8 @@ export const SelectableTable = <
         pageIndex: queryObject.offset / queryObject.limit,
         pageSize: queryObject.limit,
         selectedRowIds: selectedIds.reduce((prev, id) => {
-          prev[id] = true
-          return prev
+          prev[id] = true;
+          return prev;
         }, {} as Record<string, boolean>),
       },
       pageCount: Math.ceil(totalCount / queryObject.limit),
@@ -78,41 +78,41 @@ export const SelectableTable = <
     usePagination,
     useRowSelect,
     useSelectionColumn
-  )
+  );
 
   useEffect(() => {
     if (onChange) {
-      onChange(Object.keys(table.state.selectedRowIds))
+      onChange(Object.keys(table.state.selectedRowIds));
     }
-  }, [table.state.selectedRowIds])
+  }, [table.state.selectedRowIds]);
 
   const handleNext = () => {
     if (!table.canNextPage) {
-      return
+      return;
     }
 
-    paginate(1)
-    table.nextPage()
-  }
+    paginate(1);
+    table.nextPage();
+  };
 
   const handlePrev = () => {
     if (!table.canPreviousPage) {
-      return
+      return;
     }
 
-    paginate(-1)
-    table.previousPage()
-  }
+    paginate(-1);
+    table.previousPage();
+  };
 
   const handleSearch = (text: string) => {
-    setQuery(text)
+    setQuery(text);
 
     if (text) {
-      table.gotoPage(0)
+      table.gotoPage(0);
     }
-  }
+  };
 
-  const debouncedSearch = React.useMemo(() => debounce(handleSearch, 300), [])
+  const debouncedSearch = React.useMemo(() => debounce(handleSearch, 300), []);
 
   return (
     <div>
@@ -138,8 +138,8 @@ export const SelectableTable = <
             </div>
           ) : (
             table.rows.map((row) => {
-              table.prepareRow(row)
-              return renderRow({ row })
+              table.prepareRow(row);
+              return renderRow({ row });
             })
           )}
         </Table.Body>
@@ -159,8 +159,8 @@ export const SelectableTable = <
         hasPrev={table.canPreviousPage}
       />
     </div>
-  )
-}
+  );
+};
 
 const useSelectionColumn = (hooks) => {
   hooks.visibleColumns.push((columns) => [
@@ -174,7 +174,7 @@ const useSelectionColumn = (hooks) => {
               onClick={(e) => e.stopPropagation()}
             />
           </div>
-        )
+        );
       },
       Cell: ({ row }) => {
         return (
@@ -184,9 +184,9 @@ const useSelectionColumn = (hooks) => {
               onClick={(e) => e.stopPropagation()}
             />
           </div>
-        )
+        );
       },
     },
     ...columns,
-  ])
-}
+  ]);
+};

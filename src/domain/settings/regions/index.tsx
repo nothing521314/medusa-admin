@@ -1,13 +1,13 @@
-import { RouteComponentProps } from "@reach/router"
-import React from "react"
-import BackButton from "../../../components/atoms/back-button"
-import EditRegion from "./edit"
-import RegionOverview from "./region-overview"
+import { RouteComponentProps } from "@reach/router";
+import React from "react";
+import BackButton from "../../../components/atoms/back-button";
+import EditRegion from "./edit";
+import RegionOverview from "./region-overview";
 
-type Props = RouteComponentProps
+type Props = RouteComponentProps;
 
 const Regions = (props: Props) => {
-  const filepath: string | undefined = props["*"]
+  const filepath: string | undefined = props["*"];
 
   return (
     <div className="flex flex-col gap-y-xsmall h-full">
@@ -21,7 +21,7 @@ const Regions = (props: Props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Regions
+export default Regions;

@@ -1,28 +1,28 @@
-import React from "react"
-import InputField from "../../../../components/molecules/input"
-import TextArea from "../../../../components/molecules/textarea"
-import FormValidator from "../../../../utils/form-validator"
-import { NestedForm } from "../../../../utils/nested-form"
+import React from "react";
+import InputField from "../../../../components/molecules/input";
+import TextArea from "../../../../components/molecules/textarea";
+import FormValidator from "../../../../utils/form-validator";
+import { NestedForm } from "../../../../utils/nested-form";
 
 export type GeneralFormType = {
-  title: string
-  subtitle: string | null
-  handle: string
-  material: string | null
-  description: string | null
-}
+  title: string;
+  subtitle: string | null;
+  handle: string;
+  material: string | null;
+  description: string | null;
+};
 
 type Props = {
-  form: NestedForm<GeneralFormType>
-  requireHandle?: boolean
-}
+  form: NestedForm<GeneralFormType>;
+  requireHandle?: boolean;
+};
 
 const GeneralForm = ({ form, requireHandle = true }: Props) => {
   const {
     register,
     path,
     formState: { errors },
-  } = form
+  } = form;
 
   return (
     <div>
@@ -97,7 +97,7 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
         120-160 characters is the recommended length for search engines.
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default GeneralForm
+export default GeneralForm;

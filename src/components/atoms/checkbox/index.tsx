@@ -1,15 +1,15 @@
-import clsx from "clsx"
-import React, { ReactNode, useImperativeHandle } from "react"
+import clsx from "clsx";
+import React, { ReactNode, useImperativeHandle } from "react";
 
 export type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  label: ReactNode
-}
+  label: ReactNode;
+};
 
 const Checkbox = React.forwardRef(
   ({ label, value, className, id, ...rest }: CheckboxProps, ref) => {
-    const checkboxRef = React.useRef<HTMLInputElement>(null)
+    const checkboxRef = React.useRef<HTMLInputElement>(null);
 
-    useImperativeHandle(ref, () => checkboxRef.current)
+    useImperativeHandle(ref, () => checkboxRef.current);
     return (
       <label
         className={clsx("flex items-center cursor-pointer", className)}
@@ -25,8 +25,8 @@ const Checkbox = React.forwardRef(
         />
         {label}
       </label>
-    )
+    );
   }
-)
+);
 
-export default Checkbox
+export default Checkbox;

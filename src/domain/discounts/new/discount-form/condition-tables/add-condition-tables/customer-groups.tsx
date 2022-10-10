@@ -1,34 +1,34 @@
-import { useAdminCustomerGroups } from  "../../../../../../../medusa-react"
-import React, { useState } from "react"
-import Spinner from "../../../../../../components/atoms/spinner"
-import Modal from "../../../../../../components/molecules/modal"
-import useQueryFilters from "../../../../../../hooks/use-query-filters"
+import { useAdminCustomerGroups } from "../../../../../../../medusa-react";
+import React, { useState } from "react";
+import Spinner from "../../../../../../components/atoms/spinner";
+import Modal from "../../../../../../components/molecules/modal";
+import useQueryFilters from "../../../../../../hooks/use-query-filters";
 import {
   AddConditionSelectorProps,
   DiscountConditionOperator,
-} from "../../../../types"
-import { useDiscountForm } from "../../form/discount-form-context"
-import { defaultQueryProps } from "../shared/common"
-import ConditionOperator from "../shared/condition-operator"
+} from "../../../../types";
+import { useDiscountForm } from "../../form/discount-form-context";
+import { defaultQueryProps } from "../shared/common";
+import ConditionOperator from "../shared/condition-operator";
 import {
   CustomerGroupsHeader,
   CustomerGroupsRow,
   useGroupColumns,
-} from "../shared/groups"
-import { SelectableTable } from "../shared/selectable-table"
-import AddConditionFooter from "./add-condition-footer"
+} from "../shared/groups";
+import { SelectableTable } from "../shared/selectable-table";
+import AddConditionFooter from "./add-condition-footer";
 
 const AddCustomerGroupConditionSelector = ({
   onClose,
 }: AddConditionSelectorProps) => {
-  const params = useQueryFilters(defaultQueryProps)
+  const params = useQueryFilters(defaultQueryProps);
 
-  const { conditions } = useDiscountForm()
+  const { conditions } = useDiscountForm();
 
-  const [items, setItems] = useState(conditions?.customer_groups?.items || [])
+  const [items, setItems] = useState(conditions?.customer_groups?.items || []);
   const [operator, setOperator] = useState<DiscountConditionOperator>(
     conditions.customer_groups.operator
-  )
+  );
 
   const { isLoading, count, customer_groups } = useAdminCustomerGroups(
     params.queryObject,
@@ -36,21 +36,21 @@ const AddCustomerGroupConditionSelector = ({
       // avoid UI flickering by keeping previous data
       keepPreviousData: true,
     }
-  )
+  );
 
   const changed = (values: string[]) => {
     const selectedCustomerGroups =
-      customer_groups?.filter((cg) => values.includes(cg.id)) || []
+      customer_groups?.filter((cg) => values.includes(cg.id)) || [];
 
     setItems(
       selectedCustomerGroups.map((customer_group) => ({
         id: customer_group.id,
         label: customer_group.name,
       }))
-    )
-  }
+    );
+  };
 
-  const columns = useGroupColumns()
+  const columns = useGroupColumns();
 
   return (
     <>
@@ -89,7 +89,7 @@ const AddCustomerGroupConditionSelector = ({
         />
       </Modal.Footer>
     </>
-  )
-}
+  );
+};
 
-export default AddCustomerGroupConditionSelector
+export default AddCustomerGroupConditionSelector;

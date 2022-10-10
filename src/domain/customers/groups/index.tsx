@@ -1,20 +1,20 @@
-import React, { useContext } from "react"
-import { RouteComponentProps, Router } from "@reach/router"
+import React, { useContext } from "react";
+import { RouteComponentProps, Router } from "@reach/router";
 
-import BodyCard from "../../../components/organisms/body-card"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import CustomersPageTableHeader from "../header"
-import Details from "./details"
+import BodyCard from "../../../components/organisms/body-card";
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
+import CustomersPageTableHeader from "../header";
+import Details from "./details";
 import CustomerGroupContext, {
   CustomerGroupContextContainer,
-} from "./context/customer-group-context"
-import CustomerGroupsTable from "../../../components/templates/customer-group-table/customer-groups-table"
+} from "./context/customer-group-context";
+import CustomerGroupsTable from "../../../components/templates/customer-group-table/customer-groups-table";
 
 /*
  * Customer groups index page
  */
 function Index(_: RouteComponentProps) {
-  const { showModal } = useContext(CustomerGroupContext)
+  const { showModal } = useContext(CustomerGroupContext);
 
   const actions = [
     {
@@ -26,7 +26,7 @@ function Index(_: RouteComponentProps) {
         </span>
       ),
     },
-  ]
+  ];
 
   return (
     <div className="flex flex-col grow h-full">
@@ -39,7 +39,7 @@ function Index(_: RouteComponentProps) {
         </BodyCard>
       </div>
     </div>
-  )
+  );
 }
 
 /*
@@ -53,7 +53,7 @@ function CustomerGroups(_: RouteComponentProps) {
         <Details path=":id" />
       </Router>
     </CustomerGroupContextContainer>
-  )
+  );
 }
 
-export default CustomerGroups
+export default CustomerGroups;

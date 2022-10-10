@@ -1,4 +1,4 @@
-import { adminRegionKeys } from "./queries"
+import { adminRegionKeys } from "./queries";
 import {
   AdminRegionsDeleteRes,
   AdminRegionsRes,
@@ -7,11 +7,11 @@ import {
   AdminPostRegionsRegionCountriesReq,
   AdminPostRegionsRegionFulfillmentProvidersReq,
   AdminPostRegionsRegionPaymentProvidersReq,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminCreateRegion = (
   options?: UseMutationOptions<
@@ -20,14 +20,14 @@ export const useAdminCreateRegion = (
     AdminPostRegionsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostRegionsReq) => client.admin.regions.create(payload),
     buildOptions(queryClient, adminRegionKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdateRegion = (
   id: string,
@@ -37,8 +37,8 @@ export const useAdminUpdateRegion = (
     AdminPostRegionsRegionReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostRegionsRegionReq) =>
@@ -48,15 +48,15 @@ export const useAdminUpdateRegion = (
       [adminRegionKeys.lists(), adminRegionKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteRegion = (
   id: string,
   options?: UseMutationOptions<Response<AdminRegionsDeleteRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.regions.delete(id),
@@ -65,8 +65,8 @@ export const useAdminDeleteRegion = (
       [adminRegionKeys.lists(), adminRegionKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminRegionAddCountry = (
   id: string,
@@ -76,29 +76,29 @@ export const useAdminRegionAddCountry = (
     AdminPostRegionsRegionCountriesReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostRegionsRegionCountriesReq) =>
       client.admin.regions.addCountry(id, payload),
     buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
-}
+  );
+};
 
 export const useAdminRegionRemoveCountry = (
   id: string,
   options?: UseMutationOptions<Response<AdminRegionsRes>, Error, string>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (country_code: string) =>
       client.admin.regions.deleteCountry(id, country_code),
     buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
-}
+  );
+};
 
 export const useAdminRegionAddFulfillmentProvider = (
   id: string,
@@ -108,29 +108,29 @@ export const useAdminRegionAddFulfillmentProvider = (
     AdminPostRegionsRegionFulfillmentProvidersReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostRegionsRegionFulfillmentProvidersReq) =>
       client.admin.regions.addFulfillmentProvider(id, payload),
     buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
-}
+  );
+};
 
 export const useAdminRegionDeleteFulfillmentProvider = (
   id: string,
   options?: UseMutationOptions<Response<AdminRegionsRes>, Error, string>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (provider_id: string) =>
       client.admin.regions.deleteFulfillmentProvider(id, provider_id),
     buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
-}
+  );
+};
 
 export const useAdminRegionAddPaymentProvider = (
   id: string,
@@ -140,26 +140,26 @@ export const useAdminRegionAddPaymentProvider = (
     AdminPostRegionsRegionPaymentProvidersReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostRegionsRegionPaymentProvidersReq) =>
       client.admin.regions.addPaymentProvider(id, payload),
     buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
-}
+  );
+};
 
 export const useAdminRegionDeletePaymentProvider = (
   id: string,
   options?: UseMutationOptions<Response<AdminRegionsRes>, Error, string>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (provider_id: string) =>
       client.admin.regions.deletePaymentProvider(id, provider_id),
     buildOptions(queryClient, adminRegionKeys.detail(id), options)
-  )
-}
+  );
+};

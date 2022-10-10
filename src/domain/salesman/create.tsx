@@ -1,38 +1,38 @@
-import React from "react"
-import { Controller, useForm, useWatch } from "react-hook-form"
-import { useAdminCreateCustomer } from "../../../medusa-react"
-import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select"
-import Button from "../../components/fundamentals/button"
-import LockIcon from "../../components/fundamentals/icons/lock-icon"
-import InputField from "../../components/molecules/input"
+import React from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { useAdminCreateCustomer } from "../../../medusa-react";
+import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select";
+import Button from "../../components/fundamentals/button";
+import LockIcon from "../../components/fundamentals/icons/lock-icon";
+import InputField from "../../components/molecules/input";
 
-import Modal from "../../components/molecules/modal"
-import useNotification from "../../hooks/use-notification"
-import { countries } from "../../utils/countries"
-import { getErrorMessage } from "../../utils/error-messages"
-import { validateEmail } from "../../utils/validate-email"
-import { validatePass } from "../../utils/validate-pass"
+import Modal from "../../components/molecules/modal";
+import useNotification from "../../hooks/use-notification";
+import { countries } from "../../utils/countries";
+import { getErrorMessage } from "../../utils/error-messages";
+import { validateEmail } from "../../utils/validate-email";
+import { validatePass } from "../../utils/validate-pass";
 
 const countryOptions = countries.map((c) => ({
   label: c.name,
   value: c.alpha2,
-}))
+}));
 
 type CreateCustomerModalProps = {
-  handleClose: () => void
-}
+  handleClose: () => void;
+};
 
 type CreateCustomerFormType = {
-  first_name: string
-  last_name: string
-  email: string
-  phone: string | null
-  password: string
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+  password: string;
   regions: {
-    label: string
-    value: string
-  }[]
-}
+    label: string;
+    value: string;
+  }[];
+};
 
 const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
   const {
@@ -44,14 +44,14 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
     formState: { isDirty },
   } = useForm<CreateCustomerFormType>({
     mode: "onChange",
-  })
+  });
   const watch = useWatch({
     control,
-  })
+  });
 
-  const notification = useNotification()
+  const notification = useNotification();
 
-  const createCustomer = useAdminCreateCustomer({})
+  const createCustomer = useAdminCreateCustomer({});
 
   const onSubmit = handleSubmit((data) => {
     createCustomer.mutate(
@@ -65,16 +65,16 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
       },
       {
         onSuccess: () => {
-          handleClose()
-          notification("Success", "Successfully created customer", "success")
+          handleClose();
+          notification("Success", "Successfully created customer", "success");
         },
         onError: (err) => {
-          handleClose()
-          notification("Error", getErrorMessage(err), "error")
+          handleClose();
+          notification("Error", getErrorMessage(err), "error");
         },
       }
-    )
-  })
+    );
+  });
 
   return (
     <Modal handleClose={handleClose}>
@@ -129,7 +129,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
                     isMulti
                     selectAll
                   />
-                )
+                );
               }}
             />
           </div>
@@ -158,7 +158,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default CreateCustomerModal
+export default CreateCustomerModal;

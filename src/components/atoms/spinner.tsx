@@ -1,10 +1,10 @@
-import clsx from "clsx"
-import React from "react"
+import clsx from "clsx";
+import React from "react";
 
 type SpinnerProps = {
-  size?: "large" | "medium" | "small"
-  variant?: "primary" | "secondary"
-}
+  size?: "large" | "medium" | "small";
+  variant?: "primary" | "secondary";
+};
 
 const Spinner: React.FC<SpinnerProps> = ({
   size = "large",
@@ -29,7 +29,7 @@ const Spinner: React.FC<SpinnerProps> = ({
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Spinner
+export default Spinner;

@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import UnpublishIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import UnpublishIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/UnpublishIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof UnpublishIcon>
+} as ComponentMeta<typeof UnpublishIcon>;
 
-const Template = (args) => <UnpublishIcon {...args} />
+const Template = (args) => <UnpublishIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "20",
   color: "currentColor",
-}
+};

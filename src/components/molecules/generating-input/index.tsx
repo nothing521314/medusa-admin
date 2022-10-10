@@ -3,12 +3,12 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
-} from "react"
-import { generatePromotionCode } from "../../../utils/generate-promotion-code"
-import RefreshIcon from "../../fundamentals/icons/refresh-icon"
-import InputContainer from "../../fundamentals/input-container"
-import InputHeader from "../../fundamentals/input-header"
-import { InputProps } from "../input"
+} from "react";
+import { generatePromotionCode } from "../../../utils/generate-promotion-code";
+import RefreshIcon from "../../fundamentals/icons/refresh-icon";
+import InputContainer from "../../fundamentals/input-container";
+import InputHeader from "../../fundamentals/input-header";
+import { InputProps } from "../input";
 
 const GeneratingInput = React.forwardRef(
   (
@@ -32,21 +32,21 @@ const GeneratingInput = React.forwardRef(
   ) => {
     const [value, setValue] = useState<
       InputHTMLAttributes<HTMLInputElement>["value"]
-    >(valueProp || "")
-    const inputRef = useRef<HTMLInputElement>(null)
+    >(valueProp || "");
+    const inputRef = useRef<HTMLInputElement>(null);
 
-    useImperativeHandle(ref, () => inputRef.current)
+    useImperativeHandle(ref, () => inputRef.current);
 
     const generateCode = () => {
-      setValue(generatePromotionCode())
-    }
+      setValue(generatePromotionCode());
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(e.target.value)
+      setValue(e.target.value);
       if (onChange) {
-        onChange(e)
+        onChange(e);
       }
-    }
+    };
 
     return (
       <InputContainer
@@ -86,8 +86,8 @@ const GeneratingInput = React.forwardRef(
           )}
         </div>
       </InputContainer>
-    )
+    );
   }
-)
+);
 
-export default GeneratingInput
+export default GeneratingInput;

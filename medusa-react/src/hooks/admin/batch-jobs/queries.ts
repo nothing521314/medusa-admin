@@ -2,18 +2,18 @@ import {
   AdminBatchJobListRes,
   AdminBatchJobRes,
   AdminGetBatchParams,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_COLLECTIONS_QUERY_KEY = `admin_batches` as const
+const ADMIN_COLLECTIONS_QUERY_KEY = `admin_batches` as const;
 
-export const adminBatchJobsKeys = queryKeysFactory(ADMIN_COLLECTIONS_QUERY_KEY)
+export const adminBatchJobsKeys = queryKeysFactory(ADMIN_COLLECTIONS_QUERY_KEY);
 
-type BatchJobsQueryKey = typeof adminBatchJobsKeys
+type BatchJobsQueryKey = typeof adminBatchJobsKeys;
 
 export const useAdminBatchJobs = (
   query?: AdminGetBatchParams,
@@ -23,14 +23,14 @@ export const useAdminBatchJobs = (
     ReturnType<BatchJobsQueryKey["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminBatchJobsKeys.list(query),
     () => client.admin.batchJobs.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminBatchJob = (
   id: string,
@@ -40,11 +40,11 @@ export const useAdminBatchJob = (
     ReturnType<BatchJobsQueryKey["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminBatchJobsKeys.detail(id),
     () => client.admin.batchJobs.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

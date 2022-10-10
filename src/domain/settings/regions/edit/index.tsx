@@ -1,25 +1,25 @@
-import { useAdminRegion } from "../../../../../medusa-react"
-import React from "react"
-import Spinner from "../../../../components/atoms/spinner"
-import GeneralSection from "./general-section"
-import ReturnShippingOptions from "./return-shipping-options"
-import ShippingOptions from "./shipping-options"
+import { useAdminRegion } from "../../../../../medusa-react";
+import React from "react";
+import Spinner from "../../../../components/atoms/spinner";
+import GeneralSection from "./general-section";
+import ReturnShippingOptions from "./return-shipping-options";
+import ShippingOptions from "./shipping-options";
 
 type Props = {
-  id?: string
-}
+  id?: string;
+};
 
 const EditRegion = ({ id }: Props) => {
   const { region, isLoading, isError } = useAdminRegion(id!, {
     enabled: !!id,
-  })
+  });
 
   if (isLoading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
         <Spinner variant="secondary" />
       </div>
-    )
+    );
   }
 
   if (isError) {
@@ -31,11 +31,11 @@ const EditRegion = ({ id }: Props) => {
           select a region.
         </p>
       </div>
-    )
+    );
   }
 
   if (!region) {
-    return null
+    return null;
   }
 
   return (
@@ -44,7 +44,7 @@ const EditRegion = ({ id }: Props) => {
       <ShippingOptions region={region} />
       <ReturnShippingOptions region={region} />
     </div>
-  )
-}
+  );
+};
 
-export default EditRegion
+export default EditRegion;

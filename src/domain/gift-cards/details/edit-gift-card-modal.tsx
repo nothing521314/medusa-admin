@@ -1,22 +1,22 @@
-import { AdminPostGiftCardsGiftCardReq, Region } from "@medusajs/medusa"
-import React, { useMemo } from "react"
-import { Controller, useForm } from "react-hook-form"
-import Button from "../../../components/fundamentals/button"
-import Modal from "../../../components/molecules/modal"
-import Select from "../../../components/molecules/select"
-import { Option } from "../../../types/shared"
+import { AdminPostGiftCardsGiftCardReq, Region } from "@medusajs/medusa";
+import React, { useMemo } from "react";
+import { Controller, useForm } from "react-hook-form";
+import Button from "../../../components/fundamentals/button";
+import Modal from "../../../components/molecules/modal";
+import Select from "../../../components/molecules/select";
+import { Option } from "../../../types/shared";
 
 type EditGiftCardModalProps = {
-  handleClose: () => void
-  handleSave: (update: AdminPostGiftCardsGiftCardReq) => void
-  updating: boolean
-  regions: Region[] | undefined
-  region: Region
-}
+  handleClose: () => void;
+  handleSave: (update: AdminPostGiftCardsGiftCardReq) => void;
+  updating: boolean;
+  regions: Region[] | undefined;
+  region: Region;
+};
 
 type EditGiftCardModalFormData = {
-  region: Option
-}
+  region: Option;
+};
 
 const EditGiftCardModal = ({
   handleClose,
@@ -32,11 +32,11 @@ const EditGiftCardModal = ({
         label: region.name,
       },
     },
-  })
+  });
 
   const onSubmit = (data: EditGiftCardModalFormData) => {
-    handleSave({ region_id: data.region.value })
-  }
+    handleSave({ region_id: data.region.value });
+  };
 
   const regionOptions: Option[] = useMemo(() => {
     return (
@@ -44,8 +44,8 @@ const EditGiftCardModal = ({
         label: r.name,
         value: r.id,
       })) || []
-    )
-  }, [regions])
+    );
+  }, [regions]);
 
   return (
     <Modal handleClose={handleClose} isLargeModal={true}>
@@ -76,7 +76,7 @@ const EditGiftCardModal = ({
                     value={value}
                     onChange={onChange}
                   />
-                )
+                );
               }}
             />
           </Modal.Content>
@@ -105,6 +105,6 @@ const EditGiftCardModal = ({
         </Modal.Body>
       </form>
     </Modal>
-  )
-}
-export default EditGiftCardModal
+  );
+};
+export default EditGiftCardModal;

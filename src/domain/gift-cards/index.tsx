@@ -1,8 +1,8 @@
-import { Router } from "@reach/router"
-import React from "react"
-import GiftCardDetails from "./details"
-import ManageGiftCard from "./manage"
-import Overview from "./overview"
+import { Router } from "@reach/router";
+import React from "react";
+import GiftCardDetails from "./details";
+import ManageGiftCard from "./manage";
+import Overview from "./overview";
 
 const GiftCard = () => {
   return (
@@ -11,7 +11,7 @@ const GiftCard = () => {
       <GiftCardDetails path="/:id" />
       <ManageGiftCard path="manage" />
     </Router>
-  )
-}
+  );
+};
 
-export default GiftCard
+export default GiftCard;

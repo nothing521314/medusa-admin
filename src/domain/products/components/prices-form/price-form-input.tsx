@@ -1,16 +1,16 @@
-import clsx from "clsx"
-import React, { useEffect, useState } from "react"
-import AmountField from "react-currency-input-field"
-import InputError from "../../../../components/atoms/input-error"
-import { currencies } from "../../../../utils/currencies"
+import clsx from "clsx";
+import React, { useEffect, useState } from "react";
+import AmountField from "react-currency-input-field";
+import InputError from "../../../../components/atoms/input-error";
+import { currencies } from "../../../../utils/currencies";
 
 type Props = {
-  currencyCode: string
-  amount?: number | null
-  onChange: (amount?: number) => void
-  errors?: { [x: string]: unknown }
-  name?: string
-}
+  currencyCode: string;
+  amount?: number | null;
+  onChange: (amount?: number) => void;
+  errors?: { [x: string]: unknown };
+  name?: string;
+};
 
 const PriceFormInput = ({
   name,
@@ -21,32 +21,32 @@ const PriceFormInput = ({
 }: Props) => {
   const { symbol_native, decimal_digits } = currencies[
     currencyCode.toUpperCase()
-  ]
+  ];
 
   const [rawValue, setRawValue] = useState<string | undefined>(
     amount ? `${amount}` : undefined
-  )
+  );
 
   useEffect(() => {
     if (amount) {
-      const value = amount / 10 ** decimal_digits
-      setRawValue(`${value}`)
+      const value = amount / 10 ** decimal_digits;
+      setRawValue(`${value}`);
     }
-  }, [amount, decimal_digits])
+  }, [amount, decimal_digits]);
 
   const onAmountChange = (value) => {
     if (value) {
       const numericalValue = Math.round(
         parseFloat(value) * 10 ** decimal_digits
-      )
-      onChange(numericalValue)
+      );
+      onChange(numericalValue);
     } else {
-      onChange(0)
+      onChange(0);
     }
-    setRawValue(value)
-  }
+    setRawValue(value);
+  };
 
-  const step = 10 ** -decimal_digits
+  const step = 10 ** -decimal_digits;
 
   return (
     <div>
@@ -72,7 +72,7 @@ const PriceFormInput = ({
       </div>
       <InputError name={name} errors={errors} />
     </div>
-  )
-}
+  );
+};
 
-export default PriceFormInput
+export default PriceFormInput;

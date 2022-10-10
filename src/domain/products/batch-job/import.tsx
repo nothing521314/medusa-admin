@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
 
-import { BatchJob } from "@medusajs/medusa"
+import { BatchJob } from "@medusajs/medusa";
 import {
   useAdminBatchJob,
   useAdminCancelBatchJob,
@@ -8,64 +8,64 @@ import {
   useAdminCreateBatchJob,
   useAdminDeleteFile,
   useAdminUploadFile,
-} from "../../../../medusa-react"
+} from "../../../../medusa-react";
 
-import UploadModal from "../../../components/organisms/upload-modal"
-import useNotification from "../../../hooks/use-notification"
+import UploadModal from "../../../components/organisms/upload-modal";
+import useNotification from "../../../hooks/use-notification";
 
 /**
  * Hook returns a batch job. The endpoint is polled every 2s while the job is processing.
  */
 function useImportBatchJob(batchJobId?: string) {
-  const [batchJob, setBatchJob] = useState<BatchJob>()
+  const [batchJob, setBatchJob] = useState<BatchJob>();
 
   const isBatchJobProcessing =
-    batchJob?.status === "created" || batchJob?.status === "confirmed"
+    batchJob?.status === "created" || batchJob?.status === "confirmed";
 
   const { batch_job } = useAdminBatchJob(batchJobId!, {
     enabled: !!batchJobId,
     refetchInterval: isBatchJobProcessing ? 2000 : false,
-  })
+  });
 
   useEffect(() => {
-    setBatchJob(batch_job)
-  }, [batch_job])
+    setBatchJob(batch_job);
+  }, [batch_job]);
 
-  return batchJob
+  return batchJob;
 }
 
 /**
  * Import products container interface.
  */
 type ImportProductsProps = {
-  handleClose: () => void
-}
+  handleClose: () => void;
+};
 
 /**
  * Product import modal container.
  */
 function ImportProducts(props: ImportProductsProps) {
-  const [fileKey, setFileKey] = useState()
-  const [batchJobId, setBatchJobId] = useState()
+  const [fileKey, setFileKey] = useState();
+  const [batchJobId, setBatchJobId] = useState();
 
-  const notification = useNotification()
+  const notification = useNotification();
 
-  const { mutateAsync: deleteFile } = useAdminDeleteFile()
-  const { mutateAsync: uploadFile } = useAdminUploadFile()
+  const { mutateAsync: deleteFile } = useAdminDeleteFile();
+  const { mutateAsync: uploadFile } = useAdminUploadFile();
 
-  const { mutateAsync: createBatchJob } = useAdminCreateBatchJob()
-  const { mutateAsync: cancelBathJob } = useAdminCancelBatchJob(batchJobId!)
-  const { mutateAsync: confirmBatchJob } = useAdminConfirmBatchJob(batchJobId!)
+  const { mutateAsync: createBatchJob } = useAdminCreateBatchJob();
+  const { mutateAsync: cancelBathJob } = useAdminCancelBatchJob(batchJobId!);
+  const { mutateAsync: confirmBatchJob } = useAdminConfirmBatchJob(batchJobId!);
 
-  const batchJob = useImportBatchJob(batchJobId)
+  const batchJob = useImportBatchJob(batchJobId);
 
-  const isUploaded = !!fileKey
-  const isPreprocessed = !!batchJob?.result
-  const hasError = batchJob?.status === "failed"
+  const isUploaded = !!fileKey;
+  const isPreprocessed = !!batchJob?.result;
+  const hasError = batchJob?.status === "failed";
 
   const progress = isPreprocessed
     ? batchJob!.result.advancement_count / batchJob!.result.count
-    : undefined
+    : undefined;
 
   const status = hasError
     ? "Error occurred while processing"
@@ -73,64 +73,64 @@ function ImportProducts(props: ImportProductsProps) {
     ? undefined
     : isUploaded
     ? "Preprocessing..."
-    : "Uploading..."
+    : "Uploading...";
 
   /**
    * Confirm job on submit.
    */
   const onSubmit = async () => {
-    await confirmBatchJob()
+    await confirmBatchJob();
     notification(
       "Success",
       "Import confirmed for processing. Progress info is available in the activity drawer.",
       "success"
-    )
-    props.handleClose()
-  }
+    );
+    props.handleClose();
+  };
 
   /**
    * Upload file and use returned file key to create a batch job.
    */
   const processUpload = async (file: File) => {
     try {
-      const res = await uploadFile(file as any)
-      const _fileKey = res.uploads[0].key
-      setFileKey(_fileKey)
+      const res = await uploadFile(file as any);
+      const _fileKey = res.uploads[0].key;
+      setFileKey(_fileKey);
 
       const batchJob = await createBatchJob({
         dry_run: true,
         context: { fileKey: _fileKey },
         type: "product-import",
-      })
+      });
 
-      setBatchJobId(batchJob.batch_job.id)
+      setBatchJobId(batchJob.batch_job.id);
     } catch (e) {
-      notification("Error", "Import failed.", "error")
+      notification("Error", "Import failed.", "error");
       if (fileKey) {
-        await deleteFile({ file_key: fileKey })
+        await deleteFile({ file_key: fileKey });
       }
     }
-  }
+  };
 
   /**
    * Returns create/update counts from stat descriptor.
    */
   const getSummary = () => {
     if (!batchJob) {
-      return undefined
+      return undefined;
     }
 
-    const res = batchJob.result?.stat_descriptors[0].message.match(/\d+/g)
+    const res = batchJob.result?.stat_descriptors[0].message.match(/\d+/g);
 
     if (!res) {
-      return undefined
+      return undefined;
     }
 
     return {
       toCreate: Number(res[0]),
       toUpdate: Number(res[1]),
-    }
-  }
+    };
+  };
 
   /**
    * When file upload is removed, delete file from the bucket and cancel batch job.
@@ -138,32 +138,32 @@ function ImportProducts(props: ImportProductsProps) {
   const onFileRemove = async () => {
     try {
       if (fileKey) {
-        deleteFile({ file_key: fileKey })
+        deleteFile({ file_key: fileKey });
       }
-      cancelBathJob()
+      cancelBathJob();
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   /**
    * Cleanup file if batch job isn't confirmed.
    */
   const onClose = () => {
-    props.handleClose()
+    props.handleClose();
     if (
       !["confirmed", "completed", "canceled", "failed"].includes(
         batchJob?.status
       )
     ) {
       if (fileKey) {
-        deleteFile({ file_key: fileKey })
+        deleteFile({ file_key: fileKey });
       }
       if (batchJobId) {
-        cancelBathJob()
+        cancelBathJob();
       }
     }
-  }
+  };
 
   return (
     <UploadModal
@@ -182,7 +182,7 @@ function ImportProducts(props: ImportProductsProps) {
       description2Text="Download the template below to ensure you are following the correct format."
       description1Text="Through imports you can add or update products. To update existing products/variants you must set an existing id in the Product/Variant id columns. If the value is unset a new record will be created. You will be asked for confirmation before we import products."
     />
-  )
+  );
 }
 
-export default ImportProducts
+export default ImportProducts;

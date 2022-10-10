@@ -1,52 +1,52 @@
-import { useAdminProducts } from  "../../../../../../../medusa-react"
-import React, { useState } from "react"
-import Spinner from "../../../../../../components/atoms/spinner"
-import Modal from "../../../../../../components/molecules/modal"
-import useQueryFilters from "../../../../../../hooks/use-query-filters"
+import { useAdminProducts } from "../../../../../../../medusa-react";
+import React, { useState } from "react";
+import Spinner from "../../../../../../components/atoms/spinner";
+import Modal from "../../../../../../components/molecules/modal";
+import useQueryFilters from "../../../../../../hooks/use-query-filters";
 import {
   AddConditionSelectorProps,
   DiscountConditionOperator,
-} from "../../../../types"
-import { useDiscountForm } from "../../form/discount-form-context"
-import { defaultQueryProps } from "../shared/common"
-import ConditionOperator from "../shared/condition-operator"
+} from "../../../../types";
+import { useDiscountForm } from "../../form/discount-form-context";
+import { defaultQueryProps } from "../shared/common";
+import ConditionOperator from "../shared/condition-operator";
 import {
   ProductRow,
   ProductsHeader,
   useProductColumns,
-} from "../shared/products"
-import { SelectableTable } from "../shared/selectable-table"
-import AddConditionFooter from "./add-condition-footer"
+} from "../shared/products";
+import { SelectableTable } from "../shared/selectable-table";
+import AddConditionFooter from "./add-condition-footer";
 
 const AddProductConditionSelector = ({
   onClose,
 }: AddConditionSelectorProps) => {
-  const params = useQueryFilters(defaultQueryProps)
+  const params = useQueryFilters(defaultQueryProps);
 
-  const { conditions } = useDiscountForm()
+  const { conditions } = useDiscountForm();
 
-  const [items, setItems] = useState(conditions.products?.items || [])
+  const [items, setItems] = useState(conditions.products?.items || []);
   const [operator, setOperator] = useState<DiscountConditionOperator>(
     conditions.products.operator
-  )
+  );
 
   const { isLoading, count, products } = useAdminProducts(params.queryObject, {
     keepPreviousData: true,
-  })
+  });
 
   const changed = (values: string[]) => {
     const selectedProducts =
-      products?.filter((product) => values.includes(product.id)) || []
+      products?.filter((product) => values.includes(product.id)) || [];
 
     setItems(
       selectedProducts.map((product) => ({
         id: product.id,
         label: product.title,
       }))
-    )
-  }
+    );
+  };
 
-  const columns = useProductColumns()
+  const columns = useProductColumns();
 
   return (
     <>
@@ -85,7 +85,7 @@ const AddProductConditionSelector = ({
         />
       </Modal.Footer>
     </>
-  )
-}
+  );
+};
 
-export default AddProductConditionSelector
+export default AddProductConditionSelector;

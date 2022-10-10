@@ -1,47 +1,47 @@
-import { Invite, User } from "@medusajs/medusa"
-import copy from "copy-to-clipboard"
-import { useAdminStore } from "../../../medusa-react"
-import React, { useEffect, useState } from "react"
-import useNotification from "../../hooks/use-notification"
-import Medusa from "../../services/api"
-import ClipboardCopyIcon from "../fundamentals/icons/clipboard-copy-icon"
-import EditIcon from "../fundamentals/icons/edit-icon"
-import RefreshIcon from "../fundamentals/icons/refresh-icon"
-import TrashIcon from "../fundamentals/icons/trash-icon"
-import StatusIndicator from "../fundamentals/status-indicator"
-import SidebarTeamMember from "../molecules/sidebar-team-member"
-import Table from "../molecules/table"
-import DeletePrompt from "../organisms/delete-prompt"
-import EditUser from "../organisms/edit-user-modal"
+import { Invite, User } from "@medusajs/medusa";
+import copy from "copy-to-clipboard";
+import { useAdminStore } from "../../../medusa-react";
+import React, { useEffect, useState } from "react";
+import useNotification from "../../hooks/use-notification";
+import Medusa from "../../services/api";
+import ClipboardCopyIcon from "../fundamentals/icons/clipboard-copy-icon";
+import EditIcon from "../fundamentals/icons/edit-icon";
+import RefreshIcon from "../fundamentals/icons/refresh-icon";
+import TrashIcon from "../fundamentals/icons/trash-icon";
+import StatusIndicator from "../fundamentals/status-indicator";
+import SidebarTeamMember from "../molecules/sidebar-team-member";
+import Table from "../molecules/table";
+import DeletePrompt from "../organisms/delete-prompt";
+import EditUser from "../organisms/edit-user-modal";
 
 type UserListElement = {
-  entity: any
-  entityType: string
-  tableElement: JSX.Element
-}
+  entity: any;
+  entityType: string;
+  tableElement: JSX.Element;
+};
 
 type UserTableProps = {
-  users: any[]
-  invites: any[]
-  triggerRefetch: () => void
-}
+  users: any[];
+  invites: any[];
+  triggerRefetch: () => void;
+};
 
 const getInviteStatus = (invite: Invite) => {
-  return new Date(invite.expires_at) < new Date() ? "expired" : "pending"
-}
+  return new Date(invite.expires_at) < new Date() ? "expired" : "pending";
+};
 
 const UserTable: React.FC<UserTableProps> = ({
   users,
   invites,
   triggerRefetch,
 }) => {
-  const [elements, setElements] = useState<UserListElement[]>([])
-  const [shownElements, setShownElements] = useState<UserListElement[]>([])
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
-  const [deleteUser, setDeleteUser] = useState(false)
-  const [selectedInvite, setSelectedInvite] = useState<Invite | null>(null)
-  const notification = useNotification()
-  const { store, isLoading } = useAdminStore()
+  const [elements, setElements] = useState<UserListElement[]>([]);
+  const [shownElements, setShownElements] = useState<UserListElement[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [deleteUser, setDeleteUser] = useState(false);
+  const [selectedInvite, setSelectedInvite] = useState<Invite | null>(null);
+  const notification = useNotification();
+  const { store, isLoading } = useAdminStore();
 
   useEffect(() => {
     setElements([
@@ -55,18 +55,18 @@ const UserTable: React.FC<UserTableProps> = ({
         entityType: "invite",
         tableElement: getInviteTableRow(invite, i),
       })),
-    ])
-  }, [users, invites])
+    ]);
+  }, [users, invites]);
 
   useEffect(() => {
-    setShownElements(elements)
-  }, [elements])
+    setShownElements(elements);
+  }, [elements]);
 
   const handleClose = () => {
-    setDeleteUser(false)
-    setSelectedUser(null)
-    setSelectedInvite(null)
-  }
+    setDeleteUser(false);
+    setSelectedUser(null);
+    setSelectedInvite(null);
+  };
 
   const getUserTableRow = (user: User, index: number) => {
     return (
@@ -83,8 +83,8 @@ const UserTable: React.FC<UserTableProps> = ({
             label: "Remove User",
             variant: "danger",
             onClick: () => {
-              setDeleteUser(true)
-              setSelectedUser(user)
+              setDeleteUser(true);
+              setSelectedUser(user);
             },
             icon: <TrashIcon size={20} />,
           },
@@ -100,8 +100,8 @@ const UserTable: React.FC<UserTableProps> = ({
         </Table.Cell>
         <Table.Cell></Table.Cell>
       </Table.Row>
-    )
-  }
+    );
+  };
 
   const getInviteTableRow = (invite: Invite, index: number) => {
     return (
@@ -118,9 +118,9 @@ const UserTable: React.FC<UserTableProps> = ({
                     "Success",
                     "Invitiation link has been resent",
                     "success"
-                  )
+                  );
                 })
-                .then(() => triggerRefetch())
+                .then(() => triggerRefetch());
             },
             icon: <RefreshIcon size={20} />,
           },
@@ -130,14 +130,14 @@ const UserTable: React.FC<UserTableProps> = ({
             onClick: () => {
               const link_template =
                 store?.invite_link_template ??
-                `${window.location.origin}/invite?token={invite_token}`
+                `${window.location.origin}/invite?token={invite_token}`;
 
-              copy(link_template.replace("{invite_token}", invite.token))
+              copy(link_template.replace("{invite_token}", invite.token));
               notification(
                 "Success",
                 "Invite link copied to clipboard",
                 "success"
-              )
+              );
             },
             icon: <ClipboardCopyIcon size={20} />,
           },
@@ -145,7 +145,7 @@ const UserTable: React.FC<UserTableProps> = ({
             label: "Remove Invitation",
             variant: "danger",
             onClick: () => {
-              setSelectedInvite(invite)
+              setSelectedInvite(invite);
             },
             icon: <TrashIcon size={20} />,
           },
@@ -166,8 +166,8 @@ const UserTable: React.FC<UserTableProps> = ({
           )}
         </Table.Cell>
       </Table.Row>
-    )
-  }
+    );
+  };
 
   const filteringOptions = [
     {
@@ -258,7 +258,7 @@ const UserTable: React.FC<UserTableProps> = ({
         },
       ],
     },
-  ]
+  ];
 
   const handleUserSearch = (term: string) => {
     setShownElements(
@@ -269,8 +269,8 @@ const UserTable: React.FC<UserTableProps> = ({
           e.entity?.email?.includes(term) ||
           e.entity?.user_email?.includes(term)
       )
-    )
-  }
+    );
+  };
 
   return (
     <div className="w-full h-full overflow-y-auto">
@@ -296,8 +296,8 @@ const UserTable: React.FC<UserTableProps> = ({
             heading={"Remove user"}
             onDelete={() =>
               Medusa.users.delete(selectedUser.id).then(() => {
-                notification("Success", "User has been removed", "success")
-                triggerRefetch()
+                notification("Success", "User has been removed", "success");
+                triggerRefetch();
               })
             }
             handleClose={handleClose}
@@ -315,15 +315,19 @@ const UserTable: React.FC<UserTableProps> = ({
           heading={"Remove invite"}
           onDelete={() =>
             Medusa.invites.delete(selectedInvite.id).then(() => {
-              notification("Success", "Invitiation has been removed", "success")
-              triggerRefetch()
+              notification(
+                "Success",
+                "Invitiation has been removed",
+                "success"
+              );
+              triggerRefetch();
             })
           }
           handleClose={handleClose}
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default UserTable
+export default UserTable;

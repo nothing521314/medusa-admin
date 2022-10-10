@@ -1,5 +1,5 @@
-import clsx from "clsx"
-import React from "react"
+import clsx from "clsx";
+import React from "react";
 import {
   ClearIndicatorProps,
   components,
@@ -14,11 +14,11 @@ import {
   OptionProps,
   PlaceholderProps,
   SingleValueProps,
-} from "react-select"
-import CheckIcon from "../../fundamentals/icons/check-icon"
-import ChevronDownIcon from "../../fundamentals/icons/chevron-down"
-import SearchIcon from "../../fundamentals/icons/search-icon"
-import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
+} from "react-select";
+import CheckIcon from "../../fundamentals/icons/check-icon";
+import ChevronDownIcon from "../../fundamentals/icons/chevron-down";
+import SearchIcon from "../../fundamentals/icons/search-icon";
+import XCircleIcon from "../../fundamentals/icons/x-circle-icon";
 
 const MultiValueLabel = <
   Option,
@@ -30,10 +30,10 @@ const MultiValueLabel = <
   selectProps: { value, isSearchable, menuIsOpen },
   children,
 }: MultiValueProps<Option, IsMulti, Group>) => {
-  const isLast = Array.isArray(value) ? value[value.length - 1] === data : true
+  const isLast = Array.isArray(value) ? value[value.length - 1] === data : true;
 
   if (menuIsOpen && isSearchable) {
-    return null
+    return null;
   }
 
   return (
@@ -45,8 +45,8 @@ const MultiValueLabel = <
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
 const Menu = <
   Option,
@@ -68,8 +68,8 @@ const Menu = <
     >
       {props.children}
     </components.Menu>
-  )
-}
+  );
+};
 
 const MenuList = <
   Option,
@@ -84,8 +84,8 @@ const MenuList = <
       className={clsx(className, "!rounded-rounded !no-scrollbar")}
       {...props}
     />
-  )
-}
+  );
+};
 
 const Placeholder = <
   Option,
@@ -96,8 +96,8 @@ const Placeholder = <
 ) => {
   return props.selectProps.menuIsOpen ? null : (
     <components.Placeholder {...props} className="!mx-0 !text-grey-40" />
-  )
-}
+  );
+};
 
 const SingleValue = <
   Option,
@@ -108,11 +108,11 @@ const SingleValue = <
   ...props
 }: SingleValueProps<Option, IsMulti, Group>) => {
   if (props.selectProps.menuIsOpen && props.selectProps.isSearchable) {
-    return null
+    return null;
   }
 
-  return <components.SingleValue {...props}>{children}</components.SingleValue>
-}
+  return <components.SingleValue {...props}>{children}</components.SingleValue>;
+};
 
 const DropdownIndicator = <
   Option,
@@ -131,8 +131,8 @@ const DropdownIndicator = <
         })}
       />
     </div>
-  )
-}
+  );
+};
 
 const SelectContainer = <
   Option,
@@ -145,8 +145,8 @@ const SelectContainer = <
     <div className="bg-grey-5 h-10 border border-grey-20 rounded-rounded focus-within:shadow-cta focus-within:border-violet-60 px-small">
       <components.SelectContainer {...props} />
     </div>
-  )
-}
+  );
+};
 
 const Input = <
   Option,
@@ -160,7 +160,7 @@ const Input = <
     !props.selectProps.menuIsOpen ||
     !props.selectProps.isSearchable
   ) {
-    return <components.Input {...props} className="pointer-events-none" />
+    return <components.Input {...props} className="pointer-events-none" />;
   }
 
   return (
@@ -172,8 +172,8 @@ const Input = <
         <components.Input {...props} />
       </div>
     </div>
-  )
-}
+  );
+};
 
 const ClearIndicator = <
   Option,
@@ -184,7 +184,7 @@ const ClearIndicator = <
   selectProps: { isMulti, menuIsOpen },
 }: ClearIndicatorProps<Option, IsMulti, Group>) => {
   if (menuIsOpen || isMulti) {
-    return <></>
+    return <></>;
   }
 
   return (
@@ -194,8 +194,8 @@ const ClearIndicator = <
     >
       <XCircleIcon size={16} />
     </div>
-  )
-}
+  );
+};
 
 const CheckboxAdornment = ({ isSelected }: { isSelected: boolean }) => {
   return (
@@ -211,8 +211,8 @@ const CheckboxAdornment = ({ isSelected }: { isSelected: boolean }) => {
         {isSelected && <CheckIcon size={16} />}
       </span>
     </div>
-  )
-}
+  );
+};
 
 const RadioAdornment = ({ isSelected }: { isSelected: boolean }) => {
   return (
@@ -235,8 +235,8 @@ const RadioAdornment = ({ isSelected }: { isSelected: boolean }) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
 const NoOptionsMessage = <
   Option,
@@ -253,8 +253,8 @@ const NoOptionsMessage = <
     >
       <p>{isLoading ? "Loading..." : "No options"}</p>
     </div>
-  )
-}
+  );
+};
 
 const Option = <
   Option,
@@ -292,8 +292,8 @@ const Option = <
         </div>
       </div>
     </components.Option>
-  )
-}
+  );
+};
 
 export const SelectComponents = {
   Menu,
@@ -311,4 +311,4 @@ export const SelectComponents = {
   IndicatorSeparator: () => null,
   MultiValueRemove: () => null,
   MultiValueLabel,
-}
+};

@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import TruckIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import TruckIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/TruckIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof TruckIcon>
+} as ComponentMeta<typeof TruckIcon>;
 
-const Template = args => <TruckIcon {...args} />
+const Template = (args) => <TruckIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

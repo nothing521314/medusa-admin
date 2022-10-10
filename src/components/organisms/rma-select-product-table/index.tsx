@@ -1,27 +1,27 @@
-import { LineItem, Order } from "@medusajs/medusa"
-import clsx from "clsx"
-import React, { Fragment, useContext } from "react"
-import RMAReturnReasonSubModal from "../../../domain/quotations/details/rma-sub-modals/return-reasons"
-import Medusa from "../../../services/api"
-import { isLineItemCanceled } from "../../../utils/is-line-item"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import Button from "../../fundamentals/button"
-import CheckIcon from "../../fundamentals/icons/check-icon"
-import MinusIcon from "../../fundamentals/icons/minus-icon"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import { LayeredModalContext } from "../../molecules/modal/layered-modal"
-import Table from "../../molecules/table"
-import CopyToClipboard from "../../atoms/copy-to-clipboard"
+import { LineItem, Order } from "@medusajs/medusa";
+import clsx from "clsx";
+import React, { Fragment, useContext } from "react";
+import RMAReturnReasonSubModal from "../../../domain/quotations/details/rma-sub-modals/return-reasons";
+import Medusa from "../../../services/api";
+import { isLineItemCanceled } from "../../../utils/is-line-item";
+import { formatAmountWithSymbol } from "../../../utils/prices";
+import Button from "../../fundamentals/button";
+import CheckIcon from "../../fundamentals/icons/check-icon";
+import MinusIcon from "../../fundamentals/icons/minus-icon";
+import PlusIcon from "../../fundamentals/icons/plus-icon";
+import { LayeredModalContext } from "../../molecules/modal/layered-modal";
+import Table from "../../molecules/table";
+import CopyToClipboard from "../../atoms/copy-to-clipboard";
 
 type RMASelectProductTableProps = {
-  order: Omit<Order, "beforeInsert">
-  allItems: Omit<LineItem, "beforeInsert">[]
-  toReturn: any
-  setToReturn: (items: any) => void
-  customReturnOptions?: any[]
-  imagesOnReturns?: any
-  isSwapOrClaim?: boolean
-}
+  order: Omit<Order, "beforeInsert">;
+  allItems: Omit<LineItem, "beforeInsert">[];
+  toReturn: any;
+  setToReturn: (items: any) => void;
+  customReturnOptions?: any[];
+  imagesOnReturns?: any;
+  isSwapOrClaim?: boolean;
+};
 
 const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
   order,
@@ -32,7 +32,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
   setToReturn,
   isSwapOrClaim = false,
 }) => {
-  const { push, pop } = useContext(LayeredModalContext)
+  const { push, pop } = useContext(LayeredModalContext);
 
   const handleQuantity = (change, item) => {
     if (
@@ -40,7 +40,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
         change > 0) ||
       (toReturn[item.id].quantity === 1 && change < 0)
     ) {
-      return
+      return;
     }
 
     const newReturns = {
@@ -49,38 +49,38 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
         ...toReturn[item.id],
         quantity: (toReturn[item.id]?.quantity || 0) + change,
       },
-    }
+    };
 
-    setToReturn(newReturns)
-  }
+    setToReturn(newReturns);
+  };
 
   const handleReturnToggle = (item) => {
-    const id = item.id
+    const id = item.id;
 
-    const newReturns = { ...toReturn }
+    const newReturns = { ...toReturn };
 
     if (id in toReturn) {
-      delete newReturns[id]
+      delete newReturns[id];
     } else {
       newReturns[id] = {
         images: imagesOnReturns ? [] : null,
         reason: null,
         note: "",
         quantity: item.quantity - item.returned_quantity,
-      }
+      };
     }
 
-    setToReturn(newReturns)
-  }
+    setToReturn(newReturns);
+  };
 
   const handleAddImages = async (files) => {
     return Medusa.uploads
       .create(files)
-      .then(({ data }) => data.uploads.map(({ url }) => url))
-  }
+      .then(({ data }) => data.uploads.map(({ url }) => url));
+  };
 
   const setReturnReason = (reason, note, files, id) => {
-    let newReturns = {}
+    let newReturns = {};
     if (imagesOnReturns && files?.length) {
       handleAddImages(files).then((res) => {
         newReturns = {
@@ -91,9 +91,9 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
             note: note,
             images: [...(toReturn[id].images || []), ...res],
           },
-        }
-        setToReturn(newReturns)
-      })
+        };
+        setToReturn(newReturns);
+      });
     } else {
       newReturns = {
         ...toReturn,
@@ -102,11 +102,11 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
           reason: reason,
           note: note,
         },
-      }
+      };
 
-      setToReturn(newReturns)
+      setToReturn(newReturns);
     }
-  }
+  };
 
   return (
     <Table>
@@ -126,9 +126,9 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
             item.returned_quantity === item.quantity ||
             isLineItemCanceled(item, order)
           ) {
-            return
+            return;
           }
-          const checked = item.id in toReturn
+          const checked = item.id in toReturn;
           return (
             <Fragment key={item.id}>
               <Table.Row className={clsx("border-b-grey-0 hover:bg-grey-0")}>
@@ -171,10 +171,10 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                           <span>{item.variant.title}</span>
                         )}
                         {item?.variant?.sku && (
-                            <CopyToClipboard
-                              value={item.variant.sku}
-                              iconSize={14}
-                            />
+                          <CopyToClipboard
+                            value={item.variant.sku}
+                            iconSize={14}
+                          />
                         )}
                       </div>
                     </div>
@@ -270,12 +270,12 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                 </Table.Row>
               )}
             </Fragment>
-          )
+          );
         })}
       </Table.Body>
     </Table>
-  )
-}
+  );
+};
 
 const ReturnReasonScreen = (
   pop,
@@ -297,7 +297,7 @@ const ReturnReasonScreen = (
         onSubmit={setReturnReason}
       />
     ),
-  }
-}
+  };
+};
 
-export default RMASelectProductTable
+export default RMASelectProductTable;

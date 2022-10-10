@@ -1,12 +1,12 @@
-import React from "react"
-import FocusModal from "../../../components/molecules/modal/focus-modal"
-import Accordion from "../../../components/organisms/accordion"
-import FormHeader from "./form-header"
-import Configuration from "./sections/configuration"
-import General from "./sections/general"
-import Prices from "./sections/prices"
-import Type from "./sections/type"
-import { PriceListFormProps, ViewType } from "./types"
+import React from "react";
+import FocusModal from "../../../components/molecules/modal/focus-modal";
+import Accordion from "../../../components/organisms/accordion";
+import FormHeader from "./form-header";
+import Configuration from "./sections/configuration";
+import General from "./sections/general";
+import Prices from "./sections/prices";
+import Type from "./sections/type";
+import { PriceListFormProps, ViewType } from "./types";
 
 const PriceListForm = (props: PriceListFormProps) => {
   return (
@@ -37,7 +37,7 @@ const PriceListForm = (props: PriceListFormProps) => {
         </div>
       </FocusModal.Main>
     </FocusModal>
-  )
-}
+  );
+};
 
-export default PriceListForm
+export default PriceListForm;

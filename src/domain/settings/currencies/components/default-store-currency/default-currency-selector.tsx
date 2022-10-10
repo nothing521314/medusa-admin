@@ -1,33 +1,33 @@
-import { Store } from "@medusajs/medusa"
-import { useAdminUpdateStore } from "../../../../../../medusa-react"
-import React, { useEffect, useMemo } from "react"
-import { Controller, useForm } from "react-hook-form"
-import { NextSelect } from "../../../../../components/molecules/select/next-select"
-import useNotification from "../../../../../hooks/use-notification"
-import { Option } from "../../../../../types/shared"
-import { getErrorMessage } from "../../../../../utils/error-messages"
+import { Store } from "@medusajs/medusa";
+import { useAdminUpdateStore } from "../../../../../../medusa-react";
+import React, { useEffect, useMemo } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { NextSelect } from "../../../../../components/molecules/select/next-select";
+import useNotification from "../../../../../hooks/use-notification";
+import { Option } from "../../../../../types/shared";
+import { getErrorMessage } from "../../../../../utils/error-messages";
 
 type Props = {
-  store: Store
-}
+  store: Store;
+};
 
 type DefaultStoreCurrencyFormType = {
-  default_currency_code: Option & { prefix: string }
-}
+  default_currency_code: Option & { prefix: string };
+};
 
 const DefaultCurrencySelector = ({ store }: Props) => {
   const { reset, control, handleSubmit } = useForm<
     DefaultStoreCurrencyFormType
   >({
     defaultValues: getDefaultValue(store),
-  })
+  });
 
-  const { mutate } = useAdminUpdateStore()
-  const notification = useNotification()
+  const { mutate } = useAdminUpdateStore();
+  const notification = useNotification();
 
   useEffect(() => {
-    reset(getDefaultValue(store))
-  }, [store])
+    reset(getDefaultValue(store));
+  }, [store]);
 
   const onSubmit = handleSubmit((data) => {
     mutate(
@@ -40,14 +40,14 @@ const DefaultCurrencySelector = ({ store }: Props) => {
             "Success",
             "Successfully updated default currency",
             "success"
-          )
+          );
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification("Error", getErrorMessage(error), "error");
         },
       }
-    )
-  })
+    );
+  });
 
   const currencyOptions = useMemo(() => {
     return store.currencies.map((currency) => {
@@ -55,9 +55,9 @@ const DefaultCurrencySelector = ({ store }: Props) => {
         value: currency.code,
         label: currency.name,
         prefix: currency.code.toUpperCase(),
-      }
-    })
-  }, [store])
+      };
+    });
+  }, [store]);
 
   return (
     <div>
@@ -71,17 +71,17 @@ const DefaultCurrencySelector = ({ store }: Props) => {
               options={currencyOptions}
               value={value}
               onChange={(e) => {
-                onChange(e)
-                onSubmit()
+                onChange(e);
+                onSubmit();
               }}
               onBlur={onBlur}
             />
-          )
+          );
         }}
       />
     </div>
-  )
-}
+  );
+};
 
 const getDefaultValue = (store: Store): DefaultStoreCurrencyFormType => {
   return {
@@ -90,7 +90,7 @@ const getDefaultValue = (store: Store): DefaultStoreCurrencyFormType => {
       label: store.default_currency.name,
       prefix: store.default_currency.code.toUpperCase(),
     },
-  }
-}
+  };
+};
 
-export default DefaultCurrencySelector
+export default DefaultCurrencySelector;

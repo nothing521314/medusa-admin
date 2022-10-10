@@ -1,4 +1,4 @@
-import { ClaimItem, LineItem, Order } from "@medusajs/medusa"
+import { ClaimItem, LineItem, Order } from "@medusajs/medusa";
 
 export const filterItems = (
   order: Omit<Order, "beforeInserts">,
@@ -10,19 +10,19 @@ export const filterItems = (
         ...obj,
       }),
     new Map<string, Omit<LineItem, "beforeInsert">>()
-  )
+  );
 
-  let claimedItems: ClaimItem[] = []
+  let claimedItems: ClaimItem[] = [];
 
   if (order.claims && order.claims.length) {
     for (const s of order.claims) {
-      claimedItems = [...claimedItems, ...s.claim_items]
+      claimedItems = [...claimedItems, ...s.claim_items];
 
       if (
         s.fulfillment_status === "not_fulfilled" &&
         s.payment_status === "na"
       ) {
-        continue
+        continue;
       }
 
       if (s.additional_items && s.additional_items.length) {
@@ -32,7 +32,7 @@ export const filterItems = (
               it.shipped_quantity ||
               it.shipped_quantity === it.fulfilled_quantity
           )
-          .reduce((map, obj) => map.set(obj.id, { ...obj }), orderItems)
+          .reduce((map, obj) => map.set(obj.id, { ...obj }), orderItems);
       }
     }
   }
@@ -46,18 +46,18 @@ export const filterItems = (
               ...obj,
             }),
           orderItems
-        )
+        );
       }
     }
   }
 
   for (const item of claimedItems) {
-    const i = orderItems.get(item.item_id)
+    const i = orderItems.get(item.item_id);
     if (i) {
-      i.quantity = i.quantity - item.quantity
-      i.quantity !== 0 ? orderItems.set(i.id, i) : orderItems.delete(i.id)
+      i.quantity = i.quantity - item.quantity;
+      i.quantity !== 0 ? orderItems.set(i.id, i) : orderItems.delete(i.id);
     }
   }
 
-  return [...orderItems.values()]
-}
+  return [...orderItems.values()];
+};

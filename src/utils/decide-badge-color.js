@@ -10,7 +10,7 @@ export function decideBadgeColor(batchLabel) {
       return {
         bgColor: "#4BB543",
         color: "white",
-      }
+      };
     case "partially_refunded":
     case "refunded":
     case "fulfilled":
@@ -22,7 +22,7 @@ export function decideBadgeColor(batchLabel) {
       return {
         bgColor: "#ffd733",
         color: "black",
-      }
+      };
     case "cancelled":
     case "requires_action":
     case "rejected":
@@ -30,11 +30,11 @@ export function decideBadgeColor(batchLabel) {
       return {
         bgColor: "#ff4133",
         color: "white",
-      }
+      };
     default:
       return {
         bgColor: "#e3e8ee",
         color: "#4f566b",
-      }
+      };
   }
 }

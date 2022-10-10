@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import UploadIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import UploadIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/UploadIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof UploadIcon>
+} as ComponentMeta<typeof UploadIcon>;
 
-const Template = (args) => <UploadIcon {...args} />
+const Template = (args) => <UploadIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "20",
   color: "currentColor",
-}
+};

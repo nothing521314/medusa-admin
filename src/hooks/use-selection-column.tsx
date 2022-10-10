@@ -1,15 +1,15 @@
-import React from "react"
-import Checkbox from "../components/atoms/checkbox"
-import Table from "../components/molecules/table"
+import React from "react";
+import Checkbox from "../components/atoms/checkbox";
+import Table from "../components/molecules/table";
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef()
-    const resolvedRef = ref || defaultRef
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
 
     React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate
-    }, [resolvedRef, indeterminate])
+      resolvedRef.current.indeterminate = indeterminate;
+    }, [resolvedRef, indeterminate]);
 
     return (
       <div onClickCapture={(e) => e.stopPropagation()}>
@@ -20,9 +20,9 @@ const IndeterminateCheckbox = React.forwardRef(
           {...rest}
         />
       </div>
-    )
+    );
   }
-)
+);
 
 export const useSelectionColumn = () => {
   return {
@@ -35,5 +35,5 @@ export const useSelectionColumn = () => {
         <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
       </Table.Cell>
     ),
-  }
-}
+  };
+};

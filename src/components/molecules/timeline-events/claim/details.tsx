@@ -1,23 +1,23 @@
-import clsx from "clsx"
-import React, { useContext } from "react"
-import Button from "../../../../components/fundamentals/button"
-import InputField from "../../../../components/molecules/input"
-import Modal from "../../../../components/molecules/modal"
+import clsx from "clsx";
+import React, { useContext } from "react";
+import Button from "../../../../components/fundamentals/button";
+import InputField from "../../../../components/molecules/input";
+import Modal from "../../../../components/molecules/modal";
 import LayeredModal, {
   LayeredModalContext,
-} from "../../../../components/molecules/modal/layered-modal"
-import Table from "../../../../components/molecules/table"
-import { formatAmountWithSymbol } from "../../../../utils/prices"
+} from "../../../../components/molecules/modal/layered-modal";
+import Table from "../../../../components/molecules/table";
+import { formatAmountWithSymbol } from "../../../../utils/prices";
 
 const reasonOptions = {
   missing_item: "Missing Item",
   wrong_item: "Wrong Item",
   production_failure: "Production Failure",
   other: "Other",
-}
+};
 
 const ClaimDetails = ({ claim, order, onDismiss }) => {
-  const layeredModalContext = useContext(LayeredModalContext)
+  const layeredModalContext = useContext(LayeredModalContext);
 
   return (
     <LayeredModal
@@ -45,7 +45,7 @@ const ClaimDetails = ({ claim, order, onDismiss }) => {
               </Table.HeadRow>
               <Table.Body>
                 {claim.claim_items.map((claimItem) => {
-                  const { item } = claimItem
+                  const { item } = claimItem;
                   return (
                     <>
                       <Table.Row
@@ -129,7 +129,7 @@ const ClaimDetails = ({ claim, order, onDismiss }) => {
                         </Table.Cell>
                       </Table.Row>
                     </>
-                  )
+                  );
                 })}
               </Table.Body>
             </Table>
@@ -151,10 +151,10 @@ const ClaimDetails = ({ claim, order, onDismiss }) => {
         </Modal.Footer>
       </Modal.Body>
     </LayeredModal>
-  )
-}
+  );
+};
 
-export default ClaimDetails
+export default ClaimDetails;
 
 const ReasonDetails = (pop, claimItem) => {
   return {
@@ -191,7 +191,7 @@ const ReasonDetails = (pop, claimItem) => {
               className="w-[112px]"
               size="small"
               onClick={() => {
-                pop()
+                pop();
               }}
             >
               Back
@@ -200,8 +200,8 @@ const ReasonDetails = (pop, claimItem) => {
         </Modal.Footer>
       </>
     ),
-  }
-}
+  };
+};
 
 const ImageRow = ({ url, name, size }) => (
   <div className="flex items-center w-full justify-between my-8">
@@ -215,4 +215,4 @@ const ImageRow = ({ url, name, size }) => (
       </div>
     </div>
   </div>
-)
+);

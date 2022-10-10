@@ -1,44 +1,44 @@
-import clsx from "clsx"
-import type { Identifier, XYCoord } from "dnd-core"
-import React, { useEffect, useRef } from "react"
-import { useDrag, useDrop } from "react-dnd"
-import { useForm } from "react-hook-form"
-import Tooltip from "../../../../../components/atoms/tooltip"
-import Button from "../../../../../components/fundamentals/button"
-import CheckCircleFillIcon from "../../../../../components/fundamentals/icons/check-circle-fill-icon"
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
-import GripIcon from "../../../../../components/fundamentals/icons/grip-icon"
-import MoreHorizontalIcon from "../../../../../components/fundamentals/icons/more-horizontal-icon"
-import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
-import Actionables from "../../../../../components/molecules/actionables"
-import IconTooltip from "../../../../../components/molecules/icon-tooltip"
-import Modal from "../../../../../components/molecules/modal"
-import useImperativeDialog from "../../../../../hooks/use-imperative-dialog"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import { DragItem } from "../../../../../types/shared"
-import { CustomsFormType } from "../../../components/customs-form"
-import { DimensionsFormType } from "../../../components/dimensions-form"
+import clsx from "clsx";
+import type { Identifier, XYCoord } from "dnd-core";
+import React, { useEffect, useRef } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { useForm } from "react-hook-form";
+import Tooltip from "../../../../../components/atoms/tooltip";
+import Button from "../../../../../components/fundamentals/button";
+import CheckCircleFillIcon from "../../../../../components/fundamentals/icons/check-circle-fill-icon";
+import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
+import GripIcon from "../../../../../components/fundamentals/icons/grip-icon";
+import MoreHorizontalIcon from "../../../../../components/fundamentals/icons/more-horizontal-icon";
+import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon";
+import Actionables from "../../../../../components/molecules/actionables";
+import IconTooltip from "../../../../../components/molecules/icon-tooltip";
+import Modal from "../../../../../components/molecules/modal";
+import useImperativeDialog from "../../../../../hooks/use-imperative-dialog";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import { DragItem } from "../../../../../types/shared";
+import { CustomsFormType } from "../../../components/customs-form";
+import { DimensionsFormType } from "../../../components/dimensions-form";
 import CreateFlowVariantForm, {
   CreateFlowVariantFormType,
-} from "../../../components/variant-form/create-flow-variant-form"
-import { VariantOptionValueType } from "../../../components/variant-form/variant-select-options-form"
+} from "../../../components/variant-form/create-flow-variant-form";
+import { VariantOptionValueType } from "../../../components/variant-form/variant-select-options-form";
 
 const ItemTypes = {
   CARD: "card",
-}
+};
 
 type Props = {
-  id: string
-  source: CreateFlowVariantFormType
-  index: number
-  save: (index: number, variant: CreateFlowVariantFormType) => boolean
-  remove: (index: number) => void
-  move: (dragIndex: number, hoverIndex: number) => void
-  options: VariantOptionValueType[]
-  onCreateOption: (optionId: string, value: string) => void
-  productDimensions: DimensionsFormType
-  productCustoms: CustomsFormType
-}
+  id: string;
+  source: CreateFlowVariantFormType;
+  index: number;
+  save: (index: number, variant: CreateFlowVariantFormType) => boolean;
+  remove: (index: number) => void;
+  move: (dragIndex: number, hoverIndex: number) => void;
+  options: VariantOptionValueType[];
+  onCreateOption: (optionId: string, value: string) => void;
+  productDimensions: DimensionsFormType;
+  productCustoms: CustomsFormType;
+};
 
 const NewVariant = ({
   id,
@@ -52,21 +52,21 @@ const NewVariant = ({
   productDimensions,
   productCustoms,
 }: Props) => {
-  const { state, toggle, close } = useToggleState()
+  const { state, toggle, close } = useToggleState();
   const localForm = useForm<CreateFlowVariantFormType>({
     defaultValues: source,
-  })
+  });
 
-  const { handleSubmit, reset } = localForm
+  const { handleSubmit, reset } = localForm;
 
   useEffect(() => {
-    reset(source)
-  }, [source])
+    reset(source);
+  }, [source]);
 
   const closeAndReset = () => {
-    reset(source)
-    close()
-  }
+    reset(source);
+    close();
+  };
 
   const onUpdate = handleSubmit((data) => {
     const payload = {
@@ -74,35 +74,35 @@ const NewVariant = ({
       title: data.general.title
         ? data.general.title
         : data.options.map((vo) => vo.option?.value).join(" / "),
-    }
+    };
 
-    const saved = save(index, payload)
+    const saved = save(index, payload);
 
     if (!saved) {
       localForm.setError("options", {
         type: "deps",
         message: "A variant with these options already exists.",
-      })
-      return
+      });
+      return;
     }
 
-    closeAndReset()
-  })
+    closeAndReset();
+  });
 
-  const warning = useImperativeDialog()
+  const warning = useImperativeDialog();
 
   const onDelete = async () => {
     const confirmed = await warning({
       text: "Are you sure you want to delete this variant?",
       heading: "Delete Variant",
-    })
+    });
 
     if (confirmed) {
-      remove(index)
+      remove(index);
     }
-  }
+  };
 
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<
     DragItem,
     void,
@@ -112,50 +112,50 @@ const NewVariant = ({
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
-      }
+      };
     },
     hover(item: DragItem, monitor) {
       if (!ref.current) {
-        return
+        return;
       }
-      const dragIndex = item.index
-      const hoverIndex = index
+      const dragIndex = item.index;
+      const hoverIndex = index;
 
       if (dragIndex === hoverIndex) {
-        return
+        return;
       }
 
-      const hoverBoundingRect = ref.current?.getBoundingClientRect()
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      const clientOffset = monitor.getClientOffset()
-      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
+        return;
       }
 
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
+        return;
       }
 
-      move(dragIndex, hoverIndex)
+      move(dragIndex, hoverIndex);
 
-      item.index = hoverIndex
+      item.index = hoverIndex;
     },
-  })
+  });
 
   const [{ isDragging }, drag, preview] = useDrag({
     type: ItemTypes.CARD,
     item: () => {
-      return { id, index }
+      return { id, index };
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-  })
+  });
 
-  drag(drop(ref))
+  drag(drop(ref));
 
   return (
     <>
@@ -270,8 +270,8 @@ const NewVariant = ({
         </Modal.Body>
       </Modal>
     </>
-  )
-}
+  );
+};
 
 const VariantValidity = ({
   source,
@@ -285,7 +285,7 @@ const VariantValidity = ({
     customs,
     stock: { barcode, upc, ean, sku, inventory_quantity },
     general: { title },
-  } = source
+  } = source;
 
   if (!options || !options.length) {
     return (
@@ -297,10 +297,10 @@ const VariantValidity = ({
           </div>
         }
       />
-    )
+    );
   }
 
-  const invalidOptions = options.filter((opt) => !opt.option?.value)
+  const invalidOptions = options.filter((opt) => !opt.option?.value);
 
   if (invalidOptions?.length) {
     return (
@@ -311,25 +311,25 @@ const VariantValidity = ({
             <p>You are missing options values for the following options:</p>
             <ul className="list-disc list-inside">
               {invalidOptions.map((io, index) => {
-                return <li key={index}>{io.title || `Option ${index + 1}`}</li>
+                return <li key={index}>{io.title || `Option ${index + 1}`}</li>;
               })}
             </ul>
           </div>
         }
       />
-    )
+    );
   }
 
-  const validPrices = prices?.prices.some((p) => p.amount !== null)
+  const validPrices = prices?.prices.some((p) => p.amount !== null);
 
   const validDimensions =
     Object.values(productDimensions).every((value) => !!value) ||
-    Object.values(dimensions).every((value) => !!value)
+    Object.values(dimensions).every((value) => !!value);
   const validCustoms =
     Object.values(productCustoms).every((value) => !!value) ||
-    Object.values(customs).every((value) => !!value)
+    Object.values(customs).every((value) => !!value);
 
-  const barcodeValidity = !!barcode || !!upc || !!ean
+  const barcodeValidity = !!barcode || !!upc || !!ean;
 
   if (
     !sku ||
@@ -359,7 +359,7 @@ const VariantValidity = ({
           </div>
         }
       />
-    )
+    );
   }
 
   return (
@@ -369,7 +369,7 @@ const VariantValidity = ({
     >
       <CheckCircleFillIcon size={20} className="text-emerald-40" />
     </Tooltip>
-  )
-}
+  );
+};
 
-export default NewVariant
+export default NewVariant;

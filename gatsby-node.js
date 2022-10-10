@@ -13,7 +13,7 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
           },
         ],
       },
-    })
+    });
   }
   actions.setWebpackConfig({
     resolve: {
@@ -22,5 +22,5 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
         stream: require.resolve("stream-browserify"),
       },
     },
-  })
-}
+  });
+};

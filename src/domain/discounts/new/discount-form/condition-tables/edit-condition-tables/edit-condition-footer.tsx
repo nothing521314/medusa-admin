@@ -1,19 +1,19 @@
-import React from "react"
-import Button from "../../../../../../components/fundamentals/button"
-import { DiscountConditionOperator } from "../../../../types"
-import { useDiscountForm } from "../../form/discount-form-context"
+import React from "react";
+import Button from "../../../../../../components/fundamentals/button";
+import { DiscountConditionOperator } from "../../../../types";
+import { useDiscountForm } from "../../form/discount-form-context";
 
 type EditConditionFooterProps = {
-  onClose: () => void
+  onClose: () => void;
   type:
     | "products"
     | "product_collections"
     | "product_types"
     | "product_tags"
-    | "customer_groups"
-  items: { id: string; label: string }[]
-  operator: DiscountConditionOperator
-}
+    | "customer_groups";
+  items: { id: string; label: string }[];
+  operator: DiscountConditionOperator;
+};
 
 const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
   type,
@@ -21,7 +21,7 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
   operator,
   onClose,
 }) => {
-  const { updateCondition } = useDiscountForm()
+  const { updateCondition } = useDiscountForm();
   return (
     <div className="flex items-center justify-end w-full gap-x-xsmall">
       <Button variant="secondary" size="small" onClick={onClose}>
@@ -35,8 +35,8 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
             type,
             items: [],
             operator: DiscountConditionOperator.IN,
-          })
-          onClose()
+          });
+          onClose();
         }}
       >
         Delete condition
@@ -49,15 +49,15 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
             type,
             items,
             operator,
-          })
-          onClose()
+          });
+          onClose();
         }}
         className="min-w-[128px]"
       >
         Save
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default EditConditionFooter
+export default EditConditionFooter;

@@ -1,39 +1,39 @@
-import { Product, SalesChannel } from "@medusajs/medusa"
-import React from "react"
-import Badge from "../../../../../components/fundamentals/badge"
-import FeatureToggle from "../../../../../components/fundamentals/feature-toggle"
-import ChannelsIcon from "../../../../../components/fundamentals/icons/channels-icon"
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
-import { ActionType } from "../../../../../components/molecules/actionables"
-import SalesChannelsDisplay from "../../../../../components/molecules/sales-channels-display"
-import StatusSelector from "../../../../../components/molecules/status-selector"
-import Section from "../../../../../components/organisms/section"
-import { useFeatureFlag } from "../../../../../context/feature-flag"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
-import ChannelsModal from "./channels-modal"
-import GeneralModal from "./general-modal"
+import { Product, SalesChannel } from "@medusajs/medusa";
+import React from "react";
+import Badge from "../../../../../components/fundamentals/badge";
+import FeatureToggle from "../../../../../components/fundamentals/feature-toggle";
+import ChannelsIcon from "../../../../../components/fundamentals/icons/channels-icon";
+import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
+import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon";
+import { ActionType } from "../../../../../components/molecules/actionables";
+import SalesChannelsDisplay from "../../../../../components/molecules/sales-channels-display";
+import StatusSelector from "../../../../../components/molecules/status-selector";
+import Section from "../../../../../components/organisms/section";
+import { useFeatureFlag } from "../../../../../context/feature-flag";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import useEditProductActions from "../../hooks/use-edit-product-actions";
+import ChannelsModal from "./channels-modal";
+import GeneralModal from "./general-modal";
 
 type Props = {
-  product: Product
-}
+  product: Product;
+};
 
 const GeneralSection = ({ product }: Props) => {
-  const { onDelete, onStatusChange } = useEditProductActions(product.id)
+  const { onDelete, onStatusChange } = useEditProductActions(product.id);
   const {
     state: infoState,
     close: closeInfo,
     toggle: toggleInfo,
-  } = useToggleState()
+  } = useToggleState();
 
   const {
     state: channelsState,
     close: closeChannels,
     toggle: toggleChannels,
-  } = useToggleState(false)
+  } = useToggleState(false);
 
-  const { isFeatureEnabled } = useFeatureFlag()
+  const { isFeatureEnabled } = useFeatureFlag();
 
   const actions: ActionType[] = [
     {
@@ -47,14 +47,14 @@ const GeneralSection = ({ product }: Props) => {
       variant: "danger",
       icon: <TrashIcon size={20} />,
     },
-  ]
+  ];
 
   if (isFeatureEnabled("sales_channels")) {
     actions.splice(1, 0, {
       label: "Edit Sales Channels",
       onClick: toggleChannels,
       icon: <ChannelsIcon size={20} />,
-    })
+    });
   }
 
   return (
@@ -90,13 +90,13 @@ const GeneralSection = ({ product }: Props) => {
         />
       </FeatureToggle>
     </>
-  )
-}
+  );
+};
 
 type DetailProps = {
-  title: string
-  value?: string | null
-}
+  title: string;
+  value?: string | null;
+};
 
 const Detail = ({ title, value }: DetailProps) => {
   return (
@@ -104,8 +104,8 @@ const Detail = ({ title, value }: DetailProps) => {
       <p>{title}</p>
       <p>{value ? value : "–"}</p>
     </div>
-  )
-}
+  );
+};
 
 const ProductDetails = ({ product }: Props) => {
   return (
@@ -120,12 +120,12 @@ const ProductDetails = ({ product }: Props) => {
         value={product.discountable ? "True" : "False"}
       />
     </div>
-  )
-}
+  );
+};
 
 const ProductTags = ({ product }: Props) => {
   if (product.tags?.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -138,12 +138,12 @@ const ProductTags = ({ product }: Props) => {
         </li>
       ))}
     </ul>
-  )
-}
+  );
+};
 
 type SalesChannelBadgeProps = {
-  channel: SalesChannel
-}
+  channel: SalesChannel;
+};
 
 const SalesChannelBadge: React.FC<SalesChannelBadgeProps> = ({ channel }) => {
   return (
@@ -152,8 +152,8 @@ const SalesChannelBadge: React.FC<SalesChannelBadgeProps> = ({ channel }) => {
         <span className="inter-small-regular text-grey-90">{channel.name}</span>
       </div>
     </Badge>
-  )
-}
+  );
+};
 
 const ProductSalesChannels = ({ product }: Props) => {
   return (
@@ -163,7 +163,7 @@ const ProductSalesChannels = ({ product }: Props) => {
         <SalesChannelsDisplay channels={product.sales_channels} />
       </div>
     </FeatureToggle>
-  )
-}
+  );
+};
 
-export default GeneralSection
+export default GeneralSection;

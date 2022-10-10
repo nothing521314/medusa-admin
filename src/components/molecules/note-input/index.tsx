@@ -1,45 +1,45 @@
-import React, { useCallback, useRef, useState } from "react"
-import SendIcon from "../../fundamentals/icons/send-icon"
-import EmojiPicker from "../emoji-picker"
+import React, { useCallback, useRef, useState } from "react";
+import SendIcon from "../../fundamentals/icons/send-icon";
+import EmojiPicker from "../emoji-picker";
 
 type NoteInputProps = {
-  onSubmit: (note: string | undefined) => void
-}
+  onSubmit: (note: string | undefined) => void;
+};
 
 const NoteInput: React.FC<NoteInputProps> = ({ onSubmit }) => {
-  const [note, setNote] = useState<string | undefined>(undefined)
-  const inputRef = useRef<HTMLInputElement | null>(null)
+  const [note, setNote] = useState<string | undefined>(undefined);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleAddEmoji = (emoji: string) => {
-    setNote(`${note ? note : ""}${emoji}`)
-  }
+    setNote(`${note ? note : ""}${emoji}`);
+  };
 
   const handleSubmit = () => {
     if (onSubmit && note) {
-      onSubmit(note)
-      setNote("")
+      onSubmit(note);
+      setNote("");
     }
-  }
+  };
 
   const onKeyDownHandler = useCallback(
     (event) => {
       switch (event.key) {
         case "Enter":
-          event.preventDefault()
-          event.stopPropagation()
-          handleSubmit()
-          inputRef.current?.blur()
-          break
+          event.preventDefault();
+          event.stopPropagation();
+          handleSubmit();
+          inputRef.current?.blur();
+          break;
         case "Esc":
         case "Escape":
-          inputRef.current?.blur()
-          break
+          inputRef.current?.blur();
+          break;
         default:
-          break
+          break;
       }
     },
     [note, setNote, onSubmit]
-  )
+  );
 
   return (
     <form>
@@ -70,7 +70,7 @@ const NoteInput: React.FC<NoteInputProps> = ({ onSubmit }) => {
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default NoteInput
+export default NoteInput;

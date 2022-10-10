@@ -1,23 +1,23 @@
-import { AdminPostGiftCardsGiftCardReq, GiftCard } from "@medusajs/medusa"
-import React from "react"
-import clsx from "clsx"
-import { Controller, useForm, useWatch } from "react-hook-form"
-import Tooltip from "../../../components/atoms/tooltip"
-import Button from "../../../components/fundamentals/button"
-import Modal from "../../../components/molecules/modal"
-import CurrencyInput from "../../../components/organisms/currency-input"
+import { AdminPostGiftCardsGiftCardReq, GiftCard } from "@medusajs/medusa";
+import React from "react";
+import clsx from "clsx";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import Tooltip from "../../../components/atoms/tooltip";
+import Button from "../../../components/fundamentals/button";
+import Modal from "../../../components/molecules/modal";
+import CurrencyInput from "../../../components/organisms/currency-input";
 
 type UpdateBalanceModalProps = {
-  handleClose: () => void
-  handleSave: (update: AdminPostGiftCardsGiftCardReq) => void
-  currencyCode: string
-  giftCard: GiftCard
-  updating: boolean
-}
+  handleClose: () => void;
+  handleSave: (update: AdminPostGiftCardsGiftCardReq) => void;
+  currencyCode: string;
+  giftCard: GiftCard;
+  updating: boolean;
+};
 
 type UpdateBalanceModalFormData = {
-  balance: number
-}
+  balance: number;
+};
 
 const UpdateBalanceModal = ({
   handleClose,
@@ -30,12 +30,12 @@ const UpdateBalanceModal = ({
     defaultValues: {
       balance: giftCard.balance,
     },
-  })
+  });
 
   const balance = useWatch({
     control,
     name: "balance",
-  })
+  });
 
   return (
     <Modal handleClose={handleClose}>
@@ -74,7 +74,7 @@ const UpdateBalanceModal = ({
                       label="Price"
                       onChange={onChange}
                     />
-                  )
+                  );
                 }}
               />
             </CurrencyInput.Root>
@@ -111,6 +111,6 @@ const UpdateBalanceModal = ({
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
-export default UpdateBalanceModal
+  );
+};
+export default UpdateBalanceModal;

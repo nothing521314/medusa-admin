@@ -1,19 +1,19 @@
-import { Discount } from "@medusajs/medusa"
-import React, { useState } from "react"
-import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
-import NumberedItem from "../../../../components/molecules/numbered-item"
-import BodyCard from "../../../../components/organisms/body-card"
-import AddCondition from "./add-condition"
-import { ConditionsProvider } from "./add-condition/conditions-provider"
-import { useDiscountConditions } from "./use-discount-conditions"
+import { Discount } from "@medusajs/medusa";
+import React, { useState } from "react";
+import PlusIcon from "../../../../components/fundamentals/icons/plus-icon";
+import NumberedItem from "../../../../components/molecules/numbered-item";
+import BodyCard from "../../../../components/organisms/body-card";
+import AddCondition from "./add-condition";
+import { ConditionsProvider } from "./add-condition/conditions-provider";
+import { useDiscountConditions } from "./use-discount-conditions";
 
 type ConditionsProps = {
-  discount: Discount
-}
+  discount: Discount;
+};
 
 const Conditions: React.FC<ConditionsProps> = ({ discount }) => {
-  const [show, setShow] = useState(false)
-  const conditions = useDiscountConditions(discount)
+  const [show, setShow] = useState(false);
+  const conditions = useDiscountConditions(discount);
 
   return (
     <ConditionsProvider discount={discount}>
@@ -58,7 +58,7 @@ const Conditions: React.FC<ConditionsProps> = ({ discount }) => {
       </BodyCard>
       <AddCondition show={show} onClose={() => setShow(false)} />
     </ConditionsProvider>
-  )
-}
+  );
+};
 
-export default Conditions
+export default Conditions;

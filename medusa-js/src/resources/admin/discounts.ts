@@ -12,10 +12,10 @@ import {
   AdminPostDiscountsDiscountDynamicCodesReq,
   AdminPostDiscountsDiscountReq,
   AdminPostDiscountsReq,
-} from "@medusajs/medusa"
-import qs from "qs"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
+} from "@medusajs/medusa";
+import qs from "qs";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
 
 class AdminDiscountsResource extends BaseResource {
   /**
@@ -26,8 +26,8 @@ class AdminDiscountsResource extends BaseResource {
     regionId: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts/${id}/regions/${regionId}`
-    return this.client.request("POST", path, undefined, {}, customHeaders)
+    const path = `/admin/discounts/${id}/regions/${regionId}`;
+    return this.client.request("POST", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -37,8 +37,8 @@ class AdminDiscountsResource extends BaseResource {
     payload: AdminPostDiscountsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/discounts`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -49,8 +49,8 @@ class AdminDiscountsResource extends BaseResource {
     payload: AdminPostDiscountsDiscountReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts/${id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/discounts/${id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -61,8 +61,8 @@ class AdminDiscountsResource extends BaseResource {
     payload: AdminPostDiscountsDiscountDynamicCodesReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts/${id}/dynamic-codes`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/discounts/${id}/dynamic-codes`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -72,8 +72,8 @@ class AdminDiscountsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsDeleteRes> {
-    const path = `/admin/discounts/${id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/discounts/${id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -84,8 +84,8 @@ class AdminDiscountsResource extends BaseResource {
     code: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts/${id}/dynamic-codes/${code}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/discounts/${id}/dynamic-codes/${code}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -95,8 +95,8 @@ class AdminDiscountsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/discounts/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -106,8 +106,8 @@ class AdminDiscountsResource extends BaseResource {
     code: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts/code/${code}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/discounts/code/${code}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -117,14 +117,14 @@ class AdminDiscountsResource extends BaseResource {
     query?: AdminGetDiscountsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsListRes> {
-    let path = `/admin/discounts`
+    let path = `/admin/discounts`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/discounts?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/discounts?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -135,8 +135,8 @@ class AdminDiscountsResource extends BaseResource {
     regionId: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts/${id}/regions/${regionId}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/discounts/${id}/regions/${regionId}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -148,14 +148,14 @@ class AdminDiscountsResource extends BaseResource {
     query: AdminPostDiscountsDiscountConditionsParams = {},
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    let path = `/admin/discounts/${discountId}/conditions`
+    let path = `/admin/discounts/${discountId}/conditions`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/discounts/${discountId}/conditions?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/discounts/${discountId}/conditions?${queryString}`;
     }
 
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -168,14 +168,14 @@ class AdminDiscountsResource extends BaseResource {
     query: AdminPostDiscountsDiscountConditionsConditionParams = {},
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    let path = `/admin/discounts/${discountId}/conditions/${conditionId}`
+    let path = `/admin/discounts/${discountId}/conditions/${conditionId}`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/discounts/${discountId}/conditions/${conditionId}?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/discounts/${discountId}/conditions/${conditionId}?${queryString}`;
     }
 
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -186,8 +186,8 @@ class AdminDiscountsResource extends BaseResource {
     conditionId: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsDeleteRes> {
-    const path = `/admin/discounts/${discountId}/conditions/${conditionId}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/discounts/${discountId}/conditions/${conditionId}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -199,15 +199,15 @@ class AdminDiscountsResource extends BaseResource {
     query?: AdminGetDiscountsDiscountConditionsConditionParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountConditionsRes> {
-    let path = `/admin/discounts/${discountId}/conditions/${conditionId}`
+    let path = `/admin/discounts/${discountId}/conditions/${conditionId}`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/discounts/${discountId}/conditions/${conditionId}?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/discounts/${discountId}/conditions/${conditionId}?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 }
 
-export default AdminDiscountsResource
+export default AdminDiscountsResource;

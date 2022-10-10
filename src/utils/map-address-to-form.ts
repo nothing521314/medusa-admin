@@ -1,6 +1,6 @@
-import { Address } from "@medusajs/medusa"
-import { AddressPayload } from "../components/templates/address-form"
-import { isoAlpha2Countries } from "./countries"
+import { Address } from "@medusajs/medusa";
+import { AddressPayload } from "../components/templates/address-form";
+import { isoAlpha2Countries } from "./countries";
 
 const mapAddressToForm = (address: Address): AddressPayload => {
   return {
@@ -17,7 +17,7 @@ const mapAddressToForm = (address: Address): AddressPayload => {
       value: address.country_code || "",
     },
     phone: address.phone,
-  }
-}
+  };
+};
 
-export default mapAddressToForm
+export default mapAddressToForm;

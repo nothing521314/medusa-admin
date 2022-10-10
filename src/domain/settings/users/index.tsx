@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react"
-import BreadCrumb from "../../../components/molecules/breadcrumb"
-import Medusa from "../../../services/api"
-import BodyCard from "../../../components/organisms/body-card"
-import InviteModal from "../../../components/organisms/invite-modal"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import UserTable from "../../../components/templates/user-table"
+import React, { useEffect, useState } from "react";
+import BreadCrumb from "../../../components/molecules/breadcrumb";
+import Medusa from "../../../services/api";
+import BodyCard from "../../../components/organisms/body-card";
+import InviteModal from "../../../components/organisms/invite-modal";
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
+import UserTable from "../../../components/templates/user-table";
 
 const Users: React.FC = () => {
-  const [users, setUsers] = useState([])
-  const [invites, setInvites] = useState([])
-  const [shouldRefetch, setShouldRefetch] = useState(0)
-  const [showInviteModal, setShowInviteModal] = useState(false)
+  const [users, setUsers] = useState([]);
+  const [invites, setInvites] = useState([]);
+  const [shouldRefetch, setShouldRefetch] = useState(0);
+  const [showInviteModal, setShowInviteModal] = useState(false);
 
   const triggerRefetch = () => {
-    setShouldRefetch((prev) => prev + 1)
-  }
+    setShouldRefetch((prev) => prev + 1);
+  };
 
   useEffect(() => {
     Medusa.users
@@ -25,11 +25,11 @@ const Users: React.FC = () => {
           .list()
           .then((res) => res.data)
           .then((inviteData) => {
-            setUsers(userData.users)
-            setInvites(inviteData.invites)
-          })
-      })
-  }, [shouldRefetch])
+            setUsers(userData.users);
+            setInvites(inviteData.invites);
+          });
+      });
+  }, [shouldRefetch]);
 
   const actionables = [
     {
@@ -41,7 +41,7 @@ const Users: React.FC = () => {
         </span>
       ),
     },
-  ]
+  ];
 
   return (
     <div className="flex flex-col h-full">
@@ -71,15 +71,15 @@ const Users: React.FC = () => {
           {showInviteModal && (
             <InviteModal
               handleClose={() => {
-                triggerRefetch()
-                setShowInviteModal(false)
+                triggerRefetch();
+                setShowInviteModal(false);
               }}
             />
           )}
         </BodyCard>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Users
+export default Users;

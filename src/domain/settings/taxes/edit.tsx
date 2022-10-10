@@ -1,11 +1,11 @@
-import { useAdminTaxRate } from "../../../../medusa-react"
-import React, { useContext } from "react"
-import Spinner from "../../../components/atoms/spinner"
-import Modal from "../../../components/molecules/modal"
+import { useAdminTaxRate } from "../../../../medusa-react";
+import React, { useContext } from "react";
+import Spinner from "../../../components/atoms/spinner";
+import Modal from "../../../components/molecules/modal";
 import LayeredModal, {
   LayeredModalContext,
-} from "../../../components/molecules/modal/layered-modal"
-import EditForm, { SimpleEditForm } from "./edit-form"
+} from "../../../components/molecules/modal/layered-modal";
+import EditForm, { SimpleEditForm } from "./edit-form";
 
 const EditTaxRate = ({ taxRate, taxRateId, regionId, onDismiss }) => {
   const { isLoading, tax_rate } = useAdminTaxRate(
@@ -16,9 +16,9 @@ const EditTaxRate = ({ taxRate, taxRateId, regionId, onDismiss }) => {
     {
       enabled: taxRate.type === "rate",
     }
-  )
+  );
 
-  const layeredModalContext = useContext(LayeredModalContext)
+  const layeredModalContext = useContext(LayeredModalContext);
 
   return (
     <LayeredModal
@@ -46,7 +46,7 @@ const EditTaxRate = ({ taxRate, taxRateId, regionId, onDismiss }) => {
         )}
       </Modal.Body>
     </LayeredModal>
-  )
-}
+  );
+};
 
-export default EditTaxRate
+export default EditTaxRate;

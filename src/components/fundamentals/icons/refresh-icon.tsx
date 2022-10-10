@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "./icon-type"
+import React from "react";
+import IconProps from "./icon-type";
 
 const RefreshIcon: React.FC<IconProps> = ({
   size = "24px",
@@ -44,7 +44,7 @@ const RefreshIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default RefreshIcon
+export default RefreshIcon;

@@ -1,7 +1,7 @@
-import { CustomerGroup } from "@medusajs/medusa"
-import { navigate } from "gatsby"
-import { useAdminCustomerGroups } from "../../../../medusa-react"
-import React, { useContext } from "react"
+import { CustomerGroup } from "@medusajs/medusa";
+import { navigate } from "gatsby";
+import { useAdminCustomerGroups } from "../../../../medusa-react";
+import React, { useContext } from "react";
 import {
   HeaderGroup,
   Row,
@@ -10,16 +10,16 @@ import {
   usePagination,
   useSortBy,
   useTable,
-} from "react-table"
+} from "react-table";
 import CustomerGroupContext, {
   CustomerGroupContextContainer,
-} from "../../../domain/customers/groups/context/customer-group-context"
-import useQueryFilters from "../../../hooks/use-query-filters"
-import useSetSearchParams from "../../../hooks/use-set-search-params"
-import DetailsIcon from "../../fundamentals/details-icon"
-import EditIcon from "../../fundamentals/icons/edit-icon"
-import Table, { TablePagination } from "../../molecules/table"
-import { CUSTOMER_GROUPS_TABLE_COLUMNS } from "./config"
+} from "../../../domain/customers/groups/context/customer-group-context";
+import useQueryFilters from "../../../hooks/use-query-filters";
+import useSetSearchParams from "../../../hooks/use-set-search-params";
+import DetailsIcon from "../../fundamentals/details-icon";
+import EditIcon from "../../fundamentals/icons/edit-icon";
+import Table, { TablePagination } from "../../molecules/table";
+import { CUSTOMER_GROUPS_TABLE_COLUMNS } from "./config";
 
 /**
  * Default filtering config for querying customer groups endpoint.
@@ -28,7 +28,7 @@ const defaultQueryProps = {
   additionalFilters: { expand: "customers" },
   limit: 15,
   offset: 0,
-}
+};
 
 /*
  * Customer groups empty state.
@@ -38,7 +38,7 @@ function CustomerGroupsPlaceholder() {
     <div className="h-full flex center justify-center items-center min-h-[756px]">
       <span className="text-xs text-gray-400">No customer groups yet</span>
     </div>
-  )
+  );
 }
 
 /* ******************************************** */
@@ -46,8 +46,8 @@ function CustomerGroupsPlaceholder() {
 /* ******************************************** */
 
 type HeaderCellProps = {
-  col: HeaderGroup<CustomerGroup>
-}
+  col: HeaderGroup<CustomerGroup>;
+};
 
 /*
  * Renders react-table cell for the customer groups table.
@@ -60,12 +60,12 @@ function CustomerGroupsTableHeaderCell(props: HeaderCellProps) {
     >
       {props.col.render("Header")}
     </Table.HeadCell>
-  )
+  );
 }
 
 type HeaderRowProps = {
-  headerGroup: HeaderGroup<CustomerGroup>
-}
+  headerGroup: HeaderGroup<CustomerGroup>;
+};
 
 /*
  * Renders react-table header row for the customer groups table.
@@ -77,19 +77,19 @@ function CustomerGroupsTableHeaderRow(props: HeaderRowProps) {
         <CustomerGroupsTableHeaderCell key={col.id} col={col} />
       ))}
     </Table.HeadRow>
-  )
+  );
 }
 
 type CustomerGroupsTableRowProps = {
-  row: Row<CustomerGroup>
-}
+  row: Row<CustomerGroup>;
+};
 
 /*
  * Render react-table row for the customer groups table.
  */
 function CustomerGroupsTableRow(props: CustomerGroupsTableRowProps) {
-  const { row } = props
-  const { showModal } = useContext(CustomerGroupContext)
+  const { row } = props;
+  const { showModal } = useContext(CustomerGroupContext);
 
   const actions = [
     {
@@ -102,7 +102,7 @@ function CustomerGroupsTableRow(props: CustomerGroupsTableRowProps) {
       onClick: () => navigate(row.original.id),
       icon: <DetailsIcon size={20} />,
     },
-  ]
+  ];
 
   return (
     <Table.Row
@@ -117,7 +117,7 @@ function CustomerGroupsTableRow(props: CustomerGroupsTableRowProps) {
         </Table.Cell>
       ))}
     </Table.Row>
-  )
+  );
 }
 
 /* ******************************************** */
@@ -125,15 +125,15 @@ function CustomerGroupsTableRow(props: CustomerGroupsTableRowProps) {
 /* ******************************************** */
 
 type CustomerGroupsTableProps = ReturnType<typeof useQueryFilters> & {
-  customerGroups: CustomerGroup[]
-  count: number
-}
+  customerGroups: CustomerGroup[];
+  count: number;
+};
 
 /*
  * Root component of the customer groups table.
  */
 function CustomerGroupsTable(props: CustomerGroupsTableProps) {
-  const { customerGroups, queryObject, count, paginate, setQuery } = props
+  const { customerGroups, queryObject, count, paginate, setQuery } = props;
 
   const tableConfig: TableOptions<CustomerGroup> = {
     columns: CUSTOMER_GROUPS_TABLE_COLUMNS,
@@ -145,41 +145,41 @@ function CustomerGroupsTable(props: CustomerGroupsTableProps) {
     pageCount: Math.ceil(count / queryObject.limit),
     manualPagination: true,
     autoResetPage: false,
-  }
+  };
 
   const table: TableInstance<CustomerGroup> = useTable(
     tableConfig,
     useSortBy,
     usePagination
-  )
+  );
 
   // ********* HANDLERS *********
 
   const handleNext = () => {
     if (!table.canNextPage) {
-      return
+      return;
     }
 
-    paginate(1)
-    table.nextPage()
-  }
+    paginate(1);
+    table.nextPage();
+  };
 
   const handlePrev = () => {
     if (!table.canPreviousPage) {
-      return
+      return;
     }
 
-    paginate(-1)
-    table.previousPage()
-  }
+    paginate(-1);
+    table.previousPage();
+  };
 
   const handleSearch = (text: string) => {
-    setQuery(text)
+    setQuery(text);
 
     if (text) {
-      table.gotoPage(0)
+      table.gotoPage(0);
     }
-  }
+  };
 
   // ********* RENDER *********
 
@@ -201,12 +201,12 @@ function CustomerGroupsTable(props: CustomerGroupsTableProps) {
         {/* BODY */}
         <Table.Body {...table.getTableBodyProps()}>
           {table.rows.map((row) => {
-            table.prepareRow(row)
+            table.prepareRow(row);
             return (
               <CustomerGroupContextContainer key={row.id} group={row.original}>
                 <CustomerGroupsTableRow row={row} />
               </CustomerGroupContextContainer>
-            )
+            );
           })}
         </Table.Body>
       </Table>
@@ -226,7 +226,7 @@ function CustomerGroupsTable(props: CustomerGroupsTableProps) {
         hasPrev={table.canPreviousPage}
       />
     </div>
-  )
+  );
 }
 
 /*
@@ -234,21 +234,21 @@ function CustomerGroupsTable(props: CustomerGroupsTableProps) {
  * Handles data fetching and query params persistence.
  */
 function CustomerGroupsTableContainer() {
-  const params = useQueryFilters(defaultQueryProps)
+  const params = useQueryFilters(defaultQueryProps);
 
   const { customer_groups, isLoading, count = 0 } = useAdminCustomerGroups(
     params.queryObject
-  )
+  );
 
-  useSetSearchParams(params.representationObject)
+  useSetSearchParams(params.representationObject);
 
-  const showPlaceholder = !customer_groups?.length && !params.queryObject.q
+  const showPlaceholder = !customer_groups?.length && !params.queryObject.q;
 
   if (showPlaceholder) {
     if (!isLoading) {
-      return <CustomerGroupsPlaceholder />
+      return <CustomerGroupsPlaceholder />;
     } else {
-      return null
+      return null;
     }
   }
 
@@ -258,7 +258,7 @@ function CustomerGroupsTableContainer() {
       customerGroups={customer_groups || []}
       {...params}
     />
-  )
+  );
 }
 
-export default CustomerGroupsTableContainer
+export default CustomerGroupsTableContainer;

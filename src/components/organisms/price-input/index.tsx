@@ -1,37 +1,37 @@
-import React from "react"
-import AmountField from "react-currency-input-field"
-import { CurrencyInputProps } from "react-currency-input-field"
+import React from "react";
+import AmountField from "react-currency-input-field";
+import { CurrencyInputProps } from "react-currency-input-field";
 
-import { CurrencyType } from "../../../utils/currencies"
+import { CurrencyType } from "../../../utils/currencies";
 
 /**
  * `PriceInput` interface
  */
 export type PriceInputProps = {
-  amount?: string
-  currency: CurrencyType
-  onAmountChange: (amount?: string) => void
-}
+  amount?: string;
+  currency: CurrencyType;
+  onAmountChange: (amount?: string) => void;
+};
 
 /**
  * A controlled input component that renders the formatted amount
  * and the currency of the provided price.
  */
 function PriceInput(props: PriceInputProps) {
-  const { amount, currency, onAmountChange } = props
-  const { code, symbol_native, decimal_digits } = currency
+  const { amount, currency, onAmountChange } = props;
+  const { code, symbol_native, decimal_digits } = currency;
 
   /** ******** COMPUTED **********/
 
-  const step = 10 ** -decimal_digits
-  const rightOffset = 24 + symbol_native.length * 4
-  const placeholder = `0.${"0".repeat(decimal_digits)}`
+  const step = 10 ** -decimal_digits;
+  const rightOffset = 24 + symbol_native.length * 4;
+  const placeholder = `0.${"0".repeat(decimal_digits)}`;
 
   /** ******** HANDLERS **********/
 
   const onChange: CurrencyInputProps["onValueChange"] = (value) => {
-    onAmountChange(value)
-  }
+    onAmountChange(value);
+  };
 
   return (
     <div className="w-[314px] relative">
@@ -64,7 +64,7 @@ function PriceInput(props: PriceInputProps) {
         </span>
       </div>
     </div>
-  )
+  );
 }
 
-export default PriceInput
+export default PriceInput;

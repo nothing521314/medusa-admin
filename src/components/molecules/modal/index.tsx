@@ -1,55 +1,55 @@
-import * as Dialog from "@radix-ui/react-dialog"
-import * as Portal from "@radix-ui/react-portal"
-import clsx from "clsx"
-import React from "react"
-import { useWindowDimensions } from "../../../hooks/use-window-dimensions"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
+import * as Dialog from "@radix-ui/react-dialog";
+import * as Portal from "@radix-ui/react-portal";
+import clsx from "clsx";
+import React from "react";
+import { useWindowDimensions } from "../../../hooks/use-window-dimensions";
+import CrossIcon from "../../fundamentals/icons/cross-icon";
 
 type ModalState = {
-  portalRef: any
-  isLargeModal?: boolean
-}
+  portalRef: any;
+  isLargeModal?: boolean;
+};
 
 export const ModalContext = React.createContext<ModalState>({
   portalRef: undefined,
   isLargeModal: true,
-})
+});
 
 export type ModalProps = {
-  isLargeModal?: boolean
-  handleClose: () => void
-  open?: boolean
-}
+  isLargeModal?: boolean;
+  handleClose: () => void;
+  open?: boolean;
+};
 
 type ModalChildProps = {
-  className?: string
-  style?: React.CSSProperties
-}
+  className?: string;
+  style?: React.CSSProperties;
+};
 
 type ModalHeaderProps = {
-  handleClose: () => void
-}
+  handleClose: () => void;
+};
 
 type ModalType = React.FC<ModalProps> & {
-  Body: React.FC<ModalChildProps>
-  Header: React.FC<ModalHeaderProps>
-  Footer: React.FC<ModalChildProps>
-  Content: React.FC<ModalChildProps>
-}
+  Body: React.FC<ModalChildProps>;
+  Header: React.FC<ModalHeaderProps>;
+  Footer: React.FC<ModalChildProps>;
+  Content: React.FC<ModalChildProps>;
+};
 
 const Overlay: React.FC = ({ children }) => {
   return (
     <Dialog.Overlay className="fixed bg-grey-90/40 z-50 grid top-0 left-0 right-0 bottom-0 place-items-center overflow-y-auto">
       {children}
     </Dialog.Overlay>
-  )
-}
+  );
+};
 
 const Content: React.FC = ({ children }) => {
-  const { height } = useWindowDimensions()
+  const { height } = useWindowDimensions();
   const style = {
     maxHeight: height - 64,
-  }
+  };
   return (
     <Dialog.Content
       style={style}
@@ -57,8 +57,8 @@ const Content: React.FC = ({ children }) => {
     >
       {children}
     </Dialog.Content>
-  )
-}
+  );
+};
 
 const Modal: ModalType = ({
   open = true,
@@ -66,7 +66,7 @@ const Modal: ModalType = ({
   isLargeModal = true,
   children,
 }) => {
-  const portalRef = React.useRef(null)
+  const portalRef = React.useRef(null);
   return (
     <Dialog.Root open={open} onOpenChange={handleClose}>
       <Portal.UnstablePortal ref={portalRef}>
@@ -77,11 +77,11 @@ const Modal: ModalType = ({
         </ModalContext.Provider>
       </Portal.UnstablePortal>
     </Dialog.Root>
-  )
-}
+  );
+};
 
 Modal.Body = ({ children, className, style }) => {
-  const { isLargeModal } = React.useContext(ModalContext)
+  const { isLargeModal } = React.useContext(ModalContext);
 
   return (
     <div
@@ -91,16 +91,16 @@ Modal.Body = ({ children, className, style }) => {
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
 Modal.Content = ({ children, className }) => {
-  const { isLargeModal } = React.useContext(ModalContext)
+  const { isLargeModal } = React.useContext(ModalContext);
 
-  const { height } = useWindowDimensions()
+  const { height } = useWindowDimensions();
   const style = {
     maxHeight: height - 90 - 141,
-  }
+  };
   return (
     <div
       style={style}
@@ -115,8 +115,8 @@ Modal.Content = ({ children, className }) => {
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
 Modal.Header = ({ handleClose = undefined, children }) => {
   return (
@@ -133,11 +133,11 @@ Modal.Header = ({ handleClose = undefined, children }) => {
       </div>
       {children}
     </div>
-  )
-}
+  );
+};
 
 Modal.Footer = ({ children, className }) => {
-  const { isLargeModal } = React.useContext(ModalContext)
+  const { isLargeModal } = React.useContext(ModalContext);
 
   return (
     <div
@@ -152,7 +152,7 @@ Modal.Footer = ({ children, className }) => {
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;

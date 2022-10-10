@@ -1,55 +1,55 @@
-import { navigate } from "gatsby"
-import { useAdminRegions } from "../../../../../medusa-react"
-import React, { useEffect } from "react"
-import Fade from "../../../../components/atoms/fade-wrapper"
-import Button from "../../../../components/fundamentals/button"
-import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
-import RadioGroup from "../../../../components/organisms/radio-group"
-import Section from "../../../../components/organisms/section"
-import useToggleState from "../../../../hooks/use-toggle-state"
-import NewRegion from "../new"
-import RegionCard from "./region-card"
+import { navigate } from "gatsby";
+import { useAdminRegions } from "../../../../../medusa-react";
+import React, { useEffect } from "react";
+import Fade from "../../../../components/atoms/fade-wrapper";
+import Button from "../../../../components/fundamentals/button";
+import PlusIcon from "../../../../components/fundamentals/icons/plus-icon";
+import RadioGroup from "../../../../components/organisms/radio-group";
+import Section from "../../../../components/organisms/section";
+import useToggleState from "../../../../hooks/use-toggle-state";
+import NewRegion from "../new";
+import RegionCard from "./region-card";
 
 type Props = {
-  id?: string
-}
+  id?: string;
+};
 
 const RegionOverview = ({ id }: Props) => {
-  const { regions, isLoading } = useAdminRegions()
+  const { regions, isLoading } = useAdminRegions();
   const [selectedRegion, setSelectedRegion] = React.useState<
     string | undefined
-  >(id)
+  >(id);
 
   useEffect(() => {
     if (id) {
-      handleChange(id)
+      handleChange(id);
     }
 
     if (!id && regions && regions.length > 0) {
-      handleChange(regions[0].id)
+      handleChange(regions[0].id);
     }
-  }, [id, regions])
+  }, [id, regions]);
 
   useEffect(() => {
     if (isLoading) {
-      return
+      return;
     }
 
     if (!selectedRegion && regions && regions.length > 0) {
       navigate(`/a/settings/regions/${regions[0].id}`, {
         replace: true,
-      })
+      });
     }
-  }, [regions, isLoading, selectedRegion])
+  }, [regions, isLoading, selectedRegion]);
 
   const handleChange = (id: string) => {
     if (id !== selectedRegion) {
-      setSelectedRegion(id)
-      navigate(`/a/settings/regions/${id}`)
+      setSelectedRegion(id);
+      navigate(`/a/settings/regions/${id}`);
     }
-  }
+  };
 
-  const { state, toggle, close } = useToggleState()
+  const { state, toggle, close } = useToggleState();
 
   return (
     <>
@@ -84,7 +84,7 @@ const RegionOverview = ({ id }: Props) => {
         <NewRegion onClose={close} />
       </Fade>
     </>
-  )
-}
+  );
+};
 
-export default RegionOverview
+export default RegionOverview;

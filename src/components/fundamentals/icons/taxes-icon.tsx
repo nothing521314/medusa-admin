@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "./types/icon-type"
+import React from "react";
+import IconProps from "./types/icon-type";
 
 const TaxesIcon: React.FC<IconProps> = ({
   size = "24",
@@ -48,7 +48,7 @@ const TaxesIcon: React.FC<IconProps> = ({
         stroke-linejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default TaxesIcon
+export default TaxesIcon;

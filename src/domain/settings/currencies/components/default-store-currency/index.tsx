@@ -1,10 +1,10 @@
-import { Store } from "@medusajs/medusa"
-import React from "react"
-import DefaultCurrencySelector from "./default-currency-selector"
+import { Store } from "@medusajs/medusa";
+import React from "react";
+import DefaultCurrencySelector from "./default-currency-selector";
 
 type Props = {
-  store: Store
-}
+  store: Store;
+};
 
 const DefaultStoreCurrency = ({ store }: Props) => {
   return (
@@ -20,7 +20,7 @@ const DefaultStoreCurrency = ({ store }: Props) => {
 
       <DefaultCurrencySelector store={store} />
     </div>
-  )
-}
+  );
+};
 
-export default DefaultStoreCurrency
+export default DefaultStoreCurrency;

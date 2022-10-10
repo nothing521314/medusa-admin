@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const PointerIcon: React.FC<IconProps> = ({
   size = "16",
@@ -29,7 +29,7 @@ const PointerIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default PointerIcon
+export default PointerIcon;

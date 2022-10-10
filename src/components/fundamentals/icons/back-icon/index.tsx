@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const BackIcon: React.FC<IconProps> = ({
   size = "24",
@@ -30,7 +30,7 @@ const BackIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default BackIcon
+export default BackIcon;

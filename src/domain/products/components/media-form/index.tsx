@@ -1,38 +1,38 @@
-import clsx from "clsx"
-import React, { useMemo } from "react"
+import clsx from "clsx";
+import React, { useMemo } from "react";
 import {
   Controller,
   FieldArrayWithId,
   useFieldArray,
   useWatch,
-} from "react-hook-form"
-import FileUploadField from "../../../../components/atoms/file-upload-field"
-import Button from "../../../../components/fundamentals/button"
-import CheckCircleFillIcon from "../../../../components/fundamentals/icons/check-circle-fill-icon"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
+} from "react-hook-form";
+import FileUploadField from "../../../../components/atoms/file-upload-field";
+import Button from "../../../../components/fundamentals/button";
+import CheckCircleFillIcon from "../../../../components/fundamentals/icons/check-circle-fill-icon";
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon";
 import Actionables, {
   ActionType,
-} from "../../../../components/molecules/actionables"
-import { FormImage } from "../../../../types/shared"
-import { NestedForm } from "../../../../utils/nested-form"
+} from "../../../../components/molecules/actionables";
+import { FormImage } from "../../../../types/shared";
+import { NestedForm } from "../../../../utils/nested-form";
 
-type ImageType = { selected: boolean } & FormImage
+type ImageType = { selected: boolean } & FormImage;
 
 export type MediaFormType = {
-  images: ImageType[]
-}
+  images: ImageType[];
+};
 
 type Props = {
-  form: NestedForm<MediaFormType>
-}
+  form: NestedForm<MediaFormType>;
+};
 
 const MediaForm = ({ form }: Props) => {
-  const { control, path, setValue } = form
+  const { control, path, setValue } = form;
 
   const { fields, append, remove } = useFieldArray({
     control: control,
     name: path("images"),
-  })
+  });
 
   const handleFilesChosen = (files: File[]) => {
     if (files.length) {
@@ -42,39 +42,39 @@ const MediaForm = ({ form }: Props) => {
         size: file.size,
         nativeFile: file,
         selected: false,
-      }))
+      }));
 
-      append(toAppend)
+      append(toAppend);
     }
-  }
+  };
 
   const images = useWatch({
     control,
     name: path("images"),
     defaultValue: [],
-  })
+  });
 
   const selected = useMemo(() => {
-    const selected: number[] = []
+    const selected: number[] = [];
 
     images.forEach((i, index) => {
       if (i.selected) {
-        selected.push(index)
+        selected.push(index);
       }
-    })
+    });
 
-    return selected
-  }, [images])
+    return selected;
+  }, [images]);
 
   const handleRemove = () => {
-    remove(selected)
-  }
+    remove(selected);
+  };
 
   const handleDeselect = () => {
     selected.forEach((i) => {
-      setValue(path(`images.${i}.selected`), false)
-    })
-  }
+      setValue(path(`images.${i}.selected`), false);
+    });
+  };
 
   return (
     <div>
@@ -109,24 +109,24 @@ const MediaForm = ({ form }: Props) => {
                   remove={remove}
                   form={form}
                 />
-              )
+              );
             })}
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 type ImageProps = {
-  image: FieldArrayWithId<MediaFormType, "images", "id">
-  index: number
-  remove: (index: number) => void
-  form: NestedForm<MediaFormType>
-}
+  image: FieldArrayWithId<MediaFormType, "images", "id">;
+  index: number;
+  remove: (index: number) => void;
+  form: NestedForm<MediaFormType>;
+};
 
 const Image = ({ image, index, form, remove }: ImageProps) => {
-  const { control, path } = form
+  const { control, path } = form;
 
   const actions: ActionType[] = [
     {
@@ -135,7 +135,7 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
       icon: <TrashIcon size={20} />,
       variant: "danger",
     },
-  ]
+  ];
 
   return (
     <Controller
@@ -179,17 +179,17 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
               <Actionables actions={actions} forceDropdown />
             </div>
           </button>
-        )
+        );
       }}
     />
-  )
-}
+  );
+};
 
 type ModalActionsProps = {
-  number: number
-  onRemove: () => void
-  onDeselect: () => void
-}
+  number: number;
+  onRemove: () => void;
+  onDeselect: () => void;
+};
 
 const ModalActions = ({ number, onRemove, onDeselect }: ModalActionsProps) => {
   return (
@@ -225,7 +225,7 @@ const ModalActions = ({ number, onRemove, onDeselect }: ModalActionsProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MediaForm
+export default MediaForm;

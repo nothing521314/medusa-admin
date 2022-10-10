@@ -1,15 +1,15 @@
-import React, { useEffect } from "react"
-import type { Toast } from "react-hot-toast"
-import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
-import ToasterContainer from "../toaster-container"
+import React, { useEffect } from "react";
+import type { Toast } from "react-hot-toast";
+import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon";
+import CrossIcon from "../../fundamentals/icons/cross-icon";
+import ToasterContainer from "../toaster-container";
 
 type SavingStateProps = {
-  toast: Toast
-  title?: string
-  message?: string
-  onDismiss: () => void
-}
+  toast: Toast;
+  title?: string;
+  message?: string;
+  onDismiss: () => void;
+};
 
 const SuccessState: React.FC<SavingStateProps> = ({
   toast,
@@ -19,13 +19,13 @@ const SuccessState: React.FC<SavingStateProps> = ({
 }) => {
   useEffect(() => {
     const life = setTimeout(() => {
-      onDismiss()
-    }, 2000)
+      onDismiss();
+    }, 2000);
 
     return () => {
-      clearTimeout(life)
-    }
-  }, [toast])
+      clearTimeout(life);
+    };
+  }, [toast]);
 
   return (
     <ToasterContainer visible={toast.visible} className="w-[448px]">
@@ -43,7 +43,7 @@ const SuccessState: React.FC<SavingStateProps> = ({
         <span className="sr-only">Close</span>
       </div>
     </ToasterContainer>
-  )
-}
+  );
+};
 
-export default SuccessState
+export default SuccessState;

@@ -1,4 +1,4 @@
-import { TQueryKey } from "../../types"
+import { TQueryKey } from "../../types";
 
 export const queryKeysFactory = <
   T,
@@ -13,6 +13,6 @@ export const queryKeysFactory = <
     list: (query?: TListQueryType) => [...queryKeyFactory.lists(), { query }],
     details: () => [...queryKeyFactory.all, "detail"],
     detail: (id: TDetailQueryType) => [...queryKeyFactory.details(), id],
-  }
-  return queryKeyFactory
-}
+  };
+  return queryKeyFactory;
+};

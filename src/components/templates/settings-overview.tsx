@@ -1,5 +1,5 @@
-import React from "react"
-import PageDescription from "../atoms/page-description"
+import React from "react";
+import PageDescription from "../atoms/page-description";
 
 const SettingsOverview: React.FC = ({ children }) => {
   return (
@@ -12,7 +12,7 @@ const SettingsOverview: React.FC = ({ children }) => {
         {children}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SettingsOverview
+export default SettingsOverview;

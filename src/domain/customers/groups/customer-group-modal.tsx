@@ -1,25 +1,27 @@
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
-import { CustomerGroup } from "@medusajs/medusa"
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { CustomerGroup } from "@medusajs/medusa";
 
-import Modal from "../../../components/molecules/modal"
-import Input from "../../../components/molecules/input"
-import Button from "../../../components/fundamentals/button"
-import Metadata, { MetadataField } from "../../../components/organisms/metadata"
+import Modal from "../../../components/molecules/modal";
+import Input from "../../../components/molecules/input";
+import Button from "../../../components/fundamentals/button";
+import Metadata, {
+  MetadataField,
+} from "../../../components/organisms/metadata";
 
 type CustomerGroupModalProps = {
-  handleClose: () => void
-  initialData?: CustomerGroup
-  handleSubmit: (data: CustomerGroup) => void
-}
+  handleClose: () => void;
+  initialData?: CustomerGroup;
+  handleSubmit: (data: CustomerGroup) => void;
+};
 
 /*
  * A modal for crating/editing customer groups.
  */
 function CustomerGroupModal(props: CustomerGroupModalProps) {
-  const { initialData, handleSubmit, handleClose } = props
+  const { initialData, handleSubmit, handleClose } = props;
 
-  const isEdit = !!initialData
+  const isEdit = !!initialData;
 
   const [metadata, setMetadata] = useState<MetadataField[]>(
     isEdit
@@ -28,28 +30,28 @@ function CustomerGroupModal(props: CustomerGroupModalProps) {
           value: initialData.metadata[k],
         }))
       : []
-  )
+  );
 
   const { register, handleSubmit: handleFromSubmit } = useForm({
     defaultValues: initialData,
-  })
+  });
 
   const onSubmit = (data) => {
-    const meta = {}
-    const initial = props.initialData?.metadata || {}
+    const meta = {};
+    const initial = props.initialData?.metadata || {};
 
-    metadata.forEach((m) => (meta[m.key] = m.value))
+    metadata.forEach((m) => (meta[m.key] = m.value));
 
     for (const m in initial) {
       if (!(m in meta)) {
-        meta[m] = null
+        meta[m] = null;
       }
     }
 
-    data.metadata = meta
+    data.metadata = meta;
 
-    handleSubmit(data)
-  }
+    handleSubmit(data);
+  };
 
   return (
     <Modal handleClose={handleClose}>
@@ -66,9 +68,10 @@ function CustomerGroupModal(props: CustomerGroupModalProps) {
             <div className="flex space-x-4">
               <Input
                 label="Title"
-                {...register('name')}
+                {...register("name")}
                 placeholder="Customer group name"
-                required />
+                required
+              />
             </div>
           </div>
 
@@ -102,4 +105,4 @@ function CustomerGroupModal(props: CustomerGroupModalProps) {
   );
 }
 
-export default CustomerGroupModal
+export default CustomerGroupModal;

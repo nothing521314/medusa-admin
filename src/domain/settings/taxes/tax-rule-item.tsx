@@ -1,9 +1,9 @@
-import React from "react"
+import React from "react";
 
-import Actionables from "../../../components/molecules/actionables"
-import EditIcon from "../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
-import Badge from "../../../components/fundamentals/badge"
+import Actionables from "../../../components/molecules/actionables";
+import EditIcon from "../../../components/fundamentals/icons/edit-icon";
+import TrashIcon from "../../../components/fundamentals/icons/trash-icon";
+import Badge from "../../../components/fundamentals/badge";
 
 export const TaxRuleItem = ({ onEdit, onDelete, index, name, description }) => {
   return (
@@ -39,6 +39,5 @@ export const TaxRuleItem = ({ onEdit, onDelete, index, name, description }) => {
         />
       </div>
     </div>
-  )
-}
-
+  );
+};

@@ -1,12 +1,12 @@
-import { buildOptions } from "../../utils/buildOptions"
+import { buildOptions } from "../../utils/buildOptions";
 import {
   AdminInviteDeleteRes,
   AdminPostInvitesInviteAcceptReq,
-} from "@medusajs/medusa"
-import { Response, AdminPostInvitesPayload } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
-import { adminInviteKeys } from "./queries"
+} from "@medusajs/medusa";
+import { Response, AdminPostInvitesPayload } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
+import { adminInviteKeys } from "./queries";
 
 export const useAdminAcceptInvite = (
   options?: UseMutationOptions<
@@ -15,42 +15,42 @@ export const useAdminAcceptInvite = (
     AdminPostInvitesInviteAcceptReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostInvitesInviteAcceptReq) =>
       client.admin.invites.accept(payload),
     buildOptions(queryClient, adminInviteKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminResendInvite = (
   id: string,
   options?: UseMutationOptions
 ) => {
-  const { client } = useMedusa()
-  return useMutation(() => client.admin.invites.resend(id), options)
-}
+  const { client } = useMedusa();
+  return useMutation(() => client.admin.invites.resend(id), options);
+};
 
 export const useAdminCreateInvite = (
   options?: UseMutationOptions<Response<void>, Error, AdminPostInvitesPayload>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostInvitesPayload) => client.admin.invites.create(payload),
     buildOptions(queryClient, adminInviteKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminDeleteInvite = (
   id: string,
   options?: UseMutationOptions<Response<AdminInviteDeleteRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.invites.delete(id),
@@ -59,5 +59,5 @@ export const useAdminDeleteInvite = (
       [adminInviteKeys.lists(), adminInviteKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};

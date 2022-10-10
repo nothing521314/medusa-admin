@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react"
-import Button from "../../../components/fundamentals/button"
-import RadioGroup from "../../../components/organisms/radio-group"
-import Modal from "../../../components/molecules/modal"
-import { LayeredModalContext } from "../../../components/molecules/modal/layered-modal"
-import { ProductSelector } from "./product-selector"
-import { ProductTypeSelector } from "./product-type-selector"
-import { ShippingOptionSelector } from "./shipping-option-selector"
+import React, { useContext, useState } from "react";
+import Button from "../../../components/fundamentals/button";
+import RadioGroup from "../../../components/organisms/radio-group";
+import Modal from "../../../components/molecules/modal";
+import { LayeredModalContext } from "../../../components/molecules/modal/layered-modal";
+import { ProductSelector } from "./product-selector";
+import { ProductTypeSelector } from "./product-type-selector";
+import { ShippingOptionSelector } from "./shipping-option-selector";
 
 enum TaxRuleType {
   PRODUCTS = "products",
@@ -14,18 +14,18 @@ enum TaxRuleType {
 }
 
 type TaxRuleSelectorProps = {
-  regionId: string
-  onSubmit: (rule) => void
-  selectedItems?: any
-  isLargeModal?: boolean
-  type?: TaxRuleType
-  items?: string[]
-}
+  regionId: string;
+  onSubmit: (rule) => void;
+  selectedItems?: any;
+  isLargeModal?: boolean;
+  type?: TaxRuleType;
+  items?: string[];
+};
 
 type TaxRuleSet = {
-  type: TaxRuleType
-  items: string[]
-}
+  type: TaxRuleType;
+  items: string[];
+};
 
 const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
   regionId,
@@ -34,40 +34,40 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
   onSubmit,
   isLargeModal = true,
 }) => {
-  const isLocked = type && items
+  const isLocked = type && items;
 
-  const { pop } = useContext(LayeredModalContext)
+  const { pop } = useContext(LayeredModalContext);
   const [selectedType, setSelectedType] = useState<string>(
     type ?? TaxRuleType.PRODUCTS
-  )
+  );
   const [selectedRule, setSelectedRule] = useState<TaxRuleSet>({
     type: type ?? TaxRuleType.PRODUCTS,
     items: items ?? [],
-  })
+  });
 
   const handleSubmit = () => {
-    onSubmit(selectedRule)
-    pop()
-  }
+    onSubmit(selectedRule);
+    pop();
+  };
 
   const handleTypeChange = (t) => {
     if (t !== selectedType) {
-      setSelectedType(t)
+      setSelectedType(t);
       setSelectedRule({
         type: t,
         items: [],
-      })
+      });
     }
-  }
+  };
 
   const handleItemChanges = (items) => {
     setSelectedRule((prev) => {
       return {
         ...prev,
         items,
-      }
-    })
-  }
+      };
+    });
+  };
 
   return (
     <>
@@ -144,7 +144,7 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
         </div>
       </Modal.Footer>
     </>
-  )
-}
+  );
+};
 
-export default TaxRuleSelector
+export default TaxRuleSelector;

@@ -1,7 +1,7 @@
-import React from "react"
-import { Router } from "@reach/router"
+import React from "react";
+import { Router } from "@reach/router";
 
-import Details from "./pages/details"
+import Details from "./pages/details";
 
 const SalesChannels = () => {
   return (
@@ -9,7 +9,7 @@ const SalesChannels = () => {
       <Details path="/" />
       <Details path="/:id" />
     </Router>
-  )
-}
+  );
+};
 
-export default SalesChannels
+export default SalesChannels;

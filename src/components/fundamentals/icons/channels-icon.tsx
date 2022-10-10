@@ -1,6 +1,6 @@
-import React from "react"
+import React from "react";
 
-import IconProps from "./types/icon-type"
+import IconProps from "./types/icon-type";
 
 const ChannelsIcon: React.FC<IconProps> = ({
   size = "24px",
@@ -59,7 +59,7 @@ const ChannelsIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default ChannelsIcon
+export default ChannelsIcon;

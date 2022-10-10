@@ -1,14 +1,14 @@
-import React from "react"
-import { toast as Controller, Toast } from "react-hot-toast"
-import ToasterContainer from "../../atoms/toaster-container"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
-import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
+import React from "react";
+import { toast as Controller, Toast } from "react-hot-toast";
+import ToasterContainer from "../../atoms/toaster-container";
+import CrossIcon from "../../fundamentals/icons/cross-icon";
+import XCircleIcon from "../../fundamentals/icons/x-circle-icon";
 
 type FormErrorToasterProps = {
-  toast: Toast
-  message: string | React.ReactNode
-  title: string
-}
+  toast: Toast;
+  message: string | React.ReactNode;
+  title: string;
+};
 
 const FormErrorToaster: React.FC<FormErrorToasterProps> = ({
   toast,
@@ -16,8 +16,8 @@ const FormErrorToaster: React.FC<FormErrorToasterProps> = ({
   title,
 }) => {
   const onDismiss = () => {
-    Controller.dismiss(toast.id)
-  }
+    Controller.dismiss(toast.id);
+  };
 
   return (
     <ToasterContainer visible={toast.visible}>
@@ -35,7 +35,7 @@ const FormErrorToaster: React.FC<FormErrorToasterProps> = ({
         <span className="sr-only">Close</span>
       </div>
     </ToasterContainer>
-  )
-}
+  );
+};
 
-export default FormErrorToaster
+export default FormErrorToaster;

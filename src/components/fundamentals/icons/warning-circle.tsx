@@ -1,9 +1,9 @@
-import React, { FC } from "react"
-import IconProps from "./types/icon-type"
+import React, { FC } from "react";
+import IconProps from "./types/icon-type";
 
 const WarningCircle: FC<IconProps> = (props) => {
-  const { fill, size, ...attributes } = props
-  const line = fill || "#111827"
+  const { fill, size, ...attributes } = props;
+  const line = fill || "#111827";
 
   return (
     <svg
@@ -36,7 +36,7 @@ const WarningCircle: FC<IconProps> = (props) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default WarningCircle
+export default WarningCircle;

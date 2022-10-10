@@ -1,24 +1,24 @@
-import { ReturnReason } from "@medusajs/medusa"
-import { useAdminCreateReturnReason } from "../../../../medusa-react"
-import React from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../components/fundamentals/button"
-import Input from "../../../components/molecules/input"
-import Modal from "../../../components/molecules/modal"
-import TextArea from "../../../components/molecules/textarea"
-import useNotification from "../../../hooks/use-notification"
-import FormValidator from "../../../utils/form-validator"
+import { ReturnReason } from "@medusajs/medusa";
+import { useAdminCreateReturnReason } from "../../../../medusa-react";
+import React from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../components/fundamentals/button";
+import Input from "../../../components/molecules/input";
+import Modal from "../../../components/molecules/modal";
+import TextArea from "../../../components/molecules/textarea";
+import useNotification from "../../../hooks/use-notification";
+import FormValidator from "../../../utils/form-validator";
 
 type CreateReturnReasonModalProps = {
-  handleClose: () => void
-  initialReason?: ReturnReason
-}
+  handleClose: () => void;
+  initialReason?: ReturnReason;
+};
 
 type CreateReturnReasonFormData = {
-  value: string
-  label: string
-  description: string | null
-}
+  value: string;
+  label: string;
+  description: string | null;
+};
 
 // the reason props is used for prefilling the form when duplicating
 const CreateReturnReasonModal = ({
@@ -35,9 +35,9 @@ const CreateReturnReasonModal = ({
       label: initialReason?.label,
       description: initialReason?.description,
     },
-  })
-  const notification = useNotification()
-  const { mutate, isLoading } = useAdminCreateReturnReason()
+  });
+  const notification = useNotification();
+  const { mutate, isLoading } = useAdminCreateReturnReason();
 
   const onCreate = (data: CreateReturnReasonFormData) => {
     mutate(
@@ -47,19 +47,19 @@ const CreateReturnReasonModal = ({
       },
       {
         onSuccess: () => {
-          notification("Success", "Created a new return reason", "success")
+          notification("Success", "Created a new return reason", "success");
         },
         onError: () => {
           notification(
             "Error",
             "Cant create a Return reason with an existing code",
             "error"
-          )
+          );
         },
       }
-    )
-    handleClose()
-  }
+    );
+    handleClose();
+  };
 
   return (
     <Modal handleClose={handleClose}>
@@ -126,7 +126,7 @@ const CreateReturnReasonModal = ({
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default CreateReturnReasonModal
+export default CreateReturnReasonModal;

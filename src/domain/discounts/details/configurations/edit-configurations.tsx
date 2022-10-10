@@ -1,39 +1,39 @@
-import { Discount } from "@medusajs/medusa"
-import { useAdminUpdateDiscount } from "../../../../../medusa-react"
-import React, { useEffect } from "react"
-import { Controller, useForm } from "react-hook-form"
-import DatePicker from "../../../../components/atoms/date-picker/date-picker"
-import TimePicker from "../../../../components/atoms/date-picker/time-picker"
-import Button from "../../../../components/fundamentals/button"
-import AvailabilityDuration from "../../../../components/molecules/availability-duration"
-import InputField from "../../../../components/molecules/input"
-import Modal from "../../../../components/molecules/modal"
-import SwitchableItem from "../../../../components/molecules/switchable-item"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
+import { Discount } from "@medusajs/medusa";
+import { useAdminUpdateDiscount } from "../../../../../medusa-react";
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import DatePicker from "../../../../components/atoms/date-picker/date-picker";
+import TimePicker from "../../../../components/atoms/date-picker/time-picker";
+import Button from "../../../../components/fundamentals/button";
+import AvailabilityDuration from "../../../../components/molecules/availability-duration";
+import InputField from "../../../../components/molecules/input";
+import Modal from "../../../../components/molecules/modal";
+import SwitchableItem from "../../../../components/molecules/switchable-item";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
 
 type EditConfigurationsProps = {
-  discount: Discount
-  onClose: () => void
-}
+  discount: Discount;
+  onClose: () => void;
+};
 
 type ConfigurationsForm = {
-  starts_at: Date | null
-  ends_at: Date | null
-  usage_limit: number | null
-  valid_duration: string | null
-}
+  starts_at: Date | null;
+  ends_at: Date | null;
+  usage_limit: number | null;
+  valid_duration: string | null;
+};
 
 const EditConfigurations: React.FC<EditConfigurationsProps> = ({
   discount,
   onClose,
 }) => {
-  const { mutate, isLoading } = useAdminUpdateDiscount(discount.id)
-  const notification = useNotification()
+  const { mutate, isLoading } = useAdminUpdateDiscount(discount.id);
+  const notification = useNotification();
 
   const { control, handleSubmit, reset } = useForm<ConfigurationsForm>({
     defaultValues: mapConfigurations(discount),
-  })
+  });
 
   const onSubmit = (data: ConfigurationsForm) => {
     mutate(
@@ -46,20 +46,20 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
       },
       {
         onSuccess: ({ discount }) => {
-          notification("Success", "Discount updated successfully", "success")
-          reset(mapConfigurations(discount))
-          onClose()
+          notification("Success", "Discount updated successfully", "success");
+          reset(mapConfigurations(discount));
+          onClose();
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification("Error", getErrorMessage(error), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   useEffect(() => {
-    reset(mapConfigurations(discount))
-  }, [discount])
+    reset(mapConfigurations(discount));
+  }, [discount]);
 
   return (
     <Modal handleClose={onClose} isLargeModal>
@@ -80,9 +80,9 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                       open={!!value}
                       onSwitch={() => {
                         if (value) {
-                          onChange(null)
+                          onChange(null);
                         } else {
-                          onChange(new Date(discount.starts_at))
+                          onChange(new Date(discount.starts_at));
                         }
                       }}
                       title="Discount has a start date?"
@@ -101,7 +101,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                         />
                       </div>
                     </SwitchableItem>
-                  )
+                  );
                 }}
               />
               <Controller
@@ -113,13 +113,13 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                       open={!!value}
                       onSwitch={() => {
                         if (value) {
-                          onChange(null)
+                          onChange(null);
                         } else {
                           onChange(
                             new Date(
                               new Date().getTime() + 7 * 24 * 60 * 60 * 1000
                             )
-                          )
+                          );
                         }
                       }}
                       title="Discount has an expiry date?"
@@ -138,7 +138,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                         />
                       </div>
                     </SwitchableItem>
-                  )
+                  );
                 }}
               />
               <Controller
@@ -150,9 +150,9 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                       open={!!value}
                       onSwitch={() => {
                         if (value) {
-                          onChange(null)
+                          onChange(null);
                         } else {
-                          onChange(10)
+                          onChange(10);
                         }
                       }}
                       title="Limit the number of redemtions?"
@@ -169,7 +169,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                         }
                       />
                     </SwitchableItem>
-                  )
+                  );
                 }}
               />
               {discount.is_dynamic && (
@@ -182,9 +182,9 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                         open={!!value}
                         onSwitch={() => {
                           if (value) {
-                            onChange(null)
+                            onChange(null);
                           } else {
-                            onChange("P0Y0M0DT00H00M")
+                            onChange("P0Y0M0DT00H00M");
                           }
                         }}
                         title="Availability duration?"
@@ -195,7 +195,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                           onChange={onChange}
                         />
                       </SwitchableItem>
-                    )
+                    );
                   }}
                 />
               )}
@@ -226,8 +226,8 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const mapConfigurations = (discount: Discount): ConfigurationsForm => {
   return {
@@ -235,7 +235,7 @@ const mapConfigurations = (discount: Discount): ConfigurationsForm => {
     ends_at: discount.ends_at ? new Date(discount.ends_at) : null,
     usage_limit: discount.usage_limit,
     valid_duration: discount.valid_duration,
-  }
-}
+  };
+};
 
-export default EditConfigurations
+export default EditConfigurations;

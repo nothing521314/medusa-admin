@@ -1,6 +1,6 @@
-import { PriceList } from "@medusajs/medusa"
-import { debounce } from "lodash"
-import React from "react"
+import { PriceList } from "@medusajs/medusa";
+import { debounce } from "lodash";
+import React from "react";
 import {
   Column,
   HeaderGroup,
@@ -11,17 +11,17 @@ import {
   useSortBy,
   UseSortByColumnProps,
   useTable,
-} from "react-table"
-import Table, { TablePagination, TableProps } from "../../molecules/table"
-import { usePriceListFilters } from "./use-price-list-filters"
+} from "react-table";
+import Table, { TablePagination, TableProps } from "../../molecules/table";
+import { usePriceListFilters } from "./use-price-list-filters";
 
 /* ******************************************** */
 /* ************** TABLE ELEMENTS ************** */
 /* ******************************************** */
 
 type HeaderCellProps = {
-  col: HeaderGroup<PriceList> & UseSortByColumnProps<PriceList>
-}
+  col: HeaderGroup<PriceList> & UseSortByColumnProps<PriceList>;
+};
 
 /*
  * Renders react-table cell for the price lists table.
@@ -34,12 +34,12 @@ function PriceListTableHeaderCell(props: HeaderCellProps) {
     >
       {props.col.render("Header")}
     </Table.HeadCell>
-  )
+  );
 }
 
 type HeaderRowProps = {
-  headerGroup: HeaderGroup<PriceList>
-}
+  headerGroup: HeaderGroup<PriceList>;
+};
 
 /*
  * Renders react-table header row for the price list table.
@@ -51,18 +51,18 @@ function PriceListTableHeaderRow(props: HeaderRowProps) {
         <PriceListTableHeaderCell key={col.id} col={col} />
       ))}
     </Table.HeadRow>
-  )
+  );
 }
 
 type PriceListTableRowProps = {
-  row: Row<PriceList>
-}
+  row: Row<PriceList>;
+};
 
 /*
  * Render react-table row for the price lists table.
  */
 function PriceListTableRow(props: PriceListTableRowProps) {
-  const { row } = props
+  const { row } = props;
 
   return (
     <Table.Row
@@ -74,7 +74,7 @@ function PriceListTableRow(props: PriceListTableRowProps) {
     >
       {row.cells.map((cell, index) => cell.render("Cell", { index }))}
     </Table.Row>
-  )
+  );
 }
 
 /* ******************************************** */
@@ -82,13 +82,13 @@ function PriceListTableRow(props: PriceListTableRowProps) {
 /* ******************************************** */
 
 type PriceListTableProps = ReturnType<typeof usePriceListFilters> & {
-  priceLists: PriceList[]
-  columns: Array<Column<PriceList>>
-  count: number
+  priceLists: PriceList[];
+  columns: Array<Column<PriceList>>;
+  count: number;
   options: Omit<TableProps, "filteringOptions"> & {
-    filter: Pick<TableProps, "filteringOptions">
-  }
-}
+    filter: Pick<TableProps, "filteringOptions">;
+  };
+};
 
 /*
  * Root component of the price lists table.
@@ -102,7 +102,7 @@ export function PriceListTable(props: PriceListTableProps) {
     setQuery,
     columns,
     options,
-  } = props
+  } = props;
 
   const tableConfig: TableOptions<PriceList> = {
     columns: columns,
@@ -114,39 +114,39 @@ export function PriceListTable(props: PriceListTableProps) {
     pageCount: Math.ceil(count / queryObject.limit),
     manualPagination: true,
     autoResetPage: false,
-  }
+  };
 
-  const table = useTable(tableConfig, useSortBy, usePagination, useRowSelect)
+  const table = useTable(tableConfig, useSortBy, usePagination, useRowSelect);
 
   // ********* HANDLERS *********
 
   const handleNext = () => {
     if (!table.canNextPage) {
-      return
+      return;
     }
 
-    paginate(1)
-    table.nextPage()
-  }
+    paginate(1);
+    table.nextPage();
+  };
 
   const handlePrev = () => {
     if (!table.canPreviousPage) {
-      return
+      return;
     }
 
-    paginate(-1)
-    table.previousPage()
-  }
+    paginate(-1);
+    table.previousPage();
+  };
 
   const handleSearch = (text: string) => {
-    setQuery(text)
+    setQuery(text);
 
     if (text) {
-      table.gotoPage(0)
+      table.gotoPage(0);
     }
-  }
+  };
 
-  const debouncedSearch = React.useMemo(() => debounce(handleSearch, 300), [])
+  const debouncedSearch = React.useMemo(() => debounce(handleSearch, 300), []);
 
   // ********* RENDER *********
 
@@ -169,8 +169,8 @@ export function PriceListTable(props: PriceListTableProps) {
         {/* BODY */}
         <Table.Body {...table.getTableBodyProps()}>
           {table.rows.map((row) => {
-            table.prepareRow(row)
-            return <PriceListTableRow row={row} />
+            table.prepareRow(row);
+            return <PriceListTableRow row={row} />;
           })}
         </Table.Body>
       </Table>
@@ -190,5 +190,5 @@ export function PriceListTable(props: PriceListTableProps) {
         hasPrev={table.canPreviousPage}
       />
     </>
-  )
+  );
 }

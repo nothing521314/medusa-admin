@@ -1,18 +1,18 @@
-import { storiesOf } from "@storybook/react"
-import React from "react"
-import { Controller, useForm, useWatch } from "react-hook-form"
-import ExperimentalSelect from "."
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import { countries } from "../../../../../utils/countries"
-import Button from "../../../../fundamentals/button"
-import Modal from "../../../modal"
+import { storiesOf } from "@storybook/react";
+import React from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import ExperimentalSelect from ".";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import { countries } from "../../../../../utils/countries";
+import Button from "../../../../fundamentals/button";
+import Modal from "../../../modal";
 
 type SelectOption = {
-  value: string
-  label: string
-  isDisabled?: boolean
-  isFixed?: boolean
-}
+  value: string;
+  label: string;
+  isDisabled?: boolean;
+  isFixed?: boolean;
+};
 
 const options: SelectOption[] = [
   {
@@ -61,24 +61,24 @@ const options: SelectOption[] = [
     value: "11",
     label: "Middle East",
   },
-]
+];
 
 const countryOptions = countries.map((c) => ({
   label: c.name,
   value: c.alpha2,
-}))
+}));
 
 storiesOf("Molecules/Select/Next/Select", module).add(
   "Controlled Single Select",
   () => {
     const form = useForm<{
-      options: SelectOption[]
-    }>({ defaultValues: { options: [] } })
+      options: SelectOption[];
+    }>({ defaultValues: { options: [] } });
 
     const liveData = useWatch({
       control: form.control,
       name: "options",
-    })
+    });
 
     return (
       <div>
@@ -94,7 +94,7 @@ storiesOf("Molecules/Select/Next/Select", module).add(
                 value={value}
                 onChange={onChange}
               />
-            )
+            );
           }}
         />
 
@@ -103,21 +103,21 @@ storiesOf("Molecules/Select/Next/Select", module).add(
           <pre>{JSON.stringify(liveData, null, 4)}</pre>
         </div>
       </div>
-    )
+    );
   }
-)
+);
 
 storiesOf("Molecules/Select/Next/Select", module).add(
   "Controlled Multi Select",
   () => {
     const form = useForm<{
-      options: SelectOption[]
-    }>({ defaultValues: { options: [] } })
+      options: SelectOption[];
+    }>({ defaultValues: { options: [] } });
 
     const liveData = useWatch({
       control: form.control,
       name: "options",
-    })
+    });
 
     return (
       <div>
@@ -135,7 +135,7 @@ storiesOf("Molecules/Select/Next/Select", module).add(
                 isMulti
                 selectAll
               />
-            )
+            );
           }}
         />
 
@@ -144,14 +144,14 @@ storiesOf("Molecules/Select/Next/Select", module).add(
           <pre>{JSON.stringify(liveData, null, 4)}</pre>
         </div>
       </div>
-    )
+    );
   }
-)
+);
 
 storiesOf("Molecules/Select/Next/Select", module).add("Small Select", () => {
   const form = useForm<{
-    options: SelectOption[]
-  }>({ defaultValues: { options: [] } })
+    options: SelectOption[];
+  }>({ defaultValues: { options: [] } });
 
   return (
     <div>
@@ -168,17 +168,17 @@ storiesOf("Molecules/Select/Next/Select", module).add("Small Select", () => {
               onChange={onChange}
               size="sm"
             />
-          )
+          );
         }}
       />
     </div>
-  )
-})
+  );
+});
 
 storiesOf("Molecules/Select/Next/Select", module).add("Loading Select", () => {
   const form = useForm<{
-    options: SelectOption[]
-  }>({ defaultValues: { options: [] } })
+    options: SelectOption[];
+  }>({ defaultValues: { options: [] } });
 
   return (
     <div>
@@ -194,24 +194,24 @@ storiesOf("Molecules/Select/Next/Select", module).add("Loading Select", () => {
               onChange={onChange}
               isLoading={true}
             />
-          )
+          );
         }}
       />
     </div>
-  )
-})
+  );
+});
 
 storiesOf("Molecules/Select/Next/Select", module).add("In Modal", () => {
   const form = useForm<{
-    options: SelectOption[]
-  }>({ defaultValues: { options: [] } })
+    options: SelectOption[];
+  }>({ defaultValues: { options: [] } });
 
   const liveData = useWatch({
     control: form.control,
     name: "options",
-  })
+  });
 
-  const { toggle, state } = useToggleState()
+  const { toggle, state } = useToggleState();
 
   return (
     <>
@@ -245,7 +245,7 @@ storiesOf("Molecules/Select/Next/Select", module).add("In Modal", () => {
                     isMulti
                     menuPortalTarget={document.body}
                   />
-                )
+                );
               }}
             />
           </Modal.Content>
@@ -262,5 +262,5 @@ storiesOf("Molecules/Select/Next/Select", module).add("In Modal", () => {
         </Modal.Body>
       </Modal>
     </>
-  )
-})
+  );
+});

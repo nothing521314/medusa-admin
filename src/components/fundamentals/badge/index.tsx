@@ -1,9 +1,9 @@
-import clsx from "clsx"
-import React from "react"
+import clsx from "clsx";
+import React from "react";
 
 type BadgeProps = {
-  variant: "primary" | "danger" | "success" | "warning" | "ghost" | "default"
-} & React.HTMLAttributes<HTMLDivElement>
+  variant: "primary" | "danger" | "success" | "warning" | "ghost" | "default";
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const Badge: React.FC<BadgeProps> = ({
   children,
@@ -19,7 +19,7 @@ const Badge: React.FC<BadgeProps> = ({
     ["badge-warning"]: variant === "warning",
     ["badge-ghost"]: variant === "ghost",
     ["badge-default"]: variant === "default",
-  })
+  });
 
   return (
     <div
@@ -29,7 +29,7 @@ const Badge: React.FC<BadgeProps> = ({
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default Badge
+export default Badge;

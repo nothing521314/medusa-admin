@@ -1,7 +1,7 @@
-import clsx from "clsx"
-import React from "react"
-import { GroupBase, SingleValueProps } from "react-select"
-import { hasPrefix } from "../utils"
+import clsx from "clsx";
+import React from "react";
+import { GroupBase, SingleValueProps } from "react-select";
+import { hasPrefix } from "../utils";
 
 const SingleValue = <
   Option,
@@ -15,7 +15,7 @@ const SingleValue = <
   isDisabled,
   data,
 }: SingleValueProps<Option, IsMulti, Group>) => {
-  const prefix = hasPrefix(data) ? data.prefix : null
+  const prefix = hasPrefix(data) ? data.prefix : null;
 
   return (
     <div
@@ -36,7 +36,7 @@ const SingleValue = <
         {children}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SingleValue
+export default SingleValue;

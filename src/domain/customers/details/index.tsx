@@ -1,51 +1,51 @@
-import { Customer } from "@medusajs/medusa"
-import { RouteComponentProps } from "@reach/router"
-import React, { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import { SelectComponents } from "../../../components/molecules/select/select-components"
+import { Customer } from "@medusajs/medusa";
+import { RouteComponentProps } from "@reach/router";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { SelectComponents } from "../../../components/molecules/select/select-components";
 import {
   useAdminCustomer,
   useAdminUpdateCustomer,
-} from "../../../../medusa-react"
-import LockIcon from "../../../components/fundamentals/icons/lock-icon"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import InputField from "../../../components/molecules/input"
-import Section from "../../../components/organisms/section"
-import BodyCard from "../../../components/organisms/body-card"
-import useNotification from "../../../hooks/use-notification"
-import Button from "../../../components/fundamentals/button"
-import { getErrorMessage } from "../../../utils/error-messages"
-import Validator from "../../../utils/validator"
-import { navigate } from "gatsby"
+} from "../../../../medusa-react";
+import LockIcon from "../../../components/fundamentals/icons/lock-icon";
+import Breadcrumb from "../../../components/molecules/breadcrumb";
+import InputField from "../../../components/molecules/input";
+import Section from "../../../components/organisms/section";
+import BodyCard from "../../../components/organisms/body-card";
+import useNotification from "../../../hooks/use-notification";
+import Button from "../../../components/fundamentals/button";
+import { getErrorMessage } from "../../../utils/error-messages";
+import Validator from "../../../utils/validator";
+import { navigate } from "gatsby";
 
 type CustomerDetailProps = {
-  id: string
-} & RouteComponentProps
+  id: string;
+} & RouteComponentProps;
 
 type EditCustomerFormType = {
-  first_name: string
-  last_name: string
-  email: string
-  phone: string | null
-}
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+};
 
 const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
-  const [customer, setCustomer] = useState<Customer>()
+  const [customer, setCustomer] = useState<Customer>();
   const {
     register,
     reset,
     handleSubmit,
     formState: { isDirty, isValid },
-  } = useForm<EditCustomerFormType>()
-  const notification = useNotification()
-  const updateCustomer = useAdminUpdateCustomer(id)
+  } = useForm<EditCustomerFormType>();
+  const notification = useNotification();
+  const updateCustomer = useAdminUpdateCustomer(id);
   // Fetch info
   useAdminCustomer(id, {
     onSuccess(data) {
-      setCustomer(data.customer)
+      setCustomer(data.customer);
     },
     cacheTime: 0,
-  })
+  });
 
   const onSubmit = handleSubmit((data) => {
     updateCustomer.mutate(
@@ -58,34 +58,34 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully updated customer", "success")
+          notification("Success", "Successfully updated customer", "success");
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification("Error", getErrorMessage(err), "error");
         },
       }
-    )
-  })
+    );
+  });
 
   useEffect(() => {
-    if (customer) reset(getDefaultValues(customer))
-  }, [customer])
+    if (customer) reset(getDefaultValues(customer));
+  }, [customer]);
 
   const customerName = () => {
     if (customer?.first_name && customer?.last_name) {
-      return `${customer.first_name} ${customer.last_name}`
+      return `${customer.first_name} ${customer.last_name}`;
     } else {
-      return customer?.email
+      return customer?.email;
     }
-  }
+  };
   console.log(
     "!isDirty || !isValid || updateCustomer.isLoading",
     !isDirty,
     !isValid,
     updateCustomer.isLoading
-  )
+  );
 
-  if (!customer) return null
+  if (!customer) return null;
 
   return (
     <div>
@@ -158,10 +158,10 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
         </div>
       </BodyCard>
     </div>
-  )
-}
+  );
+};
 
-export default CustomerDetail
+export default CustomerDetail;
 
 const getDefaultValues = (customer: Customer): EditCustomerFormType => {
   return {
@@ -169,5 +169,5 @@ const getDefaultValues = (customer: Customer): EditCustomerFormType => {
     email: customer.email,
     last_name: customer.last_name,
     phone: customer.phone,
-  }
-}
+  };
+};

@@ -1,40 +1,40 @@
-import { useAdminRegions } from "../../../../../medusa-react"
-import React, { useEffect, useMemo } from "react"
-import { Controller, useWatch } from "react-hook-form"
-import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal"
-import Select from "../../../../components/molecules/select"
-import { useNewOrderForm } from "../form"
+import { useAdminRegions } from "../../../../../medusa-react";
+import React, { useEffect, useMemo } from "react";
+import { Controller, useWatch } from "react-hook-form";
+import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal";
+import Select from "../../../../components/molecules/select";
+import { useNewOrderForm } from "../form";
 
 const SelectRegionScreen = () => {
-  const { enableNextPage, disableNextPage } = React.useContext(SteppedContext)
+  const { enableNextPage, disableNextPage } = React.useContext(SteppedContext);
 
-  const { control } = useNewOrderForm()
+  const { control } = useNewOrderForm();
 
   const reg = useWatch({
     control,
     name: "region",
-  })
+  });
 
-  const { regions } = useAdminRegions()
+  const { regions } = useAdminRegions();
 
   const regionOptions = useMemo(() => {
     if (!regions) {
-      return []
+      return [];
     }
 
     return regions.map((region) => ({
       label: region.name,
       value: region.id,
-    }))
-  }, [regions])
+    }));
+  }, [regions]);
 
   useEffect(() => {
     if (!reg) {
-      disableNextPage()
+      disableNextPage();
     } else {
-      enableNextPage()
+      enableNextPage();
     }
-  }, [reg])
+  }, [reg]);
 
   return (
     <div className="flex flex-col min-h-[705px]">
@@ -50,11 +50,11 @@ const SelectRegionScreen = () => {
               value={value}
               options={regionOptions}
             />
-          )
+          );
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default SelectRegionScreen
+export default SelectRegionScreen;

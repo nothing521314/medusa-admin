@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const ImagePlaceholderIcon: React.FC<IconProps> = ({
   size = "24",
@@ -37,7 +37,7 @@ const ImagePlaceholderIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default ImagePlaceholderIcon
+export default ImagePlaceholderIcon;

@@ -1,18 +1,18 @@
-import React from "react"
-import ReactJson from "react-json-view"
+import React from "react";
+import ReactJson from "react-json-view";
 
-import BodyCard from "../body-card"
+import BodyCard from "../body-card";
 
 type RawJSONProps = {
   /**
    * JSON data to render
    */
-  data?: object
+  data?: object;
   /**
    * Body card title.
    */
-  title: string
-}
+  title: string;
+};
 
 /**
  * Renders a (collapsed) JSON tree section.
@@ -21,13 +21,13 @@ type RawJSONProps = {
  * @return {Object} - React element
  */
 function RawJSON(props: RawJSONProps) {
-  const { title, data } = props
+  const { title, data } = props;
 
   if (!data) {
-    return null
+    return null;
   }
 
-  const dataCount = Object.keys(data).length
+  const dataCount = Object.keys(data).length;
 
   return (
     <BodyCard className={"w-full mb-4 min-h-0 h-auto"} title={title}>
@@ -43,7 +43,7 @@ function RawJSON(props: RawJSONProps) {
         </div>
       </div>
     </BodyCard>
-  )
+  );
 }
 
-export default RawJSON
+export default RawJSON;

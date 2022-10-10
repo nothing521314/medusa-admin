@@ -1,29 +1,29 @@
-import { Product } from "@medusajs/medusa"
-import { navigate } from "gatsby"
+import { Product } from "@medusajs/medusa";
+import { navigate } from "gatsby";
 import {
   useAdminDeleteProduct,
   useAdminProductTypes,
   useAdminUpdateProduct,
-} from "../../../../../medusa-react"
-import React from "react"
-import { Controller } from "react-hook-form"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
-import UnpublishIcon from "../../../../components/fundamentals/icons/unpublish-icon"
-import Input from "../../../../components/molecules/input"
-import Select from "../../../../components/molecules/select"
-import StatusSelector from "../../../../components/molecules/status-selector"
-import TagInput from "../../../../components/molecules/tag-input"
-import TextArea from "../../../../components/molecules/textarea"
-import BodyCard from "../../../../components/organisms/body-card"
-import DetailsCollapsible from "../../../../components/organisms/details-collapsible"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import FormValidator from "../../../../utils/form-validator"
-import { useGiftCardForm } from "../form/gift-card-form-context"
+} from "../../../../../medusa-react";
+import React from "react";
+import { Controller } from "react-hook-form";
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon";
+import UnpublishIcon from "../../../../components/fundamentals/icons/unpublish-icon";
+import Input from "../../../../components/molecules/input";
+import Select from "../../../../components/molecules/select";
+import StatusSelector from "../../../../components/molecules/status-selector";
+import TagInput from "../../../../components/molecules/tag-input";
+import TextArea from "../../../../components/molecules/textarea";
+import BodyCard from "../../../../components/organisms/body-card";
+import DetailsCollapsible from "../../../../components/organisms/details-collapsible";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import FormValidator from "../../../../utils/form-validator";
+import { useGiftCardForm } from "../form/gift-card-form-context";
 
 type InformationProps = {
-  giftCard: Omit<Product, "beforeInsert">
-}
+  giftCard: Omit<Product, "beforeInsert">;
+};
 
 const Information: React.FC<InformationProps> = ({ giftCard }) => {
   const {
@@ -33,29 +33,29 @@ const Information: React.FC<InformationProps> = ({ giftCard }) => {
       control,
       formState: { errors },
     },
-  } = useGiftCardForm()
-  const notification = useNotification()
+  } = useGiftCardForm();
+  const notification = useNotification();
   const { product_types } = useAdminProductTypes(undefined, {
     cacheTime: 0,
-  })
+  });
 
   const typeOptions =
-    product_types?.map((tag) => ({ label: tag.value, value: tag.id })) || []
+    product_types?.map((tag) => ({ label: tag.value, value: tag.id })) || [];
 
-  const updateGiftCard = useAdminUpdateProduct(giftCard.id)
-  const deleteGiftCard = useAdminDeleteProduct(giftCard.id)
+  const updateGiftCard = useAdminUpdateProduct(giftCard.id);
+  const deleteGiftCard = useAdminDeleteProduct(giftCard.id);
 
   const setNewType = (value: string) => {
     const newType = {
       label: value,
       value,
-    }
+    };
 
-    typeOptions.push(newType)
-    setValue("type", newType)
+    typeOptions.push(newType);
+    setValue("type", newType);
 
-    return newType
-  }
+    return newType;
+  };
 
   const onUpdate = () => {
     updateGiftCard.mutate(
@@ -65,26 +65,26 @@ const Information: React.FC<InformationProps> = ({ giftCard }) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Gift card updated successfully", "success")
+          notification("Success", "Gift card updated successfully", "success");
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification("Error", getErrorMessage(error), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   const onDelete = () => {
     deleteGiftCard.mutate(undefined, {
       onSuccess: () => {
-        navigate("/a/gift-cards")
-        notification("Success", "Gift card updated successfully", "success")
+        navigate("/a/gift-cards");
+        notification("Success", "Gift card updated successfully", "success");
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification("Error", getErrorMessage(error), "error");
       },
-    })
-  }
+    });
+  };
 
   return (
     <BodyCard
@@ -177,11 +177,11 @@ const Information: React.FC<InformationProps> = ({ giftCard }) => {
                     value={value}
                     isCreatable
                     onCreateOption={(value) => {
-                      return setNewType(value)
+                      return setNewType(value);
                     }}
                     clearSelected
                   />
-                )
+                );
               }}
             />
             <Controller
@@ -195,7 +195,7 @@ const Information: React.FC<InformationProps> = ({ giftCard }) => {
                     onChange={onChange}
                     values={value || []}
                   />
-                )
+                );
               }}
               control={control}
             />
@@ -203,15 +203,15 @@ const Information: React.FC<InformationProps> = ({ giftCard }) => {
         </DetailsCollapsible>
       </div>
     </BodyCard>
-  )
-}
+  );
+};
 
 const GiftCardStatusSelector = ({
   currentStatus,
   onUpdate,
 }: {
-  currentStatus: "draft" | "proposed" | "published" | "rejected"
-  onUpdate: () => void
+  currentStatus: "draft" | "proposed" | "published" | "rejected";
+  onUpdate: () => void;
 }) => {
   return (
     <StatusSelector
@@ -220,7 +220,7 @@ const GiftCardStatusSelector = ({
       isDraft={currentStatus === "draft"}
       onChange={onUpdate}
     />
-  )
-}
+  );
+};
 
-export default Information
+export default Information;

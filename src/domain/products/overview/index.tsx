@@ -1,58 +1,61 @@
-import { navigate, RouteComponentProps, useLocation } from "@reach/router"
-import { useAdminCreateBatchJob, useAdminCreateCollection } from "../../../../medusa-react"
-import React, { useEffect, useState } from "react"
-import Fade from "../../../components/atoms/fade-wrapper"
-import Button from "../../../components/fundamentals/button"
-import ExportIcon from "../../../components/fundamentals/icons/export-icon"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import UploadIcon from "../../../components/fundamentals/icons/upload-icon"
-import BodyCard from "../../../components/organisms/body-card"
-import TableViewHeader from "../../../components/organisms/custom-table-header"
-import ExportModal from "../../../components/organisms/export-modal"
-import AddCollectionModal from "../../../components/templates/collection-modal"
-import CollectionsTable from "../../../components/templates/collections-table"
-import ProductTable from "../../../components/templates/product-table"
-import useNotification from "../../../hooks/use-notification"
-import useToggleState from "../../../hooks/use-toggle-state"
-import { getErrorMessage } from "../../../utils/error-messages"
-import ImportProducts from "../batch-job/import"
-import NewProduct from "../new"
+import { navigate, RouteComponentProps, useLocation } from "@reach/router";
+import {
+  useAdminCreateBatchJob,
+  useAdminCreateCollection,
+} from "../../../../medusa-react";
+import React, { useEffect, useState } from "react";
+import Fade from "../../../components/atoms/fade-wrapper";
+import Button from "../../../components/fundamentals/button";
+import ExportIcon from "../../../components/fundamentals/icons/export-icon";
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
+import UploadIcon from "../../../components/fundamentals/icons/upload-icon";
+import BodyCard from "../../../components/organisms/body-card";
+import TableViewHeader from "../../../components/organisms/custom-table-header";
+import ExportModal from "../../../components/organisms/export-modal";
+import AddCollectionModal from "../../../components/templates/collection-modal";
+import CollectionsTable from "../../../components/templates/collections-table";
+import ProductTable from "../../../components/templates/product-table";
+import useNotification from "../../../hooks/use-notification";
+import useToggleState from "../../../hooks/use-toggle-state";
+import { getErrorMessage } from "../../../utils/error-messages";
+import ImportProducts from "../batch-job/import";
+import NewProduct from "../new";
 
-const VIEWS = ["products", "collections"]
+const VIEWS = ["products", "collections"];
 
 const Overview = (_props: RouteComponentProps) => {
-  const location = useLocation()
-  const [view, setView] = useState("products")
+  const location = useLocation();
+  const [view, setView] = useState("products");
   const {
     state: createProductState,
     close: closeProductCreate,
     open: openProductCreate,
-  } = useToggleState()
+  } = useToggleState();
 
-  const createBatchJob = useAdminCreateBatchJob()
+  const createBatchJob = useAdminCreateBatchJob();
 
-  const notification = useNotification()
+  const notification = useNotification();
 
-  const createCollection = useAdminCreateCollection()
+  const createCollection = useAdminCreateCollection();
 
   useEffect(() => {
     if (location.search.includes("?view=collections")) {
-      setView("collections")
+      setView("collections");
     }
-  }, [location])
+  }, [location]);
 
   useEffect(() => {
-    location.search = ""
-  }, [view])
+    location.search = "";
+  }, [view]);
 
   const CurrentView = () => {
     switch (view) {
       case "products":
-        return <ProductTable />
+        return <ProductTable />;
       default:
-        return <CollectionsTable />
+        return <CollectionsTable />;
     }
-  }
+  };
 
   const CurrentAction = () => {
     switch (view) {
@@ -84,7 +87,7 @@ const Overview = (_props: RouteComponentProps) => {
               New Product
             </Button>
           </div>
-        )
+        );
       default:
         return (
           <div className="flex space-x-2">
@@ -97,22 +100,22 @@ const Overview = (_props: RouteComponentProps) => {
               New Collection
             </Button>
           </div>
-        )
+        );
     }
-  }
+  };
 
-  const [showNewCollection, setShowNewCollection] = useState(false)
+  const [showNewCollection, setShowNewCollection] = useState(false);
   const {
     open: openExportModal,
     close: closeExportModal,
     state: exportModalOpen,
-  } = useToggleState(false)
+  } = useToggleState(false);
 
   const {
     open: openImportModal,
     close: closeImportModal,
     state: importModalOpen,
-  } = useToggleState(false)
+  } = useToggleState(false);
 
   const handleCreateCollection = async (data, colMetadata) => {
     const metadata = colMetadata
@@ -121,40 +124,40 @@ const Overview = (_props: RouteComponentProps) => {
         return {
           ...acc,
           [next.key]: next.value,
-        }
-      }, {})
+        };
+      }, {});
 
     await createCollection.mutateAsync(
       { ...data, metadata },
       {
         onSuccess: ({ collection }) => {
-          notification("Success", "Successfully created collection", "success")
-          navigate(`/a/collections/${collection.id}`)
-          setShowNewCollection(false)
+          notification("Success", "Successfully created collection", "success");
+          navigate(`/a/collections/${collection.id}`);
+          setShowNewCollection(false);
         },
         onError: (err) => notification("Error", getErrorMessage(err), "error"),
       }
-    )
-  }
+    );
+  };
 
   const handleCreateExport = () => {
     const reqObj = {
       type: "product-export",
       context: {},
       dry_run: false,
-    }
+    };
 
     createBatchJob.mutate(reqObj, {
       onSuccess: () => {
-        notification("Success", "Successfully initiated export", "success")
+        notification("Success", "Successfully initiated export", "success");
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification("Error", getErrorMessage(err), "error");
       },
-    })
+    });
 
-    closeExportModal()
-  }
+    closeExportModal();
+  };
 
   return (
     <>
@@ -196,7 +199,7 @@ const Overview = (_props: RouteComponentProps) => {
         <NewProduct onClose={closeProductCreate} />
       </Fade>
     </>
-  )
-}
+  );
+};
 
-export default Overview
+export default Overview;

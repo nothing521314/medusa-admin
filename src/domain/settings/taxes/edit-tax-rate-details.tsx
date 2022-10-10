@@ -1,19 +1,19 @@
-import React from "react"
-import LockIcon from "../../../components/fundamentals/icons/lock-icon"
-import Input from "../../../components/molecules/input"
-import FormValidator from "../../../utils/form-validator"
-import { NestedForm } from "../../../utils/nested-form"
+import React from "react";
+import LockIcon from "../../../components/fundamentals/icons/lock-icon";
+import Input from "../../../components/molecules/input";
+import FormValidator from "../../../utils/form-validator";
+import { NestedForm } from "../../../utils/nested-form";
 
 export type EditTaxRateFormType = {
-  name: string
-  rate: number
-  code: string
-}
+  name: string;
+  rate: number;
+  code: string;
+};
 
 type EditTaxRateProps = {
-  form: NestedForm<EditTaxRateFormType>
-  lockName?: boolean
-}
+  form: NestedForm<EditTaxRateFormType>;
+  lockName?: boolean;
+};
 
 export const EditTaxRateDetails = ({
   lockName = false,
@@ -23,7 +23,7 @@ export const EditTaxRateDetails = ({
     register,
     path,
     formState: { errors },
-  } = form
+  } = form;
 
   return (
     <div>
@@ -70,5 +70,5 @@ export const EditTaxRateDetails = ({
         errors={errors}
       />
     </div>
-  )
-}
+  );
+};

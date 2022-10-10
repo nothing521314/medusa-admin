@@ -1,26 +1,26 @@
-import React from "react"
-import { QueryClientProvider, QueryClientProviderProps } from "react-query"
-import Medusa from "../../../medusa-js"
+import React from "react";
+import { QueryClientProvider, QueryClientProviderProps } from "react-query";
+import Medusa from "../../../medusa-js";
 
 interface MedusaContextState {
-  client: Medusa
+  client: Medusa;
 }
 
-const MedusaContext = React.createContext<MedusaContextState | null>(null)
+const MedusaContext = React.createContext<MedusaContextState | null>(null);
 
 export const useMedusa = () => {
-  const context = React.useContext(MedusaContext)
+  const context = React.useContext(MedusaContext);
   if (!context) {
-    throw new Error("useMedusa must be used within a MedusaProvider")
+    throw new Error("useMedusa must be used within a MedusaProvider");
   }
-  return context
-}
+  return context;
+};
 
 interface MedusaProviderProps {
-  baseUrl: string
-  queryClientProviderProps: QueryClientProviderProps
-  children: React.ReactNode
-  apiKey?: string
+  baseUrl: string;
+  queryClientProviderProps: QueryClientProviderProps;
+  children: React.ReactNode;
+  apiKey?: string;
 }
 
 export const MedusaProvider = ({
@@ -29,7 +29,7 @@ export const MedusaProvider = ({
   apiKey,
   children,
 }: MedusaProviderProps) => {
-  const medusaClient = new Medusa({ baseUrl, maxRetries: 0, apiKey })
+  const medusaClient = new Medusa({ baseUrl, maxRetries: 0, apiKey });
   return (
     <QueryClientProvider {...queryClientProviderProps}>
       <MedusaContext.Provider
@@ -40,5 +40,5 @@ export const MedusaProvider = ({
         {children}
       </MedusaContext.Provider>
     </QueryClientProvider>
-  )
-}
+  );
+};

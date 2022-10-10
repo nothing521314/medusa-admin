@@ -1,8 +1,8 @@
-import React from "react"
+import React from "react";
 
 type SidebarCompanyLogoProps = {
-  storeName?: string
-}
+  storeName?: string;
+};
 
 const SidebarCompanyLogo: React.FC<SidebarCompanyLogoProps> = ({
   storeName,
@@ -14,7 +14,7 @@ const SidebarCompanyLogo: React.FC<SidebarCompanyLogoProps> = ({
       </div>
       <span className="font-semibold ml-2.5">{storeName}</span>
     </div>
-  )
-}
+  );
+};
 
-export default SidebarCompanyLogo
+export default SidebarCompanyLogo;

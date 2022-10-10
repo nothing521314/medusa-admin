@@ -1,25 +1,25 @@
-import { useAdminGetDiscountCondition } from "../../../../../../../medusa-react"
-import React, { useEffect, useMemo, useState } from "react"
-import Badge from "../../../../../../components/fundamentals/badge"
-import EditIcon from "../../../../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../../../../components/fundamentals/icons/trash-icon"
-import Actionables from "../../../../../../components/molecules/actionables"
+import { useAdminGetDiscountCondition } from "../../../../../../../medusa-react";
+import React, { useEffect, useMemo, useState } from "react";
+import Badge from "../../../../../../components/fundamentals/badge";
+import EditIcon from "../../../../../../components/fundamentals/icons/edit-icon";
+import TrashIcon from "../../../../../../components/fundamentals/icons/trash-icon";
+import Actionables from "../../../../../../components/molecules/actionables";
 import {
   ConditionMap,
   DiscountConditionOperator,
-  DiscountConditionType
-} from "../../../../types"
-import EditConditionsModal from "../../edit-conditions-modal"
-import { useDiscountForm } from "../../form/discount-form-context"
+  DiscountConditionType,
+} from "../../../../types";
+import EditConditionsModal from "../../edit-conditions-modal";
+import { useDiscountForm } from "../../form/discount-form-context";
 
 type ConditionItemProps<Type extends DiscountConditionType> = {
-  index: number
-  discountId?: string
-  conditionId?: string
-  type: Type
-  setCondition: React.Dispatch<React.SetStateAction<ConditionMap>>
-  items: { id: string; label: string }[]
-}
+  index: number;
+  discountId?: string;
+  conditionId?: string;
+  type: Type;
+  setCondition: React.Dispatch<React.SetStateAction<ConditionMap>>;
+  items: { id: string; label: string }[];
+};
 
 const ConditionItem = <Type extends DiscountConditionType>({
   index,
@@ -32,17 +32,17 @@ const ConditionItem = <Type extends DiscountConditionType>({
   const queryParams = useMemo(() => {
     switch (type) {
       case DiscountConditionType.PRODUCTS:
-        return { expand: "products" }
+        return { expand: "products" };
       case DiscountConditionType.PRODUCT_COLLECTIONS:
-        return { expand: "product_collections" }
+        return { expand: "product_collections" };
       case DiscountConditionType.PRODUCT_TAGS:
-        return { expand: "product_tags" }
+        return { expand: "product_tags" };
       case DiscountConditionType.CUSTOMER_GROUPS:
-        return { expand: "customer_groups" }
+        return { expand: "customer_groups" };
       case DiscountConditionType.PRODUCT_TYPES:
-        return { expand: "product_types" }
+        return { expand: "product_types" };
     }
-  }, [type])
+  }, [type]);
 
   const { discount_condition } = useAdminGetDiscountCondition(
     discountId!,
@@ -52,15 +52,15 @@ const ConditionItem = <Type extends DiscountConditionType>({
       enabled: !!discountId && !!conditionId,
       cacheTime: 0,
     }
-  )
+  );
 
-  const { updateCondition } = useDiscountForm()
+  const { updateCondition } = useDiscountForm();
 
-  const [showEdit, setShowEdit] = useState(false)
+  const [showEdit, setShowEdit] = useState(false);
 
   useEffect(() => {
     if (!discount_condition) {
-      return
+      return;
     }
 
     switch (type) {
@@ -77,9 +77,9 @@ const ConditionItem = <Type extends DiscountConditionType>({
                 label: p.title,
               })),
             },
-          }
-        })
-        break
+          };
+        });
+        break;
       case DiscountConditionType.PRODUCT_COLLECTIONS:
         setCondition((prevConditions) => {
           return {
@@ -93,9 +93,9 @@ const ConditionItem = <Type extends DiscountConditionType>({
                 label: p.title,
               })),
             },
-          }
-        })
-        break
+          };
+        });
+        break;
       case DiscountConditionType.PRODUCT_TAGS:
         setCondition((prevConditions) => {
           return {
@@ -109,9 +109,9 @@ const ConditionItem = <Type extends DiscountConditionType>({
                 label: p.value,
               })),
             },
-          }
-        })
-        break
+          };
+        });
+        break;
       case DiscountConditionType.CUSTOMER_GROUPS:
         setCondition((prevConditions) => {
           return {
@@ -125,9 +125,9 @@ const ConditionItem = <Type extends DiscountConditionType>({
                 label: p.name,
               })),
             },
-          }
-        })
-        break
+          };
+        });
+        break;
       case DiscountConditionType.PRODUCT_TYPES:
         setCondition((prevConditions) => {
           return {
@@ -141,23 +141,23 @@ const ConditionItem = <Type extends DiscountConditionType>({
                 label: p.value,
               })),
             },
-          }
-        })
-        break
+          };
+        });
+        break;
     }
-  }, [discount_condition, type])
+  }, [discount_condition, type]);
 
   const [visibleItems, remainder] = useMemo(() => {
-    const columns = Math.max(Math.floor(400 / 110) - 1, 1)
-    const visibleItems = items.slice(0, columns)
-    const remainder = items.length - columns
+    const columns = Math.max(Math.floor(400 / 110) - 1, 1);
+    const visibleItems = items.slice(0, columns);
+    const remainder = items.length - columns;
 
-    return [visibleItems, remainder]
-  }, [items])
+    return [visibleItems, remainder];
+  }, [items]);
 
   // If no items in the list, don't render anything
   if (!items.length) {
-    return null
+    return null;
   }
 
   return (
@@ -183,7 +183,7 @@ const ConditionItem = <Type extends DiscountConditionType>({
                       {item.label}
                       {i !== visibleItems.length - 1 && ", "}
                     </span>
-                  )
+                  );
                 })}
                 {remainder > 0 && (
                   <span className="text-grey-40 ml-2">+{remainder} more</span>
@@ -220,22 +220,22 @@ const ConditionItem = <Type extends DiscountConditionType>({
         <EditConditionsModal onClose={() => setShowEdit(false)} view={type} />
       )}
     </div>
-  )
-}
+  );
+};
 
 const getTitle = (type: DiscountConditionType) => {
   switch (type) {
     case DiscountConditionType.PRODUCTS:
-      return "Product"
+      return "Product";
     case DiscountConditionType.PRODUCT_COLLECTIONS:
-      return "Collection"
+      return "Collection";
     case DiscountConditionType.PRODUCT_TAGS:
-      return "Tag"
+      return "Tag";
     case DiscountConditionType.CUSTOMER_GROUPS:
-      return "Customer group"
+      return "Customer group";
     case DiscountConditionType.PRODUCT_TYPES:
-      return "Type"
+      return "Type";
   }
-}
+};
 
-export default ConditionItem
+export default ConditionItem;

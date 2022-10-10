@@ -1,14 +1,14 @@
-import { isEmpty } from "lodash"
-import { RegionInfo, ProductVariantInfo } from "../types"
+import { isEmpty } from "lodash";
+import { RegionInfo, ProductVariantInfo } from "../types";
 
 type FormatVariantPriceParams = {
-  variant: ProductVariantInfo
-  region: RegionInfo
-  includeTaxes?: boolean
-  minimumFractionDigits?: number
-  maximumFractionDigits?: number
-  locale?: string
-}
+  variant: ProductVariantInfo;
+  region: RegionInfo;
+  includeTaxes?: boolean;
+  minimumFractionDigits?: number;
+  maximumFractionDigits?: number;
+  locale?: string;
+};
 
 /**
  * Takes a product variant and a region, and converts the variant's price to a localized decimal format
@@ -19,20 +19,20 @@ export const formatVariantPrice = ({
   includeTaxes = true,
   ...rest
 }: FormatVariantPriceParams) => {
-  const amount = computeVariantPrice({ variant, region, includeTaxes })
+  const amount = computeVariantPrice({ variant, region, includeTaxes });
 
   return convertToLocale({
     amount,
     currency_code: region?.currency_code,
     ...rest,
-  })
-}
+  });
+};
 
 type ComputeVariantPriceParams = {
-  variant: ProductVariantInfo
-  region: RegionInfo
-  includeTaxes?: boolean
-}
+  variant: ProductVariantInfo;
+  region: RegionInfo;
+  includeTaxes?: boolean;
+};
 
 /**
  * Takes a product variant and region, and returns the variant price as a decimal number
@@ -45,14 +45,14 @@ export const computeVariantPrice = ({
   region,
   includeTaxes = true,
 }: ComputeVariantPriceParams) => {
-  const amount = getVariantPrice(variant, region)
+  const amount = getVariantPrice(variant, region);
 
   return computeAmount({
     amount,
     region,
     includeTaxes,
-  })
-}
+  });
+};
 
 /**
  * Finds the price amount correspoding to the region selected
@@ -65,17 +65,18 @@ export const getVariantPrice = (
   region: RegionInfo
 ) => {
   let price = variant?.prices?.find(
-    p => p.currency_code.toLowerCase() === region?.currency_code?.toLowerCase()
-  )
+    (p) =>
+      p.currency_code.toLowerCase() === region?.currency_code?.toLowerCase()
+  );
 
-  return price?.amount || 0
-}
+  return price?.amount || 0;
+};
 
 type ComputeAmountParams = {
-  amount: number
-  region: RegionInfo
-  includeTaxes?: boolean
-}
+  amount: number;
+  region: RegionInfo;
+  includeTaxes?: boolean;
+};
 
 /**
  * Takes an amount, a region, and returns the amount as a decimal including or excluding taxes
@@ -85,23 +86,23 @@ export const computeAmount = ({
   region,
   includeTaxes = true,
 }: ComputeAmountParams) => {
-  const toDecimal = convertToDecimal(amount, region)
+  const toDecimal = convertToDecimal(amount, region);
 
-  const taxRate = includeTaxes ? getTaxRate(region) : 0
+  const taxRate = includeTaxes ? getTaxRate(region) : 0;
 
-  const amountWithTaxes = toDecimal * (1 + taxRate)
+  const amountWithTaxes = toDecimal * (1 + taxRate);
 
-  return amountWithTaxes
-}
+  return amountWithTaxes;
+};
 
 type FormatAmountParams = {
-  amount: number
-  region: RegionInfo
-  includeTaxes?: boolean
-  minimumFractionDigits?: number
-  maximumFractionDigits?: number
-  locale?: string
-}
+  amount: number;
+  region: RegionInfo;
+  includeTaxes?: boolean;
+  minimumFractionDigits?: number;
+  maximumFractionDigits?: number;
+  locale?: string;
+};
 
 /**
  * Takes an amount and a region, and converts the amount to a localized decimal format
@@ -116,30 +117,30 @@ export const formatAmount = ({
     amount,
     region,
     includeTaxes,
-  })
+  });
   return convertToLocale({
     amount: taxAwareAmount,
     currency_code: region.currency_code,
     ...rest,
-  })
-}
+  });
+};
 
 // we should probably add a more extensive list
-const noDivisionCurrencies = ["krw", "jpy", "vnd"]
+const noDivisionCurrencies = ["krw", "jpy", "vnd"];
 
 const convertToDecimal = (amount: number, region: RegionInfo) => {
   const divisor = noDivisionCurrencies.includes(
     region?.currency_code?.toLowerCase()
   )
     ? 1
-    : 100
+    : 100;
 
-  return Math.floor(amount) / divisor
-}
+  return Math.floor(amount) / divisor;
+};
 
 const getTaxRate = (region?: RegionInfo) => {
-  return region && !isEmpty(region) ? region?.tax_rate / 100 : 0
-}
+  return region && !isEmpty(region) ? region?.tax_rate / 100 : 0;
+};
 
 const convertToLocale = ({
   amount,
@@ -155,13 +156,13 @@ const convertToLocale = ({
         minimumFractionDigits,
         maximumFractionDigits,
       }).format(amount)
-    : amount.toString()
-}
+    : amount.toString();
+};
 
 type ConvertToLocaleParams = {
-  amount: number
-  currency_code: string
-  minimumFractionDigits?: number
-  maximumFractionDigits?: number
-  locale?: string
-}
+  amount: number;
+  currency_code: string;
+  minimumFractionDigits?: number;
+  maximumFractionDigits?: number;
+  locale?: string;
+};

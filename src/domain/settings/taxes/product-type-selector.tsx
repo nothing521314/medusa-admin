@@ -1,16 +1,16 @@
-import React, { useMemo, useState } from "react"
-import { useAdminProductTypes } from "../../../../medusa-react"
-import { SelectableTable } from "./selectable-table"
+import React, { useMemo, useState } from "react";
+import { useAdminProductTypes } from "../../../../medusa-react";
+import { SelectableTable } from "./selectable-table";
 
 export const ProductTypeSelector = ({ items, onChange }) => {
-  const PAGE_SIZE = 12
+  const PAGE_SIZE = 12;
 
   const [pagination, setPagination] = useState({
     limit: PAGE_SIZE,
     offset: 0,
-  })
+  });
 
-  const { isLoading, count, product_types } = useAdminProductTypes(pagination)
+  const { isLoading, count, product_types } = useAdminProductTypes(pagination);
 
   const columns = useMemo(() => {
     return [
@@ -18,11 +18,11 @@ export const ProductTypeSelector = ({ items, onChange }) => {
         Header: "Name",
         accessor: "value",
         Cell: ({ row: { original } }) => {
-          return <div className="w-[200px]">{original.value}</div>
+          return <div className="w-[200px]">{original.value}</div>;
         },
       },
-    ]
-  }, [])
+    ];
+  }, []);
 
   return (
     <SelectableTable
@@ -38,5 +38,5 @@ export const ProductTypeSelector = ({ items, onChange }) => {
       isLoading={isLoading}
       onChange={onChange}
     />
-  )
-}
+  );
+};

@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import EyeOffIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import EyeOffIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/EyeOffIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof EyeOffIcon>
+} as ComponentMeta<typeof EyeOffIcon>;
 
-const Template = (args) => <EyeOffIcon {...args} />
+const Template = (args) => <EyeOffIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "20",
   color: "currentColor",
-}
+};

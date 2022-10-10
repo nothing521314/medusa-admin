@@ -1,46 +1,46 @@
-import { useAdminRefundPayment } from "../../../../../medusa-react"
-import React, { useMemo, useState } from "react"
-import { Controller, useForm } from "react-hook-form"
-import Button from "../../../../components/fundamentals/button"
-import AlertIcon from "../../../../components/fundamentals/icons/alert-icon"
-import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
-import IconTooltip from "../../../../components/molecules/icon-tooltip"
-import Modal from "../../../../components/molecules/modal"
-import Select from "../../../../components/molecules/select"
-import TextArea from "../../../../components/molecules/textarea"
-import CurrencyInput from "../../../../components/organisms/currency-input"
-import useNotification from "../../../../hooks/use-notification"
-import { Option } from "../../../../types/shared"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import FormValidator from "../../../../utils/form-validator"
+import { useAdminRefundPayment } from "../../../../../medusa-react";
+import React, { useMemo, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import Button from "../../../../components/fundamentals/button";
+import AlertIcon from "../../../../components/fundamentals/icons/alert-icon";
+import CheckIcon from "../../../../components/fundamentals/icons/check-icon";
+import IconTooltip from "../../../../components/molecules/icon-tooltip";
+import Modal from "../../../../components/molecules/modal";
+import Select from "../../../../components/molecules/select";
+import TextArea from "../../../../components/molecules/textarea";
+import CurrencyInput from "../../../../components/organisms/currency-input";
+import useNotification from "../../../../hooks/use-notification";
+import { Option } from "../../../../types/shared";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import FormValidator from "../../../../utils/form-validator";
 
 type RefundMenuFormData = {
-  amount: number
-  reason: Option
-  no_notification: boolean
-  note?: string
-}
+  amount: number;
+  reason: Option;
+  no_notification: boolean;
+  note?: string;
+};
 
 const RefundMenu = ({ order, onDismiss }) => {
-  const { register, handleSubmit, control } = useForm<RefundMenuFormData>()
+  const { register, handleSubmit, control } = useForm<RefundMenuFormData>();
 
-  const [noNotification, setNoNotification] = useState(order.no_notification)
+  const [noNotification, setNoNotification] = useState(order.no_notification);
 
-  const notification = useNotification()
-  const createRefund = useAdminRefundPayment(order.id)
+  const notification = useNotification();
+  const createRefund = useAdminRefundPayment(order.id);
 
   const refundable = useMemo(() => {
-    return order.paid_total - order.refunded_total
-  }, [order])
+    return order.paid_total - order.refunded_total;
+  }, [order]);
 
   const reasonOptions = [
     { label: "Discount", value: "discount" },
     { label: "Other", value: "other" },
-  ]
+  ];
 
   const handleValidateRefundAmount = (value) => {
-    return value <= refundable
-  }
+    return value <= refundable;
+  };
 
   const onSubmit = (data: RefundMenuFormData) => {
     createRefund.mutate(
@@ -52,17 +52,19 @@ const RefundMenu = ({ order, onDismiss }) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully refunded order", "success")
-          onDismiss()
+          notification("Success", "Successfully refunded order", "success");
+          onDismiss();
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification("Error", getErrorMessage(error), "error");
         },
       }
-    )
-  }
+    );
+  };
 
-  const isSystemPayment = order.payments.some((p) => p.provider_id === "system")
+  const isSystemPayment = order.payments.some(
+    (p) => p.provider_id === "system"
+  );
 
   return (
     <Modal handleClose={onDismiss}>
@@ -187,7 +189,7 @@ const RefundMenu = ({ order, onDismiss }) => {
         </Modal.Body>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
-export default RefundMenu
+export default RefundMenu;

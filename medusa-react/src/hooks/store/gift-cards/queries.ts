@@ -1,15 +1,15 @@
-import { queryKeysFactory } from "../../utils/index"
-import { StoreGiftCardsRes } from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
+import { queryKeysFactory } from "../../utils/index";
+import { StoreGiftCardsRes } from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
 
-const GIFT_CARDS_QUERY_KEY = `gift_cards` as const
+const GIFT_CARDS_QUERY_KEY = `gift_cards` as const;
 
-export const giftCardKeys = queryKeysFactory(GIFT_CARDS_QUERY_KEY)
+export const giftCardKeys = queryKeysFactory(GIFT_CARDS_QUERY_KEY);
 
-type GiftCardQueryKey = typeof giftCardKeys
+type GiftCardQueryKey = typeof giftCardKeys;
 
 export const useGiftCard = (
   id: string,
@@ -19,11 +19,11 @@ export const useGiftCard = (
     ReturnType<GiftCardQueryKey["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     giftCardKeys.detail(id),
     () => client.giftCards.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

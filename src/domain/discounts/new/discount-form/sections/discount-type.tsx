@@ -1,24 +1,24 @@
-import React from "react"
-import clsx from "clsx"
-import { Controller, useWatch } from "react-hook-form"
-import RadioGroup from "../../../../../components/organisms/radio-group"
-import { DiscountRuleType } from "../../../types"
-import { useDiscountForm } from "../form/discount-form-context"
+import React from "react";
+import clsx from "clsx";
+import { Controller, useWatch } from "react-hook-form";
+import RadioGroup from "../../../../../components/organisms/radio-group";
+import { DiscountRuleType } from "../../../types";
+import { useDiscountForm } from "../form/discount-form-context";
 
 const DiscountType = () => {
-  const { control } = useDiscountForm()
+  const { control } = useDiscountForm();
 
   const regions = useWatch({
     control,
     name: "regions",
-  })
+  });
 
   return (
     <Controller
       name="rule.type"
       control={control}
       rules={{ required: true }}
-      render={({ field: { onChange, value } }) => {
+      render={({ field: { onChange, value } }) => {
         return (
           <RadioGroup.Root
             value={value}
@@ -46,10 +46,10 @@ const DiscountType = () => {
               description={"Override delivery amount"}
             />
           </RadioGroup.Root>
-        )
+        );
       }}
     />
-  )
-}
+  );
+};
 
-export default DiscountType
+export default DiscountType;

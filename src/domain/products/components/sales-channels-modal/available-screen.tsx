@@ -1,37 +1,37 @@
-import React, { useState } from "react"
-import { usePagination, useRowSelect, useTable } from "react-table"
-import Modal from "../../../../components/molecules/modal"
-import { useDebounce } from "../../../../hooks/use-debounce"
+import React, { useState } from "react";
+import { usePagination, useRowSelect, useTable } from "react-table";
+import Modal from "../../../../components/molecules/modal";
+import { useDebounce } from "../../../../hooks/use-debounce";
 import SalesChannelTable, {
   SalesChannelTableActions,
   useSalesChannelsTableColumns,
-} from "./table"
-import { useSalesChannelsModal } from "./use-sales-channels-modal"
+} from "./table";
+import { useSalesChannelsModal } from "./use-sales-channels-modal";
 
-const LIMIT = 15
+const LIMIT = 15;
 
 const AvailableScreen = () => {
-  const { source, onSave } = useSalesChannelsModal()
+  const { source, onSave } = useSalesChannelsModal();
 
-  const [columns] = useSalesChannelsTableColumns()
-  const [query, setQuery] = useState<string | undefined>(undefined)
-  const [offset, setOffset] = useState(0)
-  const [selectedRowIds, setSelectedRowIds] = useState<string[]>([])
+  const [columns] = useSalesChannelsTableColumns();
+  const [query, setQuery] = useState<string | undefined>(undefined);
+  const [offset, setOffset] = useState(0);
+  const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
 
-  const deboucedQuery = useDebounce(query, 500)
+  const deboucedQuery = useDebounce(query, 500);
 
   const filteredData = React.useMemo(() => {
     if (!deboucedQuery) {
-      return source
+      return source;
     }
 
     return source?.filter(({ name, description }) => {
       return (
         name.toLowerCase().includes(deboucedQuery.toLowerCase()) ||
         description?.toLowerCase().includes(deboucedQuery.toLowerCase())
-      )
-    })
-  }, [source, deboucedQuery])
+      );
+    });
+  }, [source, deboucedQuery]);
 
   const state = useTable(
     {
@@ -50,18 +50,18 @@ const AvailableScreen = () => {
     },
     usePagination,
     useRowSelect
-  )
+  );
 
   const onDeselect = () => {
-    setSelectedRowIds([])
-    state.toggleAllRowsSelected(false)
-  }
+    setSelectedRowIds([]);
+    state.toggleAllRowsSelected(false);
+  };
 
   const onRemove = () => {
-    const channels = source.filter((sc) => !selectedRowIds.includes(sc.id))
-    onSave(channels)
-    onDeselect()
-  }
+    const channels = source.filter((sc) => !selectedRowIds.includes(sc.id));
+    onSave(channels);
+    onDeselect();
+  };
 
   return (
     <Modal.Content>
@@ -83,7 +83,7 @@ const AvailableScreen = () => {
         tableState={state}
       />
     </Modal.Content>
-  )
-}
+  );
+};
 
-export default AvailableScreen
+export default AvailableScreen;

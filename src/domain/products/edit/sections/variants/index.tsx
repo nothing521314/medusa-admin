@@ -1,45 +1,45 @@
-import { Product, ProductVariant } from "@medusajs/medusa"
-import React, { useState } from "react"
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
-import GearIcon from "../../../../../components/fundamentals/icons/gear-icon"
-import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
-import { ActionType } from "../../../../../components/molecules/actionables"
-import Section from "../../../../../components/organisms/section"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
-import AddVariantModal from "./add-variant-modal"
-import EditVariantModal from "./edit-variant-modal"
-import EditVariantsModal from "./edit-variants-modal"
-import OptionsModal from "./options-modal"
-import OptionsProvider, { useOptionsContext } from "./options-provider"
-import VariantsTable from "./table"
+import { Product, ProductVariant } from "@medusajs/medusa";
+import React, { useState } from "react";
+import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
+import GearIcon from "../../../../../components/fundamentals/icons/gear-icon";
+import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon";
+import { ActionType } from "../../../../../components/molecules/actionables";
+import Section from "../../../../../components/organisms/section";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import useEditProductActions from "../../hooks/use-edit-product-actions";
+import AddVariantModal from "./add-variant-modal";
+import EditVariantModal from "./edit-variant-modal";
+import EditVariantsModal from "./edit-variants-modal";
+import OptionsModal from "./options-modal";
+import OptionsProvider, { useOptionsContext } from "./options-provider";
+import VariantsTable from "./table";
 
 type Props = {
-  product: Product
-}
+  product: Product;
+};
 
 const VariantsSection = ({ product }: Props) => {
   const [variantToEdit, setVariantToEdit] = useState<
     { base: ProductVariant; isDuplicate: boolean } | undefined
-  >(undefined)
+  >(undefined);
 
   const {
     state: optionState,
     close: closeOptions,
     toggle: toggleOptions,
-  } = useToggleState()
+  } = useToggleState();
 
   const {
     state: addVariantState,
     close: closeAddVariant,
     toggle: toggleAddVariant,
-  } = useToggleState()
+  } = useToggleState();
 
   const {
     state: editVariantsState,
     close: closeEditVariants,
     toggle: toggleEditVariants,
-  } = useToggleState()
+  } = useToggleState();
 
   const actions: ActionType[] = [
     {
@@ -57,22 +57,22 @@ const VariantsSection = ({ product }: Props) => {
       onClick: toggleOptions,
       icon: <GearIcon size="20" />,
     },
-  ]
+  ];
 
-  const { onDeleteVariant } = useEditProductActions(product.id)
+  const { onDeleteVariant } = useEditProductActions(product.id);
 
   const handleDeleteVariant = (variantId: string) => {
-    onDeleteVariant(variantId)
-  }
+    onDeleteVariant(variantId);
+  };
 
   const handleEditVariant = (variant: ProductVariant) => {
-    setVariantToEdit({ base: variant, isDuplicate: false })
-  }
+    setVariantToEdit({ base: variant, isDuplicate: false });
+  };
 
   const handleDuplicateVariant = (variant: ProductVariant) => {
     // @ts-ignore
-    setVariantToEdit({ base: { ...variant, options: [] }, isDuplicate: true })
-  }
+    setVariantToEdit({ base: { ...variant, options: [] }, isDuplicate: true });
+  };
 
   return (
     <OptionsProvider product={product}>
@@ -119,14 +119,14 @@ const VariantsSection = ({ product }: Props) => {
         />
       )}
     </OptionsProvider>
-  )
-}
+  );
+};
 
 const ProductOptions = () => {
-  const { options, status } = useOptionsContext()
+  const { options, status } = useOptionsContext();
 
   if (status === "error") {
-    return null
+    return null;
   }
 
   if (status === "loading" || !options) {
@@ -146,10 +146,10 @@ const ProductOptions = () => {
                 ))}
               </ul>
             </div>
-          )
+          );
         })}
       </div>
-    )
+    );
   }
 
   return (
@@ -171,10 +171,10 @@ const ProductOptions = () => {
                 ))}
             </ul>
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default VariantsSection
+export default VariantsSection;

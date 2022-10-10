@@ -1,16 +1,16 @@
-import React from "react"
-import Button from "../../fundamentals/button"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import CurrencyInput from "../../organisms/currency-input"
+import React from "react";
+import Button from "../../fundamentals/button";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import CurrencyInput from "../../organisms/currency-input";
 
 type RMAShippingPriceProps = {
-  inclTax: boolean
-  useCustomShippingPrice: boolean
-  shippingPrice: number | undefined
-  currencyCode: string
-  updateShippingPrice: (price: number | undefined) => void
-  setUseCustomShippingPrice: (useCustomShippingPrice: boolean) => void
-}
+  inclTax: boolean;
+  useCustomShippingPrice: boolean;
+  shippingPrice: number | undefined;
+  currencyCode: string;
+  updateShippingPrice: (price: number | undefined) => void;
+  setUseCustomShippingPrice: (useCustomShippingPrice: boolean) => void;
+};
 
 const RMAShippingPrice: React.FC<RMAShippingPriceProps> = ({
   useCustomShippingPrice,
@@ -54,7 +54,7 @@ const RMAShippingPrice: React.FC<RMAShippingPriceProps> = ({
         Add custom price
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default RMAShippingPrice
+export default RMAShippingPrice;

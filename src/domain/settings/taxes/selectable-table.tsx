@@ -1,32 +1,32 @@
-import React, { useMemo, useEffect } from "react"
-import clsx from "clsx"
-import { Product, ProductType, ShippingOption } from "@medusajs/medusa"
-import CheckIcon from "../../../components/fundamentals/icons/check-icon"
+import React, { useMemo, useEffect } from "react";
+import clsx from "clsx";
+import { Product, ProductType, ShippingOption } from "@medusajs/medusa";
+import CheckIcon from "../../../components/fundamentals/icons/check-icon";
 import {
   ColumnInstance,
   usePagination,
   useRowSelect,
   useTable,
-} from "react-table"
-import Table, { TablePagination } from "../../../components/molecules/table"
-import IndeterminateCheckbox from "../../../components/molecules/indeterminate-checkbox"
-import Spinner from "../../../components/atoms/spinner"
-import { PaginationProps } from "../../../types/shared"
+} from "react-table";
+import Table, { TablePagination } from "../../../components/molecules/table";
+import IndeterminateCheckbox from "../../../components/molecules/indeterminate-checkbox";
+import Spinner from "../../../components/atoms/spinner";
+import { PaginationProps } from "../../../types/shared";
 
 type SelectableTableProps = {
-  showSearch?: boolean
-  objectName?: string
-  label?: string
-  isLoading?: boolean
-  pagination: PaginationProps
-  totalCount?: number
-  data?: Product[] | ProductType[] | ShippingOption[]
-  selectedIds?: string[]
-  columns: Partial<ColumnInstance>[]
-  onPaginationChange: (pagination: PaginationProps) => void
-  onChange: (items: string[]) => void
-  onSearch?: (search: string) => void
-}
+  showSearch?: boolean;
+  objectName?: string;
+  label?: string;
+  isLoading?: boolean;
+  pagination: PaginationProps;
+  totalCount?: number;
+  data?: Product[] | ProductType[] | ShippingOption[];
+  selectedIds?: string[];
+  columns: Partial<ColumnInstance>[];
+  onPaginationChange: (pagination: PaginationProps) => void;
+  onChange: (items: string[]) => void;
+  onSearch?: (search: string) => void;
+};
 
 export const SelectableTable: React.FC<SelectableTableProps> = ({
   showSearch = true,
@@ -43,19 +43,19 @@ export const SelectableTable: React.FC<SelectableTableProps> = ({
   onSearch,
 }) => {
   const handleQueryChange = (newQuery) => {
-    onPaginationChange(newQuery)
-  }
+    onPaginationChange(newQuery);
+  };
 
   const currentPage = useMemo(() => {
-    return Math.floor(pagination.offset / pagination.limit)
-  }, [pagination])
+    return Math.floor(pagination.offset / pagination.limit);
+  }, [pagination]);
 
   const numPages = useMemo(() => {
     if (totalCount && pagination.limit) {
-      return Math.ceil(totalCount / pagination.limit)
+      return Math.ceil(totalCount / pagination.limit);
     }
-    return 0
-  }, [totalCount, pagination])
+    return 0;
+  }, [totalCount, pagination]);
 
   const {
     getTableProps,
@@ -79,8 +79,8 @@ export const SelectableTable: React.FC<SelectableTableProps> = ({
         pageIndex: currentPage,
         pageSize: pagination.limit,
         selectedRowIds: selectedIds.reduce((prev, id) => {
-          prev[id] = true
-          return prev
+          prev[id] = true;
+          return prev;
         }, {}),
       },
       pageCount: numPages,
@@ -102,7 +102,7 @@ export const SelectableTable: React.FC<SelectableTableProps> = ({
               <div>
                 <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
               </div>
-            )
+            );
           },
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
@@ -111,37 +111,37 @@ export const SelectableTable: React.FC<SelectableTableProps> = ({
               <div>
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </div>
-            )
+            );
           },
         },
         ...columns,
-      ])
+      ]);
     }
-  )
+  );
 
   useEffect(() => {
-    onChange(Object.keys(selectedRowIds))
-  }, [selectedRowIds])
+    onChange(Object.keys(selectedRowIds));
+  }, [selectedRowIds]);
 
   const handleNext = () => {
     if (canNextPage) {
       handleQueryChange({
         ...pagination,
         offset: pagination.offset + pagination.limit,
-      })
-      nextPage()
+      });
+      nextPage();
     }
-  }
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
       handleQueryChange({
         ...pagination,
         offset: Math.max(pagination.offset - pagination.limit, 0),
-      })
-      previousPage()
+      });
+      previousPage();
     }
-  }
+  };
 
   return (
     <div>
@@ -158,7 +158,7 @@ export const SelectableTable: React.FC<SelectableTableProps> = ({
             <Spinner size="large" />
           ) : (
             rows.map((row, i) => {
-              prepareRow(row)
+              prepareRow(row);
               return (
                 <Table.Row {...row.getRowProps()}>
                   {row.cells.map((cell) => {
@@ -166,10 +166,10 @@ export const SelectableTable: React.FC<SelectableTableProps> = ({
                       <Table.Cell {...cell.getCellProps()}>
                         {cell.render("Cell")}
                       </Table.Cell>
-                    )
+                    );
                   })}
                 </Table.Row>
-              )
+              );
             })
           )}
         </Table.Body>
@@ -188,5 +188,5 @@ export const SelectableTable: React.FC<SelectableTableProps> = ({
         hasPrev={canPreviousPage}
       />
     </div>
-  )
-}
+  );
+};

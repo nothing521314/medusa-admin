@@ -1,16 +1,16 @@
-import { RouteComponentProps, Router } from "@reach/router"
-import React, { useState } from "react"
+import { RouteComponentProps, Router } from "@reach/router";
+import React, { useState } from "react";
 
-import Button from "../../components/fundamentals/button"
-import BodyCard from "../../components/organisms/body-card"
-import CustomerTable from "../../components/templates/customer-table"
-import CreateCustomerModal from "./create"
-import Details from "./details/index"
-import CustomerGroups from "./groups"
-import CustomersPageTableHeader from "./header"
+import Button from "../../components/fundamentals/button";
+import BodyCard from "../../components/organisms/body-card";
+import CustomerTable from "../../components/templates/customer-table";
+import CreateCustomerModal from "./create";
+import Details from "./details/index";
+import CustomerGroups from "./groups";
+import CustomersPageTableHeader from "./header";
 
 const CustomerIndex: React.FC<RouteComponentProps> = () => {
-  const [showCreate, setShowCreate] = useState(false)
+  const [showCreate, setShowCreate] = useState(false);
 
   return (
     <div>
@@ -36,8 +36,8 @@ const CustomerIndex: React.FC<RouteComponentProps> = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Customers = () => {
   return (
@@ -46,7 +46,7 @@ const Customers = () => {
       <CustomerGroups path="/groups/*" />
       <Details path=":id" />
     </Router>
-  )
-}
+  );
+};
 
-export default Customers
+export default Customers;

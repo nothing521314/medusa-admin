@@ -1,42 +1,42 @@
-import { AdminPostGiftCardsGiftCardReq } from "@medusajs/medusa"
-import { RouteComponentProps } from "@reach/router"
+import { AdminPostGiftCardsGiftCardReq } from "@medusajs/medusa";
+import { RouteComponentProps } from "@reach/router";
 import {
   useAdminGiftCard,
   useAdminRegions,
   useAdminUpdateGiftCard,
-} from "../../../../medusa-react"
-import moment from "moment"
-import React, { useState } from "react"
-import Spinner from "../../../components/atoms/spinner"
-import Badge from "../../../components/fundamentals/badge"
-import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
-import EditIcon from "../../../components/fundamentals/icons/edit-icon"
-import PublishIcon from "../../../components/fundamentals/icons/publish-icon"
-import UnpublishIcon from "../../../components/fundamentals/icons/unpublish-icon"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import StatusSelector from "../../../components/molecules/status-selector"
-import BodyCard from "../../../components/organisms/body-card"
-import RawJSON from "../../../components/organisms/raw-json"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import EditGiftCardModal from "./edit-gift-card-modal"
-import UpdateBalanceModal from "./update-balance-modal"
+} from "../../../../medusa-react";
+import moment from "moment";
+import React, { useState } from "react";
+import Spinner from "../../../components/atoms/spinner";
+import Badge from "../../../components/fundamentals/badge";
+import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon";
+import EditIcon from "../../../components/fundamentals/icons/edit-icon";
+import PublishIcon from "../../../components/fundamentals/icons/publish-icon";
+import UnpublishIcon from "../../../components/fundamentals/icons/unpublish-icon";
+import Breadcrumb from "../../../components/molecules/breadcrumb";
+import StatusSelector from "../../../components/molecules/status-selector";
+import BodyCard from "../../../components/organisms/body-card";
+import RawJSON from "../../../components/organisms/raw-json";
+import useNotification from "../../../hooks/use-notification";
+import { getErrorMessage } from "../../../utils/error-messages";
+import { formatAmountWithSymbol } from "../../../utils/prices";
+import EditGiftCardModal from "./edit-gift-card-modal";
+import UpdateBalanceModal from "./update-balance-modal";
 
 const GiftCardDetails: React.FC<RouteComponentProps<{ id: string }>> = ({
   id,
 }) => {
   const { gift_card: giftCard, isLoading } = useAdminGiftCard(id!, {
     enabled: !!id,
-  })
-  const { regions } = useAdminRegions()
+  });
+  const { regions } = useAdminRegions();
 
-  const updateGiftCard = useAdminUpdateGiftCard(giftCard?.id!)
+  const updateGiftCard = useAdminUpdateGiftCard(giftCard?.id!);
 
-  const notification = useNotification()
+  const notification = useNotification();
 
-  const [showUpdateBalance, setShowUpdateBalance] = useState(false)
-  const [showEdit, setShowEdit] = useState(false)
+  const [showUpdateBalance, setShowUpdateBalance] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
 
   const actions = [
     {
@@ -58,21 +58,21 @@ const GiftCardDetails: React.FC<RouteComponentProps<{ id: string }>> = ({
       onClick: () => setShowUpdateBalance(true),
       icon: <DollarSignIcon size={20} />,
     },
-  ]
+  ];
 
   const handleUpdate = (data: AdminPostGiftCardsGiftCardReq) => {
     updateGiftCard.mutate(
       { ...data },
       {
         onSuccess: () => {
-          notification("Success", "Succesfully updated Gift Card", "success")
-          setShowEdit(false)
-          setShowUpdateBalance(false)
+          notification("Success", "Succesfully updated Gift Card", "success");
+          setShowEdit(false);
+          setShowUpdateBalance(false);
         },
         onError: (err) => notification("Error", getErrorMessage(err), "error"),
       }
-    )
-  }
+    );
+  };
 
   return (
     <div>
@@ -165,7 +165,7 @@ const GiftCardDetails: React.FC<RouteComponentProps<{ id: string }>> = ({
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default GiftCardDetails
+export default GiftCardDetails;

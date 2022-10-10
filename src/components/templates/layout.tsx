@@ -1,8 +1,8 @@
-import React from "react"
-import { Toaster } from "react-hot-toast"
-import Sidebar from "../organisms/sidebar"
-import Topbar from "../organisms/topbar"
-import { PollingProvider } from "../../context/polling"
+import React from "react";
+import { Toaster } from "react-hot-toast";
+import Sidebar from "../organisms/sidebar";
+import Topbar from "../organisms/topbar";
+import { PollingProvider } from "../../context/polling";
 
 const Layout: React.FC = ({ children }) => {
   return (
@@ -27,7 +27,7 @@ const Layout: React.FC = ({ children }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

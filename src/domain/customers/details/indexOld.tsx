@@ -1,36 +1,36 @@
-import { RouteComponentProps } from "@reach/router"
-import { useAdminCustomer } from "../../../../medusa-react"
-import moment from "moment"
-import React, { useState } from "react"
-import Avatar from "../../../components/atoms/avatar"
-import Spinner from "../../../components/atoms/spinner"
-import EditIcon from "../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
-import StatusDot from "../../../components/fundamentals/status-indicator"
+import { RouteComponentProps } from "@reach/router";
+import { useAdminCustomer } from "../../../../medusa-react";
+import moment from "moment";
+import React, { useState } from "react";
+import Avatar from "../../../components/atoms/avatar";
+import Spinner from "../../../components/atoms/spinner";
+import EditIcon from "../../../components/fundamentals/icons/edit-icon";
+import TrashIcon from "../../../components/fundamentals/icons/trash-icon";
+import StatusDot from "../../../components/fundamentals/status-indicator";
 import Actionables, {
   ActionType,
-} from "../../../components/molecules/actionables"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import BodyCard from "../../../components/organisms/body-card"
-import RawJSON from "../../../components/organisms/raw-json"
-import CustomerOrdersTable from "../../../components/templates/customer-orders-table"
-import EditCustomerModal from "./editOld"
+} from "../../../components/molecules/actionables";
+import Breadcrumb from "../../../components/molecules/breadcrumb";
+import BodyCard from "../../../components/organisms/body-card";
+import RawJSON from "../../../components/organisms/raw-json";
+import CustomerOrdersTable from "../../../components/templates/customer-orders-table";
+import EditCustomerModal from "./editOld";
 
 type CustomerDetailProps = {
-  id: string
-} & RouteComponentProps
+  id: string;
+} & RouteComponentProps;
 
 const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
-  const { customer, isLoading } = useAdminCustomer(id)
-  const [showEdit, setShowEdit] = useState(false)
+  const { customer, isLoading } = useAdminCustomer(id);
+  const [showEdit, setShowEdit] = useState(false);
 
   const customerName = () => {
     if (customer?.first_name && customer?.last_name) {
-      return `${customer.first_name} ${customer.last_name}`
+      return `${customer.first_name} ${customer.last_name}`;
     } else {
-      return customer?.email
+      return customer?.email;
     }
-  }
+  };
 
   const actions: ActionType[] = [
     {
@@ -44,7 +44,7 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
       variant: "danger",
       icon: <TrashIcon size={20} />,
     },
-  ]
+  ];
 
   return (
     <div>
@@ -128,7 +128,7 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default CustomerDetail
+export default CustomerDetail;

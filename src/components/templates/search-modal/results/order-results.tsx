@@ -1,16 +1,16 @@
-import clsx from "clsx"
-import { Link } from "gatsby"
-import React from "react"
-import SectionCollapsible from "../section-collapsible"
-import { useAdminOrders } from "../../../../../medusa-react"
-import useKeyboardNavigationList from "../use-keyboard-navigation-list"
+import clsx from "clsx";
+import { Link } from "gatsby";
+import React from "react";
+import SectionCollapsible from "../section-collapsible";
+import { useAdminOrders } from "../../../../../medusa-react";
+import useKeyboardNavigationList from "../use-keyboard-navigation-list";
 
 type OrderResultsProps = {
-  orders: ReturnType<typeof useAdminOrders>["orders"]
-  getLIProps: ReturnType<typeof useKeyboardNavigationList>["getLIProps"]
-  offset: number
-  selected: number
-}
+  orders: ReturnType<typeof useAdminOrders>["orders"];
+  getLIProps: ReturnType<typeof useKeyboardNavigationList>["getLIProps"];
+  offset: number;
+  selected: number;
+};
 
 const OrderResults = ({
   orders = [],
@@ -57,7 +57,7 @@ const OrderResults = ({
         </div>
       </div>
     </SectionCollapsible>
-  ) : null
-}
+  ) : null;
+};
 
-export default OrderResults
+export default OrderResults;

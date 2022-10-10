@@ -1,27 +1,27 @@
-import * as Collapsible from "@radix-ui/react-collapsible"
-import clsx from "clsx"
-import React, { useState } from "react"
-import ReactJson from "react-json-view"
-import useClipboard from "../../../hooks/use-clipboard"
-import Button from "../../fundamentals/button"
-import ChevronDownIcon from "../../fundamentals/icons/chevron-down"
-import ClipboardCopyIcon from "../../fundamentals/icons/clipboard-copy-icon"
+import * as Collapsible from "@radix-ui/react-collapsible";
+import clsx from "clsx";
+import React, { useState } from "react";
+import ReactJson from "react-json-view";
+import useClipboard from "../../../hooks/use-clipboard";
+import Button from "../../fundamentals/button";
+import ChevronDownIcon from "../../fundamentals/icons/chevron-down";
+import ClipboardCopyIcon from "../../fundamentals/icons/clipboard-copy-icon";
 
 type ViewRawProps = {
-  raw: object
-  title?: string
-  name?: string
-}
+  raw: object;
+  title?: string;
+  name?: string;
+};
 
 const ViewRaw: React.FC<ViewRawProps> = ({ raw, title = "Data", name }) => {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(false);
   const [isCopied, handleCopy] = useClipboard(
     JSON.stringify(raw, undefined, 2),
     {
       successDuration: 5500,
       onCopied: () => {},
     }
-  )
+  );
 
   return (
     <div className="px-base py-xsmall rounded-rounded bg-grey-5">
@@ -65,8 +65,8 @@ const ViewRaw: React.FC<ViewRawProps> = ({ raw, title = "Data", name }) => {
               size="small"
               type="button"
               onClick={(e) => {
-                e.currentTarget.blur()
-                handleCopy()
+                e.currentTarget.blur();
+                handleCopy();
               }}
             >
               <ClipboardCopyIcon size={20} />
@@ -75,7 +75,7 @@ const ViewRaw: React.FC<ViewRawProps> = ({ raw, title = "Data", name }) => {
         </Collapsible.Content>
       </Collapsible.Root>
     </div>
-  )
-}
+  );
+};
 
-export default ViewRaw
+export default ViewRaw;

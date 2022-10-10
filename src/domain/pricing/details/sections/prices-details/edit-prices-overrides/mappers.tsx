@@ -1,6 +1,6 @@
-import { AdminPostPriceListsPriceListPriceListReq } from "@medusajs/medusa"
-import { PriceOverridesFormValues } from "../../../../../../components/templates/price-overrides"
-import xorObjFields from "../../../../../../utils/xorObjFields"
+import { AdminPostPriceListsPriceListPriceListReq } from "@medusajs/medusa";
+import { PriceOverridesFormValues } from "../../../../../../components/templates/price-overrides";
+import xorObjFields from "../../../../../../utils/xorObjFields";
 
 export const mapToPriceList = (
   values: PriceOverridesFormValues,
@@ -17,5 +17,5 @@ export const mapToPriceList = (
     }))
     .filter(
       (pr) => pr.amount > 0
-    ) as AdminPostPriceListsPriceListPriceListReq["prices"]
-}
+    ) as AdminPostPriceListsPriceListPriceListReq["prices"];
+};

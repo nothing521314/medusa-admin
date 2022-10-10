@@ -1,28 +1,28 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
-import React from "react"
-import Avatar from "../../atoms/avatar"
-import Button from "../../fundamentals/button"
-import AlertIcon from "../../fundamentals/icons/alert-icon"
-import ArrowRightIcon from "../../fundamentals/icons/arrow-right-icon"
-import BackIcon from "../../fundamentals/icons/back-icon"
-import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
-import MailIcon from "../../fundamentals/icons/mail-icon"
-import PackageIcon from "../../fundamentals/icons/package-icon"
-import TruckIcon from "../../fundamentals/icons/truck-icon"
-import EventActionables from "./event-actionables"
-import EventContainer, { EventIconColor } from "./event-container"
-import EventItemContainer from "./event-item-container"
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import React from "react";
+import Avatar from "../../atoms/avatar";
+import Button from "../../fundamentals/button";
+import AlertIcon from "../../fundamentals/icons/alert-icon";
+import ArrowRightIcon from "../../fundamentals/icons/arrow-right-icon";
+import BackIcon from "../../fundamentals/icons/back-icon";
+import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon";
+import MailIcon from "../../fundamentals/icons/mail-icon";
+import PackageIcon from "../../fundamentals/icons/package-icon";
+import TruckIcon from "../../fundamentals/icons/truck-icon";
+import EventActionables from "./event-actionables";
+import EventContainer, { EventIconColor } from "./event-container";
+import EventItemContainer from "./event-item-container";
 
 export default {
   title: "Molecules/EventContainer",
   component: EventContainer,
-} as ComponentMeta<typeof EventContainer>
+} as ComponentMeta<typeof EventContainer>;
 
 const Template: ComponentStory<typeof EventContainer> = (args) => (
   <div className="max-w-md px-xlarge py-large">
     <EventContainer {...args} />
   </div>
-)
+);
 
 const eventActions = (
   <EventActionables
@@ -34,9 +34,9 @@ const eventActions = (
       },
     ]}
   />
-)
+);
 
-export const NoteCurrentUser = Template.bind({})
+export const NoteCurrentUser = Template.bind({});
 NoteCurrentUser.args = {
   icon: <Avatar user={{ email: "kasper@medusajs.com" }} />,
   title: "kasper@medusajs.com",
@@ -47,9 +47,9 @@ NoteCurrentUser.args = {
       Return will be shipped together with return 74421
     </div>
   ),
-}
+};
 
-export const NoteOtherUser = Template.bind({})
+export const NoteOtherUser = Template.bind({});
 NoteOtherUser.args = {
   icon: <Avatar user={{ email: "oli@medusajs.com" }} />,
   title: "oli@medusajs.com",
@@ -60,9 +60,9 @@ NoteOtherUser.args = {
       Added discount code: "OLI_DISCOUNT"
     </div>
   ),
-}
+};
 
-export const MailNotice = Template.bind({})
+export const MailNotice = Template.bind({});
 MailNotice.args = {
   icon: <MailIcon size={20} />,
   time: new Date(),
@@ -76,7 +76,7 @@ MailNotice.args = {
     </div>
   ),
   topNode: eventActions,
-}
+};
 
 const bathrobe = {
   title: "Hooded Bathrobe",
@@ -86,7 +86,7 @@ const bathrobe = {
   variant: {
     title: "Extra Small",
   },
-}
+};
 
 const sleepwear = {
   title: "Flannel Sleepwear",
@@ -96,9 +96,9 @@ const sleepwear = {
   variant: {
     title: "Large",
   },
-}
+};
 
-export const ItemsShipped = Template.bind({})
+export const ItemsShipped = Template.bind({});
 ItemsShipped.args = {
   icon: <TruckIcon size={20} />,
   time: new Date(),
@@ -107,9 +107,9 @@ ItemsShipped.args = {
     <EventItemContainer item={bathrobe} />,
     <EventItemContainer item={sleepwear} />,
   ],
-}
+};
 
-export const ItemsFulfilled = Template.bind({})
+export const ItemsFulfilled = Template.bind({});
 ItemsFulfilled.args = {
   icon: <PackageIcon size={20} />,
   time: new Date(),
@@ -118,18 +118,18 @@ ItemsFulfilled.args = {
     <EventItemContainer item={bathrobe} />,
     <EventItemContainer item={sleepwear} />,
   ],
-}
+};
 
-export const OrderPlaced = Template.bind({})
+export const OrderPlaced = Template.bind({});
 OrderPlaced.args = {
   icon: <CheckCircleIcon size={20} />,
   iconColor: EventIconColor.GREEN,
   time: new Date(),
   title: "Order Placed",
   topNode: <div className="inter-small-semibold">4,756.50 kr.</div>,
-}
+};
 
-export const ReturnRequested = Template.bind({})
+export const ReturnRequested = Template.bind({});
 ReturnRequested.args = {
   icon: <AlertIcon size={20} />,
   iconColor: EventIconColor.ORANGE,
@@ -144,7 +144,7 @@ ReturnRequested.args = {
       Receive Return
     </Button>,
   ],
-}
+};
 
 const Demo = (args) => (
   <div className="w-full bg-grey-10 p-xlarge">
@@ -152,13 +152,13 @@ const Demo = (args) => (
       {args.arguments.map((arg, i) => {
         return (
           <EventContainer {...arg} isFirst={i === args.arguments.length - 1} />
-        )
+        );
       })}
     </div>
   </div>
-)
+);
 
-export const InLine = Demo.bind({})
+export const InLine = Demo.bind({});
 InLine.args = {
   arguments: [
     NoteCurrentUser.args,
@@ -169,4 +169,4 @@ InLine.args = {
     NoteOtherUser.args,
     OrderPlaced.args,
   ],
-}
+};

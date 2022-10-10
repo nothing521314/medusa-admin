@@ -1,13 +1,13 @@
-import { CustomerGroup } from "@medusajs/medusa"
-import React, { useMemo } from "react"
-import { Column, HeaderGroup, Row } from "react-table"
-import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
-import Table from "../../../../../../components/molecules/table"
+import { CustomerGroup } from "@medusajs/medusa";
+import React, { useMemo } from "react";
+import { Column, HeaderGroup, Row } from "react-table";
+import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon";
+import Table from "../../../../../../components/molecules/table";
 
 export const CustomerGroupsHeader = ({
   headerGroup,
 }: {
-  headerGroup: HeaderGroup<CustomerGroup>
+  headerGroup: HeaderGroup<CustomerGroup>;
 }) => {
   return (
     <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
@@ -20,8 +20,8 @@ export const CustomerGroupsHeader = ({
         </Table.HeadCell>
       ))}
     </Table.HeadRow>
-  )
-}
+  );
+};
 
 export const CustomerGroupsRow = ({ row }: { row: Row<CustomerGroup> }) => {
   return (
@@ -31,11 +31,11 @@ export const CustomerGroupsRow = ({ row }: { row: Row<CustomerGroup> }) => {
           <Table.Cell {...cell.getCellProps()}>
             {cell.render("Cell")}
           </Table.Cell>
-        )
+        );
       })}
     </Table.Row>
-  )
-}
+  );
+};
 
 export const useGroupColumns = () => {
   const columns = useMemo<Column<CustomerGroup>[]>(() => {
@@ -57,11 +57,11 @@ export const useGroupColumns = () => {
         id: "members",
         accessor: (r) => r.customers?.length,
         Cell: ({ cell: { value } }) => {
-          return <div className="text-right">{value}</div>
+          return <div className="text-right">{value}</div>;
         },
       },
-    ]
-  }, [])
+    ];
+  }, []);
 
-  return columns
-}
+  return columns;
+};

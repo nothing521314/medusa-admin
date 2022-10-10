@@ -1,10 +1,10 @@
-import { Product } from "@medusajs/medusa"
-import clsx from "clsx"
-import * as React from "react"
-import { Column, HeaderGroup, Row } from "react-table"
-import ImagePlaceholder from "../../fundamentals/image-placeholder"
-import Table from "../../molecules/table"
-import { decideStatus } from "../collection-product-table/utils"
+import { Product } from "@medusajs/medusa";
+import clsx from "clsx";
+import * as React from "react";
+import { Column, HeaderGroup, Row } from "react-table";
+import ImagePlaceholder from "../../fundamentals/image-placeholder";
+import Table from "../../molecules/table";
+import { decideStatus } from "../collection-product-table/utils";
 
 export const columns: Column<Product>[] = [
   {
@@ -55,10 +55,10 @@ export const columns: Column<Product>[] = [
       </Table.Cell>
     ),
   },
-]
+];
 
 export const ProductRow = ({ row }: { row: Row<Product> }) => {
-  const { isSelected } = row
+  const { isSelected } = row;
   return (
     <Table.Row
       {...row.getRowProps()}
@@ -69,16 +69,16 @@ export const ProductRow = ({ row }: { row: Row<Product> }) => {
           <Table.Cell {...cell.getCellProps()}>
             {cell.render("Cell")}
           </Table.Cell>
-        )
+        );
       })}
     </Table.Row>
-  )
-}
+  );
+};
 
 export const ProductHeader = ({
   headerGroup,
 }: {
-  headerGroup: HeaderGroup<Product>
+  headerGroup: HeaderGroup<Product>;
 }) => {
   return (
     <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
@@ -88,5 +88,5 @@ export const ProductHeader = ({
         </Table.HeadCell>
       ))}
     </Table.HeadRow>
-  )
-}
+  );
+};

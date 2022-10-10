@@ -1,59 +1,59 @@
-import React, { useEffect, useState } from "react"
-import Button from "../../fundamentals/button"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import InputField from "../../molecules/input"
+import React, { useEffect, useState } from "react";
+import Button from "../../fundamentals/button";
+import PlusIcon from "../../fundamentals/icons/plus-icon";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import InputField from "../../molecules/input";
 
 type AddMetadataProps = {
-  metadata: MetadataField[]
-  setMetadata: (metadata: MetadataField[]) => void
-  heading?: string
-}
+  metadata: MetadataField[];
+  setMetadata: (metadata: MetadataField[]) => void;
+  heading?: string;
+};
 
 export type MetadataField = {
-  key: string
-  value: string
-}
+  key: string;
+  value: string;
+};
 
 const Metadata: React.FC<AddMetadataProps> = ({
   metadata,
   setMetadata,
   heading = "Metadata",
 }) => {
-  const [localData, setLocalData] = useState<MetadataField[]>([])
+  const [localData, setLocalData] = useState<MetadataField[]>([]);
 
   useEffect(() => {
-    setLocalData(metadata)
-  }, [metadata])
+    setLocalData(metadata);
+  }, [metadata]);
 
   const addKeyPair = () => {
-    setMetadata([...metadata, { key: ``, value: `` }])
-  }
+    setMetadata([...metadata, { key: ``, value: `` }]);
+  };
 
   const onKeyChange = (index: number) => {
     return (key: string) => {
-      const newFields = metadata
-      newFields[index] = { key: key, value: newFields[index].value }
-      setMetadata(newFields)
-    }
-  }
+      const newFields = metadata;
+      newFields[index] = { key: key, value: newFields[index].value };
+      setMetadata(newFields);
+    };
+  };
 
   const onValueChange = (index: number) => {
     return (value: any) => {
-      const newFields = metadata
+      const newFields = metadata;
       newFields[index] = {
         key: newFields[index].key,
         value: value,
-      }
-      setMetadata(newFields)
-    }
-  }
+      };
+      setMetadata(newFields);
+    };
+  };
 
   const deleteKeyPair = (index: number) => {
     return () => {
-      setMetadata(metadata.filter((_, i) => i !== index))
-    }
-  }
+      setMetadata(metadata.filter((_, i) => i !== index));
+    };
+  };
 
   return (
     <div>
@@ -68,7 +68,7 @@ const Metadata: React.FC<AddMetadataProps> = ({
                 updateValue={onValueChange(index)}
               />
             </DeletableElement>
-          )
+          );
         })}
         <div>
           <Button
@@ -84,14 +84,14 @@ const Metadata: React.FC<AddMetadataProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 type FieldProps = {
-  field: MetadataField
-  updateKey: (key: string) => void
-  updateValue: (value: string) => void
-}
+  field: MetadataField;
+  updateKey: (key: string) => void;
+  updateValue: (value: string) => void;
+};
 
 const Field: React.FC<FieldProps> = ({ field, updateKey, updateValue }) => {
   return (
@@ -102,7 +102,7 @@ const Field: React.FC<FieldProps> = ({ field, updateKey, updateValue }) => {
           placeholder="Some key"
           defaultValue={field.key}
           onChange={(e) => {
-            updateKey(e.currentTarget.value)
+            updateKey(e.currentTarget.value);
           }}
         />
       </div>
@@ -112,17 +112,17 @@ const Field: React.FC<FieldProps> = ({ field, updateKey, updateValue }) => {
           placeholder="Some value"
           defaultValue={field.value}
           onChange={(e) => {
-            updateValue(e.currentTarget.value)
+            updateValue(e.currentTarget.value);
           }}
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
 type DeletableElementProps = {
-  onDelete: () => void
-}
+  onDelete: () => void;
+};
 
 const DeletableElement: React.FC<DeletableElementProps> = ({
   onDelete,
@@ -141,7 +141,7 @@ const DeletableElement: React.FC<DeletableElementProps> = ({
         <TrashIcon size={20} />
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default Metadata
+export default Metadata;

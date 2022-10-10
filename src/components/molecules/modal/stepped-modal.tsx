@@ -1,8 +1,8 @@
-import clsx from "clsx"
-import React, { ReactNode, useReducer } from "react"
-import Button from "../../fundamentals/button"
-import Modal, { ModalProps } from "../../molecules/modal"
-import LayeredModal, { ILayeredModalContext } from "./layered-modal"
+import clsx from "clsx";
+import React, { ReactNode, useReducer } from "react";
+import Button from "../../fundamentals/button";
+import Modal, { ModalProps } from "../../molecules/modal";
+import LayeredModal, { ILayeredModalContext } from "./layered-modal";
 
 enum SteppedActions {
   ENABLENEXTPAGE,
@@ -15,16 +15,16 @@ enum SteppedActions {
 }
 
 type ISteppedContext = {
-  currentStep: number
-  nextStepEnabled: boolean
-  enableNextPage: () => void
-  disableNextPage: () => void
-  goToNextPage: () => void
-  goToPreviousPage: () => void
-  submit: () => void
-  reset: () => void
-  setPage: (page: number) => void
-}
+  currentStep: number;
+  nextStepEnabled: boolean;
+  enableNextPage: () => void;
+  disableNextPage: () => void;
+  goToNextPage: () => void;
+  goToPreviousPage: () => void;
+  submit: () => void;
+  reset: () => void;
+  setPage: (page: number) => void;
+};
 
 const defaultContext: ISteppedContext = {
   currentStep: 0,
@@ -36,88 +36,88 @@ const defaultContext: ISteppedContext = {
   submit: () => {},
   reset: () => {},
   setPage: (page) => {},
-}
+};
 
-export const SteppedContext = React.createContext(defaultContext)
+export const SteppedContext = React.createContext(defaultContext);
 
 const reducer = (state, action) => {
   switch (action.type) {
     case SteppedActions.ENABLENEXTPAGE: {
-      state.nextStepEnabled = true
-      return { ...state }
+      state.nextStepEnabled = true;
+      return { ...state };
     }
     case SteppedActions.DISABLENEXTPAGE: {
-      state.nextStepEnabled = false
-      return { ...state }
+      state.nextStepEnabled = false;
+      return { ...state };
     }
     case SteppedActions.GOTONEXTPAGE: {
-      state.currentStep = state.currentStep + 1
-      return { ...state }
+      state.currentStep = state.currentStep + 1;
+      return { ...state };
     }
     case SteppedActions.GOTOPREVIOUSPAGE: {
       if (state.currentStep !== 0) {
-        state.currentStep = state.currentStep - 1
+        state.currentStep = state.currentStep - 1;
       }
-      return { ...state }
+      return { ...state };
     }
     case SteppedActions.SETPAGE: {
       if (action.payload > 0) {
-        state.currentStep = action.payload
+        state.currentStep = action.payload;
       }
-      return { ...state }
+      return { ...state };
     }
     case SteppedActions.SUBMIT: {
-      return { ...state }
+      return { ...state };
     }
     case SteppedActions.RESET: {
-      return { ...state, currentStep: 0, nextStepEnabled: true }
+      return { ...state, currentStep: 0, nextStepEnabled: true };
     }
   }
-}
+};
 
 type SteppedProps = {
-  context: ISteppedContext
-  title: string
-  onSubmit: () => void
-  lastScreenIsSummary?: boolean
-  steps: ReactNode[]
-  layeredContext?: ILayeredModalContext
-} & ModalProps
+  context: ISteppedContext;
+  title: string;
+  onSubmit: () => void;
+  lastScreenIsSummary?: boolean;
+  steps: ReactNode[];
+  layeredContext?: ILayeredModalContext;
+} & ModalProps;
 
 export const SteppedProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, defaultContext)
+  const [state, dispatch] = useReducer(reducer, defaultContext);
 
   return (
     <SteppedContext.Provider
       value={{
         ...state,
         enableNextPage: () => {
-          dispatch({ type: SteppedActions.ENABLENEXTPAGE })
+          dispatch({ type: SteppedActions.ENABLENEXTPAGE });
         },
         disableNextPage: () => {
-          dispatch({ type: SteppedActions.DISABLENEXTPAGE })
+          dispatch({ type: SteppedActions.DISABLENEXTPAGE });
         },
         goToNextPage: () => {
-          dispatch({ type: SteppedActions.GOTONEXTPAGE })
+          dispatch({ type: SteppedActions.GOTONEXTPAGE });
         },
         goToPreviousPage: () => {
-          dispatch({ type: SteppedActions.GOTOPREVIOUSPAGE })
+          dispatch({ type: SteppedActions.GOTOPREVIOUSPAGE });
         },
         submit: () => {
-          dispatch({ type: SteppedActions.SUBMIT })
+          dispatch({ type: SteppedActions.SUBMIT });
         },
         setPage: (page: number) => {
-          dispatch({ type: SteppedActions.SETPAGE, payload: page })
+          dispatch({ type: SteppedActions.SETPAGE, payload: page });
         },
         reset: () => {
-          dispatch({ type: SteppedActions.RESET })
+          dispatch({ type: SteppedActions.RESET });
         },
       }}
     >
       {children}
     </SteppedContext.Provider>
-  )
-}
+  );
+};
 
 const SteppedModal: React.FC<SteppedProps> = ({
   context,
@@ -130,14 +130,14 @@ const SteppedModal: React.FC<SteppedProps> = ({
   isLargeModal = true,
 }) => {
   const resetAndClose = () => {
-    context.reset()
-    handleClose()
-  }
+    context.reset();
+    handleClose();
+  };
 
   const resetAndSubmit = () => {
-    onSubmit()
-    context.reset()
-  }
+    onSubmit();
+    context.reset();
+  };
   return (
     <ModalElement
       layeredContext={layeredContext}
@@ -208,8 +208,8 @@ const SteppedModal: React.FC<SteppedProps> = ({
         </div>
       </Modal.Footer>
     </ModalElement>
-  )
-}
+  );
+};
 
 const ModalElement = ({
   layeredContext,
@@ -229,6 +229,6 @@ const ModalElement = ({
     <Modal handleClose={handleClose} isLargeModal={isLargeModal}>
       {children}
     </Modal>
-  )
+  );
 
-export default SteppedModal
+export default SteppedModal;

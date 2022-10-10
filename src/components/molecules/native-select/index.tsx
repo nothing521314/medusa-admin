@@ -1,19 +1,19 @@
-import * as RadixSelect from "@radix-ui/react-select"
-import clsx from "clsx"
-import React from "react"
-import CheckIcon from "../../fundamentals/icons/check-icon"
-import ChevronDownIcon from "../../fundamentals/icons/chevron-down"
-import ChevronUpIcon from "../../fundamentals/icons/chevron-up"
+import * as RadixSelect from "@radix-ui/react-select";
+import clsx from "clsx";
+import React from "react";
+import CheckIcon from "../../fundamentals/icons/check-icon";
+import ChevronDownIcon from "../../fundamentals/icons/chevron-down";
+import ChevronUpIcon from "../../fundamentals/icons/chevron-up";
 
 type NativeSelectType = React.FC<NativeSelectProps> & {
-  Item: React.FC<ItemProps>
-}
+  Item: React.FC<ItemProps>;
+};
 
 type NativeSelectProps = {
-  triggerProps?: RadixSelect.SelectTriggerProps
-} & RadixSelect.SelectProps
+  triggerProps?: RadixSelect.SelectTriggerProps;
+} & RadixSelect.SelectProps;
 
-const ICON_SIZE = 16
+const ICON_SIZE = 16;
 
 const NativeSelect: NativeSelectType = ({
   children,
@@ -41,10 +41,10 @@ const NativeSelect: NativeSelectType = ({
         </RadixSelect.ScrollDownButton>
       </RadixSelect.Content>
     </RadixSelect.Root>
-  )
-}
+  );
+};
 
-type ItemProps = RadixSelect.SelectItemProps
+type ItemProps = RadixSelect.SelectItemProps;
 
 const Item: React.FC<ItemProps> = ({ children, ...props }) => (
   <RadixSelect.Item
@@ -58,8 +58,8 @@ const Item: React.FC<ItemProps> = ({ children, ...props }) => (
     </RadixSelect.ItemIndicator>
     <RadixSelect.ItemText>{children}</RadixSelect.ItemText>
   </RadixSelect.Item>
-)
+);
 
-NativeSelect.Item = Item
+NativeSelect.Item = Item;
 
-export default NativeSelect
+export default NativeSelect;

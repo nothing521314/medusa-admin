@@ -1,16 +1,16 @@
-import React from "react"
-import Modal from "../../../../components/molecules/modal"
-import { DiscountConditionType } from "../../types"
-import EditCollectionConditionSelector from "./condition-tables/edit-condition-tables/collections"
-import EditCustomerGroupConditionSelector from "./condition-tables/edit-condition-tables/customer-groups"
-import EditProductConditionSelector from "./condition-tables/edit-condition-tables/products"
-import EditTagConditionSelector from "./condition-tables/edit-condition-tables/tags"
-import EditTypeConditionSelector from "./condition-tables/edit-condition-tables/types"
+import React from "react";
+import Modal from "../../../../components/molecules/modal";
+import { DiscountConditionType } from "../../types";
+import EditCollectionConditionSelector from "./condition-tables/edit-condition-tables/collections";
+import EditCustomerGroupConditionSelector from "./condition-tables/edit-condition-tables/customer-groups";
+import EditProductConditionSelector from "./condition-tables/edit-condition-tables/products";
+import EditTagConditionSelector from "./condition-tables/edit-condition-tables/tags";
+import EditTypeConditionSelector from "./condition-tables/edit-condition-tables/types";
 
 type EditConditionsModalProps = {
-  onClose: () => void
-  view: DiscountConditionType
-}
+  onClose: () => void;
+  view: DiscountConditionType;
+};
 
 const EditConditionsModal: React.FC<EditConditionsModalProps> = ({
   onClose,
@@ -25,37 +25,37 @@ const EditConditionsModal: React.FC<EditConditionsModalProps> = ({
         <Content view={view} onClose={onClose} />
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const getTitle = (view: DiscountConditionType) => {
   switch (view) {
     case DiscountConditionType.PRODUCTS:
-      return "products"
+      return "products";
     case DiscountConditionType.CUSTOMER_GROUPS:
-      return "groups"
+      return "groups";
     case DiscountConditionType.PRODUCT_TAGS:
-      return "tags"
+      return "tags";
     case DiscountConditionType.PRODUCT_COLLECTIONS:
-      return "collections"
+      return "collections";
     case DiscountConditionType.PRODUCT_TYPES:
-      return "types"
+      return "types";
   }
-}
+};
 
 const Content = ({ view, onClose }: EditConditionsModalProps) => {
   switch (view) {
     case DiscountConditionType.PRODUCTS:
-      return <EditProductConditionSelector onClose={onClose} />
+      return <EditProductConditionSelector onClose={onClose} />;
     case DiscountConditionType.CUSTOMER_GROUPS:
-      return <EditCustomerGroupConditionSelector onClose={onClose} />
+      return <EditCustomerGroupConditionSelector onClose={onClose} />;
     case DiscountConditionType.PRODUCT_COLLECTIONS:
-      return <EditCollectionConditionSelector onClose={onClose} />
+      return <EditCollectionConditionSelector onClose={onClose} />;
     case DiscountConditionType.PRODUCT_TAGS:
-      return <EditTagConditionSelector onClose={onClose} />
+      return <EditTagConditionSelector onClose={onClose} />;
     case DiscountConditionType.PRODUCT_TYPES:
-      return <EditTypeConditionSelector onClose={onClose} />
+      return <EditTypeConditionSelector onClose={onClose} />;
   }
-}
+};
 
-export default EditConditionsModal
+export default EditConditionsModal;

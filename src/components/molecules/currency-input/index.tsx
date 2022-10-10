@@ -1,15 +1,15 @@
-import clsx from "clsx"
-import React, { useEffect, useMemo, useRef, useState } from "react"
-import { currencies } from "../../../utils/currencies"
-import Input from "../input"
-import Select from "../select"
+import clsx from "clsx";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { currencies } from "../../../utils/currencies";
+import Input from "../input";
+import Select from "../select";
 
 type CurrencyInputProps = {
-  options?: string[]
-  currentCurrency?: string
-  required?: boolean
-  onCurrencyChange?: (currency) => void
-} & React.InputHTMLAttributes<HTMLInputElement>
+  options?: string[];
+  currentCurrency?: string;
+  required?: boolean;
+  onCurrencyChange?: (currency) => void;
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 const CurrencyInput: React.FC<CurrencyInputProps> = ({
   options,
@@ -20,13 +20,13 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
   name,
   ...props
 }) => {
-  const initialRender = useRef(true)
-  const isSelectable = options ? true : false
+  const initialRender = useRef(true);
+  const isSelectable = options ? true : false;
 
   const opts = useMemo(() => {
     const codes = options
       ? options.map((o) => o.toLowerCase())
-      : [currentCurrency?.toLowerCase()]
+      : [currentCurrency?.toLowerCase()];
     return (
       Object.entries(currencies)
         .filter(([_key, obj]) => codes.includes(obj.code.toLowerCase()))
@@ -37,19 +37,19 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
           digits: decimal_digits,
         }))
         .filter(Boolean) || []
-    )
-  }, [options, currencies, currentCurrency])
+    );
+  }, [options, currencies, currentCurrency]);
 
   const [selected, setSelected] = useState(
     opts.find(({ value }) => value === currentCurrency?.toLowerCase())
-  )
+  );
 
   useEffect(() => {
     if (onCurrencyChange && !initialRender.current) {
-      onCurrencyChange(selected)
+      onCurrencyChange(selected);
     }
-    initialRender.current = false
-  }, [selected])
+    initialRender.current = false;
+  }, [selected]);
 
   return isSelectable ? (
     <Select
@@ -72,7 +72,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({
       placeholder={`${selected?.label}`}
       tabIndex={-1}
     />
-  )
-}
+  );
+};
 
-export default CurrencyInput
+export default CurrencyInput;

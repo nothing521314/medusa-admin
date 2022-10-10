@@ -1,4 +1,4 @@
-import randomize from "randomatic"
+import randomize from "randomatic";
 
 export const generatePromotionCode = () => {
   const code = [
@@ -6,7 +6,7 @@ export const generatePromotionCode = () => {
     randomize("A0", 4),
     randomize("A0", 4),
     randomize("A0", 4),
-  ].join("-")
+  ].join("-");
 
-  return code
-}
+  return code;
+};

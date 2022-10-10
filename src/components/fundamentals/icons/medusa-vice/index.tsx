@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const MedusaVice: React.FC<IconProps> = ({
   size = "96",
@@ -33,7 +33,7 @@ const MedusaVice: React.FC<IconProps> = ({
         </linearGradient>
       </defs>
     </svg>
-  )
-}
+  );
+};
 
-export default MedusaVice
+export default MedusaVice;

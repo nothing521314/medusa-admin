@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "./types/icon-type"
+import React from "react";
+import IconProps from "./types/icon-type";
 
 const XCircleIcon: React.FC<IconProps> = ({
   size = "24px",
@@ -37,7 +37,7 @@ const XCircleIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default XCircleIcon
+export default XCircleIcon;

@@ -1,15 +1,15 @@
-import { Store } from "@medusajs/medusa"
-import React from "react"
-import Button from "../../../../../components/fundamentals/button"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import EditCurrenciesModal from "./edit-currencies-modal"
+import { Store } from "@medusajs/medusa";
+import React from "react";
+import Button from "../../../../../components/fundamentals/button";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import EditCurrenciesModal from "./edit-currencies-modal";
 
 type Props = {
-  store: Store
-}
+  store: Store;
+};
 
 const StoreCurrencies = ({ store }: Props) => {
-  const { state, close, toggle } = useToggleState()
+  const { state, close, toggle } = useToggleState();
 
   return (
     <>
@@ -26,7 +26,7 @@ const StoreCurrencies = ({ store }: Props) => {
       </div>
       <EditCurrenciesModal store={store} open={state} onClose={close} />
     </>
-  )
-}
+  );
+};
 
-export default StoreCurrencies
+export default StoreCurrencies;

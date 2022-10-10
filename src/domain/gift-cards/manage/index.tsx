@@ -1,19 +1,19 @@
-import { RouteComponentProps } from "@reach/router"
-import { useAdminProducts } from "../../../../medusa-react"
-import React, { useEffect, useState } from "react"
-import toast from "react-hot-toast"
-import Spinner from "../../../components/atoms/spinner"
-import Toaster from "../../../components/declarative-toaster"
-import FormToasterContainer from "../../../components/molecules/form-toaster"
-import { checkForDirtyState } from "../../../utils/form-helpers"
+import { RouteComponentProps } from "@reach/router";
+import { useAdminProducts } from "../../../../medusa-react";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import Spinner from "../../../components/atoms/spinner";
+import Toaster from "../../../components/declarative-toaster";
+import FormToasterContainer from "../../../components/molecules/form-toaster";
+import { checkForDirtyState } from "../../../utils/form-helpers";
 import {
   GiftCardFormProvider,
   useGiftCardForm,
-} from "./form/gift-card-form-context"
-import { giftCardToFormValuesMapper } from "./form/mappers"
-import Denominations from "./sections/denominations"
-import Images from "./sections/images"
-import Information from "./sections/information"
+} from "./form/gift-card-form-context";
+import { giftCardToFormValuesMapper } from "./form/mappers";
+import Denominations from "./sections/denominations";
+import Images from "./sections/images";
+import Information from "./sections/information";
 
 const ManageGiftCard: React.FC<RouteComponentProps> = () => {
   const { products } = useAdminProducts(
@@ -23,16 +23,16 @@ const ManageGiftCard: React.FC<RouteComponentProps> = () => {
     {
       keepPreviousData: true,
     }
-  )
+  );
 
-  const giftCard = products?.[0]
+  const giftCard = products?.[0];
 
   if (!giftCard) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
         <Spinner variant="secondary" size="large" />
       </div>
-    )
+    );
   }
 
   return (
@@ -47,10 +47,10 @@ const ManageGiftCard: React.FC<RouteComponentProps> = () => {
       </div>
       <UpdateNotification />
     </GiftCardFormProvider>
-  )
-}
+  );
+};
 
-const TOAST_ID = "edit-gc-dirty"
+const TOAST_ID = "edit-gc-dirty";
 
 const UpdateNotification = ({ isLoading = false }) => {
   const {
@@ -58,29 +58,29 @@ const UpdateNotification = ({ isLoading = false }) => {
     onUpdate,
     resetForm,
     additionalDirtyState,
-  } = useGiftCardForm()
-  const [visible, setVisible] = useState(false)
-  const [blocking, setBlocking] = useState(true)
+  } = useGiftCardForm();
+  const [visible, setVisible] = useState(false);
+  const [blocking, setBlocking] = useState(true);
 
   useEffect(() => {
-    const timeout = setTimeout(setBlocking, 300, false)
-    return () => clearTimeout(timeout)
-  }, [])
+    const timeout = setTimeout(setBlocking, 300, false);
+    return () => clearTimeout(timeout);
+  }, []);
 
   const isDirty = checkForDirtyState(
     formState.dirtyFields,
     additionalDirtyState
-  )
+  );
 
   useEffect(() => {
     if (!blocking) {
-      setVisible(isDirty)
+      setVisible(isDirty);
     }
 
     return () => {
-      toast.dismiss(TOAST_ID)
-    }
-  }, [isDirty])
+      toast.dismiss(TOAST_ID);
+    };
+  }, [isDirty]);
 
   return (
     <Toaster
@@ -100,7 +100,7 @@ const UpdateNotification = ({ isLoading = false }) => {
         </FormToasterContainer.Actions>
       </FormToasterContainer>
     </Toaster>
-  )
-}
+  );
+};
 
-export default ManageGiftCard
+export default ManageGiftCard;

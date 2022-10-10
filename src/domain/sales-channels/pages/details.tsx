@@ -1,42 +1,42 @@
-import clsx from "clsx"
-import { navigate } from "gatsby"
-import React, { useEffect, useRef, useState } from "react"
+import clsx from "clsx";
+import { navigate } from "gatsby";
+import React, { useEffect, useRef, useState } from "react";
 
-import { SalesChannel } from "@medusajs/medusa"
+import { SalesChannel } from "@medusajs/medusa";
 import {
   useAdminDeleteSalesChannel,
   useAdminProducts,
   useAdminSalesChannels,
   useAdminStore,
   useAdminUpdateSalesChannel,
-} from "../../../../medusa-react"
+} from "../../../../medusa-react";
 
-import EditSalesChannel from "../form/edit-sales-channel"
-import AddSalesChannelModal from "../form/add-sales-channel"
-import Actionables from "../../../components/molecules/actionables"
-import DeletePrompt from "../../../components/organisms/delete-prompt"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import EditIcon from "../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
-import SearchIcon from "../../../components/fundamentals/icons/search-icon"
+import EditSalesChannel from "../form/edit-sales-channel";
+import AddSalesChannelModal from "../form/add-sales-channel";
+import Actionables from "../../../components/molecules/actionables";
+import DeletePrompt from "../../../components/organisms/delete-prompt";
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
+import EditIcon from "../../../components/fundamentals/icons/edit-icon";
+import TrashIcon from "../../../components/fundamentals/icons/trash-icon";
+import SearchIcon from "../../../components/fundamentals/icons/search-icon";
 import {
   SalesChannelProductsSelectModal,
   SalesChannelProductsTable,
-} from "../tables/product"
-import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
-import StatusSelector from "../../../components/molecules/status-selector"
-import TwoSplitPane from "../../../components/templates/two-split-pane"
-import Fade from "../../../components/atoms/fade-wrapper"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import useToggleState from "../../../hooks/use-toggle-state"
+} from "../tables/product";
+import CrossIcon from "../../../components/fundamentals/icons/cross-icon";
+import StatusSelector from "../../../components/molecules/status-selector";
+import TwoSplitPane from "../../../components/templates/two-split-pane";
+import Fade from "../../../components/atoms/fade-wrapper";
+import Breadcrumb from "../../../components/molecules/breadcrumb";
+import useToggleState from "../../../hooks/use-toggle-state";
 
-type ListIndicatorProps = { isActive: boolean }
+type ListIndicatorProps = { isActive: boolean };
 
 /**
  * Sales channels list indicator component.
  */
 function ListIndicator(props: ListIndicatorProps) {
-  const { isActive } = props
+  const { isActive } = props;
   return (
     <div
       className={clsx(
@@ -50,7 +50,7 @@ function ListIndicator(props: ListIndicatorProps) {
         <div className="w-[10px] h-[10px] bg-violet-60 rounded-circle" />
       )}
     </div>
-  )
+  );
 }
 
 /**
@@ -68,21 +68,21 @@ function DisabledLabel() {
     >
       Draft
     </div>
-  )
+  );
 }
 
 type SalesChannelTileProps = {
-  salesChannel: SalesChannel
-  isSelected: boolean
-  isDisabled: boolean
-  onClick: () => void
-}
+  salesChannel: SalesChannel;
+  isSelected: boolean;
+  isDisabled: boolean;
+  onClick: () => void;
+};
 
 /**
  * Sales channels list tile component.
  */
 function SalesChannelTile(props: SalesChannelTileProps) {
-  const { salesChannel, isSelected, onClick, isDisabled } = props
+  const { salesChannel, isSelected, onClick, isDisabled } = props;
 
   return (
     <div
@@ -114,33 +114,33 @@ function SalesChannelTile(props: SalesChannelTileProps) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 type SalesChannelsHeaderProps = {
-  openCreateModal: () => void
-  filterText?: string
-  setFilterText: (text: string) => void
-}
+  openCreateModal: () => void;
+  filterText?: string;
+  setFilterText: (text: string) => void;
+};
 
 /**
  * Sales channel header.
  */
 function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
-  const { openCreateModal, filterText, setFilterText } = props
-  const [showFilter, setShowFilter] = useState(false)
+  const { openCreateModal, filterText, setFilterText } = props;
+  const [showFilter, setShowFilter] = useState(false);
 
-  const inputRef = useRef()
+  const inputRef = useRef();
 
   const classes = {
     "translate-y-[-50px]": showFilter,
     "translate-y-[0px]": !showFilter,
-  }
+  };
 
   const hideFilter = () => {
-    setShowFilter(false)
-    setFilterText("")
-  }
+    setShowFilter(false);
+    setFilterText("");
+  };
 
   return (
     <div className="h-[55px] mb-6 overflow-hidden">
@@ -183,17 +183,17 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 type SalesChannelsListProps = {
-  activeChannelId: string
-  openCreateModal: () => void
-  filterText?: string
-  setFilterText: (text: string) => void
-  salesChannels: SalesChannel[]
-  setActiveSalesChannelId: (salesChannelId: string) => void
-}
+  activeChannelId: string;
+  openCreateModal: () => void;
+  filterText?: string;
+  setFilterText: (text: string) => void;
+  salesChannels: SalesChannel[];
+  setActiveSalesChannelId: (salesChannelId: string) => void;
+};
 
 /**
  * Sales channels list.
@@ -206,7 +206,7 @@ function SalesChannelsList(props: SalesChannelsListProps) {
     salesChannels,
     filterText,
     setFilterText,
-  } = props
+  } = props;
 
   return (
     <div className="col-span-1 rounded-lg border bg-grey-0 border-grey-20 px-8 py-6 h-[968px]">
@@ -226,31 +226,36 @@ function SalesChannelsList(props: SalesChannelsListProps) {
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 type SalesChannelDetailsHeaderProps = {
-  salesChannel: SalesChannel
-  openUpdateModal: () => void
-  resetDetails: () => void
-  showProductsAdd: () => void
-}
+  salesChannel: SalesChannel;
+  openUpdateModal: () => void;
+  resetDetails: () => void;
+  showProductsAdd: () => void;
+};
 
 /**
  * Sales channels details header.
  */
 function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
-  const { salesChannel, openUpdateModal, resetDetails, showProductsAdd } = props
+  const {
+    salesChannel,
+    openUpdateModal,
+    resetDetails,
+    showProductsAdd,
+  } = props;
 
   const { mutate: deleteSalesChannel } = useAdminDeleteSalesChannel(
     salesChannel.id
-  )
+  );
 
   const { mutate: updateSalesChannel } = useAdminUpdateSalesChannel(
     salesChannel.id
-  )
+  );
 
-  const [showDelete, setShowDelete] = useState(false)
+  const [showDelete, setShowDelete] = useState(false);
 
   const actions = [
     {
@@ -269,7 +274,7 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
       variant: "danger",
       onClick: () => setShowDelete(true),
     },
-  ]
+  ];
 
   return (
     <div className="flex justify-between items-center">
@@ -292,8 +297,8 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
         <DeletePrompt
           handleClose={() => setShowDelete(false)}
           onDelete={async () => {
-            deleteSalesChannel()
-            resetDetails()
+            deleteSalesChannel();
+            resetDetails();
           }}
           confirmText="Yes, delete"
           successText="Sales channel deleted"
@@ -302,26 +307,26 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
         />
       )}
     </div>
-  )
+  );
 }
 
 type SalesChannelDetailsProps = {
-  salesChannel: SalesChannel
-  resetDetails: () => void
-}
+  salesChannel: SalesChannel;
+  resetDetails: () => void;
+};
 
 /**
  * Sales channels details container.
  */
 function SalesChannelDetails(props: SalesChannelDetailsProps) {
-  const { resetDetails, salesChannel } = props
+  const { resetDetails, salesChannel } = props;
 
   const [showUpdateModal, openUpdateModal, closeUpdateModal] = useToggleState(
     false
-  )
+  );
   const [showAddProducts, showProductsAdd, hideProductsAdd] = useToggleState(
     false
-  )
+  );
 
   return (
     <div className="col-span-2 rounded-rounded border bg-grey-0 border-grey-20 px-8 py-6 h-[968px]">
@@ -351,87 +356,87 @@ function SalesChannelDetails(props: SalesChannelDetailsProps) {
         />
       )}
     </div>
-  )
+  );
 }
 
-type DetailsProps = { id: string }
+type DetailsProps = { id: string };
 
 /**
  * Sales channels details page container.
  */
 function Details(props: DetailsProps) {
-  const { id: routeSalesChannelId } = props
-  const [filterText, setFilterText] = useState<string>()
-  const [showCreateModal, setShowCreateModal] = useState(false)
+  const { id: routeSalesChannelId } = props;
+  const [filterText, setFilterText] = useState<string>();
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const [
     activeSalesChannel,
     setActiveSalesChannel,
-  ] = useState<SalesChannel | null>()
+  ] = useState<SalesChannel | null>();
 
-  const { store } = useAdminStore()
-  const { sales_channels } = useAdminSalesChannels()
+  const { store } = useAdminStore();
+  const { sales_channels } = useAdminSalesChannels();
 
   const setActiveSalesChannelId = (scId: string) => {
-    navigate(`/a/sales-channels/${scId}`)
-  }
+    navigate(`/a/sales-channels/${scId}`);
+  };
 
   useEffect(() => {
     if (sales_channels && store) {
       if (!activeSalesChannel) {
-        setActiveSalesChannelId(store.default_sales_channel_id)
+        setActiveSalesChannelId(store.default_sales_channel_id);
       } else {
-        setActiveSalesChannelId(activeSalesChannel.id)
+        setActiveSalesChannelId(activeSalesChannel.id);
       }
     }
-  }, [sales_channels, store, activeSalesChannel?.id])
+  }, [sales_channels, store, activeSalesChannel?.id]);
 
   useEffect(() => {
     if (routeSalesChannelId !== activeSalesChannel?.id) {
       const activeChannel = sales_channels?.find(
         (sc) => sc.id === routeSalesChannelId
-      )
-      setActiveSalesChannel(activeChannel)
+      );
+      setActiveSalesChannel(activeChannel);
     }
-  }, [routeSalesChannelId, activeSalesChannel, sales_channels])
+  }, [routeSalesChannelId, activeSalesChannel, sales_channels]);
 
-  const openCreateModal = () => setShowCreateModal(true)
+  const openCreateModal = () => setShowCreateModal(true);
   const closeCreateModal = (scId: string) => {
-    setActiveSalesChannelId(scId)
-    setShowCreateModal(false)
-  }
+    setActiveSalesChannelId(scId);
+    setShowCreateModal(false);
+  };
 
   const resetDetails = () => {
-    setActiveSalesChannelId(store!.default_sales_channel_id)
-  }
+    setActiveSalesChannelId(store!.default_sales_channel_id);
+  };
 
   function defaultChannelsSorter(sc1, sc2) {
     if (sc1.id === store?.default_sales_channel_id) {
-      return -1
+      return -1;
     }
     if (sc2.id === store?.default_sales_channel_id) {
-      return 1
+      return 1;
     }
 
-    return sc1.name.localeCompare(sc2.name)
+    return sc1.name.localeCompare(sc2.name);
   }
 
   function filterSalesChannels(channels: SalesChannel[]) {
     if (!filterText) {
-      return channels
+      return channels;
     }
 
     return channels.filter((ch) => {
-      const filter = filterText.toLowerCase()
+      const filter = filterText.toLowerCase();
       return (
         !!ch.name.toLowerCase().match(filter) ||
         !!ch.description?.toLowerCase().match(filter)
-      )
-    })
+      );
+    });
   }
 
   if (!sales_channels || !activeSalesChannel) {
-    return null
+    return null;
   }
 
   return (
@@ -467,7 +472,7 @@ function Details(props: DetailsProps) {
         <AddSalesChannelModal onClose={closeCreateModal} />
       </Fade>
     </div>
-  )
+  );
 }
 
-export default Details
+export default Details;

@@ -1,30 +1,30 @@
-import { useAdminResendNotification } from "../../../../../medusa-react"
-import React from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../components/fundamentals/button"
-import Input from "../../../../components/molecules/input"
-import Modal from "../../../../components/molecules/modal"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
+import { useAdminResendNotification } from "../../../../../medusa-react";
+import React from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../components/fundamentals/button";
+import Input from "../../../../components/molecules/input";
+import Modal from "../../../../components/molecules/modal";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
 
 type ResendModalProps = {
-  notificationId: string
-  email: string
-  handleCancel: () => void
-}
+  notificationId: string;
+  email: string;
+  handleCancel: () => void;
+};
 
 const ResendModal: React.FC<ResendModalProps> = ({
   notificationId,
   email,
   handleCancel,
 }) => {
-  const resendNotification = useAdminResendNotification(notificationId)
+  const resendNotification = useAdminResendNotification(notificationId);
 
   const { register, handleSubmit } = useForm({
     defaultValues: { to: email },
-  })
+  });
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   const handleResend = (data) => {
     resendNotification.mutate(
@@ -37,13 +37,13 @@ const ResendModal: React.FC<ResendModalProps> = ({
             "Success",
             `Notification re-send to ${data.to}`,
             "success"
-          )
-          handleCancel()
+          );
+          handleCancel();
         },
         onError: (err) => notification("Error", getErrorMessage(err), "error"),
       }
-    )
-  }
+    );
+  };
 
   return (
     <Modal handleClose={handleCancel}>
@@ -61,7 +61,8 @@ const ResendModal: React.FC<ResendModalProps> = ({
                   placeholder={"Email"}
                   {...register(`to`, {
                     required: "Must be filled",
-                  })} />
+                  })}
+                />
               </div>
             </div>
           </Modal.Content>
@@ -91,6 +92,6 @@ const ResendModal: React.FC<ResendModalProps> = ({
       </form>
     </Modal>
   );
-}
+};
 
-export default ResendModal
+export default ResendModal;

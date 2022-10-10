@@ -1,63 +1,66 @@
-import { Customer } from "@medusajs/medusa"
-import { RouteComponentProps } from "@reach/router"
-import { navigate } from "gatsby"
-import React, { useEffect, useState } from "react"
-import { Controller, useForm, useWatch } from "react-hook-form"
-import { useSalesmanActions } from "src/hooks/use-salesman-actions"
-import { useAdminCustomer, useAdminUpdateCustomer } from "../../../medusa-react"
-import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select"
-import Button from "../../components/fundamentals/button"
-import LockIcon from "../../components/fundamentals/icons/lock-icon"
-import Breadcrumb from "../../components/molecules/breadcrumb"
-import InputField from "../../components/molecules/input"
-import BodyCard from "../../components/organisms/body-card"
-import useNotification from "../../hooks/use-notification"
-import { countries } from "../../utils/countries"
-import { getErrorMessage } from "../../utils/error-messages"
-import Validator from "../../utils/validator"
+import { Customer } from "@medusajs/medusa";
+import { RouteComponentProps } from "@reach/router";
+import { navigate } from "gatsby";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { useSalesmanActions } from "src/hooks/use-salesman-actions";
+import {
+  useAdminCustomer,
+  useAdminUpdateCustomer,
+} from "../../../medusa-react";
+import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select";
+import Button from "../../components/fundamentals/button";
+import LockIcon from "../../components/fundamentals/icons/lock-icon";
+import Breadcrumb from "../../components/molecules/breadcrumb";
+import InputField from "../../components/molecules/input";
+import BodyCard from "../../components/organisms/body-card";
+import useNotification from "../../hooks/use-notification";
+import { countries } from "../../utils/countries";
+import { getErrorMessage } from "../../utils/error-messages";
+import Validator from "../../utils/validator";
 
 type CustomerDetailProps = {
-  id: string
-} & RouteComponentProps
+  id: string;
+} & RouteComponentProps;
 
 type EditCustomerFormType = {
-  first_name: string
-  last_name: string
-  email: string
-  phone: string | null
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
   regions?: {
-    label: string
-    value: string
-  }[]
-}
+    label: string;
+    value: string;
+  }[];
+};
 
 const countryOptions = countries.map((c) => ({
   label: c.name,
   value: c.alpha2,
-}))
+}));
 
 const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
-  const [customer, setCustomer] = useState<Customer>()
+  const [customer, setCustomer] = useState<Customer>();
   const {
     register,
     reset,
     handleSubmit,
     control,
     formState: { isDirty, isValid },
-  } = useForm<EditCustomerFormType>()
+  } = useForm<EditCustomerFormType>();
   const watch = useWatch({
     control,
-  })
-  const notification = useNotification()
-  const { handleDelete } = useSalesmanActions()
-  const updateCustomer = useAdminUpdateCustomer(id)
+  });
+  const notification = useNotification();
+  const { handleDelete } = useSalesmanActions();
+  const updateCustomer = useAdminUpdateCustomer(id);
   // Fetch info
   useAdminCustomer(id, {
     onSuccess(data) {
-      setCustomer(data.customer)
+      setCustomer(data.customer);
     },
     cacheTime: 0,
-  })
+  });
 
   const onSubmit = handleSubmit((data) => {
     updateCustomer.mutate(
@@ -70,34 +73,34 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully updated salesman", "success")
+          notification("Success", "Successfully updated salesman", "success");
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification("Error", getErrorMessage(err), "error");
         },
       }
-    )
-  })
+    );
+  });
 
   useEffect(() => {
-    if (customer) reset(getDefaultValues(customer))
-  }, [customer])
+    if (customer) reset(getDefaultValues(customer));
+  }, [customer]);
 
   const customerName = () => {
     if (customer?.first_name && customer?.last_name) {
-      return `${customer.first_name} ${customer.last_name}`
+      return `${customer.first_name} ${customer.last_name}`;
     } else {
-      return customer?.email
+      return customer?.email;
     }
-  }
+  };
   console.log(
     "!isDirty || !isValid || updateCustomer.isLoading",
     !isDirty,
     !isValid,
     updateCustomer.isLoading
-  )
+  );
 
-  if (!customer) return null
+  if (!customer) return null;
 
   return (
     <div>
@@ -163,7 +166,7 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
                   isMulti
                   selectAll
                 />
-              )
+              );
             }}
           />
         </div>
@@ -187,10 +190,10 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
         </div>
       </BodyCard>
     </div>
-  )
-}
+  );
+};
 
-export default SalesmanDetail
+export default SalesmanDetail;
 
 const getDefaultValues = (customer: Customer): EditCustomerFormType => {
   return {
@@ -199,5 +202,5 @@ const getDefaultValues = (customer: Customer): EditCustomerFormType => {
     last_name: customer.last_name,
     phone: customer.phone,
     regions: undefined,
-  }
-}
+  };
+};

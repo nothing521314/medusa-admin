@@ -1,18 +1,18 @@
-import React from "react"
+import React from "react";
 
-import StatusDot from "../../../../components/fundamentals/status-indicator"
+import StatusDot from "../../../../components/fundamentals/status-indicator";
 
 export const PaymentStatusComponent = ({ status }) => {
   switch (status) {
     case "captured":
-      return <StatusDot title="Paid" variant="success" />
+      return <StatusDot title="Paid" variant="success" />;
     case "awaiting":
-      return <StatusDot title="Awaiting" variant="default" />
+      return <StatusDot title="Awaiting" variant="default" />;
     case "canceled":
-      return <StatusDot title="Canceled" variant="danger" />
+      return <StatusDot title="Canceled" variant="danger" />;
     case "requires_action":
-      return <StatusDot title="Requires Action" variant="danger" />
+      return <StatusDot title="Requires Action" variant="danger" />;
     default:
-      return null
+      return null;
   }
-}
+};

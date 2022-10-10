@@ -1,23 +1,23 @@
-import React, { ReactNode, useEffect } from "react"
-import { toast } from "react-hot-toast"
-import SaveNotification from "../components/atoms/save-notification"
+import React, { ReactNode, useEffect } from "react";
+import { toast } from "react-hot-toast";
+import SaveNotification from "../components/atoms/save-notification";
 
 type Options = {
-  fn: () => Promise<void>
-  title: string
-  message: string
-  icon?: ReactNode
-}
+  fn: () => Promise<void>;
+  title: string;
+  message: string;
+  icon?: ReactNode;
+};
 
 type UseDetectChangeProps = {
-  isDirty: boolean
-  reset: () => void
-  options: Options
-}
+  isDirty: boolean;
+  reset: () => void;
+  options: Options;
+};
 
 const useDetectChange = ({ isDirty, reset, options }: UseDetectChangeProps) => {
   useEffect(() => {
-    const { fn, title, message, icon } = options
+    const { fn, title, message, icon } = options;
 
     const showToaster = () => {
       toast.custom(
@@ -36,15 +36,15 @@ const useDetectChange = ({ isDirty, reset, options }: UseDetectChangeProps) => {
           duration: Infinity,
           id: "form-change",
         }
-      )
-    }
+      );
+    };
 
     if (isDirty) {
-      showToaster()
+      showToaster();
     } else {
-      toast.dismiss("form-change")
+      toast.dismiss("form-change");
     }
-  }, [isDirty, options])
-}
+  }, [isDirty, options]);
+};
 
-export default useDetectChange
+export default useDetectChange;

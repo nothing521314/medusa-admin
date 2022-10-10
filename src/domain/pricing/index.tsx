@@ -1,12 +1,12 @@
-import { RouteComponentProps, Router } from "@reach/router"
-import { navigate } from "gatsby"
-import React from "react"
-import PlusIcon from "../../components/fundamentals/icons/plus-icon"
-import BodyCard from "../../components/organisms/body-card"
-import TableViewHeader from "../../components/organisms/custom-table-header"
-import PricingDetails from "./details"
-import New from "./new"
-import PricingTable from "./pricing-table"
+import { RouteComponentProps, Router } from "@reach/router";
+import { navigate } from "gatsby";
+import React from "react";
+import PlusIcon from "../../components/fundamentals/icons/plus-icon";
+import BodyCard from "../../components/organisms/body-card";
+import TableViewHeader from "../../components/organisms/custom-table-header";
+import PricingDetails from "./details";
+import New from "./new";
+import PricingTable from "./pricing-table";
 
 const PricingIndex: React.FC<RouteComponentProps> = () => {
   const actionables = [
@@ -15,7 +15,7 @@ const PricingIndex: React.FC<RouteComponentProps> = () => {
       onClick: () => navigate(`/a/pricing/new`),
       icon: <PlusIcon size={20} />,
     },
-  ]
+  ];
 
   return (
     <div className="h-full flex flex-col">
@@ -28,8 +28,8 @@ const PricingIndex: React.FC<RouteComponentProps> = () => {
         </BodyCard>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Pricing = () => {
   return (
@@ -38,7 +38,7 @@ const Pricing = () => {
       <PricingDetails path="/:id" />
       <New path="/new" />
     </Router>
-  )
-}
+  );
+};
 
-export default Pricing
+export default Pricing;

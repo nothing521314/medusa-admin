@@ -1,27 +1,27 @@
-import React, { useState } from "react"
-import { useAdminCreateSalesChannel } from "../../../../medusa-react"
+import React, { useState } from "react";
+import { useAdminCreateSalesChannel } from "../../../../medusa-react";
 
-import Button from "../../../components/fundamentals/button"
+import Button from "../../../components/fundamentals/button";
 
-import FocusModal from "../../../components/molecules/modal/focus-modal"
-import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
-import Accordion from "../../../components/organisms/accordion"
-import InputField from "../../../components/molecules/input"
-import useNotification from "../../../hooks/use-notification"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
+import FocusModal from "../../../components/molecules/modal/focus-modal";
+import CrossIcon from "../../../components/fundamentals/icons/cross-icon";
+import Accordion from "../../../components/organisms/accordion";
+import InputField from "../../../components/molecules/input";
+import useNotification from "../../../hooks/use-notification";
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
 
 type GeneralProps = {
-  name: string
-  description: string
-  setName: (name: string) => void
-  setDescription: (description: string) => void
-}
+  name: string;
+  description: string;
+  setName: (name: string) => void;
+  setDescription: (description: string) => void;
+};
 
 /**
  * General section for the SC create form.
  */
 function General(props: GeneralProps) {
-  const { name, description, setName, setDescription } = props
+  const { name, description, setName, setDescription } = props;
 
   return (
     <div className="flex flex-col gap-y-base my-base">
@@ -46,11 +46,11 @@ function General(props: GeneralProps) {
         />
       </div>
     </div>
-  )
+  );
 }
 
 function AddProducts() {
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <div>
@@ -74,23 +74,23 @@ function AddProducts() {
       {/*  />*/}
       {/*)}*/}
     </div>
-  )
+  );
 }
 
 type AddSalesChannelModalProps = {
-  onClose: (scId: string) => void
-}
+  onClose: (scId: string) => void;
+};
 
 /**
  * Modal for creating sales channels.
  */
 const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
-  const { mutate: createSalesChannel } = useAdminCreateSalesChannel()
+  const { mutate: createSalesChannel } = useAdminCreateSalesChannel();
 
-  const notification = useNotification()
+  const notification = useNotification();
 
-  const [name, setName] = useState<string>()
-  const [description, setDescription] = useState<string>()
+  const [name, setName] = useState<string>();
+  const [description, setDescription] = useState<string>();
 
   async function save() {
     await createSalesChannel(
@@ -101,13 +101,13 @@ const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
             "Success",
             "The sales channel is successfully created",
             "success"
-          )
-          onClose(sales_channel.id)
+          );
+          onClose(sales_channel.id);
         },
         onError: () =>
           notification("Error", "Failed to create the sales channel", "error"),
       }
-    )
+    );
   }
 
   async function saveAsDraft() {
@@ -123,13 +123,13 @@ const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
             "Success",
             "The sales channel is successfully created",
             "success"
-          )
-          onClose(sales_channel.id)
+          );
+          onClose(sales_channel.id);
         },
         onError: () =>
           notification("Error", "Failed to create the sales channel", "error"),
       }
-    )
+    );
   }
 
   return (
@@ -197,7 +197,7 @@ const AddSalesChannelModal = ({ onClose }: AddSalesChannelModalProps) => {
         </div>
       </FocusModal.Main>
     </FocusModal>
-  )
-}
+  );
+};
 
-export default AddSalesChannelModal
+export default AddSalesChannelModal;

@@ -1,38 +1,38 @@
-import { useAdminRegions, useAdminStore } from "../../../../../medusa-react"
-import React, { useEffect, useMemo } from "react"
-import { FieldArrayWithId, useFieldArray } from "react-hook-form"
-import { NestedForm } from "../../../../utils/nested-form"
-import NestedPrice from "./nested-price"
+import { useAdminRegions, useAdminStore } from "../../../../../medusa-react";
+import React, { useEffect, useMemo } from "react";
+import { FieldArrayWithId, useFieldArray } from "react-hook-form";
+import { NestedForm } from "../../../../utils/nested-form";
+import NestedPrice from "./nested-price";
 
 type PricePayload = {
-  id: string | null
-  amount: number | null
-  currency_code: string
-  region_id: string | null
-  includes_tax?: boolean
-}
+  id: string | null;
+  amount: number | null;
+  currency_code: string;
+  region_id: string | null;
+  includes_tax?: boolean;
+};
 
 type PriceObject = FieldArrayWithId<
   {
-    __nested__: PricesFormType
+    __nested__: PricesFormType;
   },
   "__nested__.prices",
   "id"
-> & { index: number }
+> & { index: number };
 
 export type PricesFormType = {
-  prices: PricePayload[]
-}
+  prices: PricePayload[];
+};
 
 export type NestedPriceObject = {
-  currencyPrice: PriceObject
-  regionPrices: (PriceObject & { regionName: string })[]
-}
+  currencyPrice: PriceObject;
+  regionPrices: (PriceObject & { regionName: string })[];
+};
 
 type Props = {
-  form: NestedForm<PricesFormType>
-  required?: boolean
-}
+  form: NestedForm<PricesFormType>;
+  required?: boolean;
+};
 
 /**
  * Re-usable nested form used to submit pricing information for products and their variants.
@@ -42,19 +42,19 @@ type Props = {
  * <Pricing form={nestedForm(form, "prices")} />
  */
 const PricesForm = ({ form }: Props) => {
-  const { store } = useAdminStore()
-  const { regions } = useAdminRegions()
+  const { store } = useAdminStore();
+  const { regions } = useAdminRegions();
 
-  const { control, path } = form
+  const { control, path } = form;
 
   const { append, update, fields } = useFieldArray({
     control,
     name: path("prices"),
-  })
+  });
 
   useEffect(() => {
     if (!regions) {
-      return
+      return;
     }
 
     regions.forEach((reg) => {
@@ -65,12 +65,12 @@ const PricesForm = ({ form }: Props) => {
           amount: null,
           currency_code: reg.currency_code,
           includes_tax: reg.includes_tax,
-        })
+        });
       }
 
       const regionPrice = fields.findIndex(
         (field) => field.region_id === reg.id
-      )
+      );
 
       if (
         regionPrice !== -1 &&
@@ -79,14 +79,14 @@ const PricesForm = ({ form }: Props) => {
         update(regionPrice, {
           ...fields[regionPrice],
           includes_tax: reg.includes_tax,
-        })
+        });
       }
-    })
-  }, [regions, fields])
+    });
+  }, [regions, fields]);
 
   useEffect(() => {
     if (!store) {
-      return
+      return;
     }
 
     store.currencies.forEach((cur) => {
@@ -97,12 +97,12 @@ const PricesForm = ({ form }: Props) => {
           amount: null,
           region_id: null,
           includes_tax: cur.includes_tax,
-        })
+        });
       }
 
       const currencyPrice = fields.findIndex(
         (field) => field.currency_code === cur.code
-      )
+      );
 
       if (
         currencyPrice !== -1 &&
@@ -111,16 +111,16 @@ const PricesForm = ({ form }: Props) => {
         update(currencyPrice, {
           ...fields[currencyPrice],
           includes_tax: cur.includes_tax,
-        })
+        });
       }
-    })
-  }, [store, fields])
+    });
+  }, [store, fields]);
 
   const priceObj = useMemo(() => {
-    const obj: Record<string, NestedPriceObject> = {}
+    const obj: Record<string, NestedPriceObject> = {};
 
-    const currencyPrices = fields.filter((field) => field.region_id === null)
-    const regionPrices = fields.filter((field) => field.region_id !== null)
+    const currencyPrices = fields.filter((field) => field.region_id === null);
+    const regionPrices = fields.filter((field) => field.region_id !== null);
 
     currencyPrices.forEach((price) => {
       obj[price.currency_code!] = {
@@ -137,11 +137,11 @@ const PricesForm = ({ form }: Props) => {
             regionName: regions?.find((r) => r.id === rp.region_id)?.name || "",
             index: fields.indexOf(rp),
           })),
-      }
-    })
+      };
+    });
 
-    return obj
-  }, [fields])
+    return obj;
+  }, [fields]);
 
   return (
     <div>
@@ -153,11 +153,11 @@ const PricesForm = ({ form }: Props) => {
               nestedPrice={po}
               key={po.currencyPrice.id}
             />
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PricesForm
+export default PricesForm;

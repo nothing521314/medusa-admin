@@ -1,13 +1,13 @@
-import React from "react"
-import type { Toast } from "react-hot-toast"
-import Spinner from "../spinner"
-import ToasterContainer from "../toaster-container"
+import React from "react";
+import type { Toast } from "react-hot-toast";
+import Spinner from "../spinner";
+import ToasterContainer from "../toaster-container";
 
 type SavingStateProps = {
-  toast: Toast
-  title?: string
-  message?: string
-}
+  toast: Toast;
+  title?: string;
+  message?: string;
+};
 
 const SavingState: React.FC<SavingStateProps> = ({
   toast,
@@ -24,7 +24,7 @@ const SavingState: React.FC<SavingStateProps> = ({
         <span className="inter-small-regular text-grey-50">{message}</span>
       </div>
     </ToasterContainer>
-  )
-}
+  );
+};
 
-export default SavingState
+export default SavingState;

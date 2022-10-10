@@ -1,21 +1,21 @@
-import { Product } from "@medusajs/medusa"
-import clsx from "clsx"
-import { Link } from "gatsby"
-import * as React from "react"
-import { getProductStatusVariant } from "../../../utils/product-status-variant"
-import Button from "../../fundamentals/button"
-import ListIcon from "../../fundamentals/icons/list-icon"
-import MoreHorizontalIcon from "../../fundamentals/icons/more-horizontal-icon"
-import TileIcon from "../../fundamentals/icons/tile-icon"
-import ImagePlaceholder from "../../fundamentals/image-placeholder"
-import StatusIndicator from "../../fundamentals/status-indicator"
-import Actionables from "../../molecules/actionables"
-import useProductActions from "./use-product-actions"
+import { Product } from "@medusajs/medusa";
+import clsx from "clsx";
+import { Link } from "gatsby";
+import * as React from "react";
+import { getProductStatusVariant } from "../../../utils/product-status-variant";
+import Button from "../../fundamentals/button";
+import ListIcon from "../../fundamentals/icons/list-icon";
+import MoreHorizontalIcon from "../../fundamentals/icons/more-horizontal-icon";
+import TileIcon from "../../fundamentals/icons/tile-icon";
+import ImagePlaceholder from "../../fundamentals/image-placeholder";
+import StatusIndicator from "../../fundamentals/status-indicator";
+import Actionables from "../../molecules/actionables";
+import useProductActions from "./use-product-actions";
 
 type ProductOverviewProps = {
-  products?: Product[]
-  toggleListView: () => void
-}
+  products?: Product[];
+  toggleListView: () => void;
+};
 
 const ProductOverview = ({
   products,
@@ -48,11 +48,11 @@ const ProductOverview = ({
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
 const ProductTile = ({ product }) => {
-  const { getActions } = useProductActions(product)
+  const { getActions } = useProductActions(product);
 
   return (
     <div className="p-base group rounded-rounded hover:bg-grey-5 flex-col">
@@ -101,7 +101,7 @@ const ProductTile = ({ product }) => {
         </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductOverview
+export default ProductOverview;

@@ -1,30 +1,30 @@
-import { useAdminProductTypes } from  "../../../../../../../medusa-react"
-import React, { useState } from "react"
-import Spinner from "../../../../../../components/atoms/spinner"
-import Modal from "../../../../../../components/molecules/modal"
-import useQueryFilters from "../../../../../../hooks/use-query-filters"
-import { useConditions } from "../../../../details/conditions/add-condition/conditions-provider"
+import { useAdminProductTypes } from "../../../../../../../medusa-react";
+import React, { useState } from "react";
+import Spinner from "../../../../../../components/atoms/spinner";
+import Modal from "../../../../../../components/molecules/modal";
+import useQueryFilters from "../../../../../../hooks/use-query-filters";
+import { useConditions } from "../../../../details/conditions/add-condition/conditions-provider";
 import {
   AddConditionSelectorProps,
   DiscountConditionOperator,
-} from "../../../../types"
-import { defaultQueryProps } from "../shared/common"
-import ConditionOperator from "../shared/condition-operator"
-import { SelectableTable } from "../shared/selectable-table"
-import { TypeRow, TypesHeader, useTypesColumns } from "../shared/types"
-import DetailsConditionFooter from "./details-condition-footer"
+} from "../../../../types";
+import { defaultQueryProps } from "../shared/common";
+import ConditionOperator from "../shared/condition-operator";
+import { SelectableTable } from "../shared/selectable-table";
+import { TypeRow, TypesHeader, useTypesColumns } from "../shared/types";
+import DetailsConditionFooter from "./details-condition-footer";
 
 const DetailsTypeConditionSelector = ({
   onClose,
 }: AddConditionSelectorProps) => {
-  const params = useQueryFilters(defaultQueryProps)
+  const params = useQueryFilters(defaultQueryProps);
 
-  const { conditions } = useConditions()
+  const { conditions } = useConditions();
 
-  const [items, setItems] = useState(conditions.product_types?.items || [])
+  const [items, setItems] = useState(conditions.product_types?.items || []);
   const [operator, setOperator] = useState<DiscountConditionOperator>(
     conditions.product_types.operator
-  )
+  );
 
   const { isLoading, count, product_types } = useAdminProductTypes(
     params.queryObject,
@@ -32,16 +32,16 @@ const DetailsTypeConditionSelector = ({
       // avoid UI flickering by keeping previous data
       keepPreviousData: true,
     }
-  )
+  );
 
   const changed = (values: string[]) => {
     const selectedTypes =
-      product_types?.filter((type) => values.includes(type.id)) || []
+      product_types?.filter((type) => values.includes(type.id)) || [];
 
-    setItems(selectedTypes.map((type) => ({ id: type.id, label: type.value })))
-  }
+    setItems(selectedTypes.map((type) => ({ id: type.id, label: type.value })));
+  };
 
-  const columns = useTypesColumns()
+  const columns = useTypesColumns();
 
   return (
     <>
@@ -80,7 +80,7 @@ const DetailsTypeConditionSelector = ({
         />
       </Modal.Footer>
     </>
-  )
-}
+  );
+};
 
-export default DetailsTypeConditionSelector
+export default DetailsTypeConditionSelector;

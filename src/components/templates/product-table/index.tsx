@@ -1,39 +1,39 @@
-import { useLocation } from "@reach/router"
-import { isEmpty } from "lodash"
-import { useAdminProducts } from "../../../../medusa-react"
-import qs from "qs"
-import React, { useEffect, useState } from "react"
-import { usePagination, useTable } from "react-table"
-import { useFeatureFlag } from "../../../context/feature-flag"
-import ProductsFilter from "../../../domain/products/filter-dropdown"
-import Spinner from "../../atoms/spinner"
-import Table, { TablePagination } from "../../molecules/table"
-import ProductOverview from "./overview"
-import useProductActions from "./use-product-actions"
-import useProductTableColumn from "./use-product-column"
-import { useProductFilters } from "./use-product-filters"
+import { useLocation } from "@reach/router";
+import { isEmpty } from "lodash";
+import { useAdminProducts } from "../../../../medusa-react";
+import qs from "qs";
+import React, { useEffect, useState } from "react";
+import { usePagination, useTable } from "react-table";
+import { useFeatureFlag } from "../../../context/feature-flag";
+import ProductsFilter from "../../../domain/products/filter-dropdown";
+import Spinner from "../../atoms/spinner";
+import Table, { TablePagination } from "../../molecules/table";
+import ProductOverview from "./overview";
+import useProductActions from "./use-product-actions";
+import useProductTableColumn from "./use-product-column";
+import { useProductFilters } from "./use-product-filters";
 
-const DEFAULT_PAGE_SIZE = 15
-const DEFAULT_PAGE_SIZE_TILE_VIEW = 18
+const DEFAULT_PAGE_SIZE = 15;
+const DEFAULT_PAGE_SIZE_TILE_VIEW = 18;
 
-type ProductTableProps = {}
+type ProductTableProps = {};
 
 const defaultQueryProps = {
   fields: "id,title,type,thumbnail,status,handle",
   expand: "variants,options,variants.prices,variants.options,collection,tags",
   is_giftcard: false,
-}
+};
 
 const ProductTable: React.FC<ProductTableProps> = () => {
-  const location = useLocation()
+  const location = useLocation();
 
-  const { isFeatureEnabled } = useFeatureFlag()
+  const { isFeatureEnabled } = useFeatureFlag();
 
-  let hiddenColumns = ["sales_channel"]
+  let hiddenColumns = ["sales_channel"];
   if (isFeatureEnabled("sales_channels")) {
     defaultQueryProps.expand =
-      "variants,options,variants.prices,variants.options,collection,tags,sales_channels"
-    hiddenColumns = []
+      "variants,options,variants.prices,variants.options,collection,tags,sales_channels";
+    hiddenColumns = [];
   }
 
   const {
@@ -50,64 +50,64 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     setQuery: setFreeText,
     queryObject,
     representationObject,
-  } = useProductFilters(location.search, defaultQueryProps)
+  } = useProductFilters(location.search, defaultQueryProps);
 
-  const offs = parseInt(queryObject.offset) || 0
-  const limit = parseInt(queryObject.limit)
+  const offs = parseInt(queryObject.offset) || 0;
+  const limit = parseInt(queryObject.limit);
 
-  const [query, setQuery] = useState(queryObject.query)
-  const [numPages, setNumPages] = useState(0)
+  const [query, setQuery] = useState(queryObject.query);
+  const [numPages, setNumPages] = useState(0);
 
   const clearFilters = () => {
-    reset()
-    setQuery("")
-  }
+    reset();
+    setQuery("");
+  };
 
   const { products, isLoading, isRefetching, count } = useAdminProducts({
     ...queryObject,
-  })
+  });
 
   useEffect(() => {
     if (typeof count !== "undefined") {
-      const controlledPageCount = Math.ceil(count / limit)
-      setNumPages(controlledPageCount)
+      const controlledPageCount = Math.ceil(count / limit);
+      setNumPages(controlledPageCount);
     }
-  }, [count])
+  }, [count]);
 
   const updateUrlFromFilter = (obj = {}) => {
-    const stringified = qs.stringify(obj)
-    window.history.replaceState(`/a/products`, "", `${`?${stringified}`}`)
-  }
+    const stringified = qs.stringify(obj);
+    window.history.replaceState(`/a/products`, "", `${`?${stringified}`}`);
+  };
 
   const refreshWithFilters = () => {
-    const filterObj = representationObject
+    const filterObj = representationObject;
 
     if (isEmpty(filterObj)) {
-      updateUrlFromFilter({ offset: 0, limit: DEFAULT_PAGE_SIZE })
+      updateUrlFromFilter({ offset: 0, limit: DEFAULT_PAGE_SIZE });
     } else {
-      updateUrlFromFilter(filterObj)
+      updateUrlFromFilter(filterObj);
     }
-  }
+  };
 
   useEffect(() => {
-    refreshWithFilters()
-  }, [representationObject])
+    refreshWithFilters();
+  }, [representationObject]);
 
   const setTileView = () => {
-    setLimit(DEFAULT_PAGE_SIZE_TILE_VIEW)
-    setShowList(false)
-  }
+    setLimit(DEFAULT_PAGE_SIZE_TILE_VIEW);
+    setShowList(false);
+  };
 
   const setListView = () => {
-    setLimit(DEFAULT_PAGE_SIZE)
-    setShowList(true)
-  }
-  const [showList, setShowList] = React.useState(true)
+    setLimit(DEFAULT_PAGE_SIZE);
+    setShowList(true);
+  };
+  const [showList, setShowList] = React.useState(true);
   const [columns] = useProductTableColumn({
     setTileView,
     setListView,
     showList,
-  })
+  });
 
   const {
     getTableProps,
@@ -137,38 +137,38 @@ const ProductTable: React.FC<ProductTableProps> = () => {
       autoResetPage: false,
     },
     usePagination
-  )
+  );
 
   // Debounced search
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (query) {
-        setFreeText(query)
-        gotoPage(0)
+        setFreeText(query);
+        gotoPage(0);
       } else {
         if (typeof query !== "undefined") {
           // if we delete query string, we reset the table view
-          reset()
+          reset();
         }
       }
-    }, 400)
+    }, 400);
 
-    return () => clearTimeout(delayDebounceFn)
-  }, [query])
+    return () => clearTimeout(delayDebounceFn);
+  }, [query]);
 
   const handleNext = () => {
     if (canNextPage) {
-      paginate(1)
-      nextPage()
+      paginate(1);
+      nextPage();
     }
-  }
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      paginate(-1)
-      previousPage()
+      paginate(-1);
+      previousPage();
     }
-  }
+  };
 
   return (
     <div className="w-full h-full overflow-y-auto">
@@ -210,8 +210,8 @@ const ProductTable: React.FC<ProductTableProps> = () => {
 
               <Table.Body {...getTableBodyProps()}>
                 {rows.map((row) => {
-                  prepareRow(row)
-                  return <ProductRow row={row} {...row.getRowProps()} />
+                  prepareRow(row);
+                  return <ProductRow row={row} {...row.getRowProps()} />;
                 })}
               </Table.Body>
             </>
@@ -241,8 +241,8 @@ const ProductTable: React.FC<ProductTableProps> = () => {
         />
       </>
     </div>
-  )
-}
+  );
+};
 
 const LoadingContainer = ({ isLoading, children }) => {
   return isLoading ? (
@@ -251,12 +251,12 @@ const LoadingContainer = ({ isLoading, children }) => {
     </div>
   ) : (
     children
-  )
-}
+  );
+};
 
 const ProductRow = ({ row, ...rest }) => {
-  const product = row.original
-  const { getActions } = useProductActions(product)
+  const product = row.original;
+  const { getActions } = useProductActions(product);
 
   return (
     <Table.Row
@@ -270,9 +270,9 @@ const ProductRow = ({ row, ...rest }) => {
           <Table.Cell {...cell.getCellProps()}>
             {cell.render("Cell", { index })}
           </Table.Cell>
-        )
+        );
       })}
     </Table.Row>
-  )
-}
-export default ProductTable
+  );
+};
+export default ProductTable;

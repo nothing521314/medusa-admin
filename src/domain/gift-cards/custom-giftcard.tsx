@@ -1,52 +1,52 @@
-import { useAdminCreateGiftCard, useAdminRegions } from "../../../medusa-react"
-import React, { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../components/fundamentals/button"
-import InputField from "../../components/molecules/input"
-import Modal from "../../components/molecules/modal"
-import Select from "../../components/molecules/select"
-import TextArea from "../../components/molecules/textarea"
-import CurrencyInput from "../../components/organisms/currency-input"
-import useNotification from "../../hooks/use-notification"
-import { getErrorMessage } from "../../utils/error-messages"
-import { focusByName } from "../../utils/focus-by-name"
-import { validateEmail } from "../../utils/validate-email"
+import { useAdminCreateGiftCard, useAdminRegions } from "../../../medusa-react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../components/fundamentals/button";
+import InputField from "../../components/molecules/input";
+import Modal from "../../components/molecules/modal";
+import Select from "../../components/molecules/select";
+import TextArea from "../../components/molecules/textarea";
+import CurrencyInput from "../../components/organisms/currency-input";
+import useNotification from "../../hooks/use-notification";
+import { getErrorMessage } from "../../utils/error-messages";
+import { focusByName } from "../../utils/focus-by-name";
+import { validateEmail } from "../../utils/validate-email";
 
 type CustomGiftcardProps = {
-  onDismiss: () => void
-}
+  onDismiss: () => void;
+};
 
 const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onDismiss }) => {
-  const { isLoading, regions } = useAdminRegions()
-  const [selectedRegion, setSelectedRegion] = useState<any>(null)
-  const [giftCardAmount, setGiftCardAmount] = useState(0)
+  const { isLoading, regions } = useAdminRegions();
+  const [selectedRegion, setSelectedRegion] = useState<any>(null);
+  const [giftCardAmount, setGiftCardAmount] = useState(0);
 
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm();
 
-  const notification = useNotification()
+  const notification = useNotification();
 
-  const createGiftCard = useAdminCreateGiftCard()
+  const createGiftCard = useAdminCreateGiftCard();
 
   useEffect(() => {
     if (!isLoading) {
       setSelectedRegion({
         value: regions[0],
         label: regions[0].name,
-      })
+      });
     }
-  }, [isLoading])
+  }, [isLoading]);
 
   const onSubmit = (data) => {
     if (!giftCardAmount) {
-      notification("Error", "Please enter an amount", "error")
-      focusByName("amount")
-      return
+      notification("Error", "Please enter an amount", "error");
+      focusByName("amount");
+      return;
     }
 
     if (!validateEmail(data.metadata.email)) {
-      notification("Error", "Invalid email address", "error")
-      focusByName("metadata.email")
-      return
+      notification("Error", "Invalid email address", "error");
+      focusByName("metadata.email");
+      return;
     }
 
     const update = {
@@ -55,19 +55,19 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onDismiss }) => {
         giftCardAmount / (1 + selectedRegion.value.tax_rate / 100)
       ),
       ...data,
-    }
+    };
 
     createGiftCard.mutate(update, {
       onSuccess: () => {
-        notification("Success", "Created Custom Gift Card", "success")
-        onDismiss()
+        notification("Success", "Created Custom Gift Card", "success");
+        onDismiss();
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
-        onDismiss()
+        notification("Error", getErrorMessage(error), "error");
+        onDismiss();
       },
-    })
-  }
+    });
+  };
 
   return (
     <Modal handleClose={onDismiss}>
@@ -105,7 +105,7 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onDismiss }) => {
                     label={"Amount"}
                     amount={giftCardAmount}
                     onChange={(value) => {
-                      setGiftCardAmount(value || 0)
+                      setGiftCardAmount(value || 0);
                     }}
                     name="amount"
                     required={true}
@@ -156,7 +156,7 @@ const CustomGiftcard: React.FC<CustomGiftcardProps> = ({ onDismiss }) => {
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default CustomGiftcard
+export default CustomGiftcard;

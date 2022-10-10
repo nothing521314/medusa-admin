@@ -1,15 +1,15 @@
-import * as PopoverPrimitive from "@radix-ui/react-popover"
-import clsx from "clsx"
-import moment from "moment"
-import React, { useEffect, useState } from "react"
-import ReactDatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
-import Button from "../../fundamentals/button"
-import ArrowDownIcon from "../../fundamentals/icons/arrow-down-icon"
-import InputContainer from "../../fundamentals/input-container"
-import InputHeader from "../../fundamentals/input-header"
-import CustomHeader from "./custom-header"
-import { DateTimePickerProps } from "./types"
+import * as PopoverPrimitive from "@radix-ui/react-popover";
+import clsx from "clsx";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Button from "../../fundamentals/button";
+import ArrowDownIcon from "../../fundamentals/icons/arrow-down-icon";
+import InputContainer from "../../fundamentals/input-container";
+import InputHeader from "../../fundamentals/input-header";
+import CustomHeader from "./custom-header";
+import { DateTimePickerProps } from "./types";
 
 const getDateClassname = (d, tempDate) => {
   return moment(d).format("YY,MM,DD") === moment(tempDate).format("YY,MM,DD")
@@ -18,8 +18,8 @@ const getDateClassname = (d, tempDate) => {
         moment(d).format("YY,MM,DD") < moment(new Date()).format("YY,MM,DD")
           ? "past"
           : ""
-      }`
-}
+      }`;
+};
 
 const DatePicker: React.FC<DateTimePickerProps> = ({
   date,
@@ -29,21 +29,21 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
   tooltipContent,
   tooltip,
 }) => {
-  const [tempDate, setTempDate] = useState(date)
-  const [isOpen, setIsOpen] = useState(false)
+  const [tempDate, setTempDate] = useState(date);
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => setTempDate(date), [isOpen])
+  useEffect(() => setTempDate(date), [isOpen]);
 
   const submitDate = () => {
     // update only date, month and year
-    const newDate = new Date(date.getTime())
-    newDate.setUTCDate(tempDate.getUTCDate())
-    newDate.setUTCMonth(tempDate.getUTCMonth())
-    newDate.setUTCFullYear(tempDate.getUTCFullYear())
+    const newDate = new Date(date.getTime());
+    newDate.setUTCDate(tempDate.getUTCDate());
+    newDate.setUTCMonth(tempDate.getUTCMonth());
+    newDate.setUTCFullYear(tempDate.getUTCFullYear());
 
-    onSubmitDate(newDate)
-    setIsOpen(false)
-  }
+    onSubmitDate(newDate);
+    setIsOpen(false);
+  };
 
   return (
     <div className="w-full">
@@ -98,8 +98,8 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
         </PopoverPrimitive.Content>
       </PopoverPrimitive.Root>
     </div>
-  )
-}
+  );
+};
 
 export const CalendarComponent = ({ date, onChange }) => (
   <ReactDatePicker
@@ -110,6 +110,6 @@ export const CalendarComponent = ({ date, onChange }) => (
     dayClassName={(d) => getDateClassname(d, date)}
     renderCustomHeader={({ ...props }) => <CustomHeader {...props} />}
   />
-)
+);
 
-export default DatePicker
+export default DatePicker;

@@ -1,6 +1,6 @@
-import clsx from "clsx"
-import React from "react"
-import { GroupBase, PlaceholderProps } from "react-select"
+import clsx from "clsx";
+import React from "react";
+import { GroupBase, PlaceholderProps } from "react-select";
 
 const Placeholder = <
   Option,
@@ -27,7 +27,7 @@ const Placeholder = <
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default Placeholder
+export default Placeholder;

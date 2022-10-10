@@ -1,40 +1,40 @@
-import { useAdminCollections } from "../../../../medusa-react"
-import React, { useEffect, useState } from "react"
-import { usePagination, useTable } from "react-table"
-import { useDebounce } from "../../../hooks/use-debounce"
-import Spinner from "../../atoms/spinner"
-import Table, { TablePagination } from "../../molecules/table"
-import { FilteringOptionProps } from "../../molecules/table/filtering-option"
-import useCollectionActions from "./use-collection-actions"
-import useCollectionTableColumn from "./use-collection-column"
+import { useAdminCollections } from "../../../../medusa-react";
+import React, { useEffect, useState } from "react";
+import { usePagination, useTable } from "react-table";
+import { useDebounce } from "../../../hooks/use-debounce";
+import Spinner from "../../atoms/spinner";
+import Table, { TablePagination } from "../../molecules/table";
+import { FilteringOptionProps } from "../../molecules/table/filtering-option";
+import useCollectionActions from "./use-collection-actions";
+import useCollectionTableColumn from "./use-collection-column";
 
-const DEFAULT_PAGE_SIZE = 15
+const DEFAULT_PAGE_SIZE = 15;
 
 const CollectionsTable: React.FC = () => {
   const [filteringOptions, setFilteringOptions] = useState<
     FilteringOptionProps[]
-  >([])
-  const [offset, setOffset] = useState(0)
-  const limit = DEFAULT_PAGE_SIZE
+  >([]);
+  const [offset, setOffset] = useState(0);
+  const limit = DEFAULT_PAGE_SIZE;
 
-  const [query, setQuery] = useState("")
-  const [numPages, setNumPages] = useState(0)
+  const [query, setQuery] = useState("");
+  const [numPages, setNumPages] = useState(0);
 
-  const debouncedSearchTerm = useDebounce(query, 500)
+  const debouncedSearchTerm = useDebounce(query, 500);
   const { collections, isLoading, isRefetching, count } = useAdminCollections({
     q: debouncedSearchTerm,
     offset: offset,
     limit,
-  })
+  });
 
   useEffect(() => {
     if (typeof count !== "undefined") {
-      const controlledPageCount = Math.ceil(count / limit)
-      setNumPages(controlledPageCount)
+      const controlledPageCount = Math.ceil(count / limit);
+      setNumPages(controlledPageCount);
     }
-  }, [count])
+  }, [count]);
 
-  const [columns] = useCollectionTableColumn()
+  const [columns] = useCollectionTableColumn();
 
   const {
     getTableProps,
@@ -62,26 +62,26 @@ const CollectionsTable: React.FC = () => {
       autoResetPage: false,
     },
     usePagination
-  )
+  );
 
   const handleNext = () => {
     if (canNextPage) {
-      setOffset(offset + limit)
-      nextPage()
+      setOffset(offset + limit);
+      nextPage();
     }
-  }
+  };
 
   const handleSearch = (q) => {
-    setOffset(0)
-    setQuery(q)
-  }
+    setOffset(0);
+    setQuery(q);
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      setOffset(offset - limit)
-      previousPage()
+      setOffset(offset - limit);
+      previousPage();
     }
-  }
+  };
 
   useEffect(() => {
     setFilteringOptions([
@@ -95,8 +95,8 @@ const CollectionsTable: React.FC = () => {
           },
         ],
       },
-    ])
-  }, [collections])
+    ]);
+  }, [collections]);
 
   return (
     <div className="w-full h-full overflow-y-auto">
@@ -128,8 +128,8 @@ const CollectionsTable: React.FC = () => {
         ) : (
           <Table.Body {...getTableBodyProps()}>
             {rows.map((row) => {
-              prepareRow(row)
-              return <CollectionRow row={row} />
+              prepareRow(row);
+              return <CollectionRow row={row} />;
             })}
           </Table.Body>
         )}
@@ -148,12 +148,12 @@ const CollectionsTable: React.FC = () => {
         hasPrev={canPreviousPage}
       />
     </div>
-  )
-}
+  );
+};
 
 const CollectionRow = ({ row }) => {
-  const collection = row.original
-  const { getActions } = useCollectionActions(collection)
+  const collection = row.original;
+  const { getActions } = useCollectionActions(collection);
 
   return (
     <Table.Row
@@ -169,9 +169,9 @@ const CollectionRow = ({ row }) => {
             {" "}
             {cell.render("Cell", { index })}{" "}
           </Table.Cell>
-        )
+        );
       })}{" "}
     </Table.Row>
-  )
-}
-export default CollectionsTable
+  );
+};
+export default CollectionsTable;

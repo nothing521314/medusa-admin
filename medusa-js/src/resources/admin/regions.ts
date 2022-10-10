@@ -9,10 +9,10 @@ import {
   AdminPostRegionsRegionFulfillmentProvidersReq,
   AdminPostRegionsRegionPaymentProvidersReq,
   AdminGetRegionsRegionFulfillmentOptionsRes,
-} from "@medusajs/medusa"
-import qs from "qs"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
+} from "@medusajs/medusa";
+import qs from "qs";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
 
 class AdminRegionsResource extends BaseResource {
   /**
@@ -25,8 +25,8 @@ class AdminRegionsResource extends BaseResource {
     payload: AdminPostRegionsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/regions`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -41,8 +41,8 @@ class AdminRegionsResource extends BaseResource {
     payload: AdminPostRegionsRegionReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/regions/${id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -55,8 +55,8 @@ class AdminRegionsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsDeleteRes> {
-    const path = `/admin/regions/${id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/regions/${id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -69,8 +69,8 @@ class AdminRegionsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/regions/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -83,14 +83,14 @@ class AdminRegionsResource extends BaseResource {
     query?: AdminGetRegionsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsListRes> {
-    let path = `/admin/regions`
+    let path = `/admin/regions`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/regions?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/regions?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -105,8 +105,8 @@ class AdminRegionsResource extends BaseResource {
     payload: AdminPostRegionsRegionCountriesReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}/countries`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/regions/${id}/countries`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -121,8 +121,8 @@ class AdminRegionsResource extends BaseResource {
     country_code: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}/countries/${country_code}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/regions/${id}/countries/${country_code}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -137,8 +137,8 @@ class AdminRegionsResource extends BaseResource {
     payload: AdminPostRegionsRegionFulfillmentProvidersReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}/fulfillment-providers`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/regions/${id}/fulfillment-providers`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -153,8 +153,8 @@ class AdminRegionsResource extends BaseResource {
     provider_id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}/fulfillment-providers/${provider_id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/regions/${id}/fulfillment-providers/${provider_id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -167,8 +167,8 @@ class AdminRegionsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminGetRegionsRegionFulfillmentOptionsRes> {
-    const path = `/admin/regions/${id}/fulfillment-options`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/regions/${id}/fulfillment-options`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -183,8 +183,8 @@ class AdminRegionsResource extends BaseResource {
     payload: AdminPostRegionsRegionPaymentProvidersReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}/payment-providers`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/regions/${id}/payment-providers`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -199,9 +199,9 @@ class AdminRegionsResource extends BaseResource {
     provider_id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}/payment-providers/${provider_id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/regions/${id}/payment-providers/${provider_id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 }
 
-export default AdminRegionsResource
+export default AdminRegionsResource;

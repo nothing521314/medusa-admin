@@ -5,14 +5,14 @@ import {
   AdminSalesChannelsDeleteRes,
   AdminDeleteSalesChannelsChannelProductsBatchReq,
   AdminPostSalesChannelsChannelProductsBatchReq,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 
-import { useMedusa } from "../../../contexts"
-import { buildOptions } from "../../utils/buildOptions"
-import { adminProductKeys } from "../products"
-import { adminSalesChannelsKeys } from "./queries"
+import { useMedusa } from "../../../contexts";
+import { buildOptions } from "../../utils/buildOptions";
+import { adminProductKeys } from "../products";
+import { adminSalesChannelsKeys } from "./queries";
 
 /**
  * Hook provides a mutation function for creating sales channel.
@@ -27,15 +27,15 @@ export const useAdminCreateSalesChannel = (
     AdminPostSalesChannelsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostSalesChannelsReq) =>
       client.admin.salesChannels.create(payload),
     buildOptions(queryClient, [adminSalesChannelsKeys.list()], options)
-  )
-}
+  );
+};
 
 /** update a sales channel
  * @experimental This feature is under development and may change in the future.
@@ -51,8 +51,8 @@ export const useAdminUpdateSalesChannel = (
     AdminPostSalesChannelsSalesChannelReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostSalesChannelsSalesChannelReq) =>
       client.admin.salesChannels.update(id, payload),
@@ -61,8 +61,8 @@ export const useAdminUpdateSalesChannel = (
       [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 /**
  * Delete a sales channel
@@ -79,8 +79,8 @@ export const useAdminDeleteSalesChannel = (
     void
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     () => client.admin.salesChannels.delete(id),
     buildOptions(
@@ -88,8 +88,8 @@ export const useAdminDeleteSalesChannel = (
       [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 /**
  * Remove products from a sales channel
@@ -107,11 +107,11 @@ export const useAdminDeleteProductsFromSalesChannel = (
     AdminDeleteSalesChannelsChannelProductsBatchReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminDeleteSalesChannelsChannelProductsBatchReq) => {
-      return client.admin.salesChannels.removeProducts(id, payload)
+      return client.admin.salesChannels.removeProducts(id, payload);
     },
     buildOptions(
       queryClient,
@@ -122,8 +122,8 @@ export const useAdminDeleteProductsFromSalesChannel = (
       ],
       options
     )
-  )
-}
+  );
+};
 
 /**
  * Add products to a sales channel
@@ -141,11 +141,11 @@ export const useAdminAddProductsToSalesChannel = (
     AdminPostSalesChannelsChannelProductsBatchReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostSalesChannelsChannelProductsBatchReq) => {
-      return client.admin.salesChannels.addProducts(id, payload)
+      return client.admin.salesChannels.addProducts(id, payload);
     },
     buildOptions(
       queryClient,
@@ -156,5 +156,5 @@ export const useAdminAddProductsToSalesChannel = (
       ],
       options
     )
-  )
-}
+  );
+};

@@ -1,27 +1,27 @@
-import React from "react"
-import { Controller } from "react-hook-form"
-import Switch from "../../../../../components/atoms/switch"
-import FeatureToggle from "../../../../../components/fundamentals/feature-toggle"
-import InputField from "../../../../../components/molecules/input"
-import { NextSelect } from "../../../../../components/molecules/select/next-select"
-import { Option } from "../../../../../types/shared"
-import FormValidator from "../../../../../utils/form-validator"
-import { NestedForm } from "../../../../../utils/nested-form"
-import { useStoreData } from "./use-store-data"
+import React from "react";
+import { Controller } from "react-hook-form";
+import Switch from "../../../../../components/atoms/switch";
+import FeatureToggle from "../../../../../components/fundamentals/feature-toggle";
+import InputField from "../../../../../components/molecules/input";
+import { NextSelect } from "../../../../../components/molecules/select/next-select";
+import { Option } from "../../../../../types/shared";
+import FormValidator from "../../../../../utils/form-validator";
+import { NestedForm } from "../../../../../utils/nested-form";
+import { useStoreData } from "./use-store-data";
 
 export type RegionDetailsFormType = {
-  name: string
-  countries: Option[]
-  currency_code: Option
-  tax_rate: number | null
-  tax_code: string | null
-  includes_tax?: boolean
-}
+  name: string;
+  countries: Option[];
+  currency_code: Option;
+  tax_rate: number | null;
+  tax_code: string | null;
+  includes_tax?: boolean;
+};
 
 type Props = {
-  isCreate?: boolean
-  form: NestedForm<RegionDetailsFormType>
-}
+  isCreate?: boolean;
+  form: NestedForm<RegionDetailsFormType>;
+};
 
 const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
   const {
@@ -29,8 +29,8 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
     register,
     path,
     formState: { errors },
-  } = form
-  const { currencyOptions, countryOptions } = useStoreData()
+  } = form;
+  const { currencyOptions, countryOptions } = useStoreData();
 
   return (
     <div>
@@ -63,7 +63,7 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
                 name={path("currency_code")}
                 errors={errors}
               />
-            )
+            );
           }}
         />
         {isCreate && (
@@ -109,7 +109,7 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
                 errors={errors}
                 options={countryOptions}
               />
-            )
+            );
           }}
         />
       </div>
@@ -125,13 +125,13 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
             control={control}
             name={path("includes_tax")}
             render={({ field: { value, onChange } }) => {
-              return <Switch checked={value} onCheckedChange={onChange} />
+              return <Switch checked={value} onCheckedChange={onChange} />;
             }}
           />
         </div>
       </FeatureToggle>
     </div>
-  )
-}
+  );
+};
 
-export default RegionDetailsForm
+export default RegionDetailsForm;

@@ -1,12 +1,12 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const LongArrowRightIcon: React.FC<IconProps> = ({
   size = "24",
   color = "currentColor",
   ...attributes
 }) => {
-  const width = +size * 2
+  const width = +size * 2;
 
   return (
     <svg
@@ -32,7 +32,7 @@ const LongArrowRightIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default LongArrowRightIcon
+export default LongArrowRightIcon;

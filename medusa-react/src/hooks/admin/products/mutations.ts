@@ -1,4 +1,4 @@
-import { adminProductKeys } from "./queries"
+import { adminProductKeys } from "./queries";
 import {
   AdminProductsDeleteRes,
   AdminProductsRes,
@@ -9,11 +9,11 @@ import {
   AdminPostProductsProductOptionsReq,
   AdminPostProductsProductOptionsOption,
   AdminProductsDeleteOptionRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminCreateProduct = (
   options?: UseMutationOptions<
@@ -22,13 +22,13 @@ export const useAdminCreateProduct = (
     AdminPostProductsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostProductsReq) => client.admin.products.create(payload),
     buildOptions(queryClient, adminProductKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdateProduct = (
   id: string,
@@ -38,8 +38,8 @@ export const useAdminUpdateProduct = (
     AdminPostProductsProductReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostProductsProductReq) =>
@@ -49,15 +49,15 @@ export const useAdminUpdateProduct = (
       [adminProductKeys.lists(), adminProductKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteProduct = (
   id: string,
   options?: UseMutationOptions<Response<AdminProductsDeleteRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.products.delete(id),
@@ -66,8 +66,8 @@ export const useAdminDeleteProduct = (
       [adminProductKeys.lists(), adminProductKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCreateVariant = (
   productId: string,
@@ -77,8 +77,8 @@ export const useAdminCreateVariant = (
     AdminPostProductsProductVariantsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostProductsProductVariantsReq) =>
@@ -88,8 +88,8 @@ export const useAdminCreateVariant = (
       [adminProductKeys.lists(), adminProductKeys.detail(productId)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminUpdateVariant = (
   productId: string,
@@ -99,8 +99,8 @@ export const useAdminUpdateVariant = (
     AdminPostProductsProductVariantsReq & { variant_id: string }
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     ({
@@ -113,8 +113,8 @@ export const useAdminUpdateVariant = (
       [adminProductKeys.lists(), adminProductKeys.detail(productId)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteVariant = (
   productId: string,
@@ -124,8 +124,8 @@ export const useAdminDeleteVariant = (
     string
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (variantId: string) =>
@@ -135,8 +135,8 @@ export const useAdminDeleteVariant = (
       [adminProductKeys.lists(), adminProductKeys.detail(productId)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCreateProductOption = (
   productId: string,
@@ -146,15 +146,15 @@ export const useAdminCreateProductOption = (
     AdminPostProductsProductOptionsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostProductsProductOptionsReq) =>
       client.admin.products.addOption(productId, payload),
     buildOptions(queryClient, adminProductKeys.detail(productId), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdateProductOption = (
   productId: string,
@@ -164,8 +164,8 @@ export const useAdminUpdateProductOption = (
     AdminPostProductsProductOptionsOption & { option_id: string }
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     ({
@@ -174,8 +174,8 @@ export const useAdminUpdateProductOption = (
     }: AdminPostProductsProductOptionsOption & { option_id: string }) =>
       client.admin.products.updateOption(productId, option_id, payload),
     buildOptions(queryClient, adminProductKeys.detail(productId), options)
-  )
-}
+  );
+};
 
 export const useAdminDeleteProductOption = (
   productId: string,
@@ -185,12 +185,12 @@ export const useAdminDeleteProductOption = (
     string
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (optionId: string) =>
       client.admin.products.deleteOption(productId, optionId),
     buildOptions(queryClient, adminProductKeys.detail(productId), options)
-  )
-}
+  );
+};

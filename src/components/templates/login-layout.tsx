@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 const LoginLayout = ({ children }) => {
   return (
@@ -23,7 +23,7 @@ const LoginLayout = ({ children }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginLayout
+export default LoginLayout;

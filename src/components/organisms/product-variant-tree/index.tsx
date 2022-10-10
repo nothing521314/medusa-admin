@@ -1,27 +1,27 @@
-import { Product, ProductVariant } from "@medusajs/medusa"
-import React from "react"
-import { ActionType } from "../../molecules/actionables"
-import { CollapsibleTree } from "../../molecules/collapsible-tree"
+import { Product, ProductVariant } from "@medusajs/medusa";
+import React from "react";
+import { ActionType } from "../../molecules/actionables";
+import { CollapsibleTree } from "../../molecules/collapsible-tree";
 
 type LeafProps = {
-  id: string
-  title: string
-  sku?: string
+  id: string;
+  title: string;
+  sku?: string;
   prices: {
-    id: string
-    currency_code: string
-    amount: number
-    price_list_id: string | null
-  }[]
-}
+    id: string;
+    currency_code: string;
+    amount: number;
+    price_list_id: string | null;
+  }[];
+};
 
 type ProductVariantTreeProps = {
   product: Pick<Product, "title" | "id" | "thumbnail"> & {
-    variants: LeafProps[]
-  }
-  getProductActions?: (product: Product) => ActionType[] | undefined
-  getVariantActions?: (variant: ProductVariant) => ActionType[] | undefined
-}
+    variants: LeafProps[];
+  };
+  getProductActions?: (product: Product) => ActionType[] | undefined;
+  getVariantActions?: (variant: ProductVariant) => ActionType[] | undefined;
+};
 
 const ProductVariantTree: React.FC<ProductVariantTreeProps> = ({
   product,
@@ -54,11 +54,11 @@ const ProductVariantTree: React.FC<ProductVariantTreeProps> = ({
         ))}
       </CollapsibleTree.Content>
     </CollapsibleTree>
-  )
-}
+  );
+};
 
 const ProductVariantLeaf = ({ sku, title, prices = [] }: LeafProps) => {
-  const filteredPrices = prices.filter((pr) => pr.price_list_id)
+  const filteredPrices = prices.filter((pr) => pr.price_list_id);
   return (
     <div className="flex flex-1">
       <div className="truncate">
@@ -79,7 +79,7 @@ const ProductVariantLeaf = ({ sku, title, prices = [] }: LeafProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductVariantTree
+export default ProductVariantTree;

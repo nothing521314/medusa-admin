@@ -5,11 +5,11 @@ import {
   AdminPostUploadsDownloadUrlReq,
   AdminUploadsDownloadUrlRes,
   AdminUploadsRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminUploadFile = (
   options?: UseMutationOptions<
@@ -18,13 +18,13 @@ export const useAdminUploadFile = (
     IAdminPostUploadsFileReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation((payload: IAdminPostUploadsFileReq) => {
-    return client.admin.uploads.create(payload)
-  }, buildOptions(queryClient, undefined, options))
-}
+    return client.admin.uploads.create(payload);
+  }, buildOptions(queryClient, undefined, options));
+};
 
 export const useAdminCreatePresignedDownloadUrl = (
   options?: UseMutationOptions<
@@ -33,15 +33,15 @@ export const useAdminCreatePresignedDownloadUrl = (
     AdminPostUploadsDownloadUrlReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostUploadsDownloadUrlReq) =>
       client.admin.uploads.getPresignedDownloadUrl(payload),
     buildOptions(queryClient, undefined, options)
-  )
-}
+  );
+};
 
 export const useAdminDeleteFile = (
   options?: UseMutationOptions<
@@ -50,11 +50,11 @@ export const useAdminDeleteFile = (
     AdminDeleteUploadsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminDeleteUploadsReq) => client.admin.uploads.delete(payload),
     buildOptions(queryClient, undefined, options)
-  )
-}
+  );
+};

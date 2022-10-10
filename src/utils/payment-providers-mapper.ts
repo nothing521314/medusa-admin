@@ -1,4 +1,4 @@
-import { Option } from "../types/shared"
+import { Option } from "../types/shared";
 
 const providerDescriptors: { [providerKey: string]: Option } = {
   stripe: {
@@ -53,7 +53,7 @@ const providerDescriptors: { [providerKey: string]: Option } = {
     label: "Manual",
     value: "manual",
   },
-}
+};
 
 export default function (provider: string): Option {
   return (
@@ -61,5 +61,5 @@ export default function (provider: string): Option {
       label: provider,
       value: provider,
     }
-  )
+  );
 }

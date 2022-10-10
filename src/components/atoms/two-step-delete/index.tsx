@@ -1,4 +1,4 @@
-import clsx from "clsx"
+import clsx from "clsx";
 import React, {
   forwardRef,
   useCallback,
@@ -6,54 +6,54 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
-} from "react"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import Spinner from "../spinner"
-import Tooltip from "../tooltip"
+} from "react";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import Spinner from "../spinner";
+import Tooltip from "../tooltip";
 
 type Props = {
-  onDelete: () => void
-  deleting?: boolean
-}
+  onDelete: () => void;
+  deleting?: boolean;
+};
 
 const TwoStepDelete = forwardRef<HTMLButtonElement, Props>(
   ({ onDelete, deleting = false }: Props, ref) => {
-    const [armed, setArmed] = useState(false)
-    const innerRef = useRef<HTMLButtonElement>(null)
+    const [armed, setArmed] = useState(false);
+    const innerRef = useRef<HTMLButtonElement>(null);
 
     useImperativeHandle<HTMLButtonElement | null, HTMLButtonElement | null>(
       ref,
       () => innerRef.current
-    )
+    );
 
     const handleTwoStepDelete = () => {
       if (!armed) {
-        setArmed(true)
-        return
+        setArmed(true);
+        return;
       }
 
-      onDelete()
-      setArmed(false)
-    }
+      onDelete();
+      setArmed(false);
+    };
 
     const disarmOnClickOutside = useCallback(
       (e: MouseEvent) => {
         if (innerRef.current && !innerRef.current.contains(e.target as Node)) {
           if (armed) {
-            setArmed(false)
+            setArmed(false);
           }
         }
       },
       [armed]
-    )
+    );
 
     useEffect(() => {
-      document.addEventListener("mousedown", disarmOnClickOutside)
+      document.addEventListener("mousedown", disarmOnClickOutside);
 
       return () => {
-        document.removeEventListener("mousedown", disarmOnClickOutside)
-      }
-    }, [disarmOnClickOutside])
+        document.removeEventListener("mousedown", disarmOnClickOutside);
+      };
+    }, [disarmOnClickOutside]);
 
     return (
       <button
@@ -100,8 +100,8 @@ const TwoStepDelete = forwardRef<HTMLButtonElement, Props>(
           <Spinner size="medium" />
         </span>
       </button>
-    )
+    );
   }
-)
+);
 
-export default TwoStepDelete
+export default TwoStepDelete;

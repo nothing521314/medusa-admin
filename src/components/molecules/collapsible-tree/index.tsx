@@ -1,33 +1,33 @@
-import React from "react"
-import clsx from "clsx"
+import React from "react";
+import clsx from "clsx";
 
-import MoreHorizontalIcon from "../../fundamentals/icons/more-horizontal-icon"
-import MinusIcon from "../../fundamentals/icons/minus-icon"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import Button from "../../fundamentals/button"
-import Actionables, { ActionType } from "../actionables"
+import MoreHorizontalIcon from "../../fundamentals/icons/more-horizontal-icon";
+import MinusIcon from "../../fundamentals/icons/minus-icon";
+import PlusIcon from "../../fundamentals/icons/plus-icon";
+import Button from "../../fundamentals/button";
+import Actionables, { ActionType } from "../actionables";
 
 /* ---------------------------- CollapsibleTree ------------------------------------ */
 
 type CollapsibleTreeType = React.FC & {
-  Parent: React.FC<CollapsibleTreeParentProps>
-  Leaf: React.FC<CollapsibleTreeLeafProps>
-  Content: React.FC<CollapsibleTreeContentProps>
-}
+  Parent: React.FC<CollapsibleTreeParentProps>;
+  Leaf: React.FC<CollapsibleTreeLeafProps>;
+  Content: React.FC<CollapsibleTreeContentProps>;
+};
 
 type TCollapsibleTreeContext = {
-  open: boolean
-  handleOpen: () => void
-  handleClose: () => void
-  toggle: () => void
-}
+  open: boolean;
+  handleOpen: () => void;
+  handleClose: () => void;
+  toggle: () => void;
+};
 
 const CollapsibleTreeContext = React.createContext<TCollapsibleTreeContext | null>(
   null
-)
+);
 
 export const CollapsibleTree: CollapsibleTreeType = ({ children }) => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   return (
     <CollapsibleTreeContext.Provider
@@ -40,29 +40,29 @@ export const CollapsibleTree: CollapsibleTreeType = ({ children }) => {
     >
       {children}
     </CollapsibleTreeContext.Provider>
-  )
-}
+  );
+};
 
-CollapsibleTreeContext.displayName = "CollapsibleTreeContext"
+CollapsibleTreeContext.displayName = "CollapsibleTreeContext";
 
 const useCollapsibleTree = () => {
-  const context = React.useContext(CollapsibleTreeContext)
+  const context = React.useContext(CollapsibleTreeContext);
   if (!context) {
-    throw new Error("useCollapsibleTree must be a child of CollapsibleTree")
+    throw new Error("useCollapsibleTree must be a child of CollapsibleTree");
   }
-  return context
-}
+  return context;
+};
 
 /* ---------------------------- CollapsibleTreeContent ------------------------------------ */
 
-type CollapsibleTreeContentProps = React.HTMLAttributes<HTMLDivElement>
+type CollapsibleTreeContentProps = React.HTMLAttributes<HTMLDivElement>;
 
 const CollapsibleTreeContent: React.FC<CollapsibleTreeContentProps> = ({
   children,
   className,
   ...props
 }) => {
-  const { open } = useCollapsibleTree()
+  const { open } = useCollapsibleTree();
   return (
     <div
       className={clsx(
@@ -77,24 +77,24 @@ const CollapsibleTreeContent: React.FC<CollapsibleTreeContentProps> = ({
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
-CollapsibleTree.Content = CollapsibleTreeContent
+CollapsibleTree.Content = CollapsibleTreeContent;
 
 /* ---------------------------- CollapsibleTreeParent ------------------------------------ */
 
 type CollapsibleTreeParentProps = {
-  actions?: ActionType[]
-  className?: string
-}
+  actions?: ActionType[];
+  className?: string;
+};
 
 const CollapsibleTreeParent: React.FC<CollapsibleTreeParentProps> = ({
   actions,
   className,
   children,
 }) => {
-  const { open, toggle } = useCollapsibleTree()
+  const { open, toggle } = useCollapsibleTree();
   return (
     <div>
       <Container className={className}>
@@ -117,17 +117,17 @@ const CollapsibleTreeParent: React.FC<CollapsibleTreeParentProps> = ({
         </div>
       </Container>
     </div>
-  )
-}
+  );
+};
 
-CollapsibleTree.Parent = CollapsibleTreeParent
+CollapsibleTree.Parent = CollapsibleTreeParent;
 
 /* ---------------------------- CollapsibleTreeLeaf ------------------------------------ */
 
 type CollapsibleTreeLeafProps = {
-  actions?: ActionType[]
-  className?: string
-}
+  actions?: ActionType[];
+  className?: string;
+};
 
 const CollapsibleTreeLeaf: React.FC<CollapsibleTreeLeafProps> = ({
   className,
@@ -157,10 +157,10 @@ const CollapsibleTreeLeaf: React.FC<CollapsibleTreeLeafProps> = ({
         )}
       </Container>
     </div>
-  )
-}
+  );
+};
 
-CollapsibleTree.Leaf = CollapsibleTreeLeaf
+CollapsibleTree.Leaf = CollapsibleTreeLeaf;
 
 const Container: React.FC<{ className?: string }> = ({
   children,
@@ -175,13 +175,13 @@ const Container: React.FC<{ className?: string }> = ({
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
 const Trigger = () => {
   return (
     <Button variant="ghost" size="small" className="p-[6px] text-grey-50">
       <MoreHorizontalIcon size={20} />
     </Button>
-  )
-}
+  );
+};

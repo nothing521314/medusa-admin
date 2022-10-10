@@ -1,36 +1,39 @@
-import { Discount } from "@medusajs/medusa"
-import { useAdminRegions, useAdminUpdateDiscount } from "../../../../../medusa-react"
-import React, { useEffect, useMemo } from "react"
-import { Controller, useForm, useWatch } from "react-hook-form"
-import Button from "../../../../components/fundamentals/button"
-import InputField from "../../../../components/molecules/input"
-import Modal from "../../../../components/molecules/modal"
-import Select from "../../../../components/molecules/select"
-import TextArea from "../../../../components/molecules/textarea"
-import CurrencyInput from "../../../../components/organisms/currency-input"
-import useNotification from "../../../../hooks/use-notification"
-import { Option } from "../../../../types/shared"
-import { getErrorMessage } from "../../../../utils/error-messages"
+import { Discount } from "@medusajs/medusa";
+import {
+  useAdminRegions,
+  useAdminUpdateDiscount,
+} from "../../../../../medusa-react";
+import React, { useEffect, useMemo } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import Button from "../../../../components/fundamentals/button";
+import InputField from "../../../../components/molecules/input";
+import Modal from "../../../../components/molecules/modal";
+import Select from "../../../../components/molecules/select";
+import TextArea from "../../../../components/molecules/textarea";
+import CurrencyInput from "../../../../components/organisms/currency-input";
+import useNotification from "../../../../hooks/use-notification";
+import { Option } from "../../../../types/shared";
+import { getErrorMessage } from "../../../../utils/error-messages";
 
 type EditGeneralProps = {
-  discount: Discount
-  onClose: () => void
-}
+  discount: Discount;
+  onClose: () => void;
+};
 
 type GeneralForm = {
-  regions: Option[]
-  code: string
-  description: string
-  value: number
-}
+  regions: Option[];
+  code: string;
+  description: string;
+  value: number;
+};
 
 const EditGeneral: React.FC<EditGeneralProps> = ({ discount, onClose }) => {
-  const { mutate, isLoading } = useAdminUpdateDiscount(discount.id)
-  const notification = useNotification()
+  const { mutate, isLoading } = useAdminUpdateDiscount(discount.id);
+  const notification = useNotification();
 
   const { control, handleSubmit, reset, register } = useForm<GeneralForm>({
     defaultValues: mapGeneral(discount),
-  })
+  });
 
   const onSubmit = (data: GeneralForm) => {
     mutate(
@@ -46,24 +49,24 @@ const EditGeneral: React.FC<EditGeneralProps> = ({ discount, onClose }) => {
       },
       {
         onSuccess: ({ discount }) => {
-          notification("Success", "Discount updated successfully", "success")
-          reset(mapGeneral(discount))
-          onClose()
+          notification("Success", "Discount updated successfully", "success");
+          reset(mapGeneral(discount));
+          onClose();
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification("Error", getErrorMessage(error), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   useEffect(() => {
-    reset(mapGeneral(discount))
-  }, [discount])
+    reset(mapGeneral(discount));
+  }, [discount]);
 
-  const type = discount.rule.type
+  const type = discount.rule.type;
 
-  const { regions } = useAdminRegions()
+  const { regions } = useAdminRegions();
 
   const regionOptions = useMemo(() => {
     return regions
@@ -71,20 +74,20 @@ const EditGeneral: React.FC<EditGeneralProps> = ({ discount, onClose }) => {
           label: r.name,
           value: r.id,
         }))
-      : []
-  }, [regions])
+      : [];
+  }, [regions]);
 
   const selectedRegions = useWatch({
     control,
     name: "regions",
-  })
+  });
 
   const fixedCurrency = useMemo(() => {
     if (type === "fixed" && selectedRegions?.length) {
       return regions?.find((r) => r.id === selectedRegions[0].value)
-        ?.currency_code
+        ?.currency_code;
     }
-  }, [selectedRegions, type, regions])
+  }, [selectedRegions, type, regions]);
 
   return (
     <Modal handleClose={onClose}>
@@ -107,7 +110,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({ discount, onClose }) => {
                   <Select
                     value={value}
                     onChange={(value) => {
-                      onChange(type === "fixed" ? [value] : value)
+                      onChange(type === "fixed" ? [value] : value);
                     }}
                     label="Choose valid regions"
                     isMultiSelect={type !== "fixed"}
@@ -116,7 +119,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({ discount, onClose }) => {
                     required
                     options={regionOptions}
                   />
-                )
+                );
               }}
             />
             <div className="flex gap-x-base gap-y-base my-base">
@@ -153,7 +156,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({ discount, onClose }) => {
                                 amount={value}
                                 onChange={onChange}
                               />
-                            )
+                            );
                           }}
                         />
                       </CurrencyInput.Root>
@@ -220,8 +223,8 @@ const EditGeneral: React.FC<EditGeneralProps> = ({ discount, onClose }) => {
         </Modal.Body>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
 const mapGeneral = (discount: Discount): GeneralForm => {
   return {
@@ -229,7 +232,7 @@ const mapGeneral = (discount: Discount): GeneralForm => {
     code: discount.code,
     description: discount.rule.description,
     value: discount.rule.value,
-  }
-}
+  };
+};
 
-export default EditGeneral
+export default EditGeneral;

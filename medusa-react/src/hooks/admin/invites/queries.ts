@@ -1,15 +1,15 @@
-import { AdminListInvitesRes } from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+import { AdminListInvitesRes } from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_INVITES_QUERY_KEY = `admin_invites` as const
+const ADMIN_INVITES_QUERY_KEY = `admin_invites` as const;
 
-export const adminInviteKeys = queryKeysFactory(ADMIN_INVITES_QUERY_KEY)
+export const adminInviteKeys = queryKeysFactory(ADMIN_INVITES_QUERY_KEY);
 
-type InviteQueryKeys = typeof adminInviteKeys
+type InviteQueryKeys = typeof adminInviteKeys;
 
 export const useAdminInvites = (
   options?: UseQueryOptionsWrapper<
@@ -18,11 +18,11 @@ export const useAdminInvites = (
     ReturnType<InviteQueryKeys["lists"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminInviteKeys.lists(),
     () => client.admin.invites.list(),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

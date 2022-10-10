@@ -1,24 +1,24 @@
-import React, { useMemo } from "react"
-import { Controller } from "react-hook-form"
-import { Column, useTable } from "react-table"
-import { FormImage } from "../../../types/shared"
-import { NestedForm } from "../../../utils/nested-form"
-import Button from "../../fundamentals/button"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import IconTooltip from "../../molecules/icon-tooltip"
-import Table from "../../molecules/table"
-import RadioGroup from "../../organisms/radio-group"
+import React, { useMemo } from "react";
+import { Controller } from "react-hook-form";
+import { Column, useTable } from "react-table";
+import { FormImage } from "../../../types/shared";
+import { NestedForm } from "../../../utils/nested-form";
+import Button from "../../fundamentals/button";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import IconTooltip from "../../molecules/icon-tooltip";
+import Table from "../../molecules/table";
+import RadioGroup from "../../organisms/radio-group";
 
-export type ImageTableDataType = { id?: string } & FormImage
+export type ImageTableDataType = { id?: string } & FormImage;
 
 type ImageTableProps = {
-  data: ImageTableDataType[]
-  form: NestedForm<FormImage[]>
-  onDelete: (index: number) => void
-}
+  data: ImageTableDataType[];
+  form: NestedForm<FormImage[]>;
+  onDelete: (index: number) => void;
+};
 
 const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
-  const { control, register, path } = form
+  const { control, register, path } = form;
 
   const columns = useMemo<
     Column<{ id?: string | undefined } & FormImage>[]
@@ -42,7 +42,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
                 src={value}
               />
             </div>
-          )
+          );
         },
       },
       {
@@ -63,10 +63,10 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
                       </span>
                     )}
                   </div>
-                )
+                );
               }}
             />
-          )
+          );
         },
       },
       {
@@ -84,7 +84,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
             <div className="flex items-center justify-center">
               <RadioGroup.Dot value={cell.row.index} />
             </div>
-          )
+          );
         },
       },
       {
@@ -102,11 +102,11 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
             >
               <TrashIcon size={20} />
             </Button>
-          )
+          );
         },
       },
-    ]
-  }, [])
+    ];
+  }, []);
 
   const {
     getTableProps,
@@ -120,7 +120,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
     defaultColumn: {
       width: "auto",
     },
-  })
+  });
 
   return (
     <Table {...getTableProps()}>
@@ -132,14 +132,14 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
                 <Table.HeadCell {...col.getHeaderProps()}>
                   {col.render("Header", { index })}
                 </Table.HeadCell>
-              )
+              );
             })}
           </Table.HeadRow>
         ))}
       </Table.Head>
       <Table.Body {...getTableBodyProps()}>
         {rows.map((row, index) => {
-          prepareRow(row)
+          prepareRow(row);
           return (
             <Table.Row {...row.getRowProps()} className="px-base" key={index}>
               {row.cells.map((cell) => {
@@ -150,14 +150,14 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
                   >
                     {cell.render("Cell")}
                   </Table.Cell>
-                )
+                );
               })}
             </Table.Row>
-          )
+          );
         })}
       </Table.Body>
     </Table>
-  )
-}
+  );
+};
 
-export default ImageTable
+export default ImageTable;

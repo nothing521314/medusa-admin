@@ -1,127 +1,127 @@
-import clsx from "clsx"
+import clsx from "clsx";
 import {
   useAdminGetDiscountByCode,
   useAdminShippingOptions,
-} from "../../../../../medusa-react"
-import React, { useContext, useEffect, useMemo, useState } from "react"
-import { useWatch } from "react-hook-form"
-import Avatar from "../../../../components/atoms/avatar"
-import Button from "../../../../components/fundamentals/button"
-import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
-import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
-import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
-import Input from "../../../../components/molecules/input"
-import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal"
-import Table from "../../../../components/molecules/table"
-import isNullishObject from "../../../../utils/is-nullish-object"
-import { displayAmount, extractOptionPrice } from "../../../../utils/prices"
-import { useNewOrderForm } from "../form"
+} from "../../../../../medusa-react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useWatch } from "react-hook-form";
+import Avatar from "../../../../components/atoms/avatar";
+import Button from "../../../../components/fundamentals/button";
+import CrossIcon from "../../../../components/fundamentals/icons/cross-icon";
+import PlusIcon from "../../../../components/fundamentals/icons/plus-icon";
+import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder";
+import Input from "../../../../components/molecules/input";
+import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal";
+import Table from "../../../../components/molecules/table";
+import isNullishObject from "../../../../utils/is-nullish-object";
+import { displayAmount, extractOptionPrice } from "../../../../utils/prices";
+import { useNewOrderForm } from "../form";
 
 const Summary = () => {
-  const [showAddDiscount, setShowAddDiscount] = useState(false)
-  const [discError, setDiscError] = useState<string | undefined>(undefined)
-  const [code, setCode] = useState<string | undefined>(undefined)
+  const [showAddDiscount, setShowAddDiscount] = useState(false);
+  const [discError, setDiscError] = useState<string | undefined>(undefined);
+  const [code, setCode] = useState<string | undefined>(undefined);
 
   const {
     form,
     context: { items, region: regionObj, selectedShippingOption },
-  } = useNewOrderForm()
+  } = useNewOrderForm();
 
   const shipping = useWatch({
     defaultValue: undefined,
     control: form.control,
     name: "shipping_address",
-  })
+  });
 
   const billing = useWatch({
     defaultValue: undefined,
     control: form.control,
     name: "billing_address",
-  })
+  });
 
   const email = useWatch({
     control: form.control,
     name: "email",
-  })
+  });
 
   const region = useWatch({
     control: form.control,
     name: "region",
-  })
+  });
 
   const discountCode = useWatch({
     control: form.control,
     name: "discount_code",
-  })
+  });
 
   const shippingOption = useWatch({
     control: form.control,
     name: "shipping_option",
-  })
+  });
 
   const customShippingPrice = useWatch({
     control: form.control,
     name: "custom_shipping_price",
-  })
+  });
 
-  console.log(shipping, billing)
+  console.log(shipping, billing);
 
   const { discount, status } = useAdminGetDiscountByCode(discountCode!, {
     enabled: !!discountCode,
-  })
+  });
 
   const { shipping_options } = useAdminShippingOptions(
     { region_id: region?.value },
     {
       enabled: !!region && !!shippingOption,
     }
-  )
+  );
 
   const shippingOptionPrice = useMemo(() => {
     if (!shippingOption || !shipping_options) {
-      return 0
+      return 0;
     }
 
-    const option = shipping_options.find((o) => o.id === shippingOption.value)
+    const option = shipping_options.find((o) => o.id === shippingOption.value);
 
     if (!option) {
-      return 0
+      return 0;
     }
 
-    return option.amount || 0
-  }, [shipping_options, shippingOption])
+    return option.amount || 0;
+  }, [shipping_options, shippingOption]);
 
   const handleAddDiscount = async () => {
-    form.setValue("discount_code", code)
-  }
+    form.setValue("discount_code", code);
+  };
 
   useEffect(() => {
     if (!discount || !regionObj) {
-      return
+      return;
     }
 
     if (!discount.regions.find((d) => d.id === regionObj.id)) {
-      setDiscError("The discount is not applicable to the selected region")
-      setCode(undefined)
-      form.setValue("discount_code", undefined)
-      setShowAddDiscount(true)
+      setDiscError("The discount is not applicable to the selected region");
+      setCode(undefined);
+      form.setValue("discount_code", undefined);
+      setShowAddDiscount(true);
     }
-  }, [discount])
+  }, [discount]);
 
   useEffect(() => {
     if (status === "error") {
-      setDiscError("The discount code is invalid")
-      setCode(undefined)
-      form.setValue("discount_code", undefined)
-      setShowAddDiscount(true)
+      setDiscError("The discount code is invalid");
+      setCode(undefined);
+      form.setValue("discount_code", undefined);
+      setShowAddDiscount(true);
     }
-  }, [status])
+  }, [status]);
 
   const onDiscountRemove = () => {
-    form.setValue("discount_code", undefined)
-    setShowAddDiscount(false)
-    setCode("")
-  }
+    form.setValue("discount_code", undefined);
+    setShowAddDiscount(false);
+    setCode("");
+  };
 
   return (
     <div className="min-h-[705px]">
@@ -175,7 +175,7 @@ const Summary = () => {
                       {displayAmount(regionObj?.currency_code, item.unit_price)}
                     </Table.Cell>
                   </Table.Row>
-                )
+                );
               })}
           </Table.Body>
         </Table>
@@ -352,11 +352,11 @@ const Summary = () => {
         </SummarySection>
       )}
     </div>
-  )
-}
+  );
+};
 
 const SummarySection = ({ title, editIndex, children }) => {
-  const { setPage } = useContext(SteppedContext)
+  const { setPage } = useContext(SteppedContext);
   return (
     <div className="flex flex-col w-full border-b border-grey-20 mt-4 pb-8 last:border-b-0 inter-small-regular ">
       <div className="flex w-full justify-between inter-base-semibold mb-4">
@@ -370,6 +370,6 @@ const SummarySection = ({ title, editIndex, children }) => {
       </div>
       {children}
     </div>
-  )
-}
-export default Summary
+  );
+};
+export default Summary;

@@ -1,37 +1,37 @@
-import { Product } from "@medusajs/medusa"
+import { Product } from "@medusajs/medusa";
 import {
   useAdminDeletePriceListProductPrices,
   useAdminPriceListProducts,
-} from "../../../../../../../medusa-react"
-import * as React from "react"
-import { HeaderGroup, Row } from "react-table"
-import CancelIcon from "../../../../../../components/fundamentals/icons/cancel-icon"
-import EditIcon from "../../../../../../components/fundamentals/icons/edit-icon"
-import Table from "../../../../../../components/molecules/table"
-import { SelectableTable } from "../../../../../../components/templates/selectable-table"
-import useNotification from "../../../../../../hooks/use-notification"
-import useQueryFilters from "../../../../../../hooks/use-query-filters"
-import { getErrorMessage } from "../../../../../../utils/error-messages"
-import usePricesColumns from "./use-columns"
+} from "../../../../../../../medusa-react";
+import * as React from "react";
+import { HeaderGroup, Row } from "react-table";
+import CancelIcon from "../../../../../../components/fundamentals/icons/cancel-icon";
+import EditIcon from "../../../../../../components/fundamentals/icons/edit-icon";
+import Table from "../../../../../../components/molecules/table";
+import { SelectableTable } from "../../../../../../components/templates/selectable-table";
+import useNotification from "../../../../../../hooks/use-notification";
+import useQueryFilters from "../../../../../../hooks/use-query-filters";
+import { getErrorMessage } from "../../../../../../utils/error-messages";
+import usePricesColumns from "./use-columns";
 
-const DEFAULT_PAGE_SIZE = 9
+const DEFAULT_PAGE_SIZE = 9;
 const defaultQueryProps = {
   offset: 0,
   limit: DEFAULT_PAGE_SIZE,
-}
+};
 
 type PricesTableProps = {
-  id: string
-  selectProduct: (product: Product) => void
-}
+  id: string;
+  selectProduct: (product: Product) => void;
+};
 
 const PricesTable = ({ id, selectProduct }: PricesTableProps) => {
-  const params = useQueryFilters(defaultQueryProps)
+  const params = useQueryFilters(defaultQueryProps);
   const { products, isLoading, count = 0 } = useAdminPriceListProducts(
     id,
     params.queryObject
-  )
-  const columns = usePricesColumns()
+  );
+  const columns = usePricesColumns();
 
   return (
     <div className="w-full overflow-y-auto flex flex-col justify-between h-full">
@@ -40,8 +40,8 @@ const PricesTable = ({ id, selectProduct }: PricesTableProps) => {
         data={products || []}
         renderRow={({ row }: { row: Row<Product> }) => {
           const handleSelect = () => {
-            selectProduct(row.original)
-          }
+            selectProduct(row.original);
+          };
 
           return (
             <PricesTableRow
@@ -56,10 +56,10 @@ const PricesTable = ({ id, selectProduct }: PricesTableProps) => {
                   <Table.Cell {...cell.getCellProps()}>
                     {cell.render("Cell")}
                   </Table.Cell>
-                )
+                );
               })}
             </PricesTableRow>
-          )
+          );
         }}
         renderHeaderGroup={ProductHeader}
         isLoading={isLoading}
@@ -71,13 +71,13 @@ const PricesTable = ({ id, selectProduct }: PricesTableProps) => {
         {...params}
       />
     </div>
-  )
-}
+  );
+};
 
 const ProductHeader = ({
   headerGroup,
 }: {
-  headerGroup: HeaderGroup<Product>
+  headerGroup: HeaderGroup<Product>;
 }) => {
   return (
     <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
@@ -87,8 +87,8 @@ const ProductHeader = ({
         </Table.HeadCell>
       ))}
     </Table.HeadRow>
-  )
-}
+  );
+};
 
 const PricesTableRow = ({
   children,
@@ -97,11 +97,11 @@ const PricesTableRow = ({
   onClick,
   ...props
 }) => {
-  const notification = useNotification()
+  const notification = useNotification();
   const deleteProductPrices = useAdminDeletePriceListProductPrices(
     priceListId,
     product.id
-  )
+  );
 
   const actions = [
     {
@@ -120,20 +120,20 @@ const PricesTableRow = ({
               "Success",
               `Deleted prices of product: ${product.title}`,
               "success"
-            )
+            );
           },
           onError: (err) =>
             notification("Error", getErrorMessage(err), "error"),
-        })
+        });
       },
     },
-  ]
+  ];
 
   return (
     <Table.Row {...props} actions={actions}>
       {children}
     </Table.Row>
-  )
-}
+  );
+};
 
-export default PricesTable
+export default PricesTable;

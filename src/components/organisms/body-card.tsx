@@ -1,24 +1,24 @@
-import clsx from "clsx"
-import React from "react"
-import { useScroll } from "../../hooks/use-scroll"
-import Button from "../fundamentals/button"
-import Actionables, { ActionType } from "../molecules/actionables"
+import clsx from "clsx";
+import React from "react";
+import { useScroll } from "../../hooks/use-scroll";
+import Button from "../fundamentals/button";
+import Actionables, { ActionType } from "../molecules/actionables";
 
 type BodyCardProps = {
-  title?: string | JSX.Element | React.ReactNode
-  subtitle?: string
+  title?: string | JSX.Element | React.ReactNode;
+  subtitle?: string;
   events?: {
-    label: string
-    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
-    type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"]
-  }[]
-  actionables?: ActionType[]
-  forceDropdown?: boolean
-  customActionable?: React.ReactNode
-  status?: React.ReactNode
-  customHeader?: React.ReactNode
-  compact?: boolean
-} & React.HTMLAttributes<HTMLDivElement>
+    label: string;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  }[];
+  actionables?: ActionType[];
+  forceDropdown?: boolean;
+  customActionable?: React.ReactNode;
+  status?: React.ReactNode;
+  customHeader?: React.ReactNode;
+  compact?: boolean;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const BodyCard: React.FC<BodyCardProps> = ({
   title,
@@ -34,7 +34,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
   compact = false,
   ...rest
 }) => {
-  const { isScrolled, scrollListener } = useScroll({ threshold: 16 })
+  const { isScrolled, scrollListener } = useScroll({ threshold: 16 });
   return (
     <div
       className={clsx(
@@ -101,7 +101,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
                 >
                   {event.label}
                 </Button>
-              )
+              );
             })}
           </div>
         </div>
@@ -109,7 +109,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
         <div className="min-h-[24px]" />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default BodyCard
+export default BodyCard;

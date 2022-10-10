@@ -4,14 +4,14 @@ import {
   AdminPriceListsListRes,
   AdminPriceListRes,
   AdminProductsListRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_PRICE_LISTS_QUERY_KEY = `admin_price_lists` as const
+const ADMIN_PRICE_LISTS_QUERY_KEY = `admin_price_lists` as const;
 
 export const adminPriceListKeys = {
   ...queryKeysFactory(ADMIN_PRICE_LISTS_QUERY_KEY),
@@ -20,11 +20,11 @@ export const adminPriceListKeys = {
       ...this.detail(id),
       "products" as const,
       { ...(query || {}) },
-    ] as const
-  }
-}
+    ] as const;
+  },
+};
 
-type PriceListQueryKeys = typeof adminPriceListKeys
+type PriceListQueryKeys = typeof adminPriceListKeys;
 
 export const useAdminPriceLists = (
   query?: AdminGetPriceListPaginationParams,
@@ -34,14 +34,14 @@ export const useAdminPriceLists = (
     ReturnType<PriceListQueryKeys["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminPriceListKeys.list(query),
     () => client.admin.priceLists.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminPriceListProducts = (
   id: string,
@@ -52,14 +52,14 @@ export const useAdminPriceListProducts = (
     ReturnType<PriceListQueryKeys["detailProducts"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminPriceListKeys.detailProducts(id, query),
     () => client.admin.priceLists.listProducts(id, query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminPriceList = (
   id: string,
@@ -69,11 +69,11 @@ export const useAdminPriceList = (
     ReturnType<PriceListQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminPriceListKeys.detail(id),
     () => client.admin.priceLists.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

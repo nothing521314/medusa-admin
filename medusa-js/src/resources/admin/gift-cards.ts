@@ -5,10 +5,10 @@ import {
   AdminGiftCardsRes,
   AdminPostGiftCardsGiftCardReq,
   AdminPostGiftCardsReq,
-} from "@medusajs/medusa"
-import qs from "qs"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
+} from "@medusajs/medusa";
+import qs from "qs";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
 
 class AdminGiftCardsResource extends BaseResource {
   /**
@@ -18,8 +18,8 @@ class AdminGiftCardsResource extends BaseResource {
     payload: AdminPostGiftCardsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminGiftCardsRes> {
-    const path = `/admin/gift-cards`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/gift-cards`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -30,8 +30,8 @@ class AdminGiftCardsResource extends BaseResource {
     payload: AdminPostGiftCardsGiftCardReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminGiftCardsRes> {
-    const path = `/admin/gift-cards/${id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/gift-cards/${id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -41,8 +41,8 @@ class AdminGiftCardsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminGiftCardsDeleteRes> {
-    const path = `/admin/gift-cards/${id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/gift-cards/${id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -52,8 +52,8 @@ class AdminGiftCardsResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminGiftCardsRes> {
-    const path = `/admin/gift-cards/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/gift-cards/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -63,15 +63,15 @@ class AdminGiftCardsResource extends BaseResource {
     query?: AdminGetGiftCardsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminGiftCardsListRes> {
-    let path = `/admin/gift-cards/`
+    let path = `/admin/gift-cards/`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/gift-cards?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/gift-cards?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 }
 
-export default AdminGiftCardsResource
+export default AdminGiftCardsResource;

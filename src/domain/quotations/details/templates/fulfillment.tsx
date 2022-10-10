@@ -1,32 +1,32 @@
-import { capitalize } from "lodash"
+import { capitalize } from "lodash";
 import {
   useAdminCancelClaimFulfillment,
   useAdminCancelFulfillment,
   useAdminCancelSwapFulfillment,
-} from "../../../../../medusa-react"
-import React from "react"
-import CancelIcon from "../../../../components/fundamentals/icons/cancel-icon"
-import PackageIcon from "../../../../components/fundamentals/icons/package-icon"
-import Actionables from "../../../../components/molecules/actionables"
-import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import { TrackingLink } from "./tracking-link"
+} from "../../../../../medusa-react";
+import React from "react";
+import CancelIcon from "../../../../components/fundamentals/icons/cancel-icon";
+import PackageIcon from "../../../../components/fundamentals/icons/package-icon";
+import Actionables from "../../../../components/molecules/actionables";
+import useImperativeDialog from "../../../../hooks/use-imperative-dialog";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import { TrackingLink } from "./tracking-link";
 
 export const FormattedFulfillment = ({
   setFullfilmentToShip,
   order,
   fulfillmentObj,
 }) => {
-  const dialog = useImperativeDialog()
-  const notification = useNotification()
+  const dialog = useImperativeDialog();
+  const notification = useNotification();
 
-  const cancelFulfillment = useAdminCancelFulfillment(order.id)
-  const cancelSwapFulfillment = useAdminCancelSwapFulfillment(order.id)
-  const cancelClaimFulfillment = useAdminCancelClaimFulfillment(order.id)
+  const cancelFulfillment = useAdminCancelFulfillment(order.id);
+  const cancelSwapFulfillment = useAdminCancelSwapFulfillment(order.id);
+  const cancelClaimFulfillment = useAdminCancelClaimFulfillment(order.id);
 
-  const { fulfillment } = fulfillmentObj
-  const hasLinks = !!fulfillment.tracking_links?.length
+  const { fulfillment } = fulfillmentObj;
+  const hasLinks = !!fulfillment.tracking_links?.length;
 
   const getData = () => {
     switch (true) {
@@ -34,27 +34,27 @@ export const FormattedFulfillment = ({
         return {
           resourceId: fulfillment.claim_order_id,
           resourceType: "claim",
-        }
+        };
       case !!fulfillment?.swap_id:
         return {
           resourceId: fulfillment.swap_id,
           resourceType: "swap",
-        }
+        };
       default:
-        return { resourceId: order?.id, resourceType: "order" }
+        return { resourceId: order?.id, resourceType: "order" };
     }
-  }
+  };
 
   const handleCancelFulfillment = async () => {
-    const { resourceId, resourceType } = getData()
+    const { resourceId, resourceType } = getData();
 
     const shouldCancel = await dialog({
       heading: "Cancel fulfillment?",
       text: "Are you sure you want to cancel the fulfillment?",
-    })
+    });
 
     if (!shouldCancel) {
-      return
+      return;
     }
 
     switch (resourceType) {
@@ -67,7 +67,7 @@ export const FormattedFulfillment = ({
             onError: (err) =>
               notification("Error", getErrorMessage(err), "error"),
           }
-        )
+        );
       case "claim":
         return cancelClaimFulfillment.mutate(
           { claim_id: resourceId, fulfillment_id: fulfillment.id },
@@ -77,16 +77,16 @@ export const FormattedFulfillment = ({
             onError: (err) =>
               notification("Error", getErrorMessage(err), "error"),
           }
-        )
+        );
       default:
         return cancelFulfillment.mutate(fulfillment.id, {
           onSuccess: () =>
             notification("Success", "Successfully canceled order", "success"),
           onError: (err) =>
             notification("Error", getErrorMessage(err), "error"),
-        })
+        });
     }
-  }
+  };
 
   return (
     <div className="flex w-full justify-between">
@@ -125,5 +125,5 @@ export const FormattedFulfillment = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};

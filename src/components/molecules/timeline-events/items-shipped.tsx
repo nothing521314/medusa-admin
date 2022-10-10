@@ -1,12 +1,12 @@
-import React from "react"
-import { ItemsShippedEvent } from "../../../hooks/use-build-timeline"
-import TruckIcon from "../../fundamentals/icons/truck-icon"
-import EventContainer from "./event-container"
-import EventItemContainer from "./event-item-container"
+import React from "react";
+import { ItemsShippedEvent } from "../../../hooks/use-build-timeline";
+import TruckIcon from "../../fundamentals/icons/truck-icon";
+import EventContainer from "./event-container";
+import EventItemContainer from "./event-item-container";
 
 type ItemsShippedProps = {
-  event: ItemsShippedEvent
-}
+  event: ItemsShippedEvent;
+};
 
 const ItemsShipped: React.FC<ItemsShippedProps> = ({ event }) => {
   const title =
@@ -14,7 +14,7 @@ const ItemsShipped: React.FC<ItemsShippedProps> = ({ event }) => {
       ? "Claim Items Shipped"
       : event.sourceType === "exchange"
       ? "Exchange Items Shipped"
-      : "Items Shipped"
+      : "Items Shipped";
 
   const args = {
     icon: <TruckIcon size={20} />,
@@ -25,8 +25,8 @@ const ItemsShipped: React.FC<ItemsShippedProps> = ({ event }) => {
     )),
     noNotification: event.noNotification,
     isFirst: event.first,
-  }
-  return <EventContainer {...args} />
-}
+  };
+  return <EventContainer {...args} />;
+};
 
-export default ItemsShipped
+export default ItemsShipped;

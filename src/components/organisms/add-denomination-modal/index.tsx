@@ -1,24 +1,24 @@
-import { Product } from "@medusajs/medusa"
-import { useAdminCreateVariant } from "../../../../medusa-react"
-import React from "react"
-import { Controller, useForm } from "react-hook-form"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
-import FormValidator from "../../../utils/form-validator"
-import Button from "../../fundamentals/button"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import IconTooltip from "../../molecules/icon-tooltip"
-import Modal from "../../molecules/modal"
-import CurrencyInput from "../currency-input"
-import { useValuesFieldArray } from "./use-values-field-array"
+import { Product } from "@medusajs/medusa";
+import { useAdminCreateVariant } from "../../../../medusa-react";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
+import useNotification from "../../../hooks/use-notification";
+import { getErrorMessage } from "../../../utils/error-messages";
+import FormValidator from "../../../utils/form-validator";
+import Button from "../../fundamentals/button";
+import PlusIcon from "../../fundamentals/icons/plus-icon";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import IconTooltip from "../../molecules/icon-tooltip";
+import Modal from "../../molecules/modal";
+import CurrencyInput from "../currency-input";
+import { useValuesFieldArray } from "./use-values-field-array";
 
 type AddDenominationModalProps = {
-  giftCard: Omit<Product, "beforeInsert">
-  storeCurrency: string
-  currencyCodes: string[]
-  handleClose: () => void
-}
+  giftCard: Omit<Product, "beforeInsert">;
+  storeCurrency: string;
+  currencyCodes: string[];
+  handleClose: () => void;
+};
 
 const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
   giftCard,
@@ -27,19 +27,19 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
   handleClose,
 }) => {
   const { watch, handleSubmit, control } = useForm<{
-    default_price: number
+    default_price: number;
     prices: {
       price: {
-        amount: number
-        currency_code: string
-      }
-    }[]
-  }>()
-  const notification = useNotification()
-  const createVariant = useAdminCreateVariant(giftCard.id)
+        amount: number;
+        currency_code: string;
+      };
+    }[];
+  }>();
+  const notification = useNotification();
+  const createVariant = useAdminCreateVariant(giftCard.id);
 
   // passed to useValuesFieldArray so new prices are intialized with the currenct default price
-  const defaultValue = watch("default_price", 10000)
+  const defaultValue = watch("default_price", 10000);
 
   const {
     fields,
@@ -57,7 +57,7 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
       defaultAmount: defaultValue,
       defaultCurrencyCode: storeCurrency,
     }
-  )
+  );
 
   const onSubmit = async (data: any) => {
     const prices = [
@@ -65,15 +65,15 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
         amount: data.default_price,
         currency_code: storeCurrency,
       },
-    ]
+    ];
 
     if (data.prices) {
       data.prices.forEach((p) => {
         prices.push({
           amount: p.price.amount,
           currency_code: p.price.currency_code,
-        })
-      })
+        });
+      });
     }
 
     createVariant.mutate(
@@ -91,24 +91,24 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
       },
       {
         onSuccess: () => {
-          notification("Success", "Denomination added successfully", "success")
-          handleClose()
+          notification("Success", "Denomination added successfully", "success");
+          handleClose();
         },
         onError: (error) => {
           const errorMessage = () => {
             // @ts-ignore
             if (error.response?.data?.type === "duplicate_error") {
-              return `A denomination with that default value already exists`
+              return `A denomination with that default value already exists`;
             } else {
-              return getErrorMessage(error)
+              return getErrorMessage(error);
             }
-          }
+          };
 
-          notification("Error", errorMessage(), "error")
+          notification("Error", errorMessage(), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   return (
     <Modal handleClose={handleClose} isLargeModal>
@@ -144,7 +144,7 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
                         onChange={onChange}
                       />
                     </CurrencyInput.Root>
-                  )
+                  );
                 }}
               />
             </div>
@@ -172,7 +172,7 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
                                 "Price",
                                 val.amount,
                                 val.currency_code
-                              )
+                              );
                             },
                           }}
                           defaultValue={field.price}
@@ -180,8 +180,8 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
                             const codes = [
                               value?.currency_code,
                               ...availableCurrencies,
-                            ]
-                            codes.sort()
+                            ];
+                            codes.sort();
                             return (
                               <CurrencyInput.Root
                                 currencyCodes={codes}
@@ -200,7 +200,7 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
                                   amount={value?.amount}
                                 />
                               </CurrencyInput.Root>
-                            )
+                            );
                           }}
                         />
                       </div>
@@ -218,7 +218,7 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
                         />
                       </Button>
                     </div>
-                  )
+                  );
                 })}
               </div>
               <div className="mt-large mb-small">
@@ -258,7 +258,7 @@ const AddDenominationModal: React.FC<AddDenominationModalProps> = ({
         </Modal.Body>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
-export default AddDenominationModal
+export default AddDenominationModal;

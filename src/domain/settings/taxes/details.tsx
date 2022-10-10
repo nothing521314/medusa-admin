@@ -1,47 +1,47 @@
-import { useAdminRegion, useAdminTaxRates } from "../../../../medusa-react"
-import clsx from "clsx"
-import React, { useEffect, useState } from "react"
-import { useTable } from "react-table"
-import Spinner from "../../../components/atoms/spinner"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import Table from "../../../components/molecules/table"
-import BodyCard from "../../../components/organisms/body-card"
-import useTaxRateColumns from "./use-tax-rate-columns"
-import NewTaxRate from "./new"
-import EditTaxRate from "./edit"
-import { TaxRateRow } from "./tax-rate-row"
-import { RegionTaxForm } from "./region-form"
-import { TaxRateType, PaginationProps } from "../../../types/shared"
+import { useAdminRegion, useAdminTaxRates } from "../../../../medusa-react";
+import clsx from "clsx";
+import React, { useEffect, useState } from "react";
+import { useTable } from "react-table";
+import Spinner from "../../../components/atoms/spinner";
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
+import Table from "../../../components/molecules/table";
+import BodyCard from "../../../components/organisms/body-card";
+import useTaxRateColumns from "./use-tax-rate-columns";
+import NewTaxRate from "./new";
+import EditTaxRate from "./edit";
+import { TaxRateRow } from "./tax-rate-row";
+import { RegionTaxForm } from "./region-form";
+import { TaxRateType, PaginationProps } from "../../../types/shared";
 
 type TaxRate = {
-  id: string
-  name?: string
-  rate: number | null
-  code: string | null
-  type: TaxRateType
-}
+  id: string;
+  name?: string;
+  rate: number | null;
+  code: string | null;
+  type: TaxRateType;
+};
 
-const DEFAULT_PAGESIZE = 10
+const DEFAULT_PAGESIZE = 10;
 
 const TaxDetails = ({ id }) => {
   if (!id) {
-    return null
+    return null;
   }
 
   const [pagination, setPagination] = useState<PaginationProps>({
     limit: DEFAULT_PAGESIZE,
     offset: 0,
-  })
-  const [showNew, setShowNew] = useState<boolean>(false)
-  const [editRate, setEditRate] = useState<TaxRate | null>(null)
-  const [tableEntries, setTableEntries] = useState<TaxRate[]>([])
+  });
+  const [showNew, setShowNew] = useState<boolean>(false);
+  const [editRate, setEditRate] = useState<TaxRate | null>(null);
+  const [tableEntries, setTableEntries] = useState<TaxRate[]>([]);
 
   const { tax_rates, isLoading: taxRatesLoading } = useAdminTaxRates({
     region_id: id,
     ...pagination,
-  })
+  });
 
-  const { region, isLoading: regionIsLoading } = useAdminRegion(id)
+  const { region, isLoading: regionIsLoading } = useAdminRegion(id);
 
   useEffect(() => {
     if (!taxRatesLoading && !regionIsLoading && region && tax_rates) {
@@ -51,7 +51,7 @@ const TaxDetails = ({ id }) => {
         code: region.tax_code ?? null,
         rate: region.tax_rate ?? null,
         type: TaxRateType.REGION,
-      }
+      };
 
       setTableEntries([
         regionDefaultRate,
@@ -62,13 +62,13 @@ const TaxDetails = ({ id }) => {
             code: tr.code,
             rate: tr.rate,
             type: TaxRateType.RATE,
-          }
+          };
         }),
-      ])
+      ]);
     }
-  }, [taxRatesLoading, regionIsLoading, region, tax_rates])
+  }, [taxRatesLoading, regionIsLoading, region, tax_rates]);
 
-  const [columns] = useTaxRateColumns()
+  const [columns] = useTaxRateColumns();
 
   const {
     getTableProps,
@@ -81,7 +81,7 @@ const TaxDetails = ({ id }) => {
     data: tableEntries || [],
     manualPagination: true,
     autoResetPage: false,
-  })
+  });
 
   return (
     <>
@@ -119,14 +119,14 @@ const TaxDetails = ({ id }) => {
           ) : (
             <Table.Body {...getTableBodyProps()}>
               {rows.map((row) => {
-                prepareRow(row)
+                prepareRow(row);
                 return (
                   <TaxRateRow
                     key={row.original.id}
                     onEdit={setEditRate}
                     row={row}
                   />
-                )
+                );
               })}
             </Table.Body>
           )}
@@ -150,7 +150,7 @@ const TaxDetails = ({ id }) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default TaxDetails
+export default TaxDetails;

@@ -5,12 +5,12 @@ import React, {
   RefAttributes,
   useContext,
   useRef,
-} from "react"
-import type { GroupBase, Props, SelectInstance } from "react-select"
-import ReactSelect from "react-select"
-import { ModalContext } from "../../../modal"
-import { AdjacentContainer } from "../components"
-import { useSelectProps } from "../use-select-props"
+} from "react";
+import type { GroupBase, Props, SelectInstance } from "react-select";
+import ReactSelect from "react-select";
+import { ModalContext } from "../../../modal";
+import { AdjacentContainer } from "../components";
+import { useSelectProps } from "../use-select-props";
 
 export type SelectComponent = <
   Option = unknown,
@@ -19,7 +19,7 @@ export type SelectComponent = <
 >(
   props: Props<Option, IsMulti, Group> &
     RefAttributes<SelectInstance<Option, IsMulti, Group>>
-) => ReactElement
+) => ReactElement;
 
 const Select = forwardRef(
   <Option, IsMulti extends boolean, Group extends GroupBase<Option>>(
@@ -29,12 +29,12 @@ const Select = forwardRef(
       | MutableRefObject<SelectInstance<Option, IsMulti, Group> | null>
       | null
   ) => {
-    const selectProps = useSelectProps(props)
+    const selectProps = useSelectProps(props);
 
-    const { label, required, helperText, name, errors } = selectProps
-    const containerRef = useRef<HTMLDivElement>(null)
+    const { label, required, helperText, name, errors } = selectProps;
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    const { portalRef } = useContext(ModalContext)
+    const { portalRef } = useContext(ModalContext);
 
     return (
       <AdjacentContainer
@@ -53,8 +53,8 @@ const Select = forwardRef(
           menuShouldBlockScroll={true}
         />
       </AdjacentContainer>
-    )
+    );
   }
-) as SelectComponent
+) as SelectComponent;
 
-export default Select
+export default Select;

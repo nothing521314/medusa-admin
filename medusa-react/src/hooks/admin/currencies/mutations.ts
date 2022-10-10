@@ -1,12 +1,12 @@
 import {
   AdminCurrenciesRes,
   AdminPostCurrenciesCurrencyReq,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { adminCurrenciesKeys } from "."
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { adminCurrenciesKeys } from ".";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminUpdateCurrency = (
   code: string,
@@ -16,8 +16,8 @@ export const useAdminUpdateCurrency = (
     AdminPostCurrenciesCurrencyReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostCurrenciesCurrencyReq) =>
       client.admin.currencies.update(code, payload),
@@ -26,5 +26,5 @@ export const useAdminUpdateCurrency = (
       [adminCurrenciesKeys.lists(), adminCurrenciesKeys.detail(code)],
       options
     )
-  )
-}
+  );
+};

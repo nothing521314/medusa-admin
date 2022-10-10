@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import DownLeftIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import DownLeftIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/DownLeftIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof DownLeftIcon>
+} as ComponentMeta<typeof DownLeftIcon>;
 
-const Template = (args) => <DownLeftIcon {...args} />
+const Template = (args) => <DownLeftIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "16px",
   color: "currentColor",
-}
+};

@@ -4,9 +4,9 @@ import {
   ProductCollection,
   ProductTag,
   ProductType,
-} from "@medusajs/medusa"
-import { debounce } from "lodash"
-import React, { useEffect } from "react"
+} from "@medusajs/medusa";
+import { debounce } from "lodash";
+import React, { useEffect } from "react";
 import {
   Column,
   HeaderGroup,
@@ -15,32 +15,32 @@ import {
   useRowSelect,
   useSortBy,
   useTable,
-} from "react-table"
-import Spinner from "../../../../../../components/atoms/spinner"
-import IndeterminateCheckbox from "../../../../../../components/molecules/indeterminate-checkbox"
+} from "react-table";
+import Spinner from "../../../../../../components/atoms/spinner";
+import IndeterminateCheckbox from "../../../../../../components/molecules/indeterminate-checkbox";
 import Table, {
   TablePagination,
   TableProps,
-} from "../../../../../../components/molecules/table"
-import useQueryFilters from "../../../../../../hooks/use-query-filters"
+} from "../../../../../../components/molecules/table";
+import useQueryFilters from "../../../../../../hooks/use-query-filters";
 
 type SelectableTableProps<T extends object> = {
-  resourceName?: string
-  label?: string
-  isLoading?: boolean
-  totalCount: number
+  resourceName?: string;
+  label?: string;
+  isLoading?: boolean;
+  totalCount: number;
   options: Omit<TableProps, "filteringOptions"> & {
-    filters?: Pick<TableProps, "filteringOptions">
-  }
-  data?: T[]
-  selectedIds?: string[]
-  columns: Column<T>[]
-  onChange: (items: string[]) => void
-  renderRow: (props: { row: Row<T> }) => React.ReactElement
+    filters?: Pick<TableProps, "filteringOptions">;
+  };
+  data?: T[];
+  selectedIds?: string[];
+  columns: Column<T>[];
+  onChange: (items: string[]) => void;
+  renderRow: (props: { row: Row<T> }) => React.ReactElement;
   renderHeaderGroup?: (props: {
-    headerGroup: HeaderGroup<T>
-  }) => React.ReactElement
-} & ReturnType<typeof useQueryFilters>
+    headerGroup: HeaderGroup<T>;
+  }) => React.ReactElement;
+} & ReturnType<typeof useQueryFilters>;
 
 export const SelectableTable = <
   T extends
@@ -74,8 +74,8 @@ export const SelectableTable = <
         pageIndex: queryObject.offset / queryObject.limit,
         pageSize: queryObject.limit,
         selectedRowIds: selectedIds.reduce((prev, id) => {
-          prev[id] = true
-          return prev
+          prev[id] = true;
+          return prev;
         }, {} as Record<string, boolean>),
       },
       pageCount: Math.ceil(totalCount / queryObject.limit),
@@ -87,39 +87,39 @@ export const SelectableTable = <
     usePagination,
     useRowSelect,
     useSelectionColumn
-  )
+  );
 
   useEffect(() => {
-    onChange(Object.keys(table.state.selectedRowIds))
-  }, [table.state.selectedRowIds])
+    onChange(Object.keys(table.state.selectedRowIds));
+  }, [table.state.selectedRowIds]);
 
   const handleNext = () => {
     if (!table.canNextPage) {
-      return
+      return;
     }
 
-    paginate(1)
-    table.nextPage()
-  }
+    paginate(1);
+    table.nextPage();
+  };
 
   const handlePrev = () => {
     if (!table.canPreviousPage) {
-      return
+      return;
     }
 
-    paginate(-1)
-    table.previousPage()
-  }
+    paginate(-1);
+    table.previousPage();
+  };
 
   const handleSearch = (text: string) => {
-    setQuery(text)
+    setQuery(text);
 
     if (text) {
-      table.gotoPage(0)
+      table.gotoPage(0);
     }
-  }
+  };
 
-  const debouncedSearch = React.useMemo(() => debounce(handleSearch, 300), [])
+  const debouncedSearch = React.useMemo(() => debounce(handleSearch, 300), []);
 
   return (
     <div>
@@ -142,8 +142,8 @@ export const SelectableTable = <
             <Spinner size="large" />
           ) : (
             table.rows.map((row) => {
-              table.prepareRow(row)
-              return renderRow({ row })
+              table.prepareRow(row);
+              return renderRow({ row });
             })
           )}
         </Table.Body>
@@ -163,8 +163,8 @@ export const SelectableTable = <
         hasPrev={table.canPreviousPage}
       />
     </div>
-  )
-}
+  );
+};
 
 const useSelectionColumn = (hooks) => {
   hooks.visibleColumns.push((columns) => [
@@ -175,16 +175,16 @@ const useSelectionColumn = (hooks) => {
           <div className="flex justify-center">
             <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
           </div>
-        )
+        );
       },
       Cell: ({ row }) => {
         return (
           <div className="flex justify-center">
             <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
           </div>
-        )
+        );
       },
     },
     ...columns,
-  ])
-}
+  ]);
+};

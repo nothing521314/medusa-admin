@@ -1,15 +1,17 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { FormProvider, useForm, useFormContext } from "react-hook-form"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import {
   ConditionMap,
   DiscountConditionOperator,
-  DiscountConditionType, DiscountRuleType, UpdateConditionProps
-} from "../../../types"
-import { DiscountFormValues } from "./mappers"
+  DiscountConditionType,
+  DiscountRuleType,
+  UpdateConditionProps,
+} from "../../../types";
+import { DiscountFormValues } from "./mappers";
 
 type DiscountFormProviderProps = {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 const defaultConditions: ConditionMap = {
   products: {
@@ -42,19 +44,19 @@ const defaultConditions: ConditionMap = {
     type: DiscountConditionType.CUSTOMER_GROUPS,
     items: [],
   },
-}
+};
 
 export const DiscountFormProvider = ({
   children,
 }: DiscountFormProviderProps) => {
-  const [hasExpiryDate, setHasExpiryDate] = useState(false)
-  const [hasStartDate, setHasStartDate] = useState(false)
-  const [prevUsageLimit, setPrevUsageLimit] = useState<number | null>(null)
+  const [hasExpiryDate, setHasExpiryDate] = useState(false);
+  const [hasStartDate, setHasStartDate] = useState(false);
+  const [prevUsageLimit, setPrevUsageLimit] = useState<number | null>(null);
   const [prevValidDuration, setPrevValidDuration] = useState<string | null>(
     null
-  )
+  );
 
-  const [conditions, setConditions] = useState<ConditionMap>(defaultConditions)
+  const [conditions, setConditions] = useState<ConditionMap>(defaultConditions);
 
   const updateCondition = ({ type, items, operator }: UpdateConditionProps) => {
     setConditions((prevConditions) => ({
@@ -64,97 +66,97 @@ export const DiscountFormProvider = ({
         items,
         operator,
       },
-    }))
-  }
+    }));
+  };
 
   const methods = useForm<DiscountFormValues>({
     defaultValues: {
       rule: {
-        type: DiscountRuleType.PERCENTAGE
-      }
+        type: DiscountRuleType.PERCENTAGE,
+      },
     },
     shouldUnregister: true,
-  })
+  });
 
-  const type = methods.watch("rule.type")
-  const isDynamic = methods.watch("is_dynamic")
-  const usageLimit = methods.watch("usage_limit")
-  const validDuration = methods.watch("valid_duration")
+  const type = methods.watch("rule.type");
+  const isDynamic = methods.watch("is_dynamic");
+  const usageLimit = methods.watch("usage_limit");
+  const validDuration = methods.watch("valid_duration");
 
-  const endsAt = methods.watch("ends_at")
-  const startsAt = methods.watch("starts_at")
+  const endsAt = methods.watch("ends_at");
+  const startsAt = methods.watch("starts_at");
 
   useEffect(() => {
     if (hasExpiryDate && !endsAt) {
       methods.setValue(
         "ends_at",
         new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
-      )
+      );
     }
 
     if (!hasExpiryDate && endsAt) {
-      methods.setValue("ends_at", null)
+      methods.setValue("ends_at", null);
     }
-  }, [endsAt, hasExpiryDate])
+  }, [endsAt, hasExpiryDate]);
 
   useEffect(() => {
     if (hasStartDate && !startsAt) {
-      methods.setValue("starts_at", new Date(new Date().getTime()))
+      methods.setValue("starts_at", new Date(new Date().getTime()));
     }
 
     if (!hasStartDate && startsAt) {
-      methods.setValue("starts_at", undefined)
+      methods.setValue("starts_at", undefined);
     }
-  }, [endsAt, hasExpiryDate])
+  }, [endsAt, hasExpiryDate]);
 
   const handleConfigurationChanged = (values) => {
     if (values.indexOf("ends_at") > -1 && !hasExpiryDate) {
-      setHasExpiryDate(true)
+      setHasExpiryDate(true);
     } else if (values.indexOf("ends_at") === -1 && hasExpiryDate) {
-      setHasExpiryDate(false)
+      setHasExpiryDate(false);
     }
 
     if (values.indexOf("starts_at") === -1 && hasStartDate) {
-      setHasStartDate(false)
+      setHasStartDate(false);
     } else if (values.indexOf("starts_at") > -1 && !hasStartDate) {
-      setHasStartDate(true)
+      setHasStartDate(true);
     }
 
     // usage_limit
     if (values.indexOf("usage_limit") === -1 && usageLimit) {
-      setPrevUsageLimit(usageLimit)
+      setPrevUsageLimit(usageLimit);
       // debounce the setValue call to not flash an empty field when collapsing the accordion
       setTimeout(() => {
-        methods.setValue("usage_limit", null)
-      }, 300)
+        methods.setValue("usage_limit", null);
+      }, 300);
     } else if (values.indexOf("usage_limit") > -1 && usageLimit) {
-      methods.setValue("usage_limit", prevUsageLimit)
+      methods.setValue("usage_limit", prevUsageLimit);
     }
 
     // valid duration
     if (values.indexOf("valid_duration") === -1 && validDuration !== "") {
-      setPrevValidDuration(validDuration)
+      setPrevValidDuration(validDuration);
       // debounce the setValue call to not flash an empty field when collapsing the accordion
       setTimeout(() => {
-        methods.setValue("valid_duration", "")
-      }, 300)
+        methods.setValue("valid_duration", "");
+      }, 300);
     } else if (values.indexOf("valid_duration") > -1 && validDuration === "") {
-      methods.setValue("valid_duration", prevValidDuration)
+      methods.setValue("valid_duration", prevValidDuration);
     }
-  }
+  };
 
   const handleReset = () => {
-    setConditions(defaultConditions)
+    setConditions(defaultConditions);
     methods.reset({
       rule: {
-        type: DiscountRuleType.PERCENTAGE
-      }
-    })
-  }
+        type: DiscountRuleType.PERCENTAGE,
+      },
+    });
+  };
 
   useEffect(() => {
-    handleReset()
-  }, [])
+    handleReset();
+  }, []);
 
   return (
     <FormProvider {...methods}>
@@ -176,28 +178,28 @@ export const DiscountFormProvider = ({
         {children}
       </DiscountFormContext.Provider>
     </FormProvider>
-  )
-}
+  );
+};
 
 const DiscountFormContext = React.createContext<{
-  type?: string
-  isDynamic: boolean
-  hasExpiryDate: boolean
-  setHasExpiryDate: (value: boolean) => void
-  hasStartDate: boolean
-  setHasStartDate: (value: boolean) => void
-  handleConfigurationChanged: (values: string[]) => void
-  conditions: ConditionMap
-  updateCondition: (props: UpdateConditionProps) => void
-  setConditions: Dispatch<SetStateAction<ConditionMap>>
-  handleReset: () => void
-} | null>(null)
+  type?: string;
+  isDynamic: boolean;
+  hasExpiryDate: boolean;
+  setHasExpiryDate: (value: boolean) => void;
+  hasStartDate: boolean;
+  setHasStartDate: (value: boolean) => void;
+  handleConfigurationChanged: (values: string[]) => void;
+  conditions: ConditionMap;
+  updateCondition: (props: UpdateConditionProps) => void;
+  setConditions: Dispatch<SetStateAction<ConditionMap>>;
+  handleReset: () => void;
+} | null>(null);
 
 export const useDiscountForm = () => {
-  const context = React.useContext(DiscountFormContext)
-  const form = useFormContext<DiscountFormValues>()
+  const context = React.useContext(DiscountFormContext);
+  const form = useFormContext<DiscountFormValues>();
   if (!context) {
-    throw new Error("useDiscountForm must be a child of DiscountFormContext")
+    throw new Error("useDiscountForm must be a child of DiscountFormContext");
   }
-  return { ...form, ...context }
-}
+  return { ...form, ...context };
+};

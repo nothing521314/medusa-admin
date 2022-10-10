@@ -1,7 +1,7 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import { currencies } from "../../../utils/currencies"
-import MedusaPriceInput from "./"
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import { currencies } from "../../../utils/currencies";
+import MedusaPriceInput from "./";
 
 function C(args) {
   return (
@@ -10,7 +10,7 @@ function C(args) {
       currency={currencies[args.currency]}
       onChange={console.log}
     />
-  )
+  );
 }
 
 export default {
@@ -29,12 +29,12 @@ export default {
       options: Object.values(currencies).map((c) => c.code),
     },
   },
-} as ComponentMeta<typeof MedusaPriceInput>
+} as ComponentMeta<typeof MedusaPriceInput>;
 
-const Template = (args) => <C {...args} />
+const Template = (args) => <C {...args} />;
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
   currency: "USD",
   amount: 1999,
-}
+};

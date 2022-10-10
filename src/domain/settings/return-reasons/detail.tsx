@@ -1,50 +1,50 @@
-import { ReturnReason } from "@medusajs/medusa"
+import { ReturnReason } from "@medusajs/medusa";
 import {
   useAdminDeleteReturnReason,
   useAdminUpdateReturnReason,
-} from "../../../../medusa-react"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import DuplicateIcon from "../../../components/fundamentals/icons/duplicate-icon"
-import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
-import Input from "../../../components/molecules/input"
-import BodyCard from "../../../components/organisms/body-card"
-import DeletePrompt from "../../../components/organisms/delete-prompt"
-import useNotification from "../../../hooks/use-notification"
-import useToggleState from "../../../hooks/use-toggle-state"
-import { getErrorMessage } from "../../../utils/error-messages"
-import CreateReturnReasonModal from "./create-reason-modal"
+} from "../../../../medusa-react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import DuplicateIcon from "../../../components/fundamentals/icons/duplicate-icon";
+import TrashIcon from "../../../components/fundamentals/icons/trash-icon";
+import Input from "../../../components/molecules/input";
+import BodyCard from "../../../components/organisms/body-card";
+import DeletePrompt from "../../../components/organisms/delete-prompt";
+import useNotification from "../../../hooks/use-notification";
+import useToggleState from "../../../hooks/use-toggle-state";
+import { getErrorMessage } from "../../../utils/error-messages";
+import CreateReturnReasonModal from "./create-reason-modal";
 
 type ReturnReasonDetailsProps = {
-  reason: ReturnReason
-}
+  reason: ReturnReason;
+};
 
 type ReturnReasonDetailsFormData = {
-  label: string
-  description: string | null
-}
+  label: string;
+  description: string | null;
+};
 
 const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
   const {
     state: showDuplicateModal,
     open: handleOpenDuplicateModal,
     close: handleCloseDuplicateModal,
-  } = useToggleState()
+  } = useToggleState();
   const {
     state: showDanger,
     open: handleClosePrompt,
     close: handleOpenPrompt,
-  } = useToggleState()
+  } = useToggleState();
   const { register, reset, handleSubmit } = useForm<
     ReturnReasonDetailsFormData
-  >()
-  const notification = useNotification()
-  const { mutate: deleteRR } = useAdminDeleteReturnReason(reason?.id)
-  const { mutate: update } = useAdminUpdateReturnReason(reason?.id)
+  >();
+  const notification = useNotification();
+  const { mutate: deleteRR } = useAdminDeleteReturnReason(reason?.id);
+  const { mutate: update } = useAdminUpdateReturnReason(reason?.id);
 
   const handleDeletion = async () => {
-    deleteRR(undefined)
-  }
+    deleteRR(undefined);
+  };
 
   const onSave = (data: ReturnReasonDetailsFormData) => {
     update(
@@ -58,30 +58,30 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
             "Success",
             "Successfully updated return reason",
             "success"
-          )
+          );
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification("Error", getErrorMessage(error), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   const handleCancel = () => {
     reset({
       label: reason.label,
       description: reason.description,
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     if (reason) {
       reset({
         label: reason.label,
         description: reason.description,
-      })
+      });
     }
-  }, [reason])
+  }, [reason]);
 
   return (
     <>
@@ -137,7 +137,7 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default ReturnReasonDetail
+export default ReturnReasonDetail;

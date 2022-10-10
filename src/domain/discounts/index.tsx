@@ -1,17 +1,17 @@
-import { RouteComponentProps, Router } from "@reach/router"
-import React, { useState } from "react"
-import Fade from "../../components/atoms/fade-wrapper"
-import PlusIcon from "../../components/fundamentals/icons/plus-icon"
-import BodyCard from "../../components/organisms/body-card"
-import TableViewHeader from "../../components/organisms/custom-table-header"
-import DiscountTable from "../../components/templates/discount-table"
-import Details from "./details"
-import New from "./new"
-import DiscountForm from "./new/discount-form"
-import { DiscountFormProvider } from "./new/discount-form/form/discount-form-context"
+import { RouteComponentProps, Router } from "@reach/router";
+import React, { useState } from "react";
+import Fade from "../../components/atoms/fade-wrapper";
+import PlusIcon from "../../components/fundamentals/icons/plus-icon";
+import BodyCard from "../../components/organisms/body-card";
+import TableViewHeader from "../../components/organisms/custom-table-header";
+import DiscountTable from "../../components/templates/discount-table";
+import Details from "./details";
+import New from "./new";
+import DiscountForm from "./new/discount-form";
+import { DiscountFormProvider } from "./new/discount-form/form/discount-form-context";
 
 const DiscountIndex: React.FC<RouteComponentProps> = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   const actionables = [
     {
@@ -19,7 +19,7 @@ const DiscountIndex: React.FC<RouteComponentProps> = () => {
       onClick: () => setIsOpen(true),
       icon: <PlusIcon size={20} />,
     },
-  ]
+  ];
 
   return (
     <div className="h-full flex flex-col">
@@ -37,8 +37,8 @@ const DiscountIndex: React.FC<RouteComponentProps> = () => {
         </Fade>
       </DiscountFormProvider>
     </div>
-  )
-}
+  );
+};
 
 const Discounts = () => {
   return (
@@ -47,7 +47,7 @@ const Discounts = () => {
       <Details path=":id" />
       <New path="new" />
     </Router>
-  )
-}
+  );
+};
 
-export default Discounts
+export default Discounts;

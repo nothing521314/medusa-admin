@@ -1,20 +1,20 @@
-import { RouteComponentProps, Router } from "@reach/router"
-import { navigate } from "gatsby"
-import React, { useMemo, useState } from "react"
+import { RouteComponentProps, Router } from "@reach/router";
+import { navigate } from "gatsby";
+import React, { useMemo, useState } from "react";
 
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import BodyCard from "../../../components/organisms/body-card"
-import TableViewHeader from "../../../components/organisms/custom-table-header"
-import DraftOrderTable from "../../../components/templates/draft-order-table"
-import NewOrderFormProvider from "../new/form"
-import NewOrder from "../new/new-order"
-import DraftOrderDetails from "./details"
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
+import BodyCard from "../../../components/organisms/body-card";
+import TableViewHeader from "../../../components/organisms/custom-table-header";
+import DraftOrderTable from "../../../components/templates/draft-order-table";
+import NewOrderFormProvider from "../new/form";
+import NewOrder from "../new/new-order";
+import DraftOrderDetails from "./details";
 
-const VIEWS = ["orders", "drafts"]
+const VIEWS = ["orders", "drafts"];
 
 const DraftOrderIndex: React.FC<RouteComponentProps> = () => {
-  const view = "drafts"
-  const [showNewOrder, setShowNewOrder] = useState(false)
+  const view = "drafts";
+  const [showNewOrder, setShowNewOrder] = useState(false);
 
   const actions = useMemo(() => {
     return [
@@ -23,8 +23,8 @@ const DraftOrderIndex: React.FC<RouteComponentProps> = () => {
         onClick: () => setShowNewOrder(true),
         icon: <PlusIcon size={20} />,
       },
-    ]
-  }, [view])
+    ];
+  }, [view]);
 
   return (
     <div className="flex flex-col grow h-full">
@@ -35,7 +35,7 @@ const DraftOrderIndex: React.FC<RouteComponentProps> = () => {
               views={VIEWS}
               setActiveView={(v) => {
                 if (v === "orders") {
-                  navigate(`/a/orders`)
+                  navigate(`/a/orders`);
                 }
               }}
               activeView={view}
@@ -52,8 +52,8 @@ const DraftOrderIndex: React.FC<RouteComponentProps> = () => {
         </NewOrderFormProvider>
       )}
     </div>
-  )
-}
+  );
+};
 
 const DraftOrders = () => {
   return (
@@ -61,7 +61,7 @@ const DraftOrders = () => {
       <DraftOrderIndex path="/" />
       <DraftOrderDetails path=":id" />
     </Router>
-  )
-}
+  );
+};
 
-export default DraftOrders
+export default DraftOrders;

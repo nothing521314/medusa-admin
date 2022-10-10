@@ -5,24 +5,24 @@ import {
   AdminGetCustomerGroupsGroupParams,
   AdminGetCustomerGroupsParams,
   AdminGetCustomersParams,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
 
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils"
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils";
 
-const ADMIN_CUSTOMER_GROUPS_QUERY_KEY = `admin_customer_groups` as const
+const ADMIN_CUSTOMER_GROUPS_QUERY_KEY = `admin_customer_groups` as const;
 
 export const adminCustomerGroupKeys = {
   ...queryKeysFactory(ADMIN_CUSTOMER_GROUPS_QUERY_KEY),
   detailCustomer(id: string, query?: AdminGetCustomersParams) {
-    return [...this.detail(id), "customers", { ...(query || {}) }]
+    return [...this.detail(id), "customers", { ...(query || {}) }];
   },
-}
+};
 
-type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys
+type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys;
 
 /**
  * Hook retrieves a customer group by id.
@@ -40,14 +40,14 @@ export const useAdminCustomerGroup = (
     ReturnType<CustomerGroupQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminCustomerGroupKeys.detail(id),
     () => client.admin.customerGroups.retrieve(id, query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 /**
  * Hook retrieves a list of customer groups.
@@ -63,14 +63,14 @@ export const useAdminCustomerGroups = (
     ReturnType<CustomerGroupQueryKeys["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminCustomerGroupKeys.list(query),
     () => client.admin.customerGroups.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 /**
  * Hook retrieves a list of customers that belong to provided groups.
@@ -88,11 +88,11 @@ export const useAdminCustomerGroupCustomers = (
     ReturnType<CustomerGroupQueryKeys["detailCustomer"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminCustomerGroupKeys.detailCustomer(id, query),
     () => client.admin.customerGroups.listCustomers(id, query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

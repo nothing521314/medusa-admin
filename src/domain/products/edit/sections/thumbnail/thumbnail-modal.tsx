@@ -1,72 +1,72 @@
-import { Product } from "@medusajs/medusa"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import useNotification from "../../../../../hooks/use-notification"
-import { FormImage } from "../../../../../types/shared"
-import { prepareImages } from "../../../../../utils/images"
-import { nestedForm } from "../../../../../utils/nested-form"
+import { Product } from "@medusajs/medusa";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../../components/fundamentals/button";
+import Modal from "../../../../../components/molecules/modal";
+import useNotification from "../../../../../hooks/use-notification";
+import { FormImage } from "../../../../../types/shared";
+import { prepareImages } from "../../../../../utils/images";
+import { nestedForm } from "../../../../../utils/nested-form";
 import ThumbnailForm, {
   ThumbnailFormType,
-} from "../../../components/thumbnail-form"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
+} from "../../../components/thumbnail-form";
+import useEditProductActions from "../../hooks/use-edit-product-actions";
 
 type Props = {
-  product: Product
-  open: boolean
-  onClose: () => void
-}
+  product: Product;
+  open: boolean;
+  onClose: () => void;
+};
 
 type ThumbnailForm = {
-  thumbnail: ThumbnailFormType
-}
+  thumbnail: ThumbnailFormType;
+};
 
 const ThumbnailModal = ({ product, open, onClose }: Props) => {
-  const { onUpdate, updating } = useEditProductActions(product.id)
+  const { onUpdate, updating } = useEditProductActions(product.id);
   const form = useForm<ThumbnailForm>({
     defaultValues: getDefaultValues(product),
-  })
+  });
 
   const {
     control,
     formState: { isDirty },
     handleSubmit,
     reset,
-  } = form
+  } = form;
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   useEffect(() => {
-    reset(getDefaultValues(product))
-  }, [product])
+    reset(getDefaultValues(product));
+  }, [product]);
 
   const onReset = () => {
-    reset(getDefaultValues(product))
-    onClose()
-  }
+    reset(getDefaultValues(product));
+    onClose();
+  };
 
   const onSubmit = handleSubmit(async (data) => {
-    let preppedImages: FormImage[] = []
+    let preppedImages: FormImage[] = [];
 
     try {
-      preppedImages = await prepareImages(data.thumbnail.images)
+      preppedImages = await prepareImages(data.thumbnail.images);
     } catch (error) {
       let errorMessage =
-        "Something went wrong while trying to upload the thumbnail."
-      const response = (error as any).response as Response
+        "Something went wrong while trying to upload the thumbnail.";
+      const response = (error as any).response as Response;
 
       if (response.status === 500) {
         errorMessage =
           errorMessage +
           " " +
-          "You might not have a file service configured. Please contact your administrator"
+          "You might not have a file service configured. Please contact your administrator";
       }
 
-      notification("Error", errorMessage, "error")
-      return
+      notification("Error", errorMessage, "error");
+      return;
     }
-    const url = preppedImages?.[0]?.url
+    const url = preppedImages?.[0]?.url;
 
     onUpdate(
       {
@@ -74,8 +74,8 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
         thumbnail: url || null,
       },
       onReset
-    )
-  })
+    );
+  });
 
   return (
     <Modal open={open} handleClose={onReset} isLargeModal>
@@ -116,8 +116,8 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const getDefaultValues = (product: Product): ThumbnailForm => {
   return {
@@ -130,7 +130,7 @@ const getDefaultValues = (product: Product): ThumbnailForm => {
           ]
         : [],
     },
-  }
-}
+  };
+};
 
-export default ThumbnailModal
+export default ThumbnailModal;

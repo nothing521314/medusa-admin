@@ -1,14 +1,14 @@
 export const getErrorMessage = (error) => {
   try {
-    let msg = error?.response?.data?.message
+    let msg = error?.response?.data?.message;
     if (msg[0].message) {
-      msg = msg[0].message
+      msg = msg[0].message;
     }
     if (!msg) {
-      msg = "Something went wrong, Please try again."
+      msg = "Something went wrong, Please try again.";
     }
-    return msg
+    return msg;
   } catch (er) {
-    return String(error)
+    return String(error);
   }
-}
+};

@@ -1,7 +1,7 @@
-import React, { useMemo } from "react"
-import { Column } from "react-table"
-import Table from "../../molecules/table"
-import { decideStatus, SimpleProductType } from "./utils"
+import React, { useMemo } from "react";
+import { Column } from "react-table";
+import Table from "../../molecules/table";
+import { decideStatus, SimpleProductType } from "./utils";
 
 const useCollectionProductColumns = () => {
   const columns: Column<SimpleProductType>[] = useMemo(
@@ -40,9 +40,9 @@ const useCollectionProductColumns = () => {
       },
     ],
     []
-  )
+  );
 
-  return columns
-}
+  return columns;
+};
 
-export default useCollectionProductColumns
+export default useCollectionProductColumns;

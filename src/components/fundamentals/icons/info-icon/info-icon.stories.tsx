@@ -1,6 +1,6 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
-import React from "react"
-import InfoIcon from "."
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import React from "react";
+import InfoIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/InfoIcon",
@@ -13,14 +13,14 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof InfoIcon>
+} as ComponentMeta<typeof InfoIcon>;
 
 const Template: ComponentStory<typeof InfoIcon> = (args) => (
   <InfoIcon {...args} />
-)
+);
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

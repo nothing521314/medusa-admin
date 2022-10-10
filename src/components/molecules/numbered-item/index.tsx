@@ -1,15 +1,15 @@
-import React from "react"
-import Badge from "../../../components/fundamentals/badge"
+import React from "react";
+import Badge from "../../../components/fundamentals/badge";
 import Actionables, {
   ActionType,
-} from "../../../components/molecules/actionables"
+} from "../../../components/molecules/actionables";
 
 type NumberedItemProps = {
-  actions?: ActionType[]
-  index: number
-  title: string
-  description?: React.ReactNode | string
-}
+  actions?: ActionType[];
+  index: number;
+  title: string;
+  description?: React.ReactNode | string;
+};
 
 const NumberedItem: React.FC<NumberedItemProps> = ({
   actions,
@@ -46,7 +46,7 @@ const NumberedItem: React.FC<NumberedItemProps> = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default NumberedItem
+export default NumberedItem;

@@ -2,18 +2,18 @@ import {
   AdminSwapsListRes,
   AdminSwapsRes,
   AdminGetSwapsParams,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_SWAPS_QUERY_KEY = `admin_swaps` as const
+const ADMIN_SWAPS_QUERY_KEY = `admin_swaps` as const;
 
-export const adminSwapKeys = queryKeysFactory(ADMIN_SWAPS_QUERY_KEY)
+export const adminSwapKeys = queryKeysFactory(ADMIN_SWAPS_QUERY_KEY);
 
-type SwapsQueryKey = typeof adminSwapKeys
+type SwapsQueryKey = typeof adminSwapKeys;
 
 export const useAdminSwaps = (
   query?: AdminGetSwapsParams,
@@ -23,14 +23,14 @@ export const useAdminSwaps = (
     ReturnType<SwapsQueryKey["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminSwapKeys.list(query),
     () => client.admin.swaps.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminSwap = (
   id: string,
@@ -40,11 +40,11 @@ export const useAdminSwap = (
     ReturnType<SwapsQueryKey["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminSwapKeys.detail(id),
     () => client.admin.swaps.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

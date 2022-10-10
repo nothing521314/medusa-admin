@@ -1,56 +1,56 @@
-import { SalesChannel } from "@medusajs/medusa"
-import clsx from "clsx"
-import { useAdminStore } from "../../../../medusa-react"
-import React, { useEffect } from "react"
-import { useFieldArray } from "react-hook-form"
-import Switch from "../../../components/atoms/switch"
-import Button from "../../../components/fundamentals/button"
-import ChannelsIcon from "../../../components/fundamentals/icons/channels-icon"
-import SalesChannelsDisplay from "../../../components/molecules/sales-channels-display"
-import useToggleState from "../../../hooks/use-toggle-state"
-import { NestedForm } from "../../../utils/nested-form"
-import SalesChannelsModal from "../components/sales-channels-modal"
+import { SalesChannel } from "@medusajs/medusa";
+import clsx from "clsx";
+import { useAdminStore } from "../../../../medusa-react";
+import React, { useEffect } from "react";
+import { useFieldArray } from "react-hook-form";
+import Switch from "../../../components/atoms/switch";
+import Button from "../../../components/fundamentals/button";
+import ChannelsIcon from "../../../components/fundamentals/icons/channels-icon";
+import SalesChannelsDisplay from "../../../components/molecules/sales-channels-display";
+import useToggleState from "../../../hooks/use-toggle-state";
+import { NestedForm } from "../../../utils/nested-form";
+import SalesChannelsModal from "../components/sales-channels-modal";
 
 export type AddSalesChannelsFormType = {
-  channels: SalesChannel[]
-}
+  channels: SalesChannel[];
+};
 
 type Props = {
-  form: NestedForm<AddSalesChannelsFormType>
-}
+  form: NestedForm<AddSalesChannelsFormType>;
+};
 
 const AddSalesChannelsForm = ({ form }: Props) => {
-  const { control, path } = form
+  const { control, path } = form;
 
   const { fields, replace, append } = useFieldArray({
     control,
     name: path("channels"),
     keyName: "fieldId",
-  })
+  });
 
-  const { state: isEnabled, toggle: toggleEnabled } = useToggleState()
+  const { state: isEnabled, toggle: toggleEnabled } = useToggleState();
   const {
     state: open,
     toggle: toggleModal,
     close: closeModal,
-  } = useToggleState()
-  const { store } = useAdminStore()
+  } = useToggleState();
+  const { store } = useAdminStore();
 
   const onAddChannels = (channels: SalesChannel[]) => {
-    replace(channels)
-  }
+    replace(channels);
+  };
 
   useEffect(() => {
     if (store?.default_sales_channel && fields) {
       const alreadyAdded = fields.find(
         ({ id }) => id === store.default_sales_channel.id
-      )
+      );
 
       if (!alreadyAdded) {
-        append(store.default_sales_channel)
+        append(store.default_sales_channel);
       }
     }
-  }, [store])
+  }, [store]);
 
   return (
     <>
@@ -91,7 +91,7 @@ const AddSalesChannelsForm = ({ form }: Props) => {
         onSave={onAddChannels}
       />
     </>
-  )
-}
+  );
+};
 
-export default AddSalesChannelsForm
+export default AddSalesChannelsForm;

@@ -2,18 +2,18 @@ import {
   StoreCollectionsListRes,
   StoreCollectionsRes,
   StoreGetCollectionsParams,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const COLLECTIONS_QUERY_KEY = `collections` as const
+const COLLECTIONS_QUERY_KEY = `collections` as const;
 
-export const collectionKeys = queryKeysFactory(COLLECTIONS_QUERY_KEY)
+export const collectionKeys = queryKeysFactory(COLLECTIONS_QUERY_KEY);
 
-type CollectionQueryKey = typeof collectionKeys
+type CollectionQueryKey = typeof collectionKeys;
 
 export const useCollection = (
   id: string,
@@ -23,14 +23,14 @@ export const useCollection = (
     ReturnType<CollectionQueryKey["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     collectionKeys.detail(id),
     () => client.collections.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useCollections = (
   query?: StoreGetCollectionsParams,
@@ -40,11 +40,11 @@ export const useCollections = (
     ReturnType<CollectionQueryKey["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     collectionKeys.list(query),
     () => client.collections.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

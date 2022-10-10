@@ -1,16 +1,16 @@
-import clsx from "clsx"
-import React from "react"
-import Switch from "../../atoms/switch"
-import IconTooltip from "../icon-tooltip"
+import clsx from "clsx";
+import React from "react";
+import Switch from "../../atoms/switch";
+import IconTooltip from "../icon-tooltip";
 
 type SwitchableItemProps = {
-  title: string
-  description: React.ReactNode
-  tooltip?: string
-  open: boolean
-  onSwitch: () => void
-  children: React.ReactNode
-}
+  title: string;
+  description: React.ReactNode;
+  tooltip?: string;
+  open: boolean;
+  onSwitch: () => void;
+  children: React.ReactNode;
+};
 
 const SwitchableItem: React.FC<SwitchableItemProps> = ({
   title,
@@ -49,7 +49,7 @@ const SwitchableItem: React.FC<SwitchableItemProps> = ({
         <div className="mt-base">{children}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SwitchableItem
+export default SwitchableItem;

@@ -1,46 +1,46 @@
-import { ProductVariant } from "@medusajs/medusa"
-import clsx from "clsx"
-import React, { useContext, useEffect, useState } from "react"
-import { Controller } from "react-hook-form"
+import { ProductVariant } from "@medusajs/medusa";
+import clsx from "clsx";
+import React, { useContext, useEffect, useState } from "react";
+import { Controller } from "react-hook-form";
 
-import Button from "../../../../components/fundamentals/button"
-import MinusIcon from "../../../../components/fundamentals/icons/minus-icon"
-import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
-import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
-import InputField from "../../../../components/molecules/input"
-import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal"
-import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal"
-import Table from "../../../../components/molecules/table"
+import Button from "../../../../components/fundamentals/button";
+import MinusIcon from "../../../../components/fundamentals/icons/minus-icon";
+import PlusIcon from "../../../../components/fundamentals/icons/plus-icon";
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon";
+import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder";
+import InputField from "../../../../components/molecules/input";
+import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal";
+import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal";
+import Table from "../../../../components/molecules/table";
 import {
   displayAmount,
   extractUnitPrice,
   getNativeSymbol,
   persistedPrice,
-} from "../../../../utils/prices"
-import RMASelectProductSubModal from "../../details/rma-sub-modals/products"
-import { useNewOrderForm } from "../form"
-import CustomItemSubModal from "./custom-item-sub-modal"
+} from "../../../../utils/prices";
+import RMASelectProductSubModal from "../../details/rma-sub-modals/products";
+import { useNewOrderForm } from "../form";
+import CustomItemSubModal from "./custom-item-sub-modal";
 
 const Items = () => {
   const { enableNextPage, disableNextPage, nextStepEnabled } = React.useContext(
     SteppedContext
-  )
+  );
 
   const {
     context: { region, items },
     form: { control, register, setValue, getValues },
-  } = useNewOrderForm()
-  const { fields, append, remove } = items
+  } = useNewOrderForm();
+  const { fields, append, remove } = items;
 
-  const [editQuantity, setEditQuantity] = useState(-1)
-  const [editPrice, setEditPrice] = useState(-1)
+  const [editQuantity, setEditQuantity] = useState(-1);
+  const [editPrice, setEditPrice] = useState(-1);
 
-  const layeredContext = useContext(LayeredModalContext)
+  const layeredContext = useContext(LayeredModalContext);
 
   const addItem = (variants: ProductVariant[]) => {
-    const ids = fields.map((field) => field.variant_id)
-    const itemsToAdd = variants.filter((v) => !ids.includes(v.id))
+    const ids = fields.map((field) => field.variant_id);
+    const itemsToAdd = variants.filter((v) => !ids.includes(v.id));
 
     append(
       itemsToAdd.map((item) => ({
@@ -51,58 +51,58 @@ const Items = () => {
         product_title: item.product.title,
         thumbnail: item.product.thumbnail,
       }))
-    )
+    );
 
     if (!nextStepEnabled) {
-      enableNextPage()
+      enableNextPage();
     }
-  }
+  };
 
   const handleEditQuantity = (index: number, value: number) => {
-    const oldQuantity = getValues(`items.${index}.quantity`)
-    const newQuantity = +oldQuantity + value
+    const oldQuantity = getValues(`items.${index}.quantity`);
+    const newQuantity = +oldQuantity + value;
 
     if (newQuantity > 0) {
-      setValue(`items.${index}.quantity`, newQuantity)
+      setValue(`items.${index}.quantity`, newQuantity);
     }
-  }
+  };
 
   const handlePriceChange = (
     index: number,
     value: number,
     currency: string
   ) => {
-    const dbPrice = persistedPrice(currency, value)
-    setValue(`items.${index}.unit_price`, dbPrice)
-  }
+    const dbPrice = persistedPrice(currency, value);
+    setValue(`items.${index}.unit_price`, dbPrice);
+  };
 
   const addCustomItem = (title: string, quantity: number, amount: number) => {
     append({
       title,
       unit_price: amount,
       quantity: quantity,
-    })
+    });
 
     if (!nextStepEnabled) {
-      enableNextPage()
+      enableNextPage();
     }
-  }
+  };
 
   const removeItem = (index: number) => {
-    remove(index)
+    remove(index);
 
     if (nextStepEnabled && items.fields.length < 1) {
-      disableNextPage()
+      disableNextPage();
     }
-  }
+  };
 
   useEffect(() => {
     if (items.fields.length) {
-      enableNextPage()
+      enableNextPage();
     } else {
-      disableNextPage()
+      disableNextPage();
     }
-  }, [])
+  }, []);
 
   return (
     <div className="flex flex-col min-h-[705px] pt-4">
@@ -203,7 +203,7 @@ const Items = () => {
                               type="number"
                               value={displayAmount(region.currency_code, value)}
                               onBlur={() => {
-                                setEditPrice(-1)
+                                setEditPrice(-1);
                               }}
                               prefix={getNativeSymbol(region.currency_code)}
                               onChange={(e) => {
@@ -211,10 +211,10 @@ const Items = () => {
                                   index,
                                   +e.target.value,
                                   region.currency_code
-                                )
+                                );
                               }}
                             />
-                          )
+                          );
                         }}
                       />
                     ) : (
@@ -226,12 +226,12 @@ const Items = () => {
                             <span
                               className="cursor-pointer"
                               onClick={() => {
-                                setEditPrice(index)
+                                setEditPrice(index);
                               }}
                             >
                               {displayAmount(region!.currency_code, value)}
                             </span>
-                          )
+                          );
                         }}
                       />
                     )}
@@ -249,7 +249,7 @@ const Items = () => {
                     </Button>
                   </Table.Cell>
                 </Table.Row>
-              )
+              );
             })}
           </Table.Body>
         </Table>
@@ -266,7 +266,7 @@ const Items = () => {
                 addCustomItem,
                 region
               )
-            )
+            );
           }}
         >
           <PlusIcon size={20} />
@@ -283,7 +283,7 @@ const Items = () => {
                 items.fields.map((item) => ({ id: item.variant_id })),
                 addItem
               )
-            )
+            );
           }}
         >
           <PlusIcon size={20} />
@@ -291,8 +291,8 @@ const Items = () => {
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const SelectProductsScreen = (pop, itemsToAdd, setSelectedItems) => {
   return {
@@ -304,15 +304,15 @@ const SelectProductsScreen = (pop, itemsToAdd, setSelectedItems) => {
         onSubmit={setSelectedItems}
       />
     ),
-  }
-}
+  };
+};
 
 const CreateCustomProductScreen = (pop, onSubmit, region) => {
   return {
     title: "Add Custom Item",
     onBack: () => pop(),
     view: <CustomItemSubModal onSubmit={onSubmit} region={region} />,
-  }
-}
+  };
+};
 
-export default Items
+export default Items;

@@ -1,23 +1,23 @@
-import { Product } from "@medusajs/medusa"
-import { useAdminProducts } from "../../../../medusa-react"
-import * as React from "react"
-import Button from "../../fundamentals/button"
-import Modal from "../../molecules/modal"
-import { SelectableTable } from "../selectable-table"
-import useQueryFilters from "../../../hooks/use-query-filters"
-import { columns, ProductHeader, ProductRow } from "./product-table-config"
-import { mapIdsToItems } from "./utils"
+import { Product } from "@medusajs/medusa";
+import { useAdminProducts } from "../../../../medusa-react";
+import * as React from "react";
+import Button from "../../fundamentals/button";
+import Modal from "../../molecules/modal";
+import { SelectableTable } from "../selectable-table";
+import useQueryFilters from "../../../hooks/use-query-filters";
+import { columns, ProductHeader, ProductRow } from "./product-table-config";
+import { mapIdsToItems } from "./utils";
 
 const defaultQueryProps = {
   limit: 12,
   offset: 0,
-}
+};
 
 export type AddProductsModalProps = {
-  close: () => void
-  initialSelection: Product[]
-  onSave: (items: Product[]) => void
-}
+  close: () => void;
+  initialSelection: Product[];
+  onSave: (items: Product[]) => void;
+};
 
 const AddProductsModal = ({
   close,
@@ -26,36 +26,36 @@ const AddProductsModal = ({
 }: AddProductsModalProps) => {
   /* ************* Data ************  */
 
-  const params = useQueryFilters(defaultQueryProps)
+  const params = useQueryFilters(defaultQueryProps);
   const { products, isLoading, count = 0 } = useAdminProducts(
     params.queryObject,
     {
       keepPreviousData: true,
     }
-  )
+  );
 
   /* ************* State ************  */
 
   const [selectedIds, setSelectedIds] = React.useState(
     initialSelection.map((prod) => prod.id)
-  )
+  );
   /* selectedItems hold the selected products across different pages */
-  const [selectedItems, setSelectedItems] = React.useState(initialSelection)
+  const [selectedItems, setSelectedItems] = React.useState(initialSelection);
 
   React.useEffect(() => {
     /**
      * Every time we select an id is selected, we should update the selectedItems
      * ... to include the selected products across different pages/query objects
      */
-    setSelectedItems(mapIdsToItems(selectedItems, selectedIds, products))
-  }, [selectedIds, products])
+    setSelectedItems(mapIdsToItems(selectedItems, selectedIds, products));
+  }, [selectedIds, products]);
 
   /* ************* Handlers ************  */
 
   const handleSave = () => {
-    onSave(selectedItems)
-    close()
-  }
+    onSave(selectedItems);
+    close();
+  };
 
   return (
     <Modal open handleClose={close}>
@@ -103,7 +103,7 @@ const AddProductsModal = ({
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default AddProductsModal
+export default AddProductsModal;

@@ -1,20 +1,20 @@
-import clsx from "clsx"
-import React, { useImperativeHandle, useRef } from "react"
-import InputError from "../../atoms/input-error"
-import InputHeader from "../../fundamentals/input-header"
-import EmojiPicker from "../emoji-picker"
+import clsx from "clsx";
+import React, { useImperativeHandle, useRef } from "react";
+import InputError from "../../atoms/input-error";
+import InputHeader from "../../fundamentals/input-header";
+import EmojiPicker from "../emoji-picker";
 
 type TextareaProps = React.ComponentPropsWithRef<"textarea"> & {
-  errors?: { [x: string]: unknown }
-  label: string
-  key?: string
-  enableEmoji?: boolean
-  withTooltip?: boolean
-  tooltipText?: string
-  tooltipProps?: any
-  children?: React.ReactNode
-  containerProps?: React.HTMLAttributes<HTMLDivElement>
-}
+  errors?: { [x: string]: unknown };
+  label: string;
+  key?: string;
+  enableEmoji?: boolean;
+  withTooltip?: boolean;
+  tooltipText?: string;
+  tooltipProps?: any;
+  children?: React.ReactNode;
+  containerProps?: React.HTMLAttributes<HTMLDivElement>;
+};
 
 const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
@@ -37,33 +37,33 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     }: TextareaProps,
     ref
   ) => {
-    const inputRef = useRef<HTMLTextAreaElement | null>(null)
+    const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
     useImperativeHandle<HTMLTextAreaElement | null, HTMLTextAreaElement | null>(
       ref,
       () => inputRef.current
-    )
+    );
 
     const scrollToTop = () => {
       if (inputRef.current) {
-        inputRef.current.scrollTop = 0
+        inputRef.current.scrollTop = 0;
       }
-    }
+    };
 
     const handleAddEmoji = (emoji: string) => {
       if (!inputRef.current) {
-        return
+        return;
       }
 
-      const position = inputRef.current.selectionStart || 0
+      const position = inputRef.current.selectionStart || 0;
 
       const newValue = `${inputRef.current?.value.substring(
         0,
         position
-      )}${emoji}${inputRef.current?.value.substring(position)}`
+      )}${emoji}${inputRef.current?.value.substring(position)}`;
 
-      inputRef.current.value = newValue
-    }
+      inputRef.current.value = newValue;
+    };
 
     return (
       <div className={className} {...containerProps}>
@@ -107,8 +107,8 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         </div>
         <InputError name={name} errors={errors} />
       </div>
-    )
+    );
   }
-)
+);
 
-export default TextArea
+export default TextArea;

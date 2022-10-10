@@ -1,35 +1,35 @@
-import { useAdminSendResetPasswordToken } from "../../../../medusa-react"
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
-import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
-import SigninInput from "../../molecules/input-signin"
+import { useAdminSendResetPasswordToken } from "../../../../medusa-react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon";
+import SigninInput from "../../molecules/input-signin";
 
 type ResetTokenCardProps = {
-  goBack: () => void
-}
+  goBack: () => void;
+};
 
 type FormValues = {
-  email: string
-}
+  email: string;
+};
 
-const checkMail = /^\S+@\S+$/i
+const checkMail = /^\S+@\S+$/i;
 
 const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
-  const [unrecognizedEmail, setUnrecognizedEmail] = useState(false)
-  const [invalidEmail, setInvalidEmail] = useState(false)
-  const [mailSent, setSentMail] = useState(false)
-  const { register, handleSubmit } = useForm<FormValues>()
+  const [unrecognizedEmail, setUnrecognizedEmail] = useState(false);
+  const [invalidEmail, setInvalidEmail] = useState(false);
+  const [mailSent, setSentMail] = useState(false);
+  const { register, handleSubmit } = useForm<FormValues>();
 
-  const sendEmail = useAdminSendResetPasswordToken()
+  const sendEmail = useAdminSendResetPasswordToken();
 
   const onSubmit = (values: FormValues) => {
     if (!checkMail.test(values.email)) {
-      setInvalidEmail(true)
-      return
+      setInvalidEmail(true);
+      return;
     }
 
-    setInvalidEmail(false)
-    setUnrecognizedEmail(false)
+    setInvalidEmail(false);
+    setUnrecognizedEmail(false);
 
     sendEmail.mutate(
       {
@@ -37,14 +37,14 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
       },
       {
         onSuccess: () => {
-          setSentMail(true)
+          setSentMail(true);
         },
         onError: () => {
-          setUnrecognizedEmail(true)
+          setUnrecognizedEmail(true);
         },
       }
-    )
-  }
+    );
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -61,8 +61,9 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
           <>
             <SigninInput
               placeholder="lebron@james.com..."
-              {...register('email', { required: true })}
-              className="mb-0 mt-xlarge" />
+              {...register("email", { required: true })}
+              className="mb-0 mt-xlarge"
+            />
             {unrecognizedEmail && (
               <div className="mt-xsmall w-[318px]">
                 <span className="inter-small-regular text-rose-50 text-left">
@@ -110,6 +111,6 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
       </div>
     </form>
   );
-}
+};
 
-export default ResetTokenCard
+export default ResetTokenCard;

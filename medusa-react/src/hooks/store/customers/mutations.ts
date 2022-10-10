@@ -2,19 +2,19 @@ import {
   StoreCustomersRes,
   StorePostCustomersCustomerReq,
   StorePostCustomersReq,
-} from "@medusajs/medusa"
-import { useMutation, UseMutationOptions } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
+} from "@medusajs/medusa";
+import { useMutation, UseMutationOptions } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
 
 export const useCreateCustomer = (
   options?: UseMutationOptions<StoreCustomersRes, Error, StorePostCustomersReq>
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   return useMutation(
     (data: StorePostCustomersReq) => client.customers.create(data),
     options
-  )
-}
+  );
+};
 
 export const useUpdateMe = (
   options?: UseMutationOptions<
@@ -23,10 +23,10 @@ export const useUpdateMe = (
     { id: string } & StorePostCustomersCustomerReq
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   return useMutation(
     ({ id, ...data }: { id: string } & StorePostCustomersCustomerReq) =>
       client.customers.update(data),
     options
-  )
-}
+  );
+};

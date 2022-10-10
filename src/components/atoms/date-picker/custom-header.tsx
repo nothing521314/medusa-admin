@@ -1,17 +1,17 @@
-import React from "react"
-import NativeSelect from "../../molecules/native-select"
-import { ReactDatePickerCustomHeaderProps } from "react-datepicker"
-import { monthNames, getYearRange } from "./utils"
+import React from "react";
+import NativeSelect from "../../molecules/native-select";
+import { ReactDatePickerCustomHeaderProps } from "react-datepicker";
+import { monthNames, getYearRange } from "./utils";
 
 const CustomHeader = ({
   date,
   changeYear,
   changeMonth,
 }: ReactDatePickerCustomHeaderProps) => {
-  const month = date.getMonth()
-  const monthName = monthNames[month]
+  const month = date.getMonth();
+  const monthName = monthNames[month];
 
-  const year = date.getFullYear()
+  const year = date.getFullYear();
   return (
     <div className="flex w-full gap-4 items-center">
       <div className="flex flex-1 items-center justify-end gap-3">
@@ -39,7 +39,7 @@ const CustomHeader = ({
         </NativeSelect>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CustomHeader
+export default CustomHeader;

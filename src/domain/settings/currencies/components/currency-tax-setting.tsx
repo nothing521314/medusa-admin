@@ -1,50 +1,50 @@
-import { Currency } from "@medusajs/medusa"
-import { useAdminUpdateCurrency } from "../../../../../medusa-react"
-import React, { useEffect } from "react"
-import { Controller, useForm } from "react-hook-form"
-import Switch from "../../../../components/atoms/switch"
-import CoinsIcon from "../../../../components/fundamentals/icons/coins-icon"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
+import { Currency } from "@medusajs/medusa";
+import { useAdminUpdateCurrency } from "../../../../../medusa-react";
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import Switch from "../../../../components/atoms/switch";
+import CoinsIcon from "../../../../components/fundamentals/icons/coins-icon";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
 
 type CurrencyTaxSettingFormType = {
-  includes_tax: boolean
-}
+  includes_tax: boolean;
+};
 
 type Props = {
-  currency: Currency
-  isDefault: boolean
-}
+  currency: Currency;
+  isDefault: boolean;
+};
 
 const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
-  const { mutate } = useAdminUpdateCurrency(currency.code)
+  const { mutate } = useAdminUpdateCurrency(currency.code);
   const { handleSubmit, control, reset } = useForm<CurrencyTaxSettingFormType>({
     defaultValues: {
       includes_tax: currency.includes_tax,
     },
-  })
+  });
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   useEffect(() => {
     reset({
       includes_tax: currency.includes_tax,
-    })
-  }, [currency])
+    });
+  }, [currency]);
 
   const onSubmit = handleSubmit((data: CurrencyTaxSettingFormType) => {
     mutate(data, {
       onSuccess: () => {
-        notification("Success", "Successfully updated currency", "success")
+        notification("Success", "Successfully updated currency", "success");
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification("Error", getErrorMessage(error), "error");
         reset({
           includes_tax: currency.includes_tax,
-        })
+        });
       },
-    })
-  })
+    });
+  });
 
   return (
     <form>
@@ -73,16 +73,16 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
               <Switch
                 checked={value}
                 onCheckedChange={(data) => {
-                  onChange(data)
-                  onSubmit()
+                  onChange(data);
+                  onSubmit();
                 }}
               />
-            )
+            );
           }}
         />
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default CurrencyTaxSetting
+export default CurrencyTaxSetting;

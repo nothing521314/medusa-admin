@@ -1,26 +1,26 @@
-import clsx from "clsx"
-import React from "react"
-import { Controller } from "react-hook-form"
-import { NestedPriceObject, PricesFormType } from "."
-import IncludesTaxTooltip from "../../../../components/atoms/includes-tax-tooltip"
-import CoinsIcon from "../../../../components/fundamentals/icons/coins-icon"
-import MapPinIcon from "../../../../components/fundamentals/icons/map-pin-icon"
-import TriangleRightIcon from "../../../../components/fundamentals/icons/triangle-right-icon"
-import useToggleState from "../../../../hooks/use-toggle-state"
-import { currencies } from "../../../../utils/currencies"
-import { NestedForm } from "../../../../utils/nested-form"
-import PriceFormInput from "./price-form-input"
+import clsx from "clsx";
+import React from "react";
+import { Controller } from "react-hook-form";
+import { NestedPriceObject, PricesFormType } from ".";
+import IncludesTaxTooltip from "../../../../components/atoms/includes-tax-tooltip";
+import CoinsIcon from "../../../../components/fundamentals/icons/coins-icon";
+import MapPinIcon from "../../../../components/fundamentals/icons/map-pin-icon";
+import TriangleRightIcon from "../../../../components/fundamentals/icons/triangle-right-icon";
+import useToggleState from "../../../../hooks/use-toggle-state";
+import { currencies } from "../../../../utils/currencies";
+import { NestedForm } from "../../../../utils/nested-form";
+import PriceFormInput from "./price-form-input";
 
 type Props = {
-  form: NestedForm<PricesFormType>
-  nestedPrice: NestedPriceObject
-}
+  form: NestedForm<PricesFormType>;
+  nestedPrice: NestedPriceObject;
+};
 
 const NestedPrice = ({ form, nestedPrice }: Props) => {
-  const { state, toggle } = useToggleState()
+  const { state, toggle } = useToggleState();
 
-  const { control, path } = form
-  const { currencyPrice, regionPrices } = nestedPrice
+  const { control, path } = form;
+  const { currencyPrice, regionPrices } = nestedPrice;
   return (
     <div key={currencyPrice.id} className="flex flex-col gap-y-2xsmall">
       <div className="relative grid grid-cols-[1fr_223px] gap-x-base p-2xsmall pl-10 hover:bg-grey-5 focus-within:bg-grey-5 transition-colors rounded-rounded justify-between">
@@ -47,7 +47,7 @@ const NestedPrice = ({ form, nestedPrice }: Props) => {
             <span className="inter-base-regular text-grey-50">
               {currencies[currencyPrice.currency_code.toUpperCase()].name}
             </span>
-            <IncludesTaxTooltip includesTax={currencyPrice?.includes_tax}/>
+            <IncludesTaxTooltip includesTax={currencyPrice?.includes_tax} />
           </div>
         </div>
         <Controller
@@ -61,7 +61,7 @@ const NestedPrice = ({ form, nestedPrice }: Props) => {
                 currencyCode={currencyPrice.currency_code}
                 errors={errors}
               />
-            )
+            );
           }}
         />
       </div>
@@ -105,15 +105,15 @@ const NestedPrice = ({ form, nestedPrice }: Props) => {
                       currencyCode={currencyPrice.currency_code}
                       errors={errors}
                     />
-                  )
+                  );
                 }}
               />
             </div>
-          )
+          );
         })}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default NestedPrice
+export default NestedPrice;

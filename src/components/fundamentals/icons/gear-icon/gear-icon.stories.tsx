@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import GearIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import GearIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/GearIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof GearIcon>
+} as ComponentMeta<typeof GearIcon>;
 
-const Template = args => <GearIcon {...args} />
+const Template = (args) => <GearIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

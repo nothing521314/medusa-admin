@@ -1,25 +1,28 @@
-import { Currency } from "@medusajs/medusa"
-import { useAdminCurrencies, useAdminUpdateStore } from "../../../../../../medusa-react"
-import React, { useContext, useState } from "react"
-import { usePagination, useRowSelect, useSortBy, useTable } from "react-table"
-import Button from "../../../../../components/fundamentals/button"
-import LoadingContainer from "../../../../../components/loading-container"
-import Modal from "../../../../../components/molecules/modal"
-import { LayeredModalContext } from "../../../../../components/molecules/modal/layered-modal"
-import useNotification from "../../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../../utils/error-messages"
-import { useEditCurrenciesModal } from "./edit-currencies-modal"
-import CurrenciesTable from "./table"
-import { useCurrencyColumns } from "./use-currency-table-columns"
+import { Currency } from "@medusajs/medusa";
+import {
+  useAdminCurrencies,
+  useAdminUpdateStore,
+} from "../../../../../../medusa-react";
+import React, { useContext, useState } from "react";
+import { usePagination, useRowSelect, useSortBy, useTable } from "react-table";
+import Button from "../../../../../components/fundamentals/button";
+import LoadingContainer from "../../../../../components/loading-container";
+import Modal from "../../../../../components/molecules/modal";
+import { LayeredModalContext } from "../../../../../components/molecules/modal/layered-modal";
+import useNotification from "../../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../../utils/error-messages";
+import { useEditCurrenciesModal } from "./edit-currencies-modal";
+import CurrenciesTable from "./table";
+import { useCurrencyColumns } from "./use-currency-table-columns";
 
-const LIMIT = 15
+const LIMIT = 15;
 
 const AddCurrenciesScreen = () => {
-  const [offset, setOffset] = useState(0)
-  const [selectedRowIds, setSelectedRowIds] = useState<string[]>([])
+  const [offset, setOffset] = useState(0);
+  const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
 
-  const { onClose, store } = useEditCurrenciesModal()
-  const { reset, pop } = useContext(LayeredModalContext)
+  const { onClose, store } = useEditCurrenciesModal();
+  const { reset, pop } = useContext(LayeredModalContext);
 
   const { currencies, count, status } = useAdminCurrencies(
     {
@@ -29,10 +32,10 @@ const AddCurrenciesScreen = () => {
     {
       keepPreviousData: true,
     }
-  )
+  );
 
-  const { mutate } = useAdminUpdateStore()
-  const notification = useNotification()
+  const { mutate } = useAdminUpdateStore();
+  const notification = useNotification();
 
   const onSubmit = (next: () => void) => {
     mutate(
@@ -44,22 +47,22 @@ const AddCurrenciesScreen = () => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully updated currencies", "success")
-          next()
+          notification("Success", "Successfully updated currencies", "success");
+          next();
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification("Error", getErrorMessage(err), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   const filteredData = React.useMemo(() => {
-    const codes = store.currencies.map((curr) => curr.code) || []
-    return currencies?.filter(({ code }) => !codes.includes(code)) || []
-  }, [currencies, store])
+    const codes = store.currencies.map((curr) => curr.code) || [];
+    return currencies?.filter(({ code }) => !codes.includes(code)) || [];
+  }, [currencies, store]);
 
-  const columns = useCurrencyColumns()
+  const columns = useCurrencyColumns();
 
   const tableState = useTable<Currency>(
     {
@@ -81,7 +84,7 @@ const AddCurrenciesScreen = () => {
     useSortBy,
     usePagination,
     useRowSelect
-  )
+  );
 
   return (
     <>
@@ -108,7 +111,7 @@ const AddCurrenciesScreen = () => {
             size="small"
             onClick={() =>
               onSubmit(() => {
-                pop()
+                pop();
               })
             }
           >
@@ -119,8 +122,8 @@ const AddCurrenciesScreen = () => {
             size="small"
             onClick={() =>
               onSubmit(() => {
-                reset()
-                onClose()
+                reset();
+                onClose();
               })
             }
           >
@@ -129,11 +132,11 @@ const AddCurrenciesScreen = () => {
         </div>
       </Modal.Footer>
     </>
-  )
-}
+  );
+};
 
 export const useAddCurrenciesModalScreen = () => {
-  const { pop, push } = useContext(LayeredModalContext)
+  const { pop, push } = useContext(LayeredModalContext);
 
   return {
     screen: {
@@ -142,7 +145,7 @@ export const useAddCurrenciesModalScreen = () => {
       view: <AddCurrenciesScreen />,
     },
     push,
-  }
-}
+  };
+};
 
-export default AddCurrenciesScreen
+export default AddCurrenciesScreen;

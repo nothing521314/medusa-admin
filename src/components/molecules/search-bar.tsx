@@ -1,34 +1,34 @@
-import { globalHistory } from "@reach/router"
-import React, { useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
-import OSShortcut from "../atoms/os-shortcut"
-import SearchIcon from "../fundamentals/icons/search-icon"
-import SearchModal from "../templates/search-modal"
+import { globalHistory } from "@reach/router";
+import React, { useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import OSShortcut from "../atoms/os-shortcut";
+import SearchIcon from "../fundamentals/icons/search-icon";
+import SearchModal from "../templates/search-modal";
 
 const SearchBar: React.FC = () => {
-  const [showSearchModal, setShowSearchModal] = useState(false)
+  const [showSearchModal, setShowSearchModal] = useState(false);
 
   const toggleSearch = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setShowSearchModal((show) => !show)
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    setShowSearchModal((show) => !show);
+  };
 
   const closeModal = () => {
-    setShowSearchModal(false)
-  }
+    setShowSearchModal(false);
+  };
 
-  useHotkeys("cmd+k", toggleSearch, {}, [])
-  useHotkeys("ctrl+k", toggleSearch, {}, [])
-  useHotkeys("/", toggleSearch, {}, [])
+  useHotkeys("cmd+k", toggleSearch, {}, []);
+  useHotkeys("ctrl+k", toggleSearch, {}, []);
+  useHotkeys("/", toggleSearch, {}, []);
 
   React.useEffect(() => {
     return globalHistory.listen(({ action }) => {
       if (action === "PUSH") {
-        closeModal()
+        closeModal();
       }
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <>
@@ -46,7 +46,7 @@ const SearchBar: React.FC = () => {
       </button>
       {showSearchModal && <SearchModal handleClose={closeModal} />}
     </>
-  )
-}
+  );
+};
 
-export default SearchBar
+export default SearchBar;

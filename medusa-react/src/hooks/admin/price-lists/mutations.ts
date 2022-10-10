@@ -8,14 +8,14 @@ import {
   AdminPriceListDeleteBatchRes,
   AdminPriceListDeleteProductPricesRes,
   AdminPriceListDeleteVariantPricesRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
-import { adminPriceListKeys } from "./queries"
-import { adminProductKeys } from "../products"
-import { adminVariantKeys } from "../variants"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
+import { adminPriceListKeys } from "./queries";
+import { adminProductKeys } from "../products";
+import { adminVariantKeys } from "../variants";
 
 export const useAdminCreatePriceList = (
   options?: UseMutationOptions<
@@ -24,14 +24,14 @@ export const useAdminCreatePriceList = (
     AdminPostPriceListsPriceListReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostPriceListsPriceListReq) =>
       client.admin.priceLists.create(payload),
     buildOptions(queryClient, adminPriceListKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdatePriceList = (
   id: string,
@@ -41,8 +41,8 @@ export const useAdminUpdatePriceList = (
     AdminPostPriceListsPriceListPriceListReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostPriceListsPriceListPriceListReq) =>
@@ -56,15 +56,15 @@ export const useAdminUpdatePriceList = (
       ],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeletePriceList = (
   id: string,
   options?: UseMutationOptions<Response<AdminPriceListDeleteRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.priceLists.delete(id),
@@ -73,8 +73,8 @@ export const useAdminDeletePriceList = (
       [adminPriceListKeys.detail(id), adminPriceListKeys.lists()],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminCreatePriceListPrices = (
   id: string,
@@ -84,8 +84,8 @@ export const useAdminCreatePriceListPrices = (
     AdminPostPriceListPricesPricesReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostPriceListPricesPricesReq) =>
       client.admin.priceLists.addPrices(id, payload),
@@ -94,8 +94,8 @@ export const useAdminCreatePriceListPrices = (
       [adminPriceListKeys.lists(), adminPriceListKeys.detailProducts(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeletePriceListPrices = (
   id: string,
@@ -105,8 +105,8 @@ export const useAdminDeletePriceListPrices = (
     AdminDeletePriceListPricesPricesReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminDeletePriceListPricesPricesReq) =>
@@ -120,8 +120,8 @@ export const useAdminDeletePriceListPrices = (
       ],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeletePriceListProductPrices = (
   id: string,
@@ -131,8 +131,8 @@ export const useAdminDeletePriceListProductPrices = (
     Error
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.priceLists.deleteProductPrices(id, productId),
@@ -141,12 +141,12 @@ export const useAdminDeletePriceListProductPrices = (
       [
         adminPriceListKeys.detail(id),
         adminPriceListKeys.lists(),
-        adminProductKeys.detail(productId)
+        adminProductKeys.detail(productId),
       ],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeletePriceListVariantPrices = (
   id: string,
@@ -156,8 +156,8 @@ export const useAdminDeletePriceListVariantPrices = (
     Error
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.priceLists.deleteVariantPrices(id, variantId),
@@ -166,9 +166,9 @@ export const useAdminDeletePriceListVariantPrices = (
       [
         adminPriceListKeys.detail(id),
         adminPriceListKeys.lists(),
-        adminVariantKeys.detail(variantId)
+        adminVariantKeys.detail(variantId),
       ],
       options
     )
-  )
-}
+  );
+};

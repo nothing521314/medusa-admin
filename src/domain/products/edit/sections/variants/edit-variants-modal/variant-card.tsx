@@ -1,32 +1,32 @@
-import { Product } from "@medusajs/medusa"
-import clsx from "clsx"
-import type { Identifier, XYCoord } from "dnd-core"
-import React, { useContext, useMemo, useRef } from "react"
-import { useDrag, useDrop } from "react-dnd"
-import { useFormContext } from "react-hook-form"
-import { VariantItem } from "."
-import Button from "../../../../../../components/fundamentals/button"
-import EditIcon from "../../../../../../components/fundamentals/icons/edit-icon"
-import GripIcon from "../../../../../../components/fundamentals/icons/grip-icon"
-import MoreHorizontalIcon from "../../../../../../components/fundamentals/icons/more-horizontal-icon"
+import { Product } from "@medusajs/medusa";
+import clsx from "clsx";
+import type { Identifier, XYCoord } from "dnd-core";
+import React, { useContext, useMemo, useRef } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { useFormContext } from "react-hook-form";
+import { VariantItem } from ".";
+import Button from "../../../../../../components/fundamentals/button";
+import EditIcon from "../../../../../../components/fundamentals/icons/edit-icon";
+import GripIcon from "../../../../../../components/fundamentals/icons/grip-icon";
+import MoreHorizontalIcon from "../../../../../../components/fundamentals/icons/more-horizontal-icon";
 import Actionables, {
   ActionType,
-} from "../../../../../../components/molecules/actionables"
-import InputField from "../../../../../../components/molecules/input"
-import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal"
-import { DragItem } from "../../../../../../types/shared"
-import FormValidator from "../../../../../../utils/form-validator"
-import { useEditVariantScreen } from "./edit-variant-screen"
+} from "../../../../../../components/molecules/actionables";
+import InputField from "../../../../../../components/molecules/input";
+import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal";
+import { DragItem } from "../../../../../../types/shared";
+import FormValidator from "../../../../../../utils/form-validator";
+import { useEditVariantScreen } from "./edit-variant-screen";
 
 const ItemTypes = {
   CARD: "card",
-}
+};
 
 export type VariantCardProps = {
-  index: number
-  moveCard: (dragIndex: number, hoverIndex: number) => void
-  product: Product
-} & VariantItem
+  index: number;
+  moveCard: (dragIndex: number, hoverIndex: number) => void;
+  product: Product;
+} & VariantItem;
 
 export const VariantCard = ({
   id,
@@ -40,13 +40,13 @@ export const VariantCard = ({
   const {
     register,
     formState: { errors },
-  } = useFormContext()
+  } = useFormContext();
 
   const editVariantScreen = useEditVariantScreen({
     product,
     variant: product.variants.find((v) => v.id === id)!,
-  })
-  const { push } = useContext(LayeredModalContext)
+  });
+  const { push } = useContext(LayeredModalContext);
 
   const actions: ActionType[] = useMemo(() => {
     return [
@@ -55,10 +55,10 @@ export const VariantCard = ({
         icon: <EditIcon size={20} className="text-grey-50" />,
         onClick: () => push(editVariantScreen),
       },
-    ]
-  }, [editVariantScreen, push])
+    ];
+  }, [editVariantScreen, push]);
 
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<
     DragItem,
     void,
@@ -68,50 +68,50 @@ export const VariantCard = ({
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
-      }
+      };
     },
     hover(item: DragItem, monitor) {
       if (!ref.current) {
-        return
+        return;
       }
-      const dragIndex = item.index
-      const hoverIndex = index
+      const dragIndex = item.index;
+      const hoverIndex = index;
 
       if (dragIndex === hoverIndex) {
-        return
+        return;
       }
 
-      const hoverBoundingRect = ref.current?.getBoundingClientRect()
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      const clientOffset = monitor.getClientOffset()
-      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
+        return;
       }
 
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
+        return;
       }
 
-      moveCard(dragIndex, hoverIndex)
+      moveCard(dragIndex, hoverIndex);
 
-      item.index = hoverIndex
+      item.index = hoverIndex;
     },
-  })
+  });
 
   const [{ isDragging }, drag, preview] = useDrag({
     type: ItemTypes.CARD,
     item: () => {
-      return { id, index }
+      return { id, index };
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-  })
+  });
 
-  drag(drop(ref))
+  drag(drop(ref));
 
   return (
     <div
@@ -166,5 +166,5 @@ export const VariantCard = ({
         />
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const ClipboardCopyIcon: React.FC<IconProps> = ({
   size = "20",
@@ -44,7 +44,7 @@ const ClipboardCopyIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default ClipboardCopyIcon
+export default ClipboardCopyIcon;

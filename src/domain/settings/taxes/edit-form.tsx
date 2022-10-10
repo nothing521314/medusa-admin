@@ -1,32 +1,35 @@
-import { TaxRate } from "@medusajs/medusa"
-import { useAdminUpdateRegion, useAdminUpdateTaxRate } from "../../../../medusa-react"
-import React, { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../components/fundamentals/button"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import Modal from "../../../components/molecules/modal"
-import { ILayeredModalContext } from "../../../components/molecules/modal/layered-modal"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { nestedForm } from "../../../utils/nested-form"
+import { TaxRate } from "@medusajs/medusa";
+import {
+  useAdminUpdateRegion,
+  useAdminUpdateTaxRate,
+} from "../../../../medusa-react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../components/fundamentals/button";
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
+import Modal from "../../../components/molecules/modal";
+import { ILayeredModalContext } from "../../../components/molecules/modal/layered-modal";
+import useNotification from "../../../hooks/use-notification";
+import { getErrorMessage } from "../../../utils/error-messages";
+import { nestedForm } from "../../../utils/nested-form";
 import {
   EditTaxRateDetails,
   EditTaxRateFormType,
-} from "./edit-tax-rate-details"
-import { TaxRuleItem } from "./tax-rule-item"
-import TaxRuleSelector from "./tax-rule-selector"
+} from "./edit-tax-rate-details";
+import { TaxRuleItem } from "./tax-rule-item";
+import TaxRuleSelector from "./tax-rule-selector";
 
 type EditTaxRateProps = {
-  taxRate: TaxRate
-  regionId: string
-  modalContext: ILayeredModalContext
-  onDismiss: () => void
-}
+  taxRate: TaxRate;
+  regionId: string;
+  modalContext: ILayeredModalContext;
+  onDismiss: () => void;
+};
 
 export interface EditTaxRateFormData extends SimpleEditFormData {
-  products: string[]
-  product_types: string[]
-  shipping_options: string[]
+  products: string[];
+  product_types: string[];
+  shipping_options: string[];
 }
 
 const EditTaxRate = ({
@@ -35,9 +38,9 @@ const EditTaxRate = ({
   taxRate,
   onDismiss,
 }: EditTaxRateProps) => {
-  const updateTaxRate = useAdminUpdateTaxRate(taxRate.id)
+  const updateTaxRate = useAdminUpdateTaxRate(taxRate.id);
 
-  const [updatedRules, setUpdatedRules] = useState({})
+  const [updatedRules, setUpdatedRules] = useState({});
   const form = useForm<EditTaxRateFormData>({
     defaultValues: {
       details: {
@@ -49,62 +52,62 @@ const EditTaxRate = ({
       product_types: taxRate.product_types.map((p) => p.id),
       shipping_options: taxRate.shipping_options.map((p) => p.id),
     },
-  })
-  const { register, setValue, handleSubmit, watch } = form
-  const notification = useNotification()
+  });
+  const { register, setValue, handleSubmit, watch } = form;
+  const notification = useNotification();
 
   const onSave = (data) => {
-    const toSubmit = data
-    const conditionalFields = ["products", "product_types", "shipping_options"]
+    const toSubmit = data;
+    const conditionalFields = ["products", "product_types", "shipping_options"];
 
     for (const [key, value] of Object.entries(updatedRules)) {
       if (!value && key in toSubmit && conditionalFields.includes(key)) {
-        delete toSubmit[key]
+        delete toSubmit[key];
       }
     }
 
     updateTaxRate.mutate(toSubmit, {
       onSuccess: () => {
-        notification("Success", "Successfully updated Tax Rate.", "success")
-        onDismiss()
+        notification("Success", "Successfully updated Tax Rate.", "success");
+        onDismiss();
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification("Error", getErrorMessage(error), "error");
       },
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    register("products")
-    register("product_types")
-    register("shipping_options")
-  }, [])
+    register("products");
+    register("product_types");
+    register("shipping_options");
+  }, []);
 
   const [products, product_types, shipping_options] = watch([
     "products",
     "product_types",
     "shipping_options",
-  ])
+  ]);
 
   const handleOverridesSelected = (rule) => {
     setUpdatedRules((prev) => {
-      prev[rule.type] = true
-      return prev
-    })
+      prev[rule.type] = true;
+      return prev;
+    });
     switch (rule.type) {
       case "products":
-        setValue("products", rule.items)
-        break
+        setValue("products", rule.items);
+        break;
       case "product_types":
-        setValue("product_types", rule.items)
-        break
+        setValue("product_types", rule.items);
+        break;
       case "shipping_options":
-        setValue("shipping_options", rule.items)
-        break
+        setValue("shipping_options", rule.items);
+        break;
       default:
-        break
+        break;
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSave)}>
@@ -134,7 +137,7 @@ const EditTaxRate = ({
                           type: "products",
                         }
                       )
-                    )
+                    );
                   }}
                   index={1}
                   name="Product Rules"
@@ -162,7 +165,7 @@ const EditTaxRate = ({
                           type: "product_types",
                         }
                       )
-                    )
+                    );
                   }}
                   index={2}
                   name="Product Type Rules"
@@ -190,7 +193,7 @@ const EditTaxRate = ({
                           type: "shipping_options",
                         }
                       )
-                    )
+                    );
                   }}
                   index={3}
                   name="Shipping Option Rules"
@@ -215,7 +218,7 @@ const EditTaxRate = ({
                     regionId,
                     handleOverridesSelected
                   )
-                )
+                );
               }}
               className="w-full mt-base"
               size="medium"
@@ -248,8 +251,8 @@ const EditTaxRate = ({
         </div>
       </Modal.Footer>
     </form>
-  )
-}
+  );
+};
 
 const SelectOverridesScreen = (
   pop,
@@ -267,20 +270,20 @@ const SelectOverridesScreen = (
         {...options}
       />
     ),
-  }
-}
+  };
+};
 
 type SimpleEditFormProps = {
-  onDismiss: () => void
-  taxRate: TaxRate
-}
+  onDismiss: () => void;
+  taxRate: TaxRate;
+};
 
 export interface SimpleEditFormData {
-  details: EditTaxRateFormType
+  details: EditTaxRateFormType;
 }
 
 export const SimpleEditForm = ({ onDismiss, taxRate }: SimpleEditFormProps) => {
-  const updateRegion = useAdminUpdateRegion(taxRate.id)
+  const updateRegion = useAdminUpdateRegion(taxRate.id);
 
   const form = useForm<SimpleEditFormData>({
     defaultValues: {
@@ -290,25 +293,29 @@ export const SimpleEditForm = ({ onDismiss, taxRate }: SimpleEditFormProps) => {
         code: taxRate.code || undefined,
       },
     },
-  })
-  const { handleSubmit } = form
-  const notification = useNotification()
+  });
+  const { handleSubmit } = form;
+  const notification = useNotification();
 
   const onSave = (data: SimpleEditFormData) => {
     const toSubmit = {
       tax_rate: data.details.rate,
       tax_code: data.details.code,
-    }
+    };
     updateRegion.mutate(toSubmit, {
       onSuccess: () => {
-        notification("Success", "Successfully updated default rate.", "success")
-        onDismiss()
+        notification(
+          "Success",
+          "Successfully updated default rate.",
+          "success"
+        );
+        onDismiss();
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification("Error", getErrorMessage(error), "error");
       },
-    })
-  }
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit(onSave)}>
@@ -337,7 +344,7 @@ export const SimpleEditForm = ({ onDismiss, taxRate }: SimpleEditFormProps) => {
         </div>
       </Modal.Footer>
     </form>
-  )
-}
+  );
+};
 
-export default EditTaxRate
+export default EditTaxRate;

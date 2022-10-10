@@ -1,53 +1,53 @@
-import { navigate } from "gatsby"
-import { useAdminResetPassword } from "../../medusa-react"
-import qs from "qs"
-import React, { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import { decodeToken } from "react-jwt"
-import Button from "../components/fundamentals/button"
-import MedusaIcon from "../components/fundamentals/icons/medusa-icon"
-import SigninInput from "../components/molecules/input-signin"
-import SEO from "../components/seo"
-import LoginLayout from "../components/templates/login-layout"
-import { getErrorMessage } from "../utils/error-messages"
+import { navigate } from "gatsby";
+import { useAdminResetPassword } from "../../medusa-react";
+import qs from "qs";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { decodeToken } from "react-jwt";
+import Button from "../components/fundamentals/button";
+import MedusaIcon from "../components/fundamentals/icons/medusa-icon";
+import SigninInput from "../components/molecules/input-signin";
+import SEO from "../components/seo";
+import LoginLayout from "../components/templates/login-layout";
+import { getErrorMessage } from "../utils/error-messages";
 
 type formValues = {
-  password: string
-  repeat_password: string
-}
+  password: string;
+  repeat_password: string;
+};
 
 const ResetPasswordPage = ({ location }) => {
-  const parsed = qs.parse(location.search.substring(1))
+  const parsed = qs.parse(location.search.substring(1));
 
-  let token: { email: string } | null = null
+  let token: { email: string } | null = null;
   if (parsed?.token) {
     try {
-      token = decodeToken(parsed.token as string)
+      token = decodeToken(parsed.token as string);
     } catch (e) {
-      token = null
+      token = null;
     }
   }
 
-  const [passwordMismatch, setPasswordMismatch] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [ready, setReady] = useState(false)
-  const email = (token?.email || parsed?.email || "") as string
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
+  const email = (token?.email || parsed?.email || "") as string;
 
   const { register, handleSubmit, formState } = useForm<formValues>({
     defaultValues: {
       password: "",
       repeat_password: "",
     },
-  })
-  const reset = useAdminResetPassword()
+  });
+  const reset = useAdminResetPassword();
 
   const handleAcceptInvite = (data: formValues) => {
-    setPasswordMismatch(false)
-    setError(null)
+    setPasswordMismatch(false);
+    setError(null);
 
     if (data.password !== data.repeat_password) {
-      setPasswordMismatch(true)
-      return
+      setPasswordMismatch(true);
+      return;
     }
 
     reset.mutate(
@@ -58,25 +58,25 @@ const ResetPasswordPage = ({ location }) => {
       },
       {
         onSuccess: () => {
-          navigate("/login")
+          navigate("/login");
         },
         onError: (err) => {
-          setError(getErrorMessage(err))
+          setError(getErrorMessage(err));
         },
       }
-    )
-  }
+    );
+  };
 
   useEffect(() => {
     if (
       formState.dirtyFields.password &&
       formState.dirtyFields.repeat_password
     ) {
-      setReady(true)
+      setReady(true);
     } else {
-      setReady(false)
+      setReady(false);
     }
-  }, [formState])
+  }, [formState]);
 
   return (
     <LoginLayout>
@@ -150,7 +150,7 @@ const ResetPasswordPage = ({ location }) => {
         </div>
       </div>
     </LoginLayout>
-  )
-}
+  );
+};
 
-export default ResetPasswordPage
+export default ResetPasswordPage;

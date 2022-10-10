@@ -1,16 +1,16 @@
-import clsx from "clsx"
-import { Link } from "gatsby"
-import React from "react"
-import SectionCollapsible from "../section-collapsible"
-import { useAdminDiscounts } from "../../../../../medusa-react"
-import useKeyboardNavigationList from "../use-keyboard-navigation-list"
+import clsx from "clsx";
+import { Link } from "gatsby";
+import React from "react";
+import SectionCollapsible from "../section-collapsible";
+import { useAdminDiscounts } from "../../../../../medusa-react";
+import useKeyboardNavigationList from "../use-keyboard-navigation-list";
 
 type DiscountResultsProps = {
-  discounts: ReturnType<typeof useAdminDiscounts>["discounts"]
-  getLIProps: ReturnType<typeof useKeyboardNavigationList>["getLIProps"]
-  offset: number
-  selected: number
-}
+  discounts: ReturnType<typeof useAdminDiscounts>["discounts"];
+  getLIProps: ReturnType<typeof useKeyboardNavigationList>["getLIProps"];
+  offset: number;
+  selected: number;
+};
 
 const DiscountResults = ({
   discounts = [],
@@ -58,7 +58,7 @@ const DiscountResults = ({
         </div>
       </div>
     </SectionCollapsible>
-  ) : null
-}
+  ) : null;
+};
 
-export default DiscountResults
+export default DiscountResults;

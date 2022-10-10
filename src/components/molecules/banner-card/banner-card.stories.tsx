@@ -1,22 +1,22 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import BannerCard from "."
-import EditIcon from "../../fundamentals/icons/edit-icon"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import UnpublishIcon from "../../fundamentals/icons/unpublish-icon"
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import BannerCard from ".";
+import EditIcon from "../../fundamentals/icons/edit-icon";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import UnpublishIcon from "../../fundamentals/icons/unpublish-icon";
 
 export default {
   title: "Molecules/BannerCard",
   component: BannerCard,
-} as ComponentMeta<typeof BannerCard>
+} as ComponentMeta<typeof BannerCard>;
 
 const Template = ({ cardArgs, descriptionArgs, text }) => (
   <BannerCard {...cardArgs}>
     <BannerCard.Description {...descriptionArgs}>{text}</BannerCard.Description>
   </BannerCard>
-)
+);
 
-export const CTA = Template.bind({})
+export const CTA = Template.bind({});
 CTA.args = {
   cardArgs: {
     title: "You’re ready to sell your first gift card?",
@@ -28,9 +28,9 @@ CTA.args = {
     },
   },
   text: `No gift card has been added yet. Click the "Create Gift Card" button to add one. This is a growth opportunity!`,
-}
+};
 
-export const GiftCard = Template.bind({})
+export const GiftCard = Template.bind({});
 GiftCard.args = {
   cardArgs: {
     title: "Tekla Gift Card",
@@ -57,9 +57,9 @@ GiftCard.args = {
   },
   text:
     "For the one partial to blank canvases, spontaneity, chance encounters and plot twists. The Tekla Gift Card is available in either digital or hard-copy format.",
-}
+};
 
-export const GiftCardWithLongText = Template.bind({})
+export const GiftCardWithLongText = Template.bind({});
 GiftCardWithLongText.args = {
   cardArgs: {
     title: "Tekla Gift Card",
@@ -86,4 +86,4 @@ GiftCardWithLongText.args = {
   },
   text:
     "For the one partial to blank canvases, spontaneity, chance encounters and plot twists. The Tekla Gift Card is available in either digital or hard-copy format. For the one partial to blank canvases, spontaneity, chance encounters and plot twists. The Tekla Gift Card is available in either digital or hard-copy format. For the one partial to blank canvases, spontaneity, chance encounters and plot twists. The Tekla Gift Card is available in either digital or hard-copy format.",
-}
+};

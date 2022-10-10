@@ -1,16 +1,16 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
-import React, { useState } from "react"
-import Fade from "."
-import Button from "../../fundamentals/button"
-import FocusModal from "../../molecules/modal/focus-modal"
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import React, { useState } from "react";
+import Fade from ".";
+import Button from "../../fundamentals/button";
+import FocusModal from "../../molecules/modal/focus-modal";
 
 export default {
   title: "Atoms/Fade",
   component: Fade,
-} as ComponentMeta<typeof Fade>
+} as ComponentMeta<typeof Fade>;
 
 const Template: ComponentStory<typeof Fade> = (args) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   return (
     <div>
       <Button size="small" variant="primary" onClick={() => setOpen(!open)}>
@@ -25,10 +25,10 @@ const Template: ComponentStory<typeof Fade> = (args) => {
         {args.children}
       </Fade>
     </div>
-  )
-}
+  );
+};
 
-export const Standard = Template.bind({})
+export const Standard = Template.bind({});
 Standard.args = {
   children: (
     <div className="mt-24">
@@ -36,9 +36,9 @@ Standard.args = {
       <span className="inter-base-semibold mb-4">Subtitle</span>
     </div>
   ),
-}
+};
 
-export const CustomAnimation = Template.bind({})
+export const CustomAnimation = Template.bind({});
 CustomAnimation.args = {
   start: "translate-x-full",
   end: "translate-x-0",
@@ -48,9 +48,9 @@ CustomAnimation.args = {
       <span className="inter-base-semibold mb-4">Subtitle</span>
     </div>
   ),
-}
+};
 
-export const FullScreenFade = Template.bind({})
+export const FullScreenFade = Template.bind({});
 FullScreenFade.args = {
   isFullScreen: true,
   children: (
@@ -65,4 +65,4 @@ FullScreenFade.args = {
       </FocusModal.Main>
     </FocusModal>
   ),
-}
+};

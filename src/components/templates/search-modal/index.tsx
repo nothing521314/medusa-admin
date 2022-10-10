@@ -3,33 +3,33 @@ import {
   useAdminDiscounts,
   useAdminOrders,
   useAdminProducts,
-} from "../../../../medusa-react"
-import React from "react"
-import { useDebounce } from "../../../hooks/use-debounce"
-import Spinner from "../../atoms/spinner"
-import Input from "../../atoms/text-input"
-import SearchIcon from "../../fundamentals/icons/search-icon"
-import * as RadixDialog from "@radix-ui/react-dialog"
-import CustomerResults from "./results/customer-results"
-import DiscountResults from "./results/discount-results"
-import KeyboardShortcuts from "./keyboard-shortcuts"
-import ProductResults from "./results/product-results"
-import useKeyboardNavigationList from "./use-keyboard-navigation-list"
-import clsx from "clsx"
-import OrderResults from "./results/order-results"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
-import Tooltip from "../../atoms/tooltip"
+} from "../../../../medusa-react";
+import React from "react";
+import { useDebounce } from "../../../hooks/use-debounce";
+import Spinner from "../../atoms/spinner";
+import Input from "../../atoms/text-input";
+import SearchIcon from "../../fundamentals/icons/search-icon";
+import * as RadixDialog from "@radix-ui/react-dialog";
+import CustomerResults from "./results/customer-results";
+import DiscountResults from "./results/discount-results";
+import KeyboardShortcuts from "./keyboard-shortcuts";
+import ProductResults from "./results/product-results";
+import useKeyboardNavigationList from "./use-keyboard-navigation-list";
+import clsx from "clsx";
+import OrderResults from "./results/order-results";
+import CrossIcon from "../../fundamentals/icons/cross-icon";
+import Tooltip from "../../atoms/tooltip";
 
 const getTotal = (...lists) =>
-  lists.reduce((total, list = []) => total + list.length, 0)
+  lists.reduce((total, list = []) => total + list.length, 0);
 
 const SearchModal = ({ handleClose }) => {
-  const [q, setQ] = React.useState("")
-  const query = useDebounce(q, 500)
-  const onChange = (e) => setQ(e.target.value)
+  const [q, setQ] = React.useState("");
+  const query = useDebounce(q, 500);
+  const onChange = (e) => setQ(e.target.value);
   const handleClear = () => {
-    setQ("")
-  }
+    setQ("");
+  };
 
   const { orders, isFetching: isFetchingOrders } = useAdminOrders(
     {
@@ -38,7 +38,7 @@ const SearchModal = ({ handleClose }) => {
       offset: 0,
     },
     { enabled: !!query, keepPreviousData: true }
-  )
+  );
   const { customers, isFetching: isFetchingCustomers } = useAdminCustomers(
     {
       q: query,
@@ -46,23 +46,23 @@ const SearchModal = ({ handleClose }) => {
       offset: 0,
     },
     { enabled: !!query, keepPreviousData: true, retry: 0 }
-  )
+  );
   const { discounts, isFetching: isFetchingDiscounts } = useAdminDiscounts(
     { q: query, limit: 5, offset: 0 },
     { enabled: !!query, keepPreviousData: true }
-  )
+  );
   const { products, isFetching: isFetchingProducts } = useAdminProducts(
     { q: query, limit: 5 },
     { enabled: !!query, keepPreviousData: true }
-  )
+  );
 
   const isFetching =
     isFetchingDiscounts ||
     isFetchingCustomers ||
     isFetchingProducts ||
-    isFetchingOrders
+    isFetchingOrders;
 
-  const totalLength = getTotal(products, discounts, customers, orders)
+  const totalLength = getTotal(products, discounts, customers, orders);
 
   const {
     getInputProps,
@@ -71,7 +71,7 @@ const SearchModal = ({ handleClose }) => {
     selected,
   } = useKeyboardNavigationList({
     length: totalLength,
-  })
+  });
 
   return (
     <RadixDialog.Root open onOpenChange={handleClose}>
@@ -161,7 +161,7 @@ const SearchModal = ({ handleClose }) => {
         </RadixDialog.Overlay>
       </RadixDialog.Portal>
     </RadixDialog.Root>
-  )
-}
+  );
+};
 
-export default SearchModal
+export default SearchModal;

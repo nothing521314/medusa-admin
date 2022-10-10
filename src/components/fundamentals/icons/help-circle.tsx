@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "./types/icon-type"
+import React from "react";
+import IconProps from "./types/icon-type";
 
 const HelpCircleIcon: React.FC<IconProps> = ({
   size = "24px",
@@ -37,7 +37,7 @@ const HelpCircleIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default HelpCircleIcon
+export default HelpCircleIcon;

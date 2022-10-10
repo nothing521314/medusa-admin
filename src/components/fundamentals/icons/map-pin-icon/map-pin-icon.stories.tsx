@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import MapPinIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import MapPinIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/MapPinIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof MapPinIcon>
+} as ComponentMeta<typeof MapPinIcon>;
 
-const Template = args => <MapPinIcon {...args} />
+const Template = (args) => <MapPinIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

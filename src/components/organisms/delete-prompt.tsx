@@ -1,18 +1,18 @@
-import React, { useState } from "react"
-import useNotification from "../../hooks/use-notification"
-import { getErrorMessage } from "../../utils/error-messages"
-import Button from "../fundamentals/button"
-import Modal from "../molecules/modal"
+import React, { useState } from "react";
+import useNotification from "../../hooks/use-notification";
+import { getErrorMessage } from "../../utils/error-messages";
+import Button from "../fundamentals/button";
+import Modal from "../molecules/modal";
 
 type DeletePromptProps = {
-  heading?: string
-  text?: string
-  successText?: string
-  cancelText?: string
-  confirmText?: string
-  handleClose: () => void
-  onDelete: () => Promise<unknown>
-}
+  heading?: string;
+  text?: string;
+  successText?: string;
+  cancelText?: string;
+  confirmText?: string;
+  handleClose: () => void;
+  onDelete: () => Promise<unknown>;
+};
 
 const DeletePrompt: React.FC<DeletePromptProps> = ({
   heading = "Are you sure you want to delete?",
@@ -23,21 +23,21 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
   handleClose,
   onDelete,
 }) => {
-  const notification = useNotification()
-  const [isLoading, setIsLoading] = useState(false)
+  const notification = useNotification();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    setIsLoading(true)
+    setIsLoading(true);
     onDelete()
       .then(() => notification("Success", successText, "success"))
       .catch((err) => notification("Error", getErrorMessage(err), "error"))
       .finally(() => {
-        setIsLoading(false)
-        handleClose()
-      })
-  }
+        setIsLoading(false);
+        handleClose();
+      });
+  };
 
   return (
     <Modal isLargeModal={false} handleClose={handleClose}>
@@ -71,7 +71,7 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default DeletePrompt
+export default DeletePrompt;

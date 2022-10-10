@@ -1,6 +1,6 @@
-import * as RadixSwitch from "@radix-ui/react-switch"
-import clsx from "clsx"
-import React from "react"
+import * as RadixSwitch from "@radix-ui/react-switch";
+import clsx from "clsx";
+import React from "react";
 
 /**
  * A controlled switch component atom.
@@ -22,7 +22,7 @@ function Switch(props: RadixSwitch.SwitchProps) {
         />
       </div>
     </RadixSwitch.Root>
-  )
+  );
 }
 
-export default Switch
+export default Switch;

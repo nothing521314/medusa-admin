@@ -1,20 +1,20 @@
-import { ProductVariant } from "@medusajs/medusa"
-import React, { useMemo } from "react"
-import { Column, useTable } from "react-table"
-import DuplicateIcon from "../../../../../components/fundamentals/icons/duplicate-icon"
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
-import Actionables from "../../../../../components/molecules/actionables"
-import Table from "../../../../../components/molecules/table"
+import { ProductVariant } from "@medusajs/medusa";
+import React, { useMemo } from "react";
+import { Column, useTable } from "react-table";
+import DuplicateIcon from "../../../../../components/fundamentals/icons/duplicate-icon";
+import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
+import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon";
+import Actionables from "../../../../../components/molecules/actionables";
+import Table from "../../../../../components/molecules/table";
 
 type Props = {
-  variants: ProductVariant[]
+  variants: ProductVariant[];
   actions: {
-    deleteVariant: (variantId: string) => void
-    duplicateVariant: (variant: ProductVariant) => void
-    updateVariant: (variant: ProductVariant) => void
-  }
-}
+    deleteVariant: (variantId: string) => void;
+    duplicateVariant: (variant: ProductVariant) => void;
+    updateVariant: (variant: ProductVariant) => void;
+  };
+};
 
 export const useVariantsTableColumns = () => {
   const columns = useMemo<Column<ProductVariant>[]>(
@@ -34,7 +34,7 @@ export const useVariantsTableColumns = () => {
             cell.value
           ) : (
             <span className="text-grey-50">-</span>
-          )
+          );
         },
       },
       {
@@ -47,7 +47,7 @@ export const useVariantsTableColumns = () => {
             cell.value
           ) : (
             <span className="text-grey-50">-</span>
-          )
+          );
         },
       },
       {
@@ -56,7 +56,7 @@ export const useVariantsTableColumns = () => {
             <div className="text-right">
               <span>Inventory</span>
             </div>
-          )
+          );
         },
         id: "inventory",
         accessor: "inventory_quantity",
@@ -66,18 +66,18 @@ export const useVariantsTableColumns = () => {
             <div className="text-right">
               <span>{cell.value}</span>
             </div>
-          )
+          );
         },
       },
     ],
     []
-  )
+  );
 
-  return columns
-}
+  return columns;
+};
 
 const VariantsTable = ({ variants, actions }: Props) => {
-  const columns = useVariantsTableColumns()
+  const columns = useVariantsTableColumns();
 
   const {
     getTableProps,
@@ -91,9 +91,9 @@ const VariantsTable = ({ variants, actions }: Props) => {
     defaultColumn: {
       width: "auto",
     },
-  })
+  });
 
-  const { deleteVariant, updateVariant, duplicateVariant } = actions
+  const { deleteVariant, updateVariant, duplicateVariant } = actions;
 
   return (
     <Table {...getTableProps()} className="table-fixed">
@@ -110,7 +110,7 @@ const VariantsTable = ({ variants, actions }: Props) => {
       </Table.Head>
       <Table.Body {...getTableBodyProps()}>
         {rows.map((row) => {
-          prepareRow(row)
+          prepareRow(row);
           return (
             <Table.Row color={"inherit"} {...row.getRowProps()}>
               {row.cells.map((cell) => {
@@ -118,7 +118,7 @@ const VariantsTable = ({ variants, actions }: Props) => {
                   <Table.Cell {...cell.getCellProps()}>
                     {cell.render("Cell")}
                   </Table.Cell>
-                )
+                );
               })}
               <Table.Cell>
                 <div className="float-right">
@@ -151,11 +151,11 @@ const VariantsTable = ({ variants, actions }: Props) => {
                 </div>
               </Table.Cell>
             </Table.Row>
-          )
+          );
         })}
       </Table.Body>
     </Table>
-  )
-}
+  );
+};
 
-export default VariantsTable
+export default VariantsTable;

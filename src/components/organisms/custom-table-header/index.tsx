@@ -1,12 +1,12 @@
-import clsx from "clsx"
-import { capitalize } from "lodash"
-import React from "react"
+import clsx from "clsx";
+import { capitalize } from "lodash";
+import React from "react";
 
 type TableViewHeaderProps<T = string> = {
-  views: T[]
-  activeView?: T
-  setActiveView?: (view: T) => void
-}
+  views: T[];
+  activeView?: T;
+  setActiveView?: (view: T) => void;
+};
 
 const TableViewHeader: React.FC<TableViewHeaderProps> = ({
   views,
@@ -23,7 +23,7 @@ const TableViewHeader: React.FC<TableViewHeaderProps> = ({
           })}
           onClick={() => {
             if (setActiveView) {
-              setActiveView(k)
+              setActiveView(k);
             }
           }}
         >
@@ -31,7 +31,7 @@ const TableViewHeader: React.FC<TableViewHeaderProps> = ({
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default TableViewHeader
+export default TableViewHeader;

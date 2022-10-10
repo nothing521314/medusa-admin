@@ -1,16 +1,16 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import Table from "./index"
-import TableSearch from "./table-search"
-import FilteringOption from "./filtering-option"
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import Table from "./index";
+import TableSearch from "./table-search";
+import FilteringOption from "./filtering-option";
 
 export default {
   title: "Molecules/Table",
   component: FilteringOption,
-} as ComponentMeta<typeof FilteringOption>
+} as ComponentMeta<typeof FilteringOption>;
 
-const FilteringTemplate = (args) => <FilteringOption {...args} />
-const TableSearchTemplate = (args) => <TableSearch {...args} />
+const FilteringTemplate = (args) => <FilteringOption {...args} />;
+const TableSearchTemplate = (args) => <TableSearch {...args} />;
 const TableTemplate = (args) => (
   <Table>
     <Table.Head>
@@ -32,7 +32,7 @@ const TableTemplate = (args) => (
       </Table.Row>
     </Table.Body>
   </Table>
-)
+);
 
 const TableWithFilterAndSearchTemplate = (args) => (
   <Table
@@ -92,36 +92,36 @@ const TableWithFilterAndSearchTemplate = (args) => (
       </Table.Row>
     </Table.Body>
   </Table>
-)
+);
 
-export const TableComponent = TableTemplate.bind({})
-TableComponent.args = {}
+export const TableComponent = TableTemplate.bind({});
+TableComponent.args = {};
 
 export const TableComponentWithFilteringAndSearch = TableWithFilterAndSearchTemplate.bind(
   {}
-)
-TableComponentWithFilteringAndSearch.args = {}
+);
+TableComponentWithFilteringAndSearch.args = {};
 
-export const TableComponentWithActionableRows = TableTemplate.bind({})
+export const TableComponentWithActionableRows = TableTemplate.bind({});
 TableComponentWithActionableRows.args = {
   actions: [
     { label: "action 1", onClick: () => console.log("clicked action 1") },
     { label: "action 2", onClick: () => console.log("clicked action 2") },
   ],
-}
+};
 
-export const TableComponentWithLinkRows = TableTemplate.bind({})
+export const TableComponentWithLinkRows = TableTemplate.bind({});
 TableComponentWithLinkRows.args = {
   linkTo: "https://google.com",
-}
+};
 
-export const TableSearchField = TableSearchTemplate.bind({})
+export const TableSearchField = TableSearchTemplate.bind({});
 TableSearchField.args = {
   onSeach: (value) => console.log(value),
   placeholder: "Search value",
-}
+};
 
-export const FilteringOptions = FilteringTemplate.bind({})
+export const FilteringOptions = FilteringTemplate.bind({});
 FilteringOptions.args = {
   title: "test options",
   options: [
@@ -137,4 +137,4 @@ FilteringOptions.args = {
       onClick: () => console.log("all clicked"),
     },
   ],
-}
+};

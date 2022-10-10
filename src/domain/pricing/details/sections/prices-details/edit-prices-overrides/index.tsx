@@ -1,39 +1,42 @@
-import { MoneyAmount, Product } from "@medusajs/medusa"
-import { useParams } from "@reach/router"
-import { useAdminStore, useAdminUpdatePriceList } from "../../../../../../../medusa-react"
-import * as React from "react"
-import Button from "../../../../../../components/fundamentals/button"
-import { CollapsibleTree } from "../../../../../../components/molecules/collapsible-tree"
-import Modal from "../../../../../../components/molecules/modal"
+import { MoneyAmount, Product } from "@medusajs/medusa";
+import { useParams } from "@reach/router";
+import {
+  useAdminStore,
+  useAdminUpdatePriceList,
+} from "../../../../../../../medusa-react";
+import * as React from "react";
+import Button from "../../../../../../components/fundamentals/button";
+import { CollapsibleTree } from "../../../../../../components/molecules/collapsible-tree";
+import Modal from "../../../../../../components/molecules/modal";
 import LayeredModal, {
   useLayeredModal,
-} from "../../../../../../components/molecules/modal/layered-modal"
-import PriceOverrides from "../../../../../../components/templates/price-overrides"
-import useNotification from "../../../../../../hooks/use-notification"
-import { mergeExistingWithDefault } from "../../../utils"
-import { mapToPriceList } from "./mappers"
-import ProductVariantLeaf from "./product-variant-leaf"
+} from "../../../../../../components/molecules/modal/layered-modal";
+import PriceOverrides from "../../../../../../components/templates/price-overrides";
+import useNotification from "../../../../../../hooks/use-notification";
+import { mergeExistingWithDefault } from "../../../utils";
+import { mapToPriceList } from "./mappers";
+import ProductVariantLeaf from "./product-variant-leaf";
 
 type EditPricesOverridesModalProps = {
-  product: Product
-  close: () => void
-}
+  product: Product;
+  close: () => void;
+};
 
 const EditPricesOverridesModal = ({
   close,
   product,
 }: EditPricesOverridesModalProps) => {
-  const context = useLayeredModal()
-  const { id: priceListId } = useParams()
-  const updatePriceList = useAdminUpdatePriceList(priceListId)
-  const { store } = useAdminStore()
+  const context = useLayeredModal();
+  const { id: priceListId } = useParams();
+  const updatePriceList = useAdminUpdatePriceList(priceListId);
+  const { store } = useAdminStore();
 
   const defaultPrices = store?.currencies.map((curr) => ({
     currency_code: curr.code,
     amount: 0,
-  })) as MoneyAmount[]
+  })) as MoneyAmount[];
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   const getOnClick = (variant) => () =>
     context.push({
@@ -50,7 +53,7 @@ const EditPricesOverridesModal = ({
           variants={product.variants}
           onClose={close}
           onSubmit={(values) => {
-            const updatedPrices = mapToPriceList(values, variant.id)
+            const updatedPrices = mapToPriceList(values, variant.id);
 
             updatePriceList.mutate(
               {
@@ -58,16 +61,16 @@ const EditPricesOverridesModal = ({
               },
               {
                 onSuccess: () => {
-                  context.pop()
-                  close()
-                  notification("Success", "Price overrides updated", "success")
+                  context.pop();
+                  close();
+                  notification("Success", "Price overrides updated", "success");
                 },
               }
-            )
+            );
           }}
         />
       ),
-    })
+    });
 
   return (
     <LayeredModal isLargeModal context={context} handleClose={close}>
@@ -129,7 +132,7 @@ const EditPricesOverridesModal = ({
         </Modal.Footer>
       </Modal.Body>
     </LayeredModal>
-  )
-}
+  );
+};
 
-export default EditPricesOverridesModal
+export default EditPricesOverridesModal;

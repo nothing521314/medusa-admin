@@ -1,14 +1,14 @@
-import clsx from "clsx"
-import React from "react"
-import IconTooltip from "../molecules/icon-tooltip"
+import clsx from "clsx";
+import React from "react";
+import IconTooltip from "../molecules/icon-tooltip";
 
 export type InputHeaderProps = {
-  label?: string
-  required?: boolean
-  tooltipContent?: string
-  tooltip?: React.ReactNode
-  className?: string
-}
+  label?: string;
+  required?: boolean;
+  tooltipContent?: string;
+  tooltip?: React.ReactNode;
+  className?: string;
+};
 
 const InputHeader: React.FC<InputHeaderProps> = ({
   label,
@@ -32,7 +32,7 @@ const InputHeader: React.FC<InputHeaderProps> = ({
         </div>
       ) : null}
     </div>
-  )
-}
+  );
+};
 
-export default InputHeader
+export default InputHeader;

@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const CornerDownRightIcon: React.FC<IconProps> = ({
   size = "16",
@@ -30,7 +30,7 @@ const CornerDownRightIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default CornerDownRightIcon
+export default CornerDownRightIcon;

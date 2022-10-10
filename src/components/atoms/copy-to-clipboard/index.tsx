@@ -1,18 +1,18 @@
-import clsx from "clsx"
-import React, { useEffect } from "react"
-import useClipboard from "../../../hooks/use-clipboard"
-import useNotification from "../../../hooks/use-notification"
-import Button from "../../fundamentals/button"
-import ClipboardCopyIcon from "../../fundamentals/icons/clipboard-copy-icon"
+import clsx from "clsx";
+import React, { useEffect } from "react";
+import useClipboard from "../../../hooks/use-clipboard";
+import useNotification from "../../../hooks/use-notification";
+import Button from "../../fundamentals/button";
+import ClipboardCopyIcon from "../../fundamentals/icons/clipboard-copy-icon";
 
 type CopyToClipboardProps = {
-  value: string
-  displayValue?: string
-  successDuration?: number
-  showValue?: boolean
-  iconSize?: number
-  onCopy?: () => void
-}
+  value: string;
+  displayValue?: string;
+  successDuration?: number;
+  showValue?: boolean;
+  iconSize?: number;
+  onCopy?: () => void;
+};
 
 const CopyToClipboard: React.FC<CopyToClipboardProps> = ({
   value,
@@ -25,14 +25,14 @@ const CopyToClipboard: React.FC<CopyToClipboardProps> = ({
   const [isCopied, handleCopy] = useClipboard(value, {
     onCopied: onCopy,
     successDuration: successDuration,
-  })
-  const notification = useNotification()
+  });
+  const notification = useNotification();
 
   useEffect(() => {
     if (isCopied) {
-      notification("Success", "Copied!", "success")
+      notification("Success", "Copied!", "success");
     }
-  }, [isCopied])
+  }, [isCopied]);
 
   return (
     <div className="flex items-center inter-small-regular text-grey-50 gap-x-xsmall">
@@ -52,7 +52,7 @@ const CopyToClipboard: React.FC<CopyToClipboardProps> = ({
         </span>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default CopyToClipboard
+export default CopyToClipboard;

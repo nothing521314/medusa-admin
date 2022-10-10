@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "./types/icon-type"
+import React from "react";
+import IconProps from "./types/icon-type";
 
 const ChevronDownIcon: React.FC<IconProps> = ({
   size = "24px",
@@ -23,7 +23,7 @@ const ChevronDownIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default ChevronDownIcon
+export default ChevronDownIcon;

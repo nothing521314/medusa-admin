@@ -1,13 +1,13 @@
-import clsx from "clsx"
-import React, { useEffect, useMemo, useState } from "react"
-import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
-import FilterDropdownContainer from "../../../components/molecules/filter-dropdown/container"
-import FilterDropdownItem from "../../../components/molecules/filter-dropdown/item"
-import SaveFilterItem from "../../../components/molecules/filter-dropdown/save-field"
-import TabFilter from "../../../components/molecules/filter-tab"
+import clsx from "clsx";
+import React, { useEffect, useMemo, useState } from "react";
+import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
+import FilterDropdownContainer from "../../../components/molecules/filter-dropdown/container";
+import FilterDropdownItem from "../../../components/molecules/filter-dropdown/item";
+import SaveFilterItem from "../../../components/molecules/filter-dropdown/save-field";
+import TabFilter from "../../../components/molecules/filter-tab";
 
-const statusFilters = ["active", "draft"]
-const typeFilters = ["sale", "override"]
+const statusFilters = ["active", "draft"];
+const typeFilters = ["sale", "override"];
 
 const PriceListsFilter = ({
   filters,
@@ -19,56 +19,56 @@ const PriceListsFilter = ({
   onRemoveTab,
   onSaveTab,
 }) => {
-  const [tempState, setTempState] = useState(filters)
-  const [name, setName] = useState("")
+  const [tempState, setTempState] = useState(filters);
+  const [name, setName] = useState("");
 
   const handleRemoveTab = (val) => {
     if (onRemoveTab) {
-      onRemoveTab(val)
+      onRemoveTab(val);
     }
-  }
+  };
 
   const handleSaveTab = () => {
     if (onSaveTab) {
-      onSaveTab(name, tempState)
+      onSaveTab(name, tempState);
     }
-  }
+  };
 
   const handleTabClick = (tabName: string) => {
     if (onTabClick) {
-      onTabClick(tabName)
+      onTabClick(tabName);
     }
-  }
+  };
 
   useEffect(() => {
-    setTempState(filters)
-  }, [filters])
+    setTempState(filters);
+  }, [filters]);
 
   const onSubmit = () => {
-    submitFilters(tempState)
-  }
+    submitFilters(tempState);
+  };
 
   const onClear = () => {
-    clearFilters()
-  }
+    clearFilters();
+  };
 
   const numberOfFilters = useMemo(
     () =>
       Object.entries(filters).reduce((acc, [, value]) => {
         if (value?.open) {
-          acc = acc + 1
+          acc = acc + 1;
         }
-        return acc
+        return acc;
       }, 0),
     [filters]
-  )
+  );
 
   const setSingleFilter = (filterKey, filterVal) => {
     setTempState((prevState) => ({
       ...prevState,
       [filterKey]: filterVal,
-    }))
-  }
+    }));
+  };
 
   return (
     <div className="flex space-x-1">
@@ -127,7 +127,7 @@ const PriceListsFilter = ({
           />
         ))}
     </div>
-  )
-}
+  );
+};
 
-export default PriceListsFilter
+export default PriceListsFilter;

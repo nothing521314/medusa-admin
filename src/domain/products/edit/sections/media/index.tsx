@@ -1,23 +1,23 @@
-import { Product } from "@medusajs/medusa"
-import React from "react"
-import { ActionType } from "../../../../../components/molecules/actionables"
-import Section from "../../../../../components/organisms/section"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import MediaModal from "./media-modal"
+import { Product } from "@medusajs/medusa";
+import React from "react";
+import { ActionType } from "../../../../../components/molecules/actionables";
+import Section from "../../../../../components/organisms/section";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import MediaModal from "./media-modal";
 
 type Props = {
-  product: Product
-}
+  product: Product;
+};
 
 const MediaSection = ({ product }: Props) => {
-  const { state, close, toggle } = useToggleState()
+  const { state, close, toggle } = useToggleState();
 
   const actions: ActionType[] = [
     {
       label: "Edit Media",
       onClick: toggle,
     },
-  ]
+  ];
 
   return (
     <>
@@ -36,7 +36,7 @@ const MediaSection = ({ product }: Props) => {
                     className="object-contain rounded-rounded max-w-full max-h-full"
                   />
                 </div>
-              )
+              );
             })}
           </div>
         )}
@@ -44,7 +44,7 @@ const MediaSection = ({ product }: Props) => {
 
       <MediaModal product={product} open={state} onClose={close} />
     </>
-  )
-}
+  );
+};
 
-export default MediaSection
+export default MediaSection;

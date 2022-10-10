@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const DownLeftIcon: React.FC<IconProps> = ({
   size = "16",
@@ -29,7 +29,7 @@ const DownLeftIcon: React.FC<IconProps> = ({
         stroke-linejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default DownLeftIcon
+export default DownLeftIcon;

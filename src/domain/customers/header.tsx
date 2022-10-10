@@ -1,11 +1,11 @@
-import React from "react"
-import { navigate } from "gatsby"
+import React from "react";
+import { navigate } from "gatsby";
 
-import TableViewHeader from "../../components/organisms/custom-table-header"
+import TableViewHeader from "../../components/organisms/custom-table-header";
 
 type P = {
-  activeView: "customers" | "groups"
-}
+  activeView: "customers" | "groups";
+};
 
 /*
  * Shared header component for "customers" and "customer groups" page
@@ -15,16 +15,16 @@ function CustomersPageTableHeader(props: P) {
     <TableViewHeader
       setActiveView={(v) => {
         if (v === "customers") {
-          navigate(`/a/customers`)
+          navigate(`/a/customers`);
         } else {
-          navigate(`/a/customers/groups`)
+          navigate(`/a/customers/groups`);
         }
       }}
       // views={["customers", "groups"]}
       views={["customers"]}
       activeView={props.activeView}
     />
-  )
+  );
 }
 
-export default CustomersPageTableHeader
+export default CustomersPageTableHeader;

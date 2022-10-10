@@ -1,28 +1,28 @@
-import React from "react"
-import { FieldArrayWithId, useFieldArray } from "react-hook-form"
-import FileUploadField from "../../../../components/atoms/file-upload-field"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
+import React from "react";
+import { FieldArrayWithId, useFieldArray } from "react-hook-form";
+import FileUploadField from "../../../../components/atoms/file-upload-field";
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon";
 import Actionables, {
   ActionType,
-} from "../../../../components/molecules/actionables"
-import { FormImage } from "../../../../types/shared"
-import { NestedForm } from "../../../../utils/nested-form"
+} from "../../../../components/molecules/actionables";
+import { FormImage } from "../../../../types/shared";
+import { NestedForm } from "../../../../utils/nested-form";
 
 export type ThumbnailFormType = {
-  images: FormImage[]
-}
+  images: FormImage[];
+};
 
 type Props = {
-  form: NestedForm<ThumbnailFormType>
-}
+  form: NestedForm<ThumbnailFormType>;
+};
 
 const ThumbnailForm = ({ form }: Props) => {
-  const { control, path } = form
+  const { control, path } = form;
 
   const { fields, remove, replace, append } = useFieldArray({
     control: control,
     name: path("images"),
-  })
+  });
 
   const handleFilesChosen = (files: File[]) => {
     const toAppend = files.map((file) => ({
@@ -31,14 +31,14 @@ const ThumbnailForm = ({ form }: Props) => {
       size: file.size,
       nativeFile: file,
       selected: false,
-    }))
+    }));
 
     if (files.length) {
-      replace(toAppend)
+      replace(toAppend);
     } else {
-      append(toAppend)
+      append(toAppend);
     }
-  }
+  };
 
   return (
     <div>
@@ -65,20 +65,20 @@ const ThumbnailForm = ({ form }: Props) => {
                   index={index}
                   remove={remove}
                 />
-              )
+              );
             })}
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 type ThumbnailProps = {
-  image: FieldArrayWithId<ThumbnailFormType, "images", "id">
-  index: number
-  remove: (index: number) => void
-}
+  image: FieldArrayWithId<ThumbnailFormType, "images", "id">;
+  index: number;
+  remove: (index: number) => void;
+};
 
 const Image = ({ image, index, remove }: ThumbnailProps) => {
   const actions: ActionType[] = [
@@ -88,7 +88,7 @@ const Image = ({ image, index, remove }: ThumbnailProps) => {
       icon: <TrashIcon size={20} />,
       variant: "danger",
     },
-  ]
+  ];
 
   return (
     <div className="px-base py-xsmall group hover:bg-grey-5 rounded-rounded flex items-center justify-between">
@@ -110,7 +110,7 @@ const Image = ({ image, index, remove }: ThumbnailProps) => {
 
       <Actionables actions={actions} forceDropdown />
     </div>
-  )
-}
+  );
+};
 
-export default ThumbnailForm
+export default ThumbnailForm;

@@ -1,8 +1,8 @@
-import { ProductTag } from "@medusajs/medusa"
-import React from "react"
-import { Column, HeaderGroup, Row } from "react-table"
-import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
-import Table from "../../../../../../components/molecules/table"
+import { ProductTag } from "@medusajs/medusa";
+import React from "react";
+import { Column, HeaderGroup, Row } from "react-table";
+import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon";
+import Table from "../../../../../../components/molecules/table";
 
 export const TagColumns: Column<ProductTag>[] = [
   {
@@ -19,15 +19,15 @@ export const TagColumns: Column<ProductTag>[] = [
             #{original.value}
           </span>
         </div>
-      )
+      );
     },
   },
-]
+];
 
 export const TagHeader = ({
   headerGroup,
 }: {
-  headerGroup: HeaderGroup<ProductTag>
+  headerGroup: HeaderGroup<ProductTag>;
 }) => {
   return (
     <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
@@ -40,8 +40,8 @@ export const TagHeader = ({
         </Table.HeadCell>
       ))}
     </Table.HeadRow>
-  )
-}
+  );
+};
 
 export const TagRow = ({ row }: { row: Row<ProductTag> }) => {
   return (
@@ -51,8 +51,8 @@ export const TagRow = ({ row }: { row: Row<ProductTag> }) => {
           <Table.Cell {...cell.getCellProps()}>
             {cell.render("Cell")}
           </Table.Cell>
-        )
+        );
       })}
     </Table.Row>
-  )
-}
+  );
+};

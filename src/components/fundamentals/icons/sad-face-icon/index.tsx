@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const SadFaceIcon: React.FC<IconProps> = ({
   size = "20",
@@ -44,8 +44,7 @@ const SadFaceIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
+  );
+};
 
-  )
-}
-
-export default SadFaceIcon
+export default SadFaceIcon;

@@ -2,57 +2,59 @@ import {
   AdminPostProductsProductVariantsVariantReq,
   Product,
   ProductVariant,
-} from "@medusajs/medusa"
-import React, { useContext, useEffect, useMemo } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../../components/fundamentals/button"
-import Modal from "../../../../../../components/molecules/modal"
-import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal"
+} from "@medusajs/medusa";
+import React, { useContext, useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../../../components/fundamentals/button";
+import Modal from "../../../../../../components/molecules/modal";
+import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal";
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
-} from "../../../../components/variant-form/edit-flow-variant-form"
-import useEditProductActions from "../../../hooks/use-edit-product-actions"
-import { getEditVariantDefaultValues } from "../edit-variant-modal"
-import { useEditVariantsModal } from "./use-edit-variants-modal"
+} from "../../../../components/variant-form/edit-flow-variant-form";
+import useEditProductActions from "../../../hooks/use-edit-product-actions";
+import { getEditVariantDefaultValues } from "../edit-variant-modal";
+import { useEditVariantsModal } from "./use-edit-variants-modal";
 
 type Props = {
-  variant: ProductVariant
-  product: Product
-}
+  variant: ProductVariant;
+  product: Product;
+};
 
 const EditVariantScreen = ({ variant, product }: Props) => {
-  const { onClose } = useEditVariantsModal()
+  const { onClose } = useEditVariantsModal();
   const form = useForm<EditFlowVariantFormType>({
     defaultValues: getEditVariantDefaultValues(variant, product),
-  })
+  });
 
-  const { pop, reset } = useContext(LayeredModalContext)
-  const { updatingVariant, onUpdateVariant } = useEditProductActions(product.id)
+  const { pop, reset } = useContext(LayeredModalContext);
+  const { updatingVariant, onUpdateVariant } = useEditProductActions(
+    product.id
+  );
 
   const popAndReset = () => {
-    form.reset(getEditVariantDefaultValues(variant, product))
-    pop()
-  }
+    form.reset(getEditVariantDefaultValues(variant, product));
+    pop();
+  };
 
   const closeAndReset = () => {
-    form.reset(getEditVariantDefaultValues(variant, product))
-    reset()
-    onClose()
-  }
+    form.reset(getEditVariantDefaultValues(variant, product));
+    reset();
+    onClose();
+  };
 
   useEffect(() => {
-    form.reset(getEditVariantDefaultValues(variant, product))
-  }, [variant, product])
+    form.reset(getEditVariantDefaultValues(variant, product));
+  }, [variant, product]);
 
   const onSubmitAndBack = form.handleSubmit((data) => {
     // @ts-ignore
-    onUpdateVariant(variant.id, createUpdatePayload(data), popAndReset)
-  })
+    onUpdateVariant(variant.id, createUpdatePayload(data), popAndReset);
+  });
 
   const onSubmitAndClose = form.handleSubmit((data) => {
     // @ts-ignore
-    onUpdateVariant(variant.id, createUpdatePayload(data), closeAndReset)
-  })
+    onUpdateVariant(variant.id, createUpdatePayload(data), closeAndReset);
+  });
 
   return (
     <>
@@ -89,13 +91,13 @@ const EditVariantScreen = ({ variant, product }: Props) => {
         </Modal.Footer>
       </form>
     </>
-  )
-}
+  );
+};
 
 export const createUpdatePayload = (
   data: EditFlowVariantFormType
 ): AdminPostProductsProductVariantsVariantReq => {
-  const { customs, dimensions, prices, options, general, stock } = data
+  const { customs, dimensions, prices, options, general, stock } = data;
 
   const priceArray = prices.prices
     .filter((price) => price.amount)
@@ -105,8 +107,8 @@ export const createUpdatePayload = (
         currency_code: price.region_id ? undefined : price.currency_code,
         region_id: price.region_id,
         id: price.id || undefined,
-      }
-    })
+      };
+    });
 
   return {
     // @ts-ignore
@@ -125,11 +127,11 @@ export const createUpdatePayload = (
       option_id: option.id,
       value: option.value,
     })),
-  }
-}
+  };
+};
 
 export const useEditVariantScreen = (props: Props) => {
-  const { pop } = React.useContext(LayeredModalContext)
+  const { pop } = React.useContext(LayeredModalContext);
 
   const screen = useMemo(() => {
     return {
@@ -137,10 +139,10 @@ export const useEditVariantScreen = (props: Props) => {
       subtitle: props.variant.title,
       onBack: pop,
       view: <EditVariantScreen {...props} />,
-    }
-  }, [props])
+    };
+  }, [props]);
 
-  return screen
-}
+  return screen;
+};
 
-export default EditVariantScreen
+export default EditVariantScreen;

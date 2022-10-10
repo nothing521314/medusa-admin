@@ -1,50 +1,50 @@
-import { useAdminCancelClaim } from "../../../../../medusa-react"
-import React, { useState } from "react"
-import CreateFulfillmentModal from "../../../../domain/quotations/details/create-fulfillment"
-import { ClaimEvent } from "../../../../hooks/use-build-timeline"
-import { formatAmountWithSymbol } from "../../../../utils/prices"
-import AlertIcon from "../../../fundamentals/icons/alert-icon"
-import CancelIcon from "../../../fundamentals/icons/cancel-icon"
-import CheckCircleIcon from "../../../fundamentals/icons/check-circle-icon"
-import ListIcon from "../../../fundamentals/icons/list-icon"
-import TrashIcon from "../../../fundamentals/icons/trash-icon"
-import DeletePrompt from "../../../organisms/delete-prompt"
-import { ActionType } from "../../actionables"
-import { FulfillmentStatus, RefundStatus } from "../../order-status"
-import EventActionables from "../event-actionables"
-import EventContainer, { EventIconColor } from "../event-container"
-import EventItemContainer from "../event-item-container"
-import ClaimDetails from "./details"
+import { useAdminCancelClaim } from "../../../../../medusa-react";
+import React, { useState } from "react";
+import CreateFulfillmentModal from "../../../../domain/quotations/details/create-fulfillment";
+import { ClaimEvent } from "../../../../hooks/use-build-timeline";
+import { formatAmountWithSymbol } from "../../../../utils/prices";
+import AlertIcon from "../../../fundamentals/icons/alert-icon";
+import CancelIcon from "../../../fundamentals/icons/cancel-icon";
+import CheckCircleIcon from "../../../fundamentals/icons/check-circle-icon";
+import ListIcon from "../../../fundamentals/icons/list-icon";
+import TrashIcon from "../../../fundamentals/icons/trash-icon";
+import DeletePrompt from "../../../organisms/delete-prompt";
+import { ActionType } from "../../actionables";
+import { FulfillmentStatus, RefundStatus } from "../../order-status";
+import EventActionables from "../event-actionables";
+import EventContainer, { EventIconColor } from "../event-container";
+import EventItemContainer from "../event-item-container";
+import ClaimDetails from "./details";
 
 type ClaimProps = {
-  event: ClaimEvent
-  refetch: () => void
-}
+  event: ClaimEvent;
+  refetch: () => void;
+};
 
 const Claim: React.FC<ClaimProps> = ({ event, refetch }) => {
-  const cancelClaim = useAdminCancelClaim(event.orderId)
-  const [showDetails, setShowDetails] = useState(false)
-  const [showCancel, setShowCancel] = useState(false)
-  const [showFulfillment, setShowFulfillment] = useState(false)
+  const cancelClaim = useAdminCancelClaim(event.orderId);
+  const [showDetails, setShowDetails] = useState(false);
+  const [showCancel, setShowCancel] = useState(false);
+  const [showFulfillment, setShowFulfillment] = useState(false);
 
   const handleCancel = () => {
-    cancelClaim.mutate(event.id)
-  }
+    cancelClaim.mutate(event.id);
+  };
 
   const handleCloseFulfillmentModal = () => {
-    setShowFulfillment(false)
-    refetch() // We need to refetch the order to get the latest update
-  }
+    setShowFulfillment(false);
+    refetch(); // We need to refetch the order to get the latest update
+  };
 
-  const claimItems = ClaimItems(event)
-  const claimStatus = ClaimStatus(event)
-  const refundOrReplacement = ClaimRefundOrReplacement(event)
+  const claimItems = ClaimItems(event);
+  const claimStatus = ClaimStatus(event);
+  const refundOrReplacement = ClaimRefundOrReplacement(event);
   const actions = ClaimActions(
     event,
     () => setShowCancel(true),
     () => setShowFulfillment(true),
     () => setShowDetails(true)
-  )
+  );
 
   const args = {
     icon: event.canceledAt ? <CancelIcon size={20} /> : <AlertIcon size={20} />,
@@ -65,7 +65,7 @@ const Claim: React.FC<ClaimProps> = ({ event, refetch }) => {
         )}
       </div>,
     ],
-  }
+  };
 
   return (
     <>
@@ -91,8 +91,8 @@ const Claim: React.FC<ClaimProps> = ({ event, refetch }) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
 function ClaimItems(event: ClaimEvent) {
   return (
@@ -104,7 +104,7 @@ function ClaimItems(event: ClaimEvent) {
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 function ClaimStatus(event: ClaimEvent) {
@@ -118,7 +118,7 @@ function ClaimStatus(event: ClaimEvent) {
       <span className="text-grey-50 mb-2xsmall">Fulfillment:</span>
       <FulfillmentStatus fulfillmentStatus={event.fulfillmentStatus} />
     </div>
-  ) : null
+  ) : null;
 }
 
 function ClaimRefundOrReplacement(event: ClaimEvent) {
@@ -145,7 +145,7 @@ function ClaimRefundOrReplacement(event: ClaimEvent) {
         })}
       </span>
     </div>
-  )
+  );
 }
 
 function ClaimActions(
@@ -154,13 +154,13 @@ function ClaimActions(
   onFulfill: () => void,
   onDetails: () => void
 ) {
-  const actions: ActionType[] = []
+  const actions: ActionType[] = [];
 
   actions.push({
     icon: <ListIcon size={20} />,
     label: "More Details",
     onClick: onDetails,
-  })
+  });
 
   if (!event.canceledAt && !event.isCanceled) {
     if (
@@ -172,7 +172,7 @@ function ClaimActions(
         icon: <CheckCircleIcon size={20} />,
         label: "Fulfill Claim",
         onClick: onFulfill,
-      })
+      });
     }
 
     if (event.refundStatus !== "refunded" && !event.isCanceled) {
@@ -181,11 +181,11 @@ function ClaimActions(
         label: "Cancel Claim",
         variant: "danger",
         onClick: onCancel,
-      })
+      });
     }
   }
 
-  return actions.length ? <EventActionables actions={actions} /> : null
+  return actions.length ? <EventActionables actions={actions} /> : null;
 }
 
-export default Claim
+export default Claim;

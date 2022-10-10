@@ -1,13 +1,13 @@
-import { adminShippingProfileKeys } from "./queries"
+import { adminShippingProfileKeys } from "./queries";
 import {
   AdminDeleteShippingProfileRes,
   AdminPostShippingProfilesReq,
   AdminShippingProfilesRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminCreateShippingProfile = (
   options?: UseMutationOptions<
@@ -16,14 +16,14 @@ export const useAdminCreateShippingProfile = (
     AdminPostShippingProfilesReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostShippingProfilesReq) =>
       client.admin.shippingProfiles.create(payload),
     buildOptions(queryClient, adminShippingProfileKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdateShippingProfile = (
   id: string,
@@ -33,8 +33,8 @@ export const useAdminUpdateShippingProfile = (
     AdminPostShippingProfilesReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostShippingProfilesReq) =>
@@ -44,8 +44,8 @@ export const useAdminUpdateShippingProfile = (
       [adminShippingProfileKeys.lists(), adminShippingProfileKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteShippingProfile = (
   id: string,
@@ -55,8 +55,8 @@ export const useAdminDeleteShippingProfile = (
     void
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.shippingProfiles.delete(id),
@@ -65,5 +65,5 @@ export const useAdminDeleteShippingProfile = (
       [adminShippingProfileKeys.lists(), adminShippingProfileKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};

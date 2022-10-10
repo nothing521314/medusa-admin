@@ -1,30 +1,30 @@
-import React, { useContext, useState } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../components/fundamentals/button"
-import InputField from "../../../../components/molecules/input"
-import Modal from "../../../../components/molecules/modal"
-import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal"
-import CurrencyInput from "../../../../components/organisms/currency-input"
+import React, { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../components/fundamentals/button";
+import InputField from "../../../../components/molecules/input";
+import Modal from "../../../../components/molecules/modal";
+import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal";
+import CurrencyInput from "../../../../components/organisms/currency-input";
 
 type CustomItemSubModalProps = {
-  onSubmit: (title: string, amount: number, quantity: number) => void
-  region: any
-}
+  onSubmit: (title: string, amount: number, quantity: number) => void;
+  region: any;
+};
 
 const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
   onSubmit,
   region,
 }) => {
-  const [amount, setAmount] = useState(0)
-  const { pop } = useContext(LayeredModalContext)
+  const [amount, setAmount] = useState(0);
+  const { pop } = useContext(LayeredModalContext);
 
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm();
 
   const onSubmitItem = (data) => {
-    const { title, quantity } = data
-    onSubmit(title, quantity, amount)
-    pop()
-  }
+    const { title, quantity } = data;
+    onSubmit(title, quantity, amount);
+    pop();
+  };
 
   return (
     <>
@@ -79,7 +79,7 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
         </div>
       </Modal.Footer>
     </>
-  )
-}
+  );
+};
 
-export default CustomItemSubModal
+export default CustomItemSubModal;

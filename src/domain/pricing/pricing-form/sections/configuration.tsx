@@ -1,49 +1,47 @@
-import { PriceList } from "@medusajs/medusa"
-import clsx from "clsx"
-import { useAdminCustomerGroups } from "../../../../../medusa-react"
-import React, { useState } from "react"
-import { Controller } from "react-hook-form"
-import DatePicker from "../../../../components/atoms/date-picker/date-picker"
-import TimePicker from "../../../../components/atoms/date-picker/time-picker"
-import Switch from "../../../../components/atoms/switch"
-import Select from "../../../../components/molecules/select"
-import Accordion from "../../../../components/organisms/accordion"
-import { weekFromNow } from "../../../../utils/date-utils"
-import { usePriceListForm } from "../form/pricing-form-context"
-import { ConfigurationFields } from "../types"
+import { PriceList } from "@medusajs/medusa";
+import clsx from "clsx";
+import { useAdminCustomerGroups } from "../../../../../medusa-react";
+import React, { useState } from "react";
+import { Controller } from "react-hook-form";
+import DatePicker from "../../../../components/atoms/date-picker/date-picker";
+import TimePicker from "../../../../components/atoms/date-picker/time-picker";
+import Switch from "../../../../components/atoms/switch";
+import Select from "../../../../components/molecules/select";
+import Accordion from "../../../../components/organisms/accordion";
+import { weekFromNow } from "../../../../utils/date-utils";
+import { usePriceListForm } from "../form/pricing-form-context";
+import { ConfigurationFields } from "../types";
 
 type ConfigurationProps = {
-  priceList?: PriceList
-}
+  priceList?: PriceList;
+};
 
-const checkForEnabledConfigs = (
-  config: ConfigurationFields
-): string[] => {
-  const enabledConfigs: string[] = []
+const checkForEnabledConfigs = (config: ConfigurationFields): string[] => {
+  const enabledConfigs: string[] = [];
 
   if (config.customer_groups && config.customer_groups.length > 0) {
-    enabledConfigs.push("customer_groups")
+    enabledConfigs.push("customer_groups");
   }
   if (config.starts_at) {
-    enabledConfigs.push("starts_at")
+    enabledConfigs.push("starts_at");
   }
   if (config.ends_at) {
-    enabledConfigs.push("ends_at")
+    enabledConfigs.push("ends_at");
   }
 
-  return enabledConfigs
-}
+  return enabledConfigs;
+};
 
 const Configuration: React.FC<ConfigurationProps> = () => {
-  const { customer_groups, isLoading } = useAdminCustomerGroups()
+  const { customer_groups, isLoading } = useAdminCustomerGroups();
   const {
     control,
     handleConfigurationSwitch,
     configFields,
-  } = usePriceListForm()
+  } = usePriceListForm();
   const [openItems, setOpenItems] = useState<string[]>(
     checkForEnabledConfigs(configFields)
-  )
+  );
 
   return (
     <Accordion.Item
@@ -57,8 +55,8 @@ const Configuration: React.FC<ConfigurationProps> = () => {
         type="multiple"
         value={openItems}
         onValueChange={(values) => {
-          handleConfigurationSwitch(values)
-          setOpenItems(values)
+          handleConfigurationSwitch(values);
+          setOpenItems(values);
         }}
       >
         <div className="mt-5">
@@ -85,7 +83,7 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                 name="starts_at"
                 control={control}
                 render={({ field: { value, onChange } }) => {
-                  const ensuredDate = value || new Date()
+                  const ensuredDate = value || new Date();
                   return (
                     <>
                       <DatePicker
@@ -99,7 +97,7 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                         onSubmitDate={onChange}
                       />
                     </>
-                  )
+                  );
                 }}
               />
             </div>
@@ -127,7 +125,7 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                 name="ends_at"
                 control={control}
                 render={({ field: { value, onChange } }) => {
-                  const ensuredDate = value || weekFromNow()
+                  const ensuredDate = value || weekFromNow();
                   return (
                     <>
                       <DatePicker
@@ -141,7 +139,7 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                         onSubmitDate={onChange}
                       />
                     </>
-                  )
+                  );
                 }}
               />
             </div>
@@ -160,7 +158,7 @@ const Configuration: React.FC<ConfigurationProps> = () => {
             <Controller
               name="customer_groups"
               control={control}
-              render={({ field: { value, onChange, ref }}) => {
+              render={({ field: { value, onChange, ref } }) => {
                 return (
                   <div
                     className={clsx(
@@ -188,14 +186,14 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                       ref={ref}
                     />
                   </div>
-                )
+                );
               }}
             />
           </Accordion.Item>
         </div>
       </Accordion>
     </Accordion.Item>
-  )
-}
+  );
+};
 
-export default Configuration
+export default Configuration;

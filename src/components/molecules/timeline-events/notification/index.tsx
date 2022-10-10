@@ -1,25 +1,25 @@
-import React, { useState } from "react"
-import { NotificationEvent } from "../../../../hooks/use-build-timeline"
-import ArrowRightIcon from "../../../fundamentals/icons/arrow-right-icon"
-import MailIcon from "../../../fundamentals/icons/mail-icon"
-import SendIcon from "../../../fundamentals/icons/send-icon"
-import EventActionables from "../event-actionables"
-import EventContainer from "../event-container"
-import ResendModal from "./resend-modal"
+import React, { useState } from "react";
+import { NotificationEvent } from "../../../../hooks/use-build-timeline";
+import ArrowRightIcon from "../../../fundamentals/icons/arrow-right-icon";
+import MailIcon from "../../../fundamentals/icons/mail-icon";
+import SendIcon from "../../../fundamentals/icons/send-icon";
+import EventActionables from "../event-actionables";
+import EventContainer from "../event-container";
+import ResendModal from "./resend-modal";
 
 type NotificationProps = {
-  event: NotificationEvent
-}
+  event: NotificationEvent;
+};
 
 const notificationTitleMap = {
   "order.items_returned": "Return Received Notice Sent",
   "order.return_requested": "Return Request Confirmation Sent",
   "order.placed": "Order Confirmation Sent",
   "order.shipment_created": "Shipment Confirmation Sent",
-}
+};
 
 const Notification: React.FC<NotificationProps> = ({ event }) => {
-  const [showResend, setShowResend] = useState(false)
+  const [showResend, setShowResend] = useState(false);
 
   const actions = (
     <EventActionables
@@ -31,7 +31,7 @@ const Notification: React.FC<NotificationProps> = ({ event }) => {
         },
       ]}
     />
-  )
+  );
   return (
     <>
       <EventContainer
@@ -49,8 +49,8 @@ const Notification: React.FC<NotificationProps> = ({ event }) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
 const ReceiverNode: React.FC<{ email: string }> = ({ email }) => {
   return (
@@ -60,7 +60,7 @@ const ReceiverNode: React.FC<{ email: string }> = ({ email }) => {
       </div>
       <span>{email}</span>
     </div>
-  )
-}
+  );
+};
 
-export default Notification
+export default Notification;

@@ -1,7 +1,7 @@
-import { storiesOf } from "@storybook/react"
-import React from "react"
-import useState from "storybook-addon-state"
-import RadioGroup from "."
+import { storiesOf } from "@storybook/react";
+import React from "react";
+import useState from "storybook-addon-state";
+import RadioGroup from ".";
 
 const values = [
   {
@@ -29,12 +29,12 @@ const values = [
     description:
       "Payment providers: not configured - Fulfillment providers: not configured",
   },
-]
+];
 
-let val = "1"
+let val = "1";
 
 storiesOf("Organisms/RadioGroup", module).add("controlled", () => {
-  const [value, setValue] = useState("value", val)
+  const [value, setValue] = useState("value", val);
 
   return (
     <RadioGroup.Root value={value} onValueChange={(v) => setValue(v)}>
@@ -49,11 +49,11 @@ storiesOf("Organisms/RadioGroup", module).add("controlled", () => {
               .join(", ")})`}
             description={value.description}
           />
-        )
+        );
       })}
     </RadioGroup.Root>
-  )
-})
+  );
+});
 
 const Template = (args) => (
   <div>
@@ -66,16 +66,16 @@ const Template = (args) => (
             label={value.name}
             description={value.description}
           />
-        )
+        );
       })}
     </RadioGroup.Root>
   </div>
-)
+);
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
   value: val,
   onValueChange: (v) => {
-    val = v
+    val = v;
   },
-}
+};

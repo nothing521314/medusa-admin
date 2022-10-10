@@ -1,4 +1,4 @@
-import clsx from "clsx"
+import clsx from "clsx";
 import React, {
   forwardRef,
   useContext,
@@ -6,57 +6,57 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
-} from "react"
-import AmountField from "react-currency-input-field"
-import { Option } from "../../../types/shared"
-import { currencies, CurrencyType } from "../../../utils/currencies"
-import { getDecimalDigits, normalizeAmount } from "../../../utils/prices"
-import InputError from "../../atoms/input-error"
-import Tooltip from "../../atoms/tooltip"
-import MinusIcon from "../../fundamentals/icons/minus-icon"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import InputHeader from "../../fundamentals/input-header"
-import Input from "../../molecules/input"
-import Select from "../../molecules/select"
+} from "react";
+import AmountField from "react-currency-input-field";
+import { Option } from "../../../types/shared";
+import { currencies, CurrencyType } from "../../../utils/currencies";
+import { getDecimalDigits, normalizeAmount } from "../../../utils/prices";
+import InputError from "../../atoms/input-error";
+import Tooltip from "../../atoms/tooltip";
+import MinusIcon from "../../fundamentals/icons/minus-icon";
+import PlusIcon from "../../fundamentals/icons/plus-icon";
+import InputHeader from "../../fundamentals/input-header";
+import Input from "../../molecules/input";
+import Select from "../../molecules/select";
 
 type CurrencyInputProps = {
-  currencyCodes?: string[]
-  currentCurrency?: string
-  size?: "small" | "medium" | "full"
-  readOnly?: boolean
-  hideCurrency?: boolean
-  onChange?: (currencyCode: string) => void
-  className?: React.HTMLAttributes<HTMLDivElement>["className"]
-}
+  currencyCodes?: string[];
+  currentCurrency?: string;
+  size?: "small" | "medium" | "full";
+  readOnly?: boolean;
+  hideCurrency?: boolean;
+  onChange?: (currencyCode: string) => void;
+  className?: React.HTMLAttributes<HTMLDivElement>["className"];
+};
 
 type CurrencyInputState = {
-  currencyInfo: CurrencyType | undefined
-}
+  currencyInfo: CurrencyType | undefined;
+};
 
 type AmountInputProps = {
-  label?: string
-  amount: number | undefined
-  required?: boolean
-  step?: number
-  allowNegative?: boolean
-  onChange?: (amount: number | undefined) => void
-  onValidate?: (amount: number | undefined) => boolean
-  invalidMessage?: string
-  errors?: { [x: string]: unknown }
-  name?: string
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">
+  label?: string;
+  amount: number | undefined;
+  required?: boolean;
+  step?: number;
+  allowNegative?: boolean;
+  onChange?: (amount: number | undefined) => void;
+  onValidate?: (amount: number | undefined) => boolean;
+  invalidMessage?: string;
+  errors?: { [x: string]: unknown };
+  name?: string;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">;
 
 const CurrencyContext = React.createContext<CurrencyInputState>({
   currencyInfo: undefined,
-})
+});
 
 const getCurrencyInfo = (currencyCode?: string) => {
   if (!currencyCode) {
-    return undefined
+    return undefined;
   }
-  const currencyInfo = currencies[currencyCode.toUpperCase()]
-  return currencyInfo
-}
+  const currencyInfo = currencies[currencyCode.toUpperCase()];
+  return currencyInfo;
+};
 
 const Root: React.FC<CurrencyInputProps> = ({
   currentCurrency,
@@ -72,11 +72,11 @@ const Root: React.FC<CurrencyInputProps> = ({
     currencyCodes?.map((code) => ({
       label: code.toUpperCase(),
       value: code,
-    })) ?? []
+    })) ?? [];
 
   const [selectedCurrency, setSelectedCurrency] = useState<
     CurrencyType | undefined
-  >(getCurrencyInfo(currentCurrency))
+  >(getCurrencyInfo(currentCurrency));
 
   const [value, setValue] = useState<Option | null>(
     currentCurrency
@@ -85,33 +85,33 @@ const Root: React.FC<CurrencyInputProps> = ({
           value: currentCurrency,
         }
       : null
-  )
+  );
 
   useEffect(() => {
     if (currentCurrency) {
-      setSelectedCurrency(getCurrencyInfo(currentCurrency))
+      setSelectedCurrency(getCurrencyInfo(currentCurrency));
       setValue({
         label: currentCurrency.toUpperCase(),
         value: currentCurrency,
-      })
+      });
     }
-  }, [currentCurrency])
+  }, [currentCurrency]);
 
   const onCurrencyChange = (currency: Option) => {
     // Should not be nescessary, but the component we use for select input
     // has a bug where it passes a null object if you click on the label
     // of the already selected value
     if (!currency) {
-      return
+      return;
     }
 
-    setValue(currency)
-    setSelectedCurrency(getCurrencyInfo(currency.value))
+    setValue(currency);
+    setSelectedCurrency(getCurrencyInfo(currency.value));
 
     if (onChange) {
-      onChange(currency.value)
+      onChange(currency.value);
     }
-  }
+  };
 
   return (
     <CurrencyContext.Provider
@@ -151,8 +151,8 @@ const Root: React.FC<CurrencyInputProps> = ({
         {children && <div className="flex-1">{children}</div>}
       </div>
     </CurrencyContext.Provider>
-  )
-}
+  );
+};
 
 const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
   (
@@ -171,67 +171,67 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
     }: AmountInputProps,
     ref
   ) => {
-    const { currencyInfo } = useContext(CurrencyContext)
-    const [invalid, setInvalid] = useState<boolean>(false)
+    const { currencyInfo } = useContext(CurrencyContext);
+    const [invalid, setInvalid] = useState<boolean>(false);
     const [value, setValue] = useState<string | undefined>(
       amount ? `${normalizeAmount(currencyInfo?.code!, amount)}` : undefined
-    )
-    const inputRef = useRef<HTMLInputElement | null>(null)
+    );
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
       ref,
       () => inputRef.current
-    )
+    );
 
     useEffect(() => {
-      inputRef.current?.dispatchEvent(new Event("blur"))
-    }, [currencyInfo?.decimal_digits])
+      inputRef.current?.dispatchEvent(new Event("blur"));
+    }, [currencyInfo?.decimal_digits]);
 
     useEffect(() => {
       if (currencyInfo && amount) {
-        setValue(`${normalizeAmount(currencyInfo?.code, amount)}`)
+        setValue(`${normalizeAmount(currencyInfo?.code, amount)}`);
       }
-    }, [amount])
+    }, [amount]);
 
     const handleChange = (value) => {
-      let persistedAmount: number | undefined = undefined
+      let persistedAmount: number | undefined = undefined;
 
       if (!value) {
-        value = 0
+        value = 0;
       }
 
       if (currencyInfo) {
-        const amount = parseFloat(value)
-        const multiplier = getDecimalDigits(currencyInfo.code)
-        persistedAmount = multiplier * amount
+        const amount = parseFloat(value);
+        const multiplier = getDecimalDigits(currencyInfo.code);
+        persistedAmount = multiplier * amount;
       }
 
       if (onChange && typeof persistedAmount !== "undefined") {
-        const updateAmount = Math.round(persistedAmount)
-        let update = true
+        const updateAmount = Math.round(persistedAmount);
+        let update = true;
         if (onValidate) {
-          update = onValidate(updateAmount)
+          update = onValidate(updateAmount);
         }
 
         if (update) {
-          onChange(updateAmount)
-          setValue(`${value}`)
-          setInvalid(false)
+          onChange(updateAmount);
+          setValue(`${value}`);
+          setInvalid(false);
         } else {
-          setInvalid(true)
+          setInvalid(true);
         }
       }
-    }
+    };
 
     const handleManualValueChange = (val: number) => {
-      const newValue = parseFloat(value ?? "0") + val
+      const newValue = parseFloat(value ?? "0") + val;
 
       if (!allowNegative && newValue < 0) {
-        return
+        return;
       }
 
-      handleChange(`${newValue}`)
-    }
+      handleChange(`${newValue}`);
+    };
 
     return (
       <div {...rest}>
@@ -286,8 +286,8 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
         </div>
         <InputError name={name} errors={errors} />
       </div>
-    )
+    );
   }
-)
+);
 
-export default { Root, Amount }
+export default { Root, Amount };

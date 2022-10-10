@@ -1,6 +1,6 @@
-import moment from "moment"
-import React, { useMemo } from "react"
-import Tooltip from "../../atoms/tooltip"
+import moment from "moment";
+import React, { useMemo } from "react";
+import Tooltip from "../../atoms/tooltip";
 
 const useCollectionTableColumn = () => {
   const columns = useMemo(
@@ -9,7 +9,7 @@ const useCollectionTableColumn = () => {
         Header: "Title",
         accessor: "title",
         Cell: ({ row: { original } }) => {
-          return <div className="flex items-center">{original.title}</div>
+          return <div className="flex items-center">{original.title}</div>;
         },
       },
       {
@@ -39,14 +39,14 @@ const useCollectionTableColumn = () => {
         Header: "Products",
         accessor: "products",
         Cell: ({ cell: { value } }) => {
-          return <div>{value?.length || "-"}</div>
+          return <div>{value?.length || "-"}</div>;
         },
       },
     ],
     []
-  )
+  );
 
-  return [columns]
-}
+  return [columns];
+};
 
-export default useCollectionTableColumn
+export default useCollectionTableColumn;

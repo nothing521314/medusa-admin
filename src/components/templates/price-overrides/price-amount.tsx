@@ -1,15 +1,15 @@
-import React from "react"
-import useToggleState from "../../../hooks/use-toggle-state"
-import { currencies } from "../../../utils/currencies"
-import Button from "../../fundamentals/button"
-import EyeIcon from "../../fundamentals/icons/eye-icon"
-import EyeOffIcon from "../../fundamentals/icons/eye-off-icon"
-import MedusaPriceInput from "../../organisms/medusa-price-input"
+import React from "react";
+import useToggleState from "../../../hooks/use-toggle-state";
+import { currencies } from "../../../utils/currencies";
+import Button from "../../fundamentals/button";
+import EyeIcon from "../../fundamentals/icons/eye-icon";
+import EyeOffIcon from "../../fundamentals/icons/eye-off-icon";
+import MedusaPriceInput from "../../organisms/medusa-price-input";
 
 const PriceAmount = ({ value, onChange }) => {
-  const { state: showRegions, toggle } = useToggleState()
+  const { state: showRegions, toggle } = useToggleState();
 
-  const currencyName = currencies[value.currency_code?.toUpperCase()]?.name
+  const currencyName = currencies[value.currency_code?.toUpperCase()]?.name;
   return (
     <div className="flex flex-col gap-3 py-3 first:border-t border-grey-20 border-solid border-b last:border-b-0">
       <div className="flex items-center justify-between">
@@ -69,7 +69,7 @@ const PriceAmount = ({ value, onChange }) => {
         </ul>
       )} */}
     </div>
-  )
-}
+  );
+};
 
-export default PriceAmount
+export default PriceAmount;

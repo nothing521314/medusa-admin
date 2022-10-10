@@ -1,9 +1,9 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 type IBellNotiIconProps = IconProps & {
-  accentColor?: string
-}
+  accentColor?: string;
+};
 
 const BellNotiIcon: React.FC<IBellNotiIconProps> = ({
   size = "24px",
@@ -35,7 +35,7 @@ const BellNotiIcon: React.FC<IBellNotiIconProps> = ({
       />
       <circle cx="17" cy="7" r="3" fill={accentColor} />
     </svg>
-  )
-}
+  );
+};
 
-export default BellNotiIcon
+export default BellNotiIcon;

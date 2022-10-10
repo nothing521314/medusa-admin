@@ -1,11 +1,11 @@
-import clsx from "clsx"
-import React from "react"
-import TaxesIcon from "../../fundamentals/icons/taxes-icon"
-import Tooltip from "../tooltip"
+import clsx from "clsx";
+import React from "react";
+import TaxesIcon from "../../fundamentals/icons/taxes-icon";
+import Tooltip from "../tooltip";
 
 type Props = {
-  includesTax?: boolean
-}
+  includesTax?: boolean;
+};
 
 const IncludesTaxTooltip = ({ includesTax }: Props) => {
   return (
@@ -20,7 +20,7 @@ const IncludesTaxTooltip = ({ includesTax }: Props) => {
         />
       </div>
     </Tooltip>
-  )
-}
+  );
+};
 
-export default IncludesTaxTooltip
+export default IncludesTaxTooltip;

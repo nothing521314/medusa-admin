@@ -1,11 +1,11 @@
-import clsx from "clsx"
-import React from "react"
+import clsx from "clsx";
+import React from "react";
 
 type NumberScrollerProps = {
-  numbers: number[]
-  selected: number
-  onSelect: (value: number) => void
-} & React.HTMLAttributes<HTMLDivElement>
+  numbers: number[];
+  selected: number;
+  onSelect: (value: number) => void;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const NumberScroller: React.FC<NumberScrollerProps> = ({
   numbers,
@@ -38,10 +38,10 @@ const NumberScroller: React.FC<NumberScrollerProps> = ({
               {n.toLocaleString("en-US", { minimumIntegerDigits: 2 })}
             </button>
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default NumberScroller
+export default NumberScroller;

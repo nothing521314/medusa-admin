@@ -1,9 +1,9 @@
-import React, { FC } from "react"
-import IconProps from "./types/icon-type"
+import React, { FC } from "react";
+import IconProps from "./types/icon-type";
 
 const FileIcon: FC<IconProps> = (props) => {
-  const { fill, size, ...attributes } = props
-  const line = fill || "#2DD4BF"
+  const { fill, size, ...attributes } = props;
+  const line = fill || "#2DD4BF";
   return (
     <svg
       width={size || 20}
@@ -49,7 +49,7 @@ const FileIcon: FC<IconProps> = (props) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default FileIcon
+export default FileIcon;

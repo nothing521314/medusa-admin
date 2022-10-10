@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import BackspaceIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import BackspaceIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/BackspaceIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof BackspaceIcon>
+} as ComponentMeta<typeof BackspaceIcon>;
 
-const Template = (args) => <BackspaceIcon {...args} />
+const Template = (args) => <BackspaceIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "16",
   color: "currentColor",
-}
+};

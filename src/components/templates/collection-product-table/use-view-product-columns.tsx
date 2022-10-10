@@ -1,8 +1,8 @@
-import { Link } from "gatsby"
-import React, { useMemo } from "react"
-import { Column } from "react-table"
-import Table from "../../molecules/table"
-import { decideStatus, SimpleProductType } from "./utils"
+import { Link } from "gatsby";
+import React, { useMemo } from "react";
+import { Column } from "react-table";
+import Table from "../../molecules/table";
+import { decideStatus, SimpleProductType } from "./utils";
 
 const useViewProductColumns = () => {
   const columns: Column<SimpleProductType>[] = useMemo(
@@ -14,7 +14,7 @@ const useViewProductColumns = () => {
             <Table.Cell className="w-[0%] pl-base pr-large">
               <div>{row.index + 1}</div>
             </Table.Cell>
-          )
+          );
         },
       },
       {
@@ -51,9 +51,9 @@ const useViewProductColumns = () => {
       },
     ],
     []
-  )
+  );
 
-  return columns
-}
+  return columns;
+};
 
-export default useViewProductColumns
+export default useViewProductColumns;

@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const PublishIcon: React.FC<IconProps> = ({
   size = "20",
@@ -51,7 +51,7 @@ const PublishIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default PublishIcon
+export default PublishIcon;

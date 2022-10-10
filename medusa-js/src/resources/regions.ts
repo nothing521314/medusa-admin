@@ -1,6 +1,6 @@
-import { ResponsePromise } from "../typings"
-import { StoreRegionsListRes, StoreRegionsRes } from "@medusajs/medusa"
-import BaseResource from "./base"
+import { ResponsePromise } from "../typings";
+import { StoreRegionsListRes, StoreRegionsRes } from "@medusajs/medusa";
+import BaseResource from "./base";
 
 class RegionsResource extends BaseResource {
   /**
@@ -8,9 +8,11 @@ class RegionsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreRegionsListRes>}
    */
-  list(customHeaders: Record<string, any> = {}): ResponsePromise<StoreRegionsListRes> {
-    const path = `/store/regions`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+  list(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreRegionsListRes> {
+    const path = `/store/regions`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -19,10 +21,13 @@ class RegionsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreRegionsRes>}
    */
-  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreRegionsRes> {
-    const path = `/store/regions/${id}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreRegionsRes> {
+    const path = `/store/regions/${id}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 }
 
-export default RegionsResource
+export default RegionsResource;

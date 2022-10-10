@@ -3,32 +3,32 @@ import {
   Order,
   Return,
   ReturnItem,
-} from "@medusajs/medusa"
-import React, { useEffect, useMemo, useState } from "react"
-import Button from "../../../../components/fundamentals/button"
-import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
-import Modal from "../../../../components/molecules/modal"
-import CurrencyInput from "../../../../components/organisms/currency-input"
-import RMASelectReturnProductTable from "../../../../components/organisms/rma-select-receive-product-table"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import { displayAmount } from "../../../../utils/prices"
+} from "@medusajs/medusa";
+import React, { useEffect, useMemo, useState } from "react";
+import Button from "../../../../components/fundamentals/button";
+import EditIcon from "../../../../components/fundamentals/icons/edit-icon";
+import Modal from "../../../../components/molecules/modal";
+import CurrencyInput from "../../../../components/organisms/currency-input";
+import RMASelectReturnProductTable from "../../../../components/organisms/rma-select-receive-product-table";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import { displayAmount } from "../../../../utils/prices";
 
 type Item = {
-  item_id: string
-  quantity: number
-}
+  item_id: string;
+  quantity: number;
+};
 
 type ReceiveMenuProps = {
-  order: Omit<Order, "beforeInsert">
-  returnRequest: Omit<Return, "beforeInsert">
-  onDismiss: () => void
-  onReceiveSwap?: (items: Item[]) => Promise<void>
-  onReceiveReturn?: (items: Item[], refund?: number) => Promise<void>
-  refunded?: boolean
-}
+  order: Omit<Order, "beforeInsert">;
+  returnRequest: Omit<Return, "beforeInsert">;
+  onDismiss: () => void;
+  onReceiveSwap?: (items: Item[]) => Promise<void>;
+  onReceiveReturn?: (items: Item[], refund?: number) => Promise<void>;
+  refunded?: boolean;
+};
 
-type LineItem = Omit<RawLineItem, "beforeInsert">
+type LineItem = Omit<RawLineItem, "beforeInsert">;
 
 const ReceiveMenu: React.FC<ReceiveMenuProps> = ({
   order,
@@ -38,100 +38,101 @@ const ReceiveMenu: React.FC<ReceiveMenuProps> = ({
   onDismiss,
   refunded,
 }) => {
-  const [submitting, setSubmitting] = useState(false)
-  const [refundEdited, setRefundEdited] = useState(false)
-  const [refundAmount, setRefundAmount] = useState(0)
+  const [submitting, setSubmitting] = useState(false);
+  const [refundEdited, setRefundEdited] = useState(false);
+  const [refundAmount, setRefundAmount] = useState(0);
   const [toReturn, setToReturn] = useState<
     Record<string, { quantity: number }>
-  >({})
+  >({});
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   const allItems: Omit<LineItem, "beforeInsert">[] = useMemo(() => {
-    const idLookUp = returnRequest.items.map((i) => i.item_id)
+    const idLookUp = returnRequest.items.map((i) => i.item_id);
 
-    let allItems = [...order.items]
+    let allItems = [...order.items];
 
     if (order.swaps && order.swaps.length) {
       for (const swap of order.swaps) {
-        allItems = [...allItems, ...swap.additional_items]
+        allItems = [...allItems, ...swap.additional_items];
       }
     }
 
     if (order.claims && order.claims.length) {
       for (const claim of order.claims) {
-        allItems = [...allItems, ...claim.additional_items]
+        allItems = [...allItems, ...claim.additional_items];
       }
     }
 
-    const withAdjustedQuantity = allItems
-      .filter((i) => idLookUp.includes(i.id))
+    const withAdjustedQuantity = allItems.filter((i) =>
+      idLookUp.includes(i.id)
+    );
 
-    return withAdjustedQuantity
-  }, [order, returnRequest])
+    return withAdjustedQuantity;
+  }, [order, returnRequest]);
 
   useEffect(() => {
-    const returns = {}
+    const returns = {};
 
     returnRequest.items.forEach((i: ReturnItem) => {
-      const item = allItems.find((l) => l.id === i.item_id)
+      const item = allItems.find((l) => l.id === i.item_id);
       if (item && item.quantity - item.returned_quantity > 0) {
         returns[i.item_id] = {
           ...item,
-          quantity: returnRequest.items.find((i) => i.item_id === item.id)?.quantity
-        }
+          quantity: returnRequest.items.find((i) => i.item_id === item.id)
+            ?.quantity,
+        };
       }
-    })
+    });
 
-    setToReturn(returns)
-  }, [allItems])
+    setToReturn(returns);
+  }, [allItems]);
 
   const shippingTaxRate = useMemo(() => {
     return returnRequest.shipping_method.tax_lines.reduce((acc, curr) => {
-      return acc + curr.rate
-    }, 0)
-  }, [returnRequest])
+      return acc + curr.rate;
+    }, 0);
+  }, [returnRequest]);
 
   useEffect(() => {
     if (!Object.entries(toReturn).length) {
-      setRefundAmount(0)
-      return
+      setRefundAmount(0);
+      return;
     }
 
     const items = Object.keys(toReturn)
       .map((t) => ({
         ...allItems.find((i) => i.id === t),
       }))
-      .filter((i) => typeof i !== "undefined") as LineItem[]
+      .filter((i) => typeof i !== "undefined") as LineItem[];
 
     const itemTotal = items.reduce((acc: number, curr: LineItem): number => {
       const unitRefundable =
-        (curr.refundable || 0) / (curr.quantity - curr.returned_quantity)
+        (curr.refundable || 0) / (curr.quantity - curr.returned_quantity);
 
-      return acc + unitRefundable * toReturn[curr.id].quantity
-    }, 0)
+      return acc + unitRefundable * toReturn[curr.id].quantity;
+    }, 0);
 
     const shippingTotal =
       (returnRequest.shipping_method &&
-        returnRequest.shipping_method.price *
-          (1 + shippingTaxRate / 100)) ||
-      0
+        returnRequest.shipping_method.price * (1 + shippingTaxRate / 100)) ||
+      0;
 
-    const total = itemTotal - shippingTotal
+    const total = itemTotal - shippingTotal;
 
     if (!refundEdited || total < refundAmount) {
-      setRefundAmount(refundAmount < 0 ? 0 : total)
+      setRefundAmount(refundAmount < 0 ? 0 : total);
     }
-  }, [toReturn, shippingTaxRate])
+  }, [toReturn, shippingTaxRate]);
 
   const onSubmit = () => {
     const items = Object.keys(toReturn).map((k) => ({
       item_id: k,
       quantity: toReturn[k].quantity,
-    }))
+    }));
 
     if (returnRequest.swap_id && onReceiveSwap) {
-      setSubmitting(true)
+      setSubmitting(true);
       return onReceiveSwap(items)
         .then(() => onDismiss())
         .then(() =>
@@ -140,11 +141,11 @@ const ReceiveMenu: React.FC<ReceiveMenuProps> = ({
         .catch((error) =>
           notification("Error", getErrorMessage(error), "error")
         )
-        .finally(() => setSubmitting(false))
+        .finally(() => setSubmitting(false));
     }
 
     if (!returnRequest.swap_id && onReceiveReturn) {
-      setSubmitting(true)
+      setSubmitting(true);
       return onReceiveReturn(items, Math.round(refundAmount))
         .then(() => onDismiss())
         .then(() =>
@@ -153,20 +154,20 @@ const ReceiveMenu: React.FC<ReceiveMenuProps> = ({
         .catch((error) =>
           notification("Error", getErrorMessage(error), "error")
         )
-        .finally(() => setSubmitting(false))
+        .finally(() => setSubmitting(false));
     }
-  }
+  };
 
   const handleRefundUpdated = (value: number | undefined) => {
     if (!value) {
-      return
+      return;
     }
 
     if (value < order.refundable_amount && value >= 0) {
-      setRefundEdited(true)
-      setRefundAmount(value)
+      setRefundEdited(true);
+      setRefundAmount(value);
     }
-  }
+  };
 
   return (
     <Modal handleClose={onDismiss}>
@@ -264,7 +265,7 @@ const ReceiveMenu: React.FC<ReceiveMenuProps> = ({
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default ReceiveMenu
+export default ReceiveMenu;

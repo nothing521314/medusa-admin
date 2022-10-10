@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const TriangleRightIcon: React.FC<IconProps> = ({
   size = "20",
@@ -22,7 +22,7 @@ const TriangleRightIcon: React.FC<IconProps> = ({
         fill={color}
       />
     </svg>
-  )
-}
+  );
+};
 
-export default TriangleRightIcon
+export default TriangleRightIcon;

@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import SidedMouthFaceIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import SidedMouthFaceIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/SidedMouthFaceIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof SidedMouthFaceIcon>
+} as ComponentMeta<typeof SidedMouthFaceIcon>;
 
-const Template = args => <SidedMouthFaceIcon {...args} />
+const Template = (args) => <SidedMouthFaceIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

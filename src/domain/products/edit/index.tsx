@@ -1,37 +1,37 @@
-import { RouteComponentProps } from "@reach/router"
-import { navigate } from "gatsby"
-import { useAdminProduct } from "../../../../medusa-react"
-import React from "react"
-import ReactJson from "react-json-view"
-import BackButton from "../../../components/atoms/back-button"
-import Spinner from "../../../components/atoms/spinner"
-import Section from "../../../components/organisms/section"
-import { getErrorStatus } from "../../../utils/get-error-status"
-import AttributesSection from "./sections/attributes"
-import GeneralSection from "./sections/general"
-import MediaSection from "./sections/media"
-import RawSection from "./sections/raw"
-import ThumbnailSection from "./sections/thumbnail"
-import VariantsSection from "./sections/variants"
+import { RouteComponentProps } from "@reach/router";
+import { navigate } from "gatsby";
+import { useAdminProduct } from "../../../../medusa-react";
+import React from "react";
+import ReactJson from "react-json-view";
+import BackButton from "../../../components/atoms/back-button";
+import Spinner from "../../../components/atoms/spinner";
+import Section from "../../../components/organisms/section";
+import { getErrorStatus } from "../../../utils/get-error-status";
+import AttributesSection from "./sections/attributes";
+import GeneralSection from "./sections/general";
+import MediaSection from "./sections/media";
+import RawSection from "./sections/raw";
+import ThumbnailSection from "./sections/thumbnail";
+import VariantsSection from "./sections/variants";
 
 interface EditProps extends RouteComponentProps {
-  id?: string
+  id?: string;
 }
 
 const Edit = ({ id }: EditProps) => {
-  const { product, status, error } = useAdminProduct(id || "")
+  const { product, status, error } = useAdminProduct(id || "");
 
   if (error) {
-    let message = "An unknown error occurred"
+    let message = "An unknown error occurred";
 
-    const errorStatus = getErrorStatus(error)
+    const errorStatus = getErrorStatus(error);
 
     if (errorStatus) {
-      message = errorStatus.message
+      message = errorStatus.message;
 
       if (errorStatus.status === 404) {
-        navigate("/404")
-        return null
+        navigate("/404");
+        return null;
       }
     }
 
@@ -48,7 +48,7 @@ const Edit = ({ id }: EditProps) => {
           />
         </div>
       </Section>
-    )
+    );
   }
 
   if (status === "loading" || !product) {
@@ -57,7 +57,7 @@ const Edit = ({ id }: EditProps) => {
       <div className="w-full h-[calc(100vh-64px)] flex items-center justify-center">
         <Spinner variant="secondary" />
       </div>
-    )
+    );
   }
 
   return (
@@ -80,7 +80,7 @@ const Edit = ({ id }: EditProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Edit
+export default Edit;

@@ -1,10 +1,10 @@
-import * as RadixCollapsible from "@radix-ui/react-collapsible"
-import React from "react"
-import ChevronDownIcon from "../../fundamentals/icons/chevron-down"
-import ChevronUpIcon from "../../fundamentals/icons/chevron-up"
+import * as RadixCollapsible from "@radix-ui/react-collapsible";
+import React from "react";
+import ChevronDownIcon from "../../fundamentals/icons/chevron-down";
+import ChevronUpIcon from "../../fundamentals/icons/chevron-up";
 
 const SectionCollapsible = ({ title, length, children, ...props }) => {
-  const [open, setOpen] = React.useState(true)
+  const [open, setOpen] = React.useState(true);
   return (
     <RadixCollapsible.Root open={open} onOpenChange={setOpen} {...props}>
       <RadixCollapsible.Trigger asChild>
@@ -22,7 +22,7 @@ const SectionCollapsible = ({ title, length, children, ...props }) => {
       </RadixCollapsible.Trigger>
       <RadixCollapsible.Content>{children}</RadixCollapsible.Content>
     </RadixCollapsible.Root>
-  )
-}
+  );
+};
 
-export default SectionCollapsible
+export default SectionCollapsible;

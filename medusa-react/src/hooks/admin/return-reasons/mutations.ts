@@ -2,12 +2,12 @@ import {
   AdminPostReturnReasonsReasonReq,
   AdminPostReturnReasonsReq,
   AdminReturnReasonsRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { adminReturnReasonKeys } from "."
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { adminReturnReasonKeys } from ".";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminCreateReturnReason = (
   options?: UseMutationOptions<
@@ -16,15 +16,15 @@ export const useAdminCreateReturnReason = (
     AdminPostReturnReasonsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostReturnReasonsReq) =>
       client.admin.returnReasons.create(payload),
     buildOptions(queryClient, adminReturnReasonKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdateReturnReason = (
   id: string,
@@ -34,8 +34,8 @@ export const useAdminUpdateReturnReason = (
     AdminPostReturnReasonsReasonReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostReturnReasonsReasonReq) =>
@@ -45,15 +45,15 @@ export const useAdminUpdateReturnReason = (
       [adminReturnReasonKeys.detail(id), adminReturnReasonKeys.lists()],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteReturnReason = (
   id: string,
   options?: UseMutationOptions
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.returnReasons.delete(id),
@@ -62,5 +62,5 @@ export const useAdminDeleteReturnReason = (
       [adminReturnReasonKeys.detail(id), adminReturnReasonKeys.lists()],
       options
     )
-  )
-}
+  );
+};

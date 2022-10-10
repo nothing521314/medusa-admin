@@ -2,9 +2,9 @@ import {
   StoreCustomersRes,
   StorePostCustomersCustomerAddressesAddressReq,
   StorePostCustomersCustomerAddressesReq,
-} from "@medusajs/medusa"
-import { ResponsePromise } from "../typings"
-import BaseResource from "./base"
+} from "@medusajs/medusa";
+import { ResponsePromise } from "../typings";
+import BaseResource from "./base";
 
 class AddressesResource extends BaseResource {
   /**
@@ -17,8 +17,8 @@ class AddressesResource extends BaseResource {
     payload: StorePostCustomersCustomerAddressesReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCustomersRes> {
-    const path = `/store/customers/me/addresses`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/store/customers/me/addresses`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -31,8 +31,8 @@ class AddressesResource extends BaseResource {
     address_id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCustomersRes> {
-    const path = `/store/customers/me/addresses/${address_id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/store/customers/me/addresses/${address_id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -47,9 +47,9 @@ class AddressesResource extends BaseResource {
     payload: StorePostCustomersCustomerAddressesAddressReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCustomersRes> {
-    const path = `/store/customers/me/addresses/${address_id}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/store/customers/me/addresses/${address_id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 }
 
-export default AddressesResource
+export default AddressesResource;

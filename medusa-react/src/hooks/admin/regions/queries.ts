@@ -3,18 +3,18 @@ import {
   AdminRegionsRes,
   AdminGetRegionsParams,
   AdminGetRegionsRegionFulfillmentOptionsRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_REGIONS_QUERY_KEY = `admin_regions` as const
+const ADMIN_REGIONS_QUERY_KEY = `admin_regions` as const;
 
-export const adminRegionKeys = queryKeysFactory(ADMIN_REGIONS_QUERY_KEY)
+export const adminRegionKeys = queryKeysFactory(ADMIN_REGIONS_QUERY_KEY);
 
-type RegionQueryKeys = typeof adminRegionKeys
+type RegionQueryKeys = typeof adminRegionKeys;
 
 export const useAdminRegions = (
   query?: AdminGetRegionsParams,
@@ -24,14 +24,14 @@ export const useAdminRegions = (
     ReturnType<RegionQueryKeys["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminRegionKeys.list(query),
     () => client.admin.regions.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminRegion = (
   id: string,
@@ -41,14 +41,14 @@ export const useAdminRegion = (
     ReturnType<RegionQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminRegionKeys.detail(id),
     () => client.admin.regions.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminRegionFulfillmentOptions = (
   regionId: string,
@@ -58,11 +58,11 @@ export const useAdminRegionFulfillmentOptions = (
     ReturnType<RegionQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminRegionKeys.detail(`${regionId}_fullfillment-options`),
     () => client.admin.regions.retrieveFulfillmentOptions(regionId),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

@@ -1,5 +1,5 @@
-import { ValidationRule } from "react-hook-form"
-import { normalizeAmount } from "./prices"
+import { ValidationRule } from "react-hook-form";
+import { normalizeAmount } from "./prices";
 
 /**
  * Utility functions for validating form inputs.
@@ -40,28 +40,30 @@ const FormValidator = {
       message: `${name} must be less than or equal to ${getNormalizedAmount(
         currency
       )}.`,
-    }
+    };
   },
   validateMaxInteger: (name: string, amount: number, currency?: string) => {
     return (
       amount <= MAX_INTEGER ||
       `${name} must be less than or equal to ${getNormalizedAmount(currency)}.`
-    )
+    );
   },
-}
+};
 
 /**
  * The maximum integer value that can be stored in the database.
  */
-const MAX_INTEGER = 2147483647
+const MAX_INTEGER = 2147483647;
 
 /**
  * Gets the normalized amount for the given currency, and if not provided then returns the MAX_INTEGER.
  */
 const getNormalizedAmount = (currency?: string) => {
-  const amount = currency ? normalizeAmount(currency, MAX_INTEGER) : MAX_INTEGER
+  const amount = currency
+    ? normalizeAmount(currency, MAX_INTEGER)
+    : MAX_INTEGER;
 
-  return amount.toLocaleString()
-}
+  return amount.toLocaleString();
+};
 
-export default FormValidator
+export default FormValidator;

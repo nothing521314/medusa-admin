@@ -1,27 +1,27 @@
-import _ from "lodash"
-import * as React from "react"
-import { v4 as uuidv4 } from "uuid"
-import Button from "../../fundamentals/button"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import IconTooltip from "../../molecules/icon-tooltip"
-import Modal from "../../molecules/modal"
-import CurrencyInput from "../../organisms/currency-input"
+import _ from "lodash";
+import * as React from "react";
+import { v4 as uuidv4 } from "uuid";
+import Button from "../../fundamentals/button";
+import PlusIcon from "../../fundamentals/icons/plus-icon";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import IconTooltip from "../../molecules/icon-tooltip";
+import Modal from "../../molecules/modal";
+import CurrencyInput from "../../organisms/currency-input";
 
 export type PriceType = {
-  currency_code: string
-  amount: number
-  id?: string
-}
+  currency_code: string;
+  amount: number;
+  id?: string;
+};
 
 type EditDenominationsModalProps = {
-  defaultDenominations: PriceType[]
-  handleClose: () => void
-  onSubmit: (denominations: PriceType[]) => void
-  defaultNewAmount?: number
-  defaultNewCurrencyCode?: string
-  currencyCodes?: string[]
-}
+  defaultDenominations: PriceType[];
+  handleClose: () => void;
+  onSubmit: (denominations: PriceType[]) => void;
+  defaultNewAmount?: number;
+  defaultNewCurrencyCode?: string;
+  currencyCodes?: string[];
+};
 
 const EditDenominationsModal = ({
   defaultDenominations = [],
@@ -32,56 +32,56 @@ const EditDenominationsModal = ({
 }: EditDenominationsModalProps) => {
   const [denominations, setDenominations] = React.useState(
     augmentWithIds(defaultDenominations)
-  )
+  );
   const selectedCurrencies = denominations.map(
     (denomination) => denomination.currency_code
-  )
+  );
   const availableCurrencies = currencyCodes?.filter(
     (currency) => !selectedCurrencies.includes(currency)
-  )
+  );
 
   const onAmountChange = (index) => {
     return (amount) => {
-      const newDenominations = denominations.slice()
-      newDenominations[index] = { ...newDenominations[index], amount }
-      setDenominations(newDenominations)
-    }
-  }
+      const newDenominations = denominations.slice();
+      newDenominations[index] = { ...newDenominations[index], amount };
+      setDenominations(newDenominations);
+    };
+  };
 
   const onCurrencyChange = (index) => {
     return (currencyCode) => {
-      const newDenominations = denominations.slice()
+      const newDenominations = denominations.slice();
       newDenominations[index] = {
         ...newDenominations[index],
         currency_code: currencyCode,
-      }
-      setDenominations(newDenominations)
-    }
-  }
+      };
+      setDenominations(newDenominations);
+    };
+  };
 
   const onClickDelete = (index) => {
     return () => {
-      const newDenominations = denominations.slice()
-      newDenominations.splice(index, 1)
-      setDenominations(newDenominations)
-    }
-  }
+      const newDenominations = denominations.slice();
+      newDenominations.splice(index, 1);
+      setDenominations(newDenominations);
+    };
+  };
 
   const appendDenomination = () => {
     const newDenomination = {
       amount: defaultNewAmount,
       currency_code: availableCurrencies[0],
-    }
-    setDenominations([...denominations, augmentWithId(newDenomination)])
-  }
+    };
+    setDenominations([...denominations, augmentWithId(newDenomination)]);
+  };
 
   const submitHandler = () => {
-    const strippedDenominations = stripDenominationFromIndexId(denominations)
+    const strippedDenominations = stripDenominationFromIndexId(denominations);
 
     if (onSubmit) {
-      onSubmit(strippedDenominations)
+      onSubmit(strippedDenominations);
     }
-  }
+  };
 
   return (
     <Modal handleClose={handleClose}>
@@ -125,7 +125,7 @@ const EditDenominationsModal = ({
                     />
                   </button>
                 </div>
-              )
+              );
             })}
           </div>
           <div className="mt-large">
@@ -163,17 +163,17 @@ const EditDenominationsModal = ({
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
-export default EditDenominationsModal
+export default EditDenominationsModal;
 
-const augmentWithId = (obj) => ({ ...obj, indexId: uuidv4() })
+const augmentWithId = (obj) => ({ ...obj, indexId: uuidv4() });
 
 const augmentWithIds = (list) => {
-  return list.map(augmentWithId)
-}
+  return list.map(augmentWithId);
+};
 
 const stripDenominationFromIndexId = (list) => {
-  return list.map((element) => _.omit(element, "indexId"))
-}
+  return list.map((element) => _.omit(element, "indexId"));
+};

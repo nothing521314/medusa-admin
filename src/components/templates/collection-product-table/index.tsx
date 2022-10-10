@@ -1,39 +1,39 @@
-import { useAdminProducts } from "../../../../medusa-react"
-import React, { useEffect, useState } from "react"
-import { Column, usePagination, useRowSelect, useTable } from "react-table"
-import { useDebounce } from "../../../hooks/use-debounce"
-import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox"
-import Table, { TablePagination } from "../../molecules/table"
-import { FilteringOptionProps } from "../../molecules/table/filtering-option"
-import useCollectionProductColumns from "./use-collection-product-columns"
+import { useAdminProducts } from "../../../../medusa-react";
+import React, { useEffect, useState } from "react";
+import { Column, usePagination, useRowSelect, useTable } from "react-table";
+import { useDebounce } from "../../../hooks/use-debounce";
+import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox";
+import Table, { TablePagination } from "../../molecules/table";
+import { FilteringOptionProps } from "../../molecules/table/filtering-option";
+import useCollectionProductColumns from "./use-collection-product-columns";
 
 type CollectionProductTableProps = {
-  addedProducts: any[]
-  setProducts: (products: any) => void
-}
+  addedProducts: any[];
+  setProducts: (products: any) => void;
+};
 
 const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
   addedProducts,
   setProducts,
 }) => {
-  const [query, setQuery] = useState("")
-  const [limit, setLimit] = useState(10)
-  const [offset, setOffset] = useState(0)
-  const [numPages, setNumPages] = useState(0)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [query, setQuery] = useState("");
+  const [limit, setLimit] = useState(10);
+  const [offset, setOffset] = useState(0);
+  const [numPages, setNumPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [filteringOptions, setFilteringOptions] = useState<
     FilteringOptionProps[]
-  >([])
+  >([]);
 
-  const [selectedProducts, setSelectedProducts] = useState<any[]>([])
+  const [selectedProducts, setSelectedProducts] = useState<any[]>([]);
 
-  const debouncedSearchTerm = useDebounce(query, 500)
+  const debouncedSearchTerm = useDebounce(query, 500);
 
   const { isLoading, count, products } = useAdminProducts({
     q: debouncedSearchTerm,
     limit: limit,
     offset,
-  })
+  });
 
   useEffect(() => {
     setFilteringOptions([
@@ -54,10 +54,10 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
           },
         ],
       },
-    ])
-  }, [products])
+    ]);
+  }, [products]);
 
-  const columns = useCollectionProductColumns() as readonly Column<any[]>[]
+  const columns = useCollectionProductColumns() as readonly Column<any[]>[];
 
   const {
     rows,
@@ -80,8 +80,8 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
         pageIndex: currentPage,
         pageSize: limit,
         selectedRowIds: addedProducts?.reduce((prev, { id }) => {
-          prev[id] = true
-          return prev
+          prev[id] = true;
+          return prev;
         }, {}),
       },
       pageCount: numPages,
@@ -100,13 +100,13 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
               <Table.Cell className="w-[5%] pl-base">
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </Table.Cell>
-            )
+            );
           },
         },
         ...columns,
-      ])
+      ]);
     }
-  )
+  );
 
   useEffect(() => {
     setSelectedProducts((selectedProducts) => [
@@ -118,33 +118,33 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
           selectedProducts.findIndex((sv) => sv.id === p.id) < 0 &&
           Object.keys(selectedRowIds).findIndex((id) => id === p.id) > -1
       ) || []),
-    ])
-  }, [selectedRowIds])
+    ]);
+  }, [selectedRowIds]);
 
   const handleNext = () => {
     if (canNextPage) {
-      setOffset((old) => old + pageSize)
-      setCurrentPage((old) => old + 1)
-      nextPage()
+      setOffset((old) => old + pageSize);
+      setCurrentPage((old) => old + 1);
+      nextPage();
     }
-  }
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      setOffset((old) => old - pageSize)
-      setCurrentPage((old) => old - 1)
-      previousPage()
+      setOffset((old) => old - pageSize);
+      setCurrentPage((old) => old - 1);
+      previousPage();
     }
-  }
+  };
 
   const handleSearch = (q) => {
-    setOffset(0)
-    setQuery(q)
-  }
+    setOffset(0);
+    setQuery(q);
+  };
 
   useEffect(() => {
-    console.log("products", selectedProducts)
-  }, [selectedProducts])
+    console.log("products", selectedProducts);
+  }, [selectedProducts]);
 
   return (
     <div className="w-full h-full flex flex-col justify-between overflow-y-auto">
@@ -159,7 +159,7 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
         {isLoading || !products ? null : (
           <Table.Body {...getTableBodyProps()}>
             {rows.map((row) => {
-              prepareRow(row)
+              prepareRow(row);
               return (
                 <Table.Row
                   color={"inherit"}
@@ -167,10 +167,10 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
                   className="px-base"
                 >
                   {row.cells.map((cell, index) => {
-                    return cell.render("Cell", { index })
+                    return cell.render("Cell", { index });
                   })}
                 </Table.Row>
-              )
+              );
             })}
           </Table.Body>
         )}
@@ -189,7 +189,7 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
         hasPrev={canPreviousPage}
       />
     </div>
-  )
-}
+  );
+};
 
-export default CollectionProductTable
+export default CollectionProductTable;

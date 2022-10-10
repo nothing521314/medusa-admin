@@ -1,9 +1,9 @@
-import clsx from "clsx"
-import React from "react"
-import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
-import MinusIcon from "../../../../components/fundamentals/icons/minus-icon"
-import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
-import Table from "../../../../components/molecules/table"
+import clsx from "clsx";
+import React from "react";
+import CheckIcon from "../../../../components/fundamentals/icons/check-icon";
+import MinusIcon from "../../../../components/fundamentals/icons/minus-icon";
+import PlusIcon from "../../../../components/fundamentals/icons/plus-icon";
+import Table from "../../../../components/molecules/table";
 
 const CreateFulfillmentItemsTable = ({
   items,
@@ -13,47 +13,47 @@ const CreateFulfillmentItemsTable = ({
   setQuantities,
 }) => {
   const handleQuantity = (upOrDown, item) => {
-    const current = quantities[item.id]
+    const current = quantities[item.id];
 
-    let newQuantities = { ...quantities }
+    let newQuantities = { ...quantities };
 
     if (upOrDown === -1) {
       newQuantities = {
         ...newQuantities,
         [item.id]: current - 1,
-      }
+      };
     } else {
       newQuantities = {
         ...newQuantities,
         [item.id]: current + 1,
-      }
+      };
     }
 
-    setQuantities(newQuantities)
-  }
+    setQuantities(newQuantities);
+  };
 
   const handleFulfillmentItemToggle = (item) => {
-    const id = item.id
-    const idxOfToggled = toFulfill.indexOf(id)
+    const id = item.id;
+    const idxOfToggled = toFulfill.indexOf(id);
 
     // if already in fulfillment items, you unchecked the item
     // so we remove the item
     if (idxOfToggled !== -1) {
-      const newFulfills = [...toFulfill]
-      newFulfills.splice(idxOfToggled, 1)
-      setToFulfill(newFulfills)
+      const newFulfills = [...toFulfill];
+      newFulfills.splice(idxOfToggled, 1);
+      setToFulfill(newFulfills);
     } else {
-      const newFulfills = [...toFulfill, id]
-      setToFulfill(newFulfills)
+      const newFulfills = [...toFulfill, id];
+      setToFulfill(newFulfills);
 
       const newQuantities = {
         ...quantities,
         [item.id]: item.quantity - item.fulfilled_quantity,
-      }
+      };
 
-      setQuantities(newQuantities)
+      setQuantities(newQuantities);
     }
-  }
+  };
 
   return (
     <Table>
@@ -64,7 +64,7 @@ const CreateFulfillmentItemsTable = ({
       </Table.HeadRow>
       <Table.Body>
         {items?.map((item) => {
-          const checked = toFulfill.includes(item.id)
+          const checked = toFulfill.includes(item.id);
           return (
             <>
               <Table.Row className={"border-b-grey-0 hover:bg-grey-0"}>
@@ -144,11 +144,11 @@ const CreateFulfillmentItemsTable = ({
                 </Table.Cell>
               </Table.Row>
             </>
-          )
+          );
         })}
       </Table.Body>
     </Table>
-  )
-}
+  );
+};
 
-export default CreateFulfillmentItemsTable
+export default CreateFulfillmentItemsTable;

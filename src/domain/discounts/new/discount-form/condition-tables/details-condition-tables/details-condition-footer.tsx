@@ -1,8 +1,8 @@
-import React, { useContext } from "react"
-import Button from "../../../../../../components/fundamentals/button"
-import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal"
-import { useConditions } from "../../../../details/conditions/add-condition/conditions-provider"
-import { DiscountConditionOperator } from "../../../../types"
+import React, { useContext } from "react";
+import Button from "../../../../../../components/fundamentals/button";
+import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal";
+import { useConditions } from "../../../../details/conditions/add-condition/conditions-provider";
+import { DiscountConditionOperator } from "../../../../types";
 
 type AddConditionFooterProps = {
   type:
@@ -10,11 +10,11 @@ type AddConditionFooterProps = {
     | "product_collections"
     | "product_types"
     | "product_tags"
-    | "customer_groups"
-  items: { id: string; label: string }[]
-  operator: DiscountConditionOperator
-  onClose: () => void
-}
+    | "customer_groups";
+  items: { id: string; label: string }[];
+  operator: DiscountConditionOperator;
+  onClose: () => void;
+};
 
 const DetailsConditionFooter: React.FC<AddConditionFooterProps> = ({
   type,
@@ -22,8 +22,8 @@ const DetailsConditionFooter: React.FC<AddConditionFooterProps> = ({
   operator,
   onClose,
 }) => {
-  const { pop, reset } = useContext(LayeredModalContext)
-  const { updateCondition, updateAndSave } = useConditions()
+  const { pop, reset } = useContext(LayeredModalContext);
+  const { updateCondition, updateAndSave } = useConditions();
 
   return (
     <div className="w-full flex justify-end gap-x-xsmall">
@@ -38,8 +38,8 @@ const DetailsConditionFooter: React.FC<AddConditionFooterProps> = ({
             type,
             items,
             operator,
-          })
-          pop()
+          });
+          pop();
         }}
       >
         Save and add more
@@ -48,15 +48,15 @@ const DetailsConditionFooter: React.FC<AddConditionFooterProps> = ({
         variant="primary"
         size="small"
         onClick={() => {
-          updateAndSave({ type, items, operator })
-          onClose()
-          reset()
+          updateAndSave({ type, items, operator });
+          onClose();
+          reset();
         }}
       >
         Save and close
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default DetailsConditionFooter
+export default DetailsConditionFooter;

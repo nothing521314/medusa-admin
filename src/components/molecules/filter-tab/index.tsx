@@ -1,15 +1,15 @@
-import React from "react"
-import clsx from "clsx"
+import React from "react";
+import clsx from "clsx";
 
-import CrossIcon from "../../fundamentals/icons/cross-icon"
+import CrossIcon from "../../fundamentals/icons/cross-icon";
 
 type FilterTabProps = {
-  label?: string
-  isActive?: boolean
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
-  removable?: boolean
-  onRemove?: () => void
-}
+  label?: string;
+  isActive?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  removable?: boolean;
+  onRemove?: () => void;
+};
 
 export const FilterTab: React.FC<FilterTabProps> = ({
   label,
@@ -20,23 +20,23 @@ export const FilterTab: React.FC<FilterTabProps> = ({
 }) => {
   const handleClick = (e) => {
     if (typeof onClick !== "undefined") {
-      onClick(e)
+      onClick(e);
     }
-  }
+  };
 
   const handleRemove = () => {
     if (typeof onRemove !== "undefined") {
-      onRemove()
+      onRemove();
     }
-  }
+  };
 
   const handleKeyPress = (e) => {
     if (removable && onRemove) {
       if (e.key === "Backspace") {
-        onRemove()
+        onRemove();
       }
     }
-  }
+  };
 
   return (
     <button
@@ -56,7 +56,7 @@ export const FilterTab: React.FC<FilterTabProps> = ({
         </div>
       )}
     </button>
-  )
-}
+  );
+};
 
-export default FilterTab
+export default FilterTab;

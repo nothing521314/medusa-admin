@@ -1,27 +1,27 @@
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
-import clsx from "clsx"
-import React from "react"
-import Tooltip from "../../atoms/tooltip"
-import LockIcon from "../../fundamentals/icons/lock-icon"
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import clsx from "clsx";
+import React from "react";
+import Tooltip from "../../atoms/tooltip";
+import LockIcon from "../../fundamentals/icons/lock-icon";
 
 type RadioGroupItemProps = {
-  label: string
-  sublabel?: string
-  description?: string
-  disabledTooltip?: string
+  label: string;
+  sublabel?: string;
+  description?: string;
+  disabledTooltip?: string;
 } & RadioGroupPrimitive.RadioGroupItemProps &
-  React.RefAttributes<HTMLButtonElement>
+  React.RefAttributes<HTMLButtonElement>;
 
 type RadioGroupSimpleItemProps = {
-  label?: string
-  description?: string
+  label?: string;
+  description?: string;
 } & RadioGroupPrimitive.RadioGroupItemProps &
-  React.RefAttributes<HTMLButtonElement>
+  React.RefAttributes<HTMLButtonElement>;
 
 type DotProps = RadioGroupPrimitive.RadioGroupItemProps &
-  React.RefAttributes<HTMLButtonElement>
+  React.RefAttributes<HTMLButtonElement>;
 
-const Root = RadioGroupPrimitive.Root
+const Root = RadioGroupPrimitive.Root;
 
 const Item = ({
   label,
@@ -98,8 +98,8 @@ const Item = ({
         {children}
       </div>
     </label>
-  )
-}
+  );
+};
 
 const SimpleItem: React.FC<RadioGroupSimpleItemProps> = ({
   label,
@@ -142,8 +142,8 @@ const SimpleItem: React.FC<RadioGroupSimpleItemProps> = ({
         </span>
       </div>
     </label>
-  )
-}
+  );
+};
 
 const Dot: React.FC<DotProps> = ({ className, ...rest }) => {
   return (
@@ -172,7 +172,7 @@ const Dot: React.FC<DotProps> = ({ className, ...rest }) => {
         />
       </RadioGroupPrimitive.Item>
     </label>
-  )
-}
+  );
+};
 
-export default { Root, Item, SimpleItem, Dot }
+export default { Root, Item, SimpleItem, Dot };

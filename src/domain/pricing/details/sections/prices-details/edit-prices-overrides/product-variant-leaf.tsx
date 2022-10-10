@@ -1,21 +1,21 @@
-import { MoneyAmount, ProductVariant } from "@medusajs/medusa"
-import * as React from "react"
-import Button from "../../../../../../components/fundamentals/button"
-import ChevronRightIcon from "../../../../../../components/fundamentals/icons/chevron-right-icon"
+import { MoneyAmount, ProductVariant } from "@medusajs/medusa";
+import * as React from "react";
+import Button from "../../../../../../components/fundamentals/button";
+import ChevronRightIcon from "../../../../../../components/fundamentals/icons/chevron-right-icon";
 
 type ProductVariantLeafProps = {
-  onClick: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"]
-  variant: ProductVariant
-  prices: MoneyAmount[]
-}
+  onClick: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"];
+  variant: ProductVariant;
+  prices: MoneyAmount[];
+};
 
 const ProductVariantLeaf = ({
   variant,
   prices,
   onClick,
 }: ProductVariantLeafProps) => {
-  const { title, sku } = variant
-  const hasPrices = prices.length > 0
+  const { title, sku } = variant;
+  const hasPrices = prices.length > 0;
   return (
     <div className="flex flex-1 items-center">
       <div className="truncate">
@@ -44,7 +44,7 @@ const ProductVariantLeaf = ({
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductVariantLeaf
+export default ProductVariantLeaf;

@@ -1,9 +1,9 @@
-import clsx from "clsx"
-import React from "react"
+import clsx from "clsx";
+import React from "react";
 
 type ToasterContainerProps = {
-  visible: boolean
-} & React.HTMLAttributes<HTMLDivElement>
+  visible: boolean;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const ToasterContainer: React.FC<ToasterContainerProps> = ({
   children,
@@ -27,7 +27,7 @@ const ToasterContainer: React.FC<ToasterContainerProps> = ({
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default ToasterContainer
+export default ToasterContainer;

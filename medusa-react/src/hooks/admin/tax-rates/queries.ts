@@ -2,18 +2,18 @@ import {
   AdminTaxRatesRes,
   AdminTaxRatesListRes,
   AdminGetTaxRatesParams,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_TAX_RATES_QUERY_KEY = `admin_tax_rates` as const
+const ADMIN_TAX_RATES_QUERY_KEY = `admin_tax_rates` as const;
 
-export const adminTaxRateKeys = queryKeysFactory(ADMIN_TAX_RATES_QUERY_KEY)
+export const adminTaxRateKeys = queryKeysFactory(ADMIN_TAX_RATES_QUERY_KEY);
 
-type TaxRateQueryKeys = typeof adminTaxRateKeys
+type TaxRateQueryKeys = typeof adminTaxRateKeys;
 
 export const useAdminTaxRates = (
   query?: AdminGetTaxRatesParams,
@@ -23,14 +23,14 @@ export const useAdminTaxRates = (
     ReturnType<TaxRateQueryKeys["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminTaxRateKeys.list(query),
     () => client.admin.taxRates.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminTaxRate = (
   id: string,
@@ -41,11 +41,11 @@ export const useAdminTaxRate = (
     ReturnType<TaxRateQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminTaxRateKeys.detail(id),
     () => client.admin.taxRates.retrieve(id, query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

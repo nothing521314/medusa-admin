@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const LockIcon: React.FC<IconProps> = ({
   size = "16",
@@ -30,7 +30,7 @@ const LockIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default LockIcon
+export default LockIcon;

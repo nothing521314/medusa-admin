@@ -10,9 +10,7 @@ export type TQuotationFilters = {
 
 const DEFAULT_PAGE_SIZE = 15;
 
-export const parseQuotationQueryString = (
-  queryString?: string
-): unknown => {
+export const parseQuotationQueryString = (queryString?: string): unknown => {
   const defaultVal: TQuotationFilters = {
     offset: 0,
     limit: DEFAULT_PAGE_SIZE,

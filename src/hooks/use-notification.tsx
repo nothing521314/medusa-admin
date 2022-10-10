@@ -1,8 +1,8 @@
-import React from "react"
-import { toast } from "react-hot-toast"
+import React from "react";
+import { toast } from "react-hot-toast";
 import Notification, {
   NotificationTypes,
-} from "../components/atoms/notification"
+} from "../components/atoms/notification";
 
 const useNotification = () => {
   return (title: string, message: string, type: NotificationTypes) => {
@@ -14,8 +14,8 @@ const useNotification = () => {
         position: "top-right",
         duration: 3000,
       }
-    )
-  }
-}
+    );
+  };
+};
 
-export default useNotification
+export default useNotification;

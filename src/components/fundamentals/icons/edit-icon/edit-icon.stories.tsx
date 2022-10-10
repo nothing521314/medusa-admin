@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import EditIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import EditIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/EditIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof EditIcon>
+} as ComponentMeta<typeof EditIcon>;
 
-const Template = args => <EditIcon {...args} />
+const Template = (args) => <EditIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "20",
   color: "currentColor",
-}
+};

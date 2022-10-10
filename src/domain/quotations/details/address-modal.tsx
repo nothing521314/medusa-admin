@@ -3,45 +3,45 @@ import {
   AdminPostDraftOrdersReq,
   AdminPostOrdersOrderReq,
   Country,
-} from "@medusajs/medusa"
-import React from "react"
-import { useForm } from "react-hook-form"
-import { MutateOptions } from "react-query"
-import Button from "../../../components/fundamentals/button"
-import Modal from "../../../components/molecules/modal"
+} from "@medusajs/medusa";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { MutateOptions } from "react-query";
+import Button from "../../../components/fundamentals/button";
+import Modal from "../../../components/molecules/modal";
 import AddressForm, {
   AddressPayload,
   AddressType,
-} from "../../../components/templates/address-form"
-import useNotification from "../../../hooks/use-notification"
-import { isoAlpha2Countries } from "../../../utils/countries"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { nestedForm } from "../../../utils/nested-form"
+} from "../../../components/templates/address-form";
+import useNotification from "../../../hooks/use-notification";
+import { isoAlpha2Countries } from "../../../utils/countries";
+import { getErrorMessage } from "../../../utils/error-messages";
+import { nestedForm } from "../../../utils/nested-form";
 
 type AddressPayloadType =
   | AdminPostOrdersOrderReq["shipping_address"]
   | Partial<AdminPostOrdersOrderReq["shipping_address"]>
   | AdminPostDraftOrdersReq["shipping_address"]
-  | Partial<AdminPostDraftOrdersReq["shipping_address"]>
+  | Partial<AdminPostDraftOrdersReq["shipping_address"]>;
 
 type TVariables = {
-  shipping_address?: AddressPayloadType
-  billing_address?: AddressPayloadType
-}
+  shipping_address?: AddressPayloadType;
+  billing_address?: AddressPayloadType;
+};
 
 type MutateAction = <T extends TVariables>(
   variables: T,
   options?: MutateOptions<unknown, Error, unknown, unknown> | undefined
-) => void
+) => void;
 
 type AddressModalProps = {
-  handleClose: () => void
-  submit: MutateAction
-  submitting?: boolean
-  allowedCountries?: Country[]
-  address?: Address
-  type: AddressType
-}
+  handleClose: () => void;
+  submit: MutateAction;
+  submitting?: boolean;
+  allowedCountries?: Country[];
+  address?: Address;
+  type: AddressType;
+};
 
 const AddressModal = ({
   address,
@@ -53,41 +53,41 @@ const AddressModal = ({
 }: AddressModalProps) => {
   const form = useForm<AddressPayload>({
     defaultValues: mapAddressToFormData(address),
-  })
+  });
   const {
     formState: { isDirty },
-  } = form
-  const notification = useNotification()
+  } = form;
+  const notification = useNotification();
 
   const countryOptions = allowedCountries
     .map((c) => ({ label: c.display_name, value: c.iso_2 }))
-    .filter(Boolean)
+    .filter(Boolean);
 
   const handleUpdateAddress = (data: AddressPayload) => {
-    const updateObj: TVariables = {}
+    const updateObj: TVariables = {};
 
     if (type === "shipping") {
       // @ts-ignore
       updateObj["shipping_address"] = {
         ...data,
         country_code: data.country_code.value,
-      }
+      };
     } else {
       // @ts-ignore
       updateObj["billing_address"] = {
         ...data,
         country_code: data.country_code.value,
-      }
+      };
     }
 
     return submit(updateObj, {
       onSuccess: () => {
-        notification("Success", "Successfully updated address", "success")
-        handleClose()
+        notification("Success", "Successfully updated address", "success");
+        handleClose();
       },
       onError: (err) => notification("Error", getErrorMessage(err), "error"),
-    })
-  }
+    });
+  };
 
   return (
     <Modal handleClose={handleClose} isLargeModal>
@@ -131,12 +131,12 @@ const AddressModal = ({
         </Modal.Body>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
 const mapAddressToFormData = (address?: Address): AddressPayload => {
   const countryDisplayName =
-    isoAlpha2Countries[address?.country_code?.toUpperCase()]
+    isoAlpha2Countries[address?.country_code?.toUpperCase()];
 
   return {
     first_name: address?.first_name || "",
@@ -151,7 +151,7 @@ const mapAddressToFormData = (address?: Address): AddressPayload => {
       ? { label: countryDisplayName, value: address.country_code }
       : { label: "", value: "" },
     postal_code: address?.postal_code || "",
-  }
-}
+  };
+};
 
-export default AddressModal
+export default AddressModal;

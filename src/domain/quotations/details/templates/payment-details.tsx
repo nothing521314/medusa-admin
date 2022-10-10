@@ -1,5 +1,5 @@
-import React from "react"
-import { DisplayTotal } from "./display-total"
+import React from "react";
+import { DisplayTotal } from "./display-total";
 
 export const PaymentDetails = ({
   currency,
@@ -11,7 +11,7 @@ export const PaymentDetails = ({
   refundedTotal,
 }) => {
   if (swapAmount + manualRefund + swapRefund + returnRefund === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -51,5 +51,5 @@ export const PaymentDetails = ({
         totalTitle={"Net Total"}
       />
     </>
-  )
-}
+  );
+};

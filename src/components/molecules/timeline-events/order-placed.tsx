@@ -1,12 +1,12 @@
-import React from "react"
-import { OrderPlacedEvent } from "../../../hooks/use-build-timeline"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
-import EventContainer, { EventIconColor } from "./event-container"
+import React from "react";
+import { OrderPlacedEvent } from "../../../hooks/use-build-timeline";
+import { formatAmountWithSymbol } from "../../../utils/prices";
+import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon";
+import EventContainer, { EventIconColor } from "./event-container";
 
 type OrderPlacedProps = {
-  event: OrderPlacedEvent
-}
+  event: OrderPlacedEvent;
+};
 
 const OrderPlaced: React.FC<OrderPlacedProps> = ({ event }) => {
   const args = {
@@ -23,8 +23,8 @@ const OrderPlaced: React.FC<OrderPlacedProps> = ({ event }) => {
       </div>
     ),
     isFirst: event.first,
-  }
-  return <EventContainer {...args} />
-}
+  };
+  return <EventContainer {...args} />;
+};
 
-export default OrderPlaced
+export default OrderPlaced;

@@ -1,3 +1,3 @@
 export const validatePass = (pass: string) => {
-  return pass.length >= 8
-}
+  return pass.length >= 8;
+};

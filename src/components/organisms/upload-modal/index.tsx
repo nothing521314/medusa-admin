@@ -1,34 +1,34 @@
-import React, { ReactNode, useState } from "react"
-import clsx from "clsx"
+import React, { ReactNode, useState } from "react";
+import clsx from "clsx";
 
-import Modal from "../../molecules/modal"
-import Button from "../../fundamentals/button"
-import FileIcon from "../../fundamentals/icons/file-icon"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import DownloadIcon from "../../fundamentals/icons/download-icon"
-import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
-import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
-import WarningCircle from "../../fundamentals/icons/warning-circle"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
+import Modal from "../../molecules/modal";
+import Button from "../../fundamentals/button";
+import FileIcon from "../../fundamentals/icons/file-icon";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import DownloadIcon from "../../fundamentals/icons/download-icon";
+import XCircleIcon from "../../fundamentals/icons/x-circle-icon";
+import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon";
+import WarningCircle from "../../fundamentals/icons/warning-circle";
+import CrossIcon from "../../fundamentals/icons/cross-icon";
 
 type FileSummaryProps = {
-  name: string
-  size: number
-  action: ReactNode
-  progress?: number
-  status?: string
-}
+  name: string;
+  size: number;
+  action: ReactNode;
+  progress?: number;
+  status?: string;
+};
 
 /**
  * Render an upload file summary (& upload progress).
  */
 function FileSummary(props: FileSummaryProps) {
-  const { action, name, progress, size, status } = props
+  const { action, name, progress, size, status } = props;
 
   const formattedSize =
     size / 1024 < 10
       ? `${(size / 1024).toFixed(2)} KiB`
-      : `${(size / (1024 * 1024)).toFixed(2)} MiB`
+      : `${(size / (1024 * 1024)).toFixed(2)} MiB`;
 
   return (
     <div className="relative">
@@ -51,21 +51,21 @@ function FileSummary(props: FileSummaryProps) {
         <div className="m-6">{action}</div>
       </div>
     </div>
-  )
+  );
 }
 
 type UploadSummaryProps = {
-  creations: number
-  updates: number
-  rejections?: number
-  type: string
-}
+  creations: number;
+  updates: number;
+  rejections?: number;
+  type: string;
+};
 
 /**
  * Render a batch update request summary.
  */
 function UploadSummary(props: UploadSummaryProps) {
-  const { creations, updates, rejections, type } = props
+  const { creations, updates, rejections, type } = props;
   return (
     <div className="flex gap-6">
       <div className="flex items-center text-small text-grey-90">
@@ -83,37 +83,37 @@ function UploadSummary(props: UploadSummaryProps) {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 type DropAreaProps = {
-  onUpload: (d: DataTransferItem) => void
-}
+  onUpload: (d: DataTransferItem) => void;
+};
 
 /**
  * Component handles an CSV file drop.
  */
 function DropArea(props: DropAreaProps) {
-  const [isDragOver, setIsDragOver] = useState(false)
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const handleFileDrop = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragOver(false)
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
 
     if (e.dataTransfer.items?.length) {
-      props.onUpload(e.dataTransfer.items[0].getAsFile())
+      props.onUpload(e.dataTransfer.items[0].getAsFile());
     }
-  }
+  };
 
   const handleFileSelect = (e) => {
-    props.onUpload(e.target.files[0])
-  }
+    props.onUpload(e.target.files[0]);
+  };
 
   const onDragOver = (event) => {
-    event.stopPropagation()
-    event.preventDefault()
-  }
+    event.stopPropagation();
+    event.preventDefault();
+  };
 
   return (
     <div
@@ -147,25 +147,25 @@ function DropArea(props: DropAreaProps) {
         Only .csv files are supported.
       </span>
     </div>
-  )
+  );
 }
 
 type UploadModalProps = {
-  type: string
-  status?: string
-  fileTitle: string
-  description1Text: string
-  description2Title: string
-  description2Text: string
-  templateLink: string
-  canImport?: boolean
-  progress?: number
-  onClose: () => void
-  onSubmit: () => void
-  onFileRemove: () => void
-  processUpload: (...args: any[]) => Promise<any>
-  summary?: { toCreate: number; toUpdate: number }
-}
+  type: string;
+  status?: string;
+  fileTitle: string;
+  description1Text: string;
+  description2Title: string;
+  description2Text: string;
+  templateLink: string;
+  canImport?: boolean;
+  progress?: number;
+  onClose: () => void;
+  onSubmit: () => void;
+  onFileRemove: () => void;
+  processUpload: (...args: any[]) => Promise<any>;
+  summary?: { toCreate: number; toUpdate: number };
+};
 
 /**
  * Upload prices modal.
@@ -186,20 +186,20 @@ function UploadModal(props: UploadModalProps) {
     summary,
     status,
     type,
-  } = props
-  const [uploadFile, setUploadFile] = useState<File>()
+  } = props;
+  const [uploadFile, setUploadFile] = useState<File>();
 
-  const { name, size } = uploadFile || {}
+  const { name, size } = uploadFile || {};
 
   const onUpload = async (file) => {
-    setUploadFile(file)
-    await processUpload(file)
-  }
+    setUploadFile(file);
+    await processUpload(file);
+  };
 
   const removeFile = () => {
-    setUploadFile(undefined)
-    onFileRemove()
-  }
+    setUploadFile(undefined);
+    onFileRemove();
+  };
 
   return (
     <Modal open handleClose={onClose}>
@@ -294,7 +294,7 @@ function UploadModal(props: UploadModalProps) {
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
+  );
 }
 
-export default UploadModal
+export default UploadModal;

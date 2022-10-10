@@ -7,10 +7,10 @@ import {
   AdminSalesChannelsListRes,
   AdminDeleteSalesChannelsChannelProductsBatchReq,
   AdminPostSalesChannelsChannelProductsBatchReq,
-} from "@medusajs/medusa"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
-import qs from "qs"
+} from "@medusajs/medusa";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
+import qs from "qs";
 
 class AdminSalesChannelsResource extends BaseResource {
   /** retrieve a sales channel
@@ -23,8 +23,8 @@ class AdminSalesChannelsResource extends BaseResource {
     salesChannelId: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsRes> {
-    const path = `/admin/sales-channels/${salesChannelId}`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/sales-channels/${salesChannelId}`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /* *
@@ -35,8 +35,8 @@ class AdminSalesChannelsResource extends BaseResource {
     payload: AdminPostSalesChannelsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsRes> {
-    const path = `/admin/sales-channels`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/sales-channels`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /** update a sales channel
@@ -50,8 +50,8 @@ class AdminSalesChannelsResource extends BaseResource {
     payload: AdminPostSalesChannelsSalesChannelReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsRes> {
-    const path = `/admin/sales-channels/${salesChannelId}`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/sales-channels/${salesChannelId}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   /**
@@ -65,14 +65,14 @@ class AdminSalesChannelsResource extends BaseResource {
     query?: AdminGetSalesChannelsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsListRes> {
-    let path = `/admin/sales-channels`
+    let path = `/admin/sales-channels`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path += `?${queryString}`
+      const queryString = qs.stringify(query);
+      path += `?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -86,8 +86,8 @@ class AdminSalesChannelsResource extends BaseResource {
     salesChannelId: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsDeleteRes> {
-    const path = `/admin/sales-channels/${salesChannelId}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/sales-channels/${salesChannelId}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -102,8 +102,8 @@ class AdminSalesChannelsResource extends BaseResource {
     payload: AdminDeleteSalesChannelsChannelProductsBatchReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsRes> {
-    const path = `/admin/sales-channels/${salesChannelId}/products/batch`
-    return this.client.request("DELETE", path, payload, {}, customHeaders)
+    const path = `/admin/sales-channels/${salesChannelId}/products/batch`;
+    return this.client.request("DELETE", path, payload, {}, customHeaders);
   }
 
   /**
@@ -118,9 +118,9 @@ class AdminSalesChannelsResource extends BaseResource {
     payload: AdminPostSalesChannelsChannelProductsBatchReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsRes> {
-    const path = `/admin/sales-channels/${salesChannelId}/products/batch`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/sales-channels/${salesChannelId}/products/batch`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 }
 
-export default AdminSalesChannelsResource
+export default AdminSalesChannelsResource;

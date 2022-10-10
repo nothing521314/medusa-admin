@@ -1,22 +1,22 @@
-import { Product, ProductVariant } from "@medusajs/medusa"
-import React from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import { countries } from "../../../../../utils/countries"
+import { Product, ProductVariant } from "@medusajs/medusa";
+import React from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../../components/fundamentals/button";
+import Modal from "../../../../../components/molecules/modal";
+import { countries } from "../../../../../utils/countries";
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
-} from "../../../components/variant-form/edit-flow-variant-form"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
-import { createAddPayload } from "./add-variant-modal"
-import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen"
+} from "../../../components/variant-form/edit-flow-variant-form";
+import useEditProductActions from "../../hooks/use-edit-product-actions";
+import { createAddPayload } from "./add-variant-modal";
+import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen";
 
 type Props = {
-  onClose: () => void
-  product: Product
-  variant: ProductVariant
-  isDuplicate?: boolean
-}
+  onClose: () => void;
+  product: Product;
+  variant: ProductVariant;
+  isDuplicate?: boolean;
+};
 
 const EditVariantModal = ({
   onClose,
@@ -26,34 +26,34 @@ const EditVariantModal = ({
 }: Props) => {
   const form = useForm<EditFlowVariantFormType>({
     defaultValues: getEditVariantDefaultValues(variant, product),
-  })
+  });
 
   const {
     formState: { isDirty },
     handleSubmit,
     reset,
-  } = form
+  } = form;
 
   const handleClose = () => {
-    reset(getEditVariantDefaultValues(variant, product))
-    onClose()
-  }
+    reset(getEditVariantDefaultValues(variant, product));
+    onClose();
+  };
 
   const {
     onUpdateVariant,
     onAddVariant,
     addingVariant,
     updatingVariant,
-  } = useEditProductActions(product.id)
+  } = useEditProductActions(product.id);
 
   const onSubmit = handleSubmit((data) => {
     if (isDuplicate) {
-      onAddVariant(createAddPayload(data), handleClose)
+      onAddVariant(createAddPayload(data), handleClose);
     } else {
       // @ts-ignore
-      onUpdateVariant(variant.id, createUpdatePayload(data), handleClose)
+      onUpdateVariant(variant.id, createUpdatePayload(data), handleClose);
     }
-  })
+  });
 
   return (
     <Modal handleClose={handleClose}>
@@ -95,8 +95,8 @@ const EditVariantModal = ({
         </Modal.Footer>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
 export const getEditVariantDefaultValues = (
   variant: ProductVariant,
@@ -108,16 +108,16 @@ export const getEditVariantDefaultValues = (
     value:
       variant.options.find((optionValue) => optionValue.option_id === option.id)
         ?.value || "",
-  }))
+  }));
 
   const country = countries.find(
     (country) =>
       country.name.toLowerCase() === variant.origin_country?.toLowerCase()
-  )
+  );
 
   const countryOption = country
     ? { label: country.name, value: country.alpha2 }
-    : null
+    : null;
 
   return {
     general: {
@@ -153,7 +153,7 @@ export const getEditVariantDefaultValues = (
       })),
     },
     options,
-  }
-}
+  };
+};
 
-export default EditVariantModal
+export default EditVariantModal;

@@ -1,51 +1,51 @@
-import { Region } from "@medusajs/medusa"
-import { navigate } from "gatsby"
-import { useAdminDeleteRegion } from "../../../../../../medusa-react"
-import React from "react"
-import Tooltip from "../../../../../components/atoms/tooltip"
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
-import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
-import Section from "../../../../../components/organisms/section"
-import useImperativeDialog from "../../../../../hooks/use-imperative-dialog"
-import useNotification from "../../../../../hooks/use-notification"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import { currencies } from "../../../../../utils/currencies"
-import { getErrorMessage } from "../../../../../utils/error-messages"
-import fulfillmentProvidersMapper from "../../../../../utils/fulfillment-providers.mapper"
-import paymentProvidersMapper from "../../../../../utils/payment-providers-mapper"
-import EditRegionModal from "./edit-region.modal"
+import { Region } from "@medusajs/medusa";
+import { navigate } from "gatsby";
+import { useAdminDeleteRegion } from "../../../../../../medusa-react";
+import React from "react";
+import Tooltip from "../../../../../components/atoms/tooltip";
+import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
+import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon";
+import Section from "../../../../../components/organisms/section";
+import useImperativeDialog from "../../../../../hooks/use-imperative-dialog";
+import useNotification from "../../../../../hooks/use-notification";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import { currencies } from "../../../../../utils/currencies";
+import { getErrorMessage } from "../../../../../utils/error-messages";
+import fulfillmentProvidersMapper from "../../../../../utils/fulfillment-providers.mapper";
+import paymentProvidersMapper from "../../../../../utils/payment-providers-mapper";
+import EditRegionModal from "./edit-region.modal";
 
 type Props = {
-  region: Region
-}
+  region: Region;
+};
 
 const GeneralSection = ({ region }: Props) => {
-  const { state, toggle, close } = useToggleState()
-  const { mutate } = useAdminDeleteRegion(region.id)
-  const notification = useNotification()
-  const dialog = useImperativeDialog()
+  const { state, toggle, close } = useToggleState();
+  const { mutate } = useAdminDeleteRegion(region.id);
+  const notification = useNotification();
+  const dialog = useImperativeDialog();
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
       heading: "Delete Collection",
       text: "Are you sure you want to delete this collection?",
-    })
+    });
 
     if (shouldDelete) {
       mutate(undefined, {
         onSuccess: () => {
           navigate("/a/settings/regions", {
             replace: true,
-          })
-          notification("Success", "Region has been deleted", "success")
-          navigate(`/a/settings/regions`, { replace: true })
+          });
+          notification("Success", "Region has been deleted", "success");
+          navigate(`/a/settings/regions`, { replace: true });
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification("Error", getErrorMessage(error), "error");
         },
-      })
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -94,7 +94,7 @@ const GeneralSection = ({ region }: Props) => {
                         content={
                           <ul>
                             {region.countries.slice(4).map((c) => {
-                              return <li key={c.id}>{c.display_name}</li>
+                              return <li key={c.id}>{c.display_name}</li>;
                             })}
                           </ul>
                         }
@@ -130,7 +130,7 @@ const GeneralSection = ({ region }: Props) => {
                                 <li key={p.id}>
                                   {paymentProvidersMapper(p.id)}
                                 </li>
-                              )
+                              );
                             })}
                           </ul>
                         }
@@ -166,7 +166,7 @@ const GeneralSection = ({ region }: Props) => {
                                 <li key={p.id}>
                                   {fulfillmentProvidersMapper(p.id)}
                                 </li>
-                              )
+                              );
                             })}
                           </ul>
                         }
@@ -187,13 +187,13 @@ const GeneralSection = ({ region }: Props) => {
       </Section>
       <EditRegionModal region={region} onClose={close} open={state} />
     </>
-  )
-}
+  );
+};
 
 type DetailProps = {
-  title: string
-  children: React.ReactNode
-}
+  title: string;
+  children: React.ReactNode;
+};
 
 const RegionDetail = ({ title, children }: DetailProps) => {
   return (
@@ -201,7 +201,7 @@ const RegionDetail = ({ title, children }: DetailProps) => {
       <p>{title}</p>
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default GeneralSection
+export default GeneralSection;

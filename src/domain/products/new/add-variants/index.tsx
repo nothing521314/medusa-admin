@@ -1,51 +1,51 @@
-import clsx from "clsx"
-import React, { useCallback, useEffect, useMemo } from "react"
-import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
-import { v4 as uuidv4 } from "uuid"
-import Button from "../../../../components/fundamentals/button"
-import PlusIcon from "../../../../components/fundamentals/icons/plus-icon"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
-import IconTooltip from "../../../../components/molecules/icon-tooltip"
-import InputField from "../../../../components/molecules/input"
-import Modal from "../../../../components/molecules/modal"
-import TagInput from "../../../../components/molecules/tag-input"
-import { useDebounce } from "../../../../hooks/use-debounce"
-import useToggleState from "../../../../hooks/use-toggle-state"
-import { NestedForm } from "../../../../utils/nested-form"
-import { CustomsFormType } from "../../components/customs-form"
-import { DimensionsFormType } from "../../components/dimensions-form"
+import clsx from "clsx";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
+import Button from "../../../../components/fundamentals/button";
+import PlusIcon from "../../../../components/fundamentals/icons/plus-icon";
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon";
+import IconTooltip from "../../../../components/molecules/icon-tooltip";
+import InputField from "../../../../components/molecules/input";
+import Modal from "../../../../components/molecules/modal";
+import TagInput from "../../../../components/molecules/tag-input";
+import { useDebounce } from "../../../../hooks/use-debounce";
+import useToggleState from "../../../../hooks/use-toggle-state";
+import { NestedForm } from "../../../../utils/nested-form";
+import { CustomsFormType } from "../../components/customs-form";
+import { DimensionsFormType } from "../../components/dimensions-form";
 import CreateFlowVariantForm, {
   CreateFlowVariantFormType,
-} from "../../components/variant-form/create-flow-variant-form"
-import { VariantOptionType } from "../../components/variant-form/variant-select-options-form"
-import useCheckOptions from "../../components/variant-form/variant-select-options-form/hooks"
-import NewVariant from "./new-variant"
+} from "../../components/variant-form/create-flow-variant-form";
+import { VariantOptionType } from "../../components/variant-form/variant-select-options-form";
+import useCheckOptions from "../../components/variant-form/variant-select-options-form/hooks";
+import NewVariant from "./new-variant";
 
 type ProductOptionType = {
-  id: string
-  title: string
-  values: string[]
-}
+  id: string;
+  title: string;
+  values: string[];
+};
 
 export type AddVariantsFormType = {
-  options: ProductOptionType[]
-  entries: CreateFlowVariantFormType[]
-}
+  options: ProductOptionType[];
+  entries: CreateFlowVariantFormType[];
+};
 
 type Props = {
-  form: NestedForm<AddVariantsFormType>
-  productCustoms: CustomsFormType
-  productDimensions: DimensionsFormType
-}
+  form: NestedForm<AddVariantsFormType>;
+  productCustoms: CustomsFormType;
+  productDimensions: DimensionsFormType;
+};
 
 const AddVariantsForm = ({
   form,
   productCustoms,
   productDimensions,
 }: Props) => {
-  const { control, path, register } = form
+  const { control, path, register } = form;
 
-  const { checkForDuplicate, getOptions } = useCheckOptions(form)
+  const { checkForDuplicate, getOptions } = useCheckOptions(form);
 
   const {
     fields: options,
@@ -57,7 +57,7 @@ const AddVariantsForm = ({
     name: path("options"),
     keyName: "fieldId",
     shouldUnregister: true,
-  })
+  });
 
   const {
     fields: variants,
@@ -69,70 +69,70 @@ const AddVariantsForm = ({
     control,
     name: path("entries"),
     shouldUnregister: true,
-  })
+  });
 
   const watchedOptions = useWatch({
     control,
     name: path("options"),
-  })
+  });
 
   const watchedEntries = useWatch({
     control,
     name: path("entries"),
-  })
+  });
 
-  const debouncedOptions = useDebounce(watchedOptions, 500)
+  const debouncedOptions = useDebounce(watchedOptions, 500);
 
   useEffect(() => {
     if (debouncedOptions?.length) {
       const optionMap = debouncedOptions.reduce((acc, option) => {
-        acc[option.id] = option
-        return acc
-      }, {} as Record<string, ProductOptionType>)
+        acc[option.id] = option;
+        return acc;
+      }, {} as Record<string, ProductOptionType>);
 
       const indexedVars = watchedEntries?.map((variant, index) => ({
         variant,
         index,
-      }))
+      }));
 
       if (indexedVars) {
         indexedVars.forEach((indexedVar) => {
-          const { variant, index } = indexedVar
+          const { variant, index } = indexedVar;
 
-          const options = variant.options
-          const validOptions: VariantOptionType[] = []
+          const options = variant.options;
+          const validOptions: VariantOptionType[] = [];
 
           options.forEach((option) => {
-            const { option_id } = option
-            const optionData = optionMap[option_id]
+            const { option_id } = option;
+            const optionData = optionMap[option_id];
 
             if (optionData) {
-              option.title = optionData.title
+              option.title = optionData.title;
 
               if (
                 !option.option?.value ||
                 !optionData.values.includes(option.option.value)
               ) {
-                option.option = null
+                option.option = null;
               }
 
-              validOptions.push(option)
+              validOptions.push(option);
             }
-          })
+          });
 
-          const validIds = validOptions.map((option) => option.option_id)
+          const validIds = validOptions.map((option) => option.option_id);
           const missingIds = Object.keys(optionMap).filter(
             (id) => !validIds.includes(id)
-          )
+          );
 
           missingIds.forEach((id) => {
-            const optionData = optionMap[id]
+            const optionData = optionMap[id];
             validOptions.push({
               option_id: id,
               title: optionData.title,
               option: null,
-            })
-          })
+            });
+          });
 
           updateVariant(index, {
             ...variant,
@@ -143,86 +143,86 @@ const AddVariantsForm = ({
                 title: va.title,
                 value: va,
                 option: va.option,
-              }
+              };
             }),
-          })
-        })
+          });
+        });
       }
     }
-  }, [debouncedOptions])
+  }, [debouncedOptions]);
 
   const onDeleteProductOption = (index: number) => {
-    const option = watchedOptions[index]
+    const option = watchedOptions[index];
 
-    removeOption(index)
+    removeOption(index);
 
     if (!option) {
-      return
+      return;
     }
 
     watchedEntries?.forEach((variant, index) => {
-      const options = variant.options
+      const options = variant.options;
 
-      const validOptions = options.filter((vo) => vo.option_id !== option.id)
+      const validOptions = options.filter((vo) => vo.option_id !== option.id);
 
       updateVariant(index, {
         ...variant,
         options: validOptions,
-      })
-    })
-  }
+      });
+    });
+  };
 
   const onUpdateVariant = (index: number, data: CreateFlowVariantFormType) => {
     const toCheck = {
       id: data._internal_id!,
       options: data.options.map((vo) => vo.option!),
-    } // We can be sure that the value is set as this point.
-    const exists = checkForDuplicate(toCheck)
+    }; // We can be sure that the value is set as this point.
+    const exists = checkForDuplicate(toCheck);
 
     if (exists) {
-      return false
+      return false;
     }
 
-    updateVariant(index, data)
-    return true
-  }
+    updateVariant(index, data);
+    return true;
+  };
 
   const enableVariants = useMemo(() => {
     return watchedOptions?.length > 0
       ? watchedOptions.some((wo) => wo.values.length > 0)
-      : false
-  }, [watchedOptions])
+      : false;
+  }, [watchedOptions]);
 
   const appendNewOption = () => {
     appendOption({
       id: uuidv4(),
       title: "",
       values: [],
-    })
-  }
+    });
+  };
 
-  const newVariantForm = useForm<CreateFlowVariantFormType>()
-  const { reset, handleSubmit: submitVariant } = newVariantForm
-  const { state, toggle } = useToggleState()
+  const newVariantForm = useForm<CreateFlowVariantFormType>();
+  const { reset, handleSubmit: submitVariant } = newVariantForm;
+  const { state, toggle } = useToggleState();
 
   const onToggleForm = () => {
-    reset(createEmptyVariant(watchedOptions))
-    toggle()
-  }
+    reset(createEmptyVariant(watchedOptions));
+    toggle();
+  };
 
   const onAppendVariant = submitVariant((data) => {
     const toCheck = {
       id: data._internal_id!,
       options: data.options.map((da) => da.option).filter((o) => !!o),
-    }
-    const exists = checkForDuplicate(toCheck)
+    };
+    const exists = checkForDuplicate(toCheck);
 
     if (exists) {
       newVariantForm.setError("options", {
         type: "deps",
         message: "A variant with these options already exists.",
-      })
-      return
+      });
+      return;
     }
 
     appendVariant({
@@ -234,25 +234,25 @@ const AddVariantsForm = ({
           ? data.general.title
           : data.options.map((vo) => vo.option?.value).join(" / "),
       },
-    })
-    onToggleForm()
-  })
+    });
+    onToggleForm();
+  });
 
   const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-    moveVariant(dragIndex, hoverIndex)
-  }, [])
+    moveVariant(dragIndex, hoverIndex);
+  }, []);
 
   const onAddNewProductOptionValue = (optionId: string, value: string) => {
-    const option = watchedOptions?.find((wo) => wo.id === optionId)
+    const option = watchedOptions?.find((wo) => wo.id === optionId);
 
     if (!option) {
-      return
+      return;
     }
 
-    const index = watchedOptions?.findIndex((wo) => wo.id === optionId)
+    const index = watchedOptions?.findIndex((wo) => wo.id === optionId);
 
-    updateOption(index, { ...option, values: [...option.values, value] })
-  }
+    updateOption(index, { ...option, values: [...option.values, value] });
+  };
 
   return (
     <>
@@ -290,10 +290,10 @@ const AddVariantsForm = ({
                             <TagInput
                               onValidate={(newVal) => {
                                 if (value.includes(newVal)) {
-                                  return null
+                                  return null;
                                 }
 
-                                return newVal
+                                return newVal;
                               }}
                               invalidMessage="already exists"
                               showLabel={false}
@@ -301,7 +301,7 @@ const AddVariantsForm = ({
                               onChange={onChange}
                               placeholder="Blue, Red, Black..."
                             />
-                          )
+                          );
                         }}
                       />
                       <Button
@@ -314,7 +314,7 @@ const AddVariantsForm = ({
                         <TrashIcon size={20} className="text-grey-40" />
                       </Button>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </div>
@@ -372,7 +372,7 @@ const AddVariantsForm = ({
                         productDimensions={productDimensions}
                         productCustoms={productCustoms}
                       />
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -427,8 +427,8 @@ const AddVariantsForm = ({
         </Modal.Body>
       </Modal>
     </>
-  )
-}
+  );
+};
 
 const createEmptyVariant = (
   options: ProductOptionType[]
@@ -468,7 +468,7 @@ const createEmptyVariant = (
         option_id: option.id,
         option: null,
       })) || [],
-  }
-}
+  };
+};
 
-export default AddVariantsForm
+export default AddVariantsForm;

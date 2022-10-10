@@ -1,27 +1,27 @@
-import clsx from "clsx"
+import clsx from "clsx";
 import React, {
   ChangeEventHandler,
   FocusEventHandler,
   MouseEventHandler,
   useImperativeHandle,
   useRef,
-} from "react"
-import InputError from "../../atoms/input-error"
-import MinusIcon from "../../fundamentals/icons/minus-icon"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import InputHeader, { InputHeaderProps } from "../../fundamentals/input-header"
+} from "react";
+import InputError from "../../atoms/input-error";
+import MinusIcon from "../../fundamentals/icons/minus-icon";
+import PlusIcon from "../../fundamentals/icons/plus-icon";
+import InputHeader, { InputHeaderProps } from "../../fundamentals/input-header";
 
 export type InputProps = Omit<React.ComponentPropsWithRef<"input">, "prefix"> &
   InputHeaderProps & {
-    label?: string
-    deletable?: boolean
-    onDelete?: MouseEventHandler<HTMLSpanElement>
-    onChange?: ChangeEventHandler<HTMLInputElement>
-    onFocus?: FocusEventHandler<HTMLInputElement>
-    errors?: { [x: string]: unknown }
-    prefix?: React.ReactNode
-    props?: React.HTMLAttributes<HTMLDivElement>
-  }
+    label?: string;
+    deletable?: boolean;
+    onDelete?: MouseEventHandler<HTMLSpanElement>;
+    onChange?: ChangeEventHandler<HTMLInputElement>;
+    onFocus?: FocusEventHandler<HTMLInputElement>;
+    errors?: { [x: string]: unknown };
+    prefix?: React.ReactNode;
+    props?: React.HTMLAttributes<HTMLDivElement>;
+  };
 
 const InputField = React.forwardRef<HTMLInputElement, InputProps>(
   (
@@ -44,15 +44,15 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
     }: InputProps,
     ref
   ) => {
-    const inputRef = useRef<HTMLInputElement | null>(null)
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
       ref,
       () => inputRef.current
-    )
+    );
 
     const onNumberIncrement = () => {
-      inputRef.current?.stepUp()
+      inputRef.current?.stepUp();
       if (onChange) {
         inputRef.current?.dispatchEvent(
           new InputEvent("change", {
@@ -60,12 +60,12 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
             bubbles: true,
             cancelable: false,
           })
-        )
+        );
       }
-    }
+    };
 
     const onNumberDecrement = () => {
-      inputRef.current?.stepDown()
+      inputRef.current?.stepDown();
       if (onChange) {
         inputRef.current?.dispatchEvent(
           new InputEvent("change", {
@@ -73,9 +73,9 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
             bubbles: true,
             cancelable: false,
           })
-        )
+        );
       }
-    }
+    };
 
     return (
       <div className={clsx("w-full", className)} {...props}>
@@ -142,8 +142,8 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
         </div>
         <InputError name={name} errors={errors} />
       </div>
-    )
+    );
   }
-)
+);
 
-export default InputField
+export default InputField;

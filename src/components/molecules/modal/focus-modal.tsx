@@ -1,24 +1,24 @@
-import clsx from "clsx"
-import React from "react"
-import Button from "../../fundamentals/button"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
+import clsx from "clsx";
+import React from "react";
+import Button from "../../fundamentals/button";
+import CrossIcon from "../../fundamentals/icons/cross-icon";
 
 type FocusModalElementProps = {
-  className?: string
-}
+  className?: string;
+};
 
 type FocusModalProps = React.FC<FocusModalElementProps> & {
-  Header: React.FC<FocusModalElementProps>
-  Main: React.FC<FocusModalElementProps>
-  BasicFocusModal: React.FC<BasicFocusModalProps>
-}
+  Header: React.FC<FocusModalElementProps>;
+  Main: React.FC<FocusModalElementProps>;
+  BasicFocusModal: React.FC<BasicFocusModalProps>;
+};
 
 type BasicFocusModalProps = {
-  handleClose: (e) => void
-  onSubmit: (e) => void
-  cancelText?: string
-  submitText?: string
-}
+  handleClose: (e) => void;
+  onSubmit: (e) => void;
+  cancelText?: string;
+  submitText?: string;
+};
 
 const FocusModal: FocusModalProps = ({ className, children }) => (
   <div
@@ -29,7 +29,7 @@ const FocusModal: FocusModalProps = ({ className, children }) => (
   >
     {children}
   </div>
-)
+);
 
 FocusModal.Header = ({ children, className }) => (
   <div
@@ -40,13 +40,13 @@ FocusModal.Header = ({ children, className }) => (
   >
     {children}
   </div>
-)
+);
 
 FocusModal.Main = ({ children, className }) => (
   <div className={clsx("w-full px-8 overflow-y-auto h-full", className)}>
     {children}
   </div>
-)
+);
 
 FocusModal.BasicFocusModal = ({
   handleClose,
@@ -65,8 +65,8 @@ FocusModal.BasicFocusModal = ({
       />
       <FocusModal.Main>{children}</FocusModal.Main>
     </FocusModal>
-  )
-}
+  );
+};
 
 const BasicFocusModalHeader: React.FC<BasicFocusModalProps> = ({
   handleClose,
@@ -105,7 +105,7 @@ const BasicFocusModalHeader: React.FC<BasicFocusModalProps> = ({
         </div>
       </div>
     </FocusModal.Header>
-  )
-}
+  );
+};
 
-export default FocusModal
+export default FocusModal;

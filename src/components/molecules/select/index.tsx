@@ -1,52 +1,52 @@
-import clsx from "clsx"
+import clsx from "clsx";
 import React, {
   useContext,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
-} from "react"
-import Primitive from "react-select"
-import AsyncPrimitive from "react-select/async"
-import AsyncCreatablePrimitive from "react-select/async-creatable"
-import CreatablePrimitive from "react-select/creatable"
-import InputHeader, { InputHeaderProps } from "../../fundamentals/input-header"
-import { ModalContext } from "../modal"
-import { SelectComponents } from "./select-components"
+} from "react";
+import Primitive from "react-select";
+import AsyncPrimitive from "react-select/async";
+import AsyncCreatablePrimitive from "react-select/async-creatable";
+import CreatablePrimitive from "react-select/creatable";
+import InputHeader, { InputHeaderProps } from "../../fundamentals/input-header";
+import { ModalContext } from "../modal";
+import { SelectComponents } from "./select-components";
 
 export type SelectOption<T> = {
-  value: T
-  label: string
-  disabled?: boolean
-}
+  value: T;
+  label: string;
+  disabled?: boolean;
+};
 
 type MultiSelectProps = InputHeaderProps & {
   // component props
-  label: string
-  required?: boolean
-  name?: string
-  className?: string
-  fullWidth?: boolean
+  label: string;
+  required?: boolean;
+  name?: string;
+  className?: string;
+  fullWidth?: boolean;
   // Multiselect props
-  placeholder?: string
-  isMultiSelect?: boolean
-  labelledBy?: string
-  options: { label: string; value: string | null; disabled?: boolean }[]
+  placeholder?: string;
+  isMultiSelect?: boolean;
+  labelledBy?: string;
+  options: { label: string; value: string | null; disabled?: boolean }[];
   value:
     | { label: string; value: string }[]
     | { label: string; value: string }
-    | null
-  filterOptions?: (q: string) => any[]
-  hasSelectAll?: boolean
-  isLoading?: boolean
-  shouldToggleOnHover?: boolean
-  onChange: (values: any[] | any) => void
-  disabled?: boolean
-  enableSearch?: boolean
-  isCreatable?: boolean
-  clearSelected?: boolean
-  onCreateOption?: (value: string) => { value: string; label: string }
-}
+    | null;
+  filterOptions?: (q: string) => any[];
+  hasSelectAll?: boolean;
+  isLoading?: boolean;
+  shouldToggleOnHover?: boolean;
+  onChange: (values: any[] | any) => void;
+  disabled?: boolean;
+  enableSearch?: boolean;
+  isCreatable?: boolean;
+  clearSelected?: boolean;
+  onCreateOption?: (value: string) => { value: string; label: string };
+};
 
 const SSelect = React.forwardRef(
   (
@@ -72,23 +72,23 @@ const SSelect = React.forwardRef(
     }: MultiSelectProps,
     ref
   ) => {
-    const { portalRef } = useContext(ModalContext)
+    const { portalRef } = useContext(ModalContext);
 
-    const [isFocussed, setIsFocussed] = useState(false)
-    const [scrollBlocked, setScrollBlocked] = useState(true)
+    const [isFocussed, setIsFocussed] = useState(false);
+    const [scrollBlocked, setScrollBlocked] = useState(true);
 
     useEffect(() => {
       window.addEventListener("resize", () => {
-        setIsFocussed(false)
-        selectRef?.current?.blur()
-      })
-    }, [])
+        setIsFocussed(false);
+        selectRef?.current?.blur();
+      });
+    }, []);
 
-    const selectRef = useRef(null)
+    const selectRef = useRef(null);
 
-    useImperativeHandle(ref, () => selectRef.current)
+    useImperativeHandle(ref, () => selectRef.current);
 
-    const containerRef = useRef(null)
+    const containerRef = useRef(null);
 
     const onClickOption = (val, ...args) => {
       if (
@@ -97,33 +97,33 @@ const SSelect = React.forwardRef(
         hasSelectAll &&
         isMultiSelect
       ) {
-        onChange(options)
+        onChange(options);
       } else {
-        onChange(val)
+        onChange(val);
         if (!isMultiSelect) {
-          selectRef?.current?.blur()
-          setIsFocussed(false)
+          selectRef?.current?.blur();
+          setIsFocussed(false);
         }
       }
-    }
+    };
 
     const handleOnCreateOption = (val) => {
       if (onCreateOption) {
-        onCreateOption(val)
-        setIsFocussed(false)
-        selectRef?.current?.blur()
+        onCreateOption(val);
+        setIsFocussed(false);
+        selectRef?.current?.blur();
       }
-    }
+    };
 
     useEffect(() => {
       const delayDebounceFn = setTimeout(() => {
         if (isFocussed) {
-          setScrollBlocked(false)
+          setScrollBlocked(false);
         }
-      }, 50)
+      }, 50);
 
-      return () => clearTimeout(delayDebounceFn)
-    }, [isFocussed])
+      return () => clearTimeout(delayDebounceFn);
+    }, [isFocussed]);
 
     return (
       <div
@@ -159,11 +159,11 @@ const SSelect = React.forwardRef(
               isClearable={clearSelected}
               onChange={onClickOption}
               onMenuOpen={() => {
-                setIsFocussed(true)
+                setIsFocussed(true);
               }}
               onMenuClose={() => {
-                setScrollBlocked(true)
-                setIsFocussed(false)
+                setScrollBlocked(true);
+                setIsFocussed(false);
               }}
               closeMenuOnScroll={(e) => {
                 if (
@@ -171,7 +171,7 @@ const SSelect = React.forwardRef(
                   e.target?.contains(containerRef.current) &&
                   e.target !== document
                 ) {
-                  return true
+                  return true;
                 }
               }}
               closeMenuOnSelect={!isMultiSelect}
@@ -191,9 +191,9 @@ const SSelect = React.forwardRef(
           {isFocussed && enableSearch && <div className="w-full h-5" />}
         </div>
       </div>
-    )
+    );
   }
-)
+);
 
 const GetSelect = React.forwardRef(
   (
@@ -217,7 +217,7 @@ const GetSelect = React.forwardRef(
           ref={ref}
           onCreateOption={onCreateOption}
         />
-      )
+      );
     } else if (searchBackend) {
       return (
         <AsyncPrimitive
@@ -226,10 +226,10 @@ const GetSelect = React.forwardRef(
           loadOptions={searchBackend}
           {...props}
         />
-      )
+      );
     }
-    return <Primitive ref={ref} {...props} />
+    return <Primitive ref={ref} {...props} />;
   }
-)
+);
 
-export default SSelect
+export default SSelect;

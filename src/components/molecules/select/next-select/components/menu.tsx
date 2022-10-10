@@ -1,5 +1,11 @@
-import clsx from "clsx"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import clsx from "clsx";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ActionMeta,
   CX,
@@ -11,12 +17,12 @@ import {
   OptionProps,
   OptionsOrGroups,
   PropsValue,
-} from "react-select"
-import Button from "../../../../fundamentals/button"
-import CheckIcon from "../../../../fundamentals/icons/check-icon"
-import ListArrowIcon from "../../../../fundamentals/icons/list-arrow-icon"
-import { hasPrefix, optionIsDisabled } from "../utils"
-import SelectPrimitives from "./select-primitives"
+} from "react-select";
+import Button from "../../../../fundamentals/button";
+import CheckIcon from "../../../../fundamentals/icons/check-icon";
+import ListArrowIcon from "../../../../fundamentals/icons/list-arrow-icon";
+import { hasPrefix, optionIsDisabled } from "../utils";
+import SelectPrimitives from "./select-primitives";
 
 const Menu = <
   Option,
@@ -34,16 +40,16 @@ const Menu = <
   useEffect(() => {
     const closeOnResize = () => {
       if (menuIsOpen) {
-        onMenuClose()
+        onMenuClose();
       }
-    }
+    };
 
-    window.addEventListener("resize", closeOnResize)
+    window.addEventListener("resize", closeOnResize);
 
     return () => {
-      window.removeEventListener("resize", closeOnResize)
-    }
-  }, [menuIsOpen, onMenuClose])
+      window.removeEventListener("resize", closeOnResize);
+    };
+  }, [menuIsOpen, onMenuClose]);
 
   return (
     <div
@@ -63,24 +69,24 @@ const Menu = <
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default Menu
+export default Menu;
 
 type SelectAllOptionProps<
   Option,
   IsMulti extends boolean,
   Group extends GroupBase<Option>
 > = {
-  cx: CX
+  cx: CX;
   onChange: (
     newValue: OnChangeValue<Option, IsMulti>,
     actionMeta: ActionMeta<Option>
-  ) => void
-  options: OptionsOrGroups<Option, Group>
-  value: PropsValue<Option>
-}
+  ) => void;
+  options: OptionsOrGroups<Option, Group>;
+  value: PropsValue<Option>;
+};
 
 const SelectAllOption = <
   Option,
@@ -92,26 +98,26 @@ const SelectAllOption = <
   options,
   value,
 }: SelectAllOptionProps<Option, IsMulti, Group>) => {
-  const [isFocused, setIsFocused] = useState(false)
-  const ref = useRef<HTMLButtonElement>(null)
+  const [isFocused, setIsFocused] = useState(false);
+  const ref = useRef<HTMLButtonElement>(null);
 
   const isAllSelected = useMemo(() => {
     if (Array.isArray(value)) {
-      const selectableOptions = options.filter((o) => !optionIsDisabled(o))
-      return value.length === selectableOptions.length
+      const selectableOptions = options.filter((o) => !optionIsDisabled(o));
+      return value.length === selectableOptions.length;
     }
 
-    return false
-  }, [value])
+    return false;
+  }, [value]);
 
   const onClick = useCallback(() => {
     if (isAllSelected) {
       onChange(([] as unknown) as OnChangeValue<Option, IsMulti>, {
         action: "deselect-option",
         option: ([] as unknown) as Option,
-      })
+      });
     } else {
-      const selectableOptions = options.filter((o) => !optionIsDisabled(o))
+      const selectableOptions = options.filter((o) => !optionIsDisabled(o));
 
       onChange(
         (selectableOptions as unknown) as OnChangeValue<Option, IsMulti>,
@@ -119,19 +125,19 @@ const SelectAllOption = <
           action: "select-option",
           option: (selectableOptions as unknown) as Option,
         }
-      )
+      );
     }
-  }, [isAllSelected, options])
+  }, [isAllSelected, options]);
 
   useEffect(() => {
     setIsFocused(
       document.activeElement !== null && document.activeElement === ref.current
-    )
+    );
 
     return () => {
-      setIsFocused(false)
-    }
-  }, [])
+      setIsFocused(false);
+    };
+  }, []);
 
   return (
     <Button
@@ -153,8 +159,8 @@ const SelectAllOption = <
         {!isAllSelected ? "Select All" : "Deselect All"}
       </span>
     </Button>
-  )
-}
+  );
+};
 
 export const MenuList = <
   Option,
@@ -170,7 +176,7 @@ export const MenuList = <
     isMulti,
     selectProps: { selectAll, value, onChange },
     options,
-  } = props
+  } = props;
   return (
     <SelectPrimitives.MenuList
       {...props}
@@ -192,8 +198,8 @@ export const MenuList = <
       )}
       {children}
     </SelectPrimitives.MenuList>
-  )
-}
+  );
+};
 
 export const LoadingMessage = <
   Option,
@@ -218,8 +224,8 @@ export const LoadingMessage = <
       >
         <div className="bg-grey-10 animate-pulse w-1/4 h-xsmall rounded-rounded" />
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div
@@ -236,8 +242,8 @@ export const LoadingMessage = <
       <Skeleton />
       <Skeleton />
     </div>
-  )
-}
+  );
+};
 
 export const Option = <
   Option,
@@ -256,9 +262,9 @@ export const Option = <
     innerProps,
     innerRef,
     selectProps: { hideSelectedOptions, isMulti, size },
-  } = props
+  } = props;
 
-  const prefix = hasPrefix(props.data) ? props.data.prefix : null
+  const prefix = hasPrefix(props.data) ? props.data.prefix : null;
 
   return (
     <div
@@ -301,8 +307,8 @@ export const Option = <
       </div>
       {!isMulti && isSelected && <CheckIcon size={16} />}
     </div>
-  )
-}
+  );
+};
 
 const CheckboxAdornment = ({
   isSelected,
@@ -322,5 +328,5 @@ const CheckboxAdornment = ({
         {isSelected && <CheckIcon size={10} />}
       </span>
     </div>
-  )
-}
+  );
+};

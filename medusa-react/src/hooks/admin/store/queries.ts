@@ -2,18 +2,18 @@ import {
   AdminTaxProvidersList,
   AdminPaymentProvidersList,
   AdminStoresRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_STORE_QUERY_KEY = `admin_store` as const
+const ADMIN_STORE_QUERY_KEY = `admin_store` as const;
 
-export const adminStoreKeys = queryKeysFactory(ADMIN_STORE_QUERY_KEY)
+export const adminStoreKeys = queryKeysFactory(ADMIN_STORE_QUERY_KEY);
 
-type StoreQueryKeys = typeof adminStoreKeys
+type StoreQueryKeys = typeof adminStoreKeys;
 
 export const useAdminStorePaymentProviders = (
   options?: UseQueryOptionsWrapper<
@@ -22,14 +22,14 @@ export const useAdminStorePaymentProviders = (
     ReturnType<StoreQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminStoreKeys.detail("payment_providers"),
     () => client.admin.store.listPaymentProviders(),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminStoreTaxProviders = (
   options?: UseQueryOptionsWrapper<
@@ -38,14 +38,14 @@ export const useAdminStoreTaxProviders = (
     ReturnType<StoreQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminStoreKeys.detail("tax_providers"),
     () => client.admin.store.listTaxProviders(),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminStore = (
   options?: UseQueryOptionsWrapper<
@@ -54,11 +54,11 @@ export const useAdminStore = (
     ReturnType<StoreQueryKeys["details"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminStoreKeys.details(),
     () => client.admin.store.retrieve(),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import MailIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import MailIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/MailIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof MailIcon>
+} as ComponentMeta<typeof MailIcon>;
 
-const Template = args => <MailIcon {...args} />
+const Template = (args) => <MailIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};

@@ -1,46 +1,46 @@
-import { Order } from "@medusajs/medusa"
-import { useAdminRegion } from "../../../../../medusa-react"
-import React, { useContext, useEffect, useMemo } from "react"
-import { Controller, useForm } from "react-hook-form"
-import Button from "../../../../components/fundamentals/button"
-import Input from "../../../../components/molecules/input"
-import Modal from "../../../../components/molecules/modal"
-import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal"
-import Select from "../../../../components/molecules/select"
-import { Option } from "../../../../types/shared"
-import { AddressPayload } from "../claim/create"
+import { Order } from "@medusajs/medusa";
+import { useAdminRegion } from "../../../../../medusa-react";
+import React, { useContext, useEffect, useMemo } from "react";
+import { Controller, useForm } from "react-hook-form";
+import Button from "../../../../components/fundamentals/button";
+import Input from "../../../../components/molecules/input";
+import Modal from "../../../../components/molecules/modal";
+import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal";
+import Select from "../../../../components/molecules/select";
+import { Option } from "../../../../types/shared";
+import { AddressPayload } from "../claim/create";
 
 type RMAEditAddressSubModalProps = {
-  onSubmit: (address: AddressPayload) => void
-  address: AddressPayload
-  order: Omit<Order, "beforeInsert">
-}
+  onSubmit: (address: AddressPayload) => void;
+  address: AddressPayload;
+  order: Omit<Order, "beforeInsert">;
+};
 
 type RMAEditAddressSubModalFormData = {
-  first_name: string
-  last_name: string
-  company: string
-  address_1: string
-  address_2: string
-  city: string
-  province: string
-  postal_code: string
-  country_code: Option
-  phone: string
-}
+  first_name: string;
+  last_name: string;
+  company: string;
+  address_1: string;
+  address_2: string;
+  city: string;
+  province: string;
+  postal_code: string;
+  country_code: Option;
+  phone: string;
+};
 
 const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
   onSubmit,
   address,
   order,
 }) => {
-  const { pop } = useContext(LayeredModalContext)
+  const { pop } = useContext(LayeredModalContext);
 
   const { register, handleSubmit, control, reset } = useForm<
     RMAEditAddressSubModalFormData
-  >()
+  >();
 
-  const { region } = useAdminRegion(order.region_id)
+  const { region } = useAdminRegion(order.region_id);
 
   const countryOptions = useMemo(() => {
     return (
@@ -48,29 +48,29 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
         label: country.display_name,
         value: country.iso_2,
       })) || []
-    )
-  }, [region])
+    );
+  }, [region]);
 
   useEffect(() => {
     if (address && countryOptions) {
       const option = countryOptions.find(
         (o) => o.value === address.country_code
-      )
+      );
 
       reset({
         ...address,
         country_code: option,
-      })
+      });
     }
-  }, [countryOptions, address])
+  }, [countryOptions, address]);
 
   const submit = (data: RMAEditAddressSubModalFormData) => {
     onSubmit({
       ...data,
       country_code: data.country_code.value,
-    })
-    pop()
-  }
+    });
+    pop();
+  };
 
   return (
     <>
@@ -161,7 +161,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
                           options={countryOptions}
                           required
                         />
-                      )
+                      );
                     }}
                   />
                 </div>
@@ -192,7 +192,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
         </Modal.Footer>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default RMAEditAddressSubModal
+export default RMAEditAddressSubModal;

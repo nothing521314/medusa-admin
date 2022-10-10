@@ -1,17 +1,17 @@
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-import clsx from "clsx"
-import React, { useState } from "react"
-import CheckIcon from "../../fundamentals/icons/check-icon"
-import ChevronDownIcon from "../../fundamentals/icons/chevron-down"
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import clsx from "clsx";
+import React, { useState } from "react";
+import CheckIcon from "../../fundamentals/icons/check-icon";
+import ChevronDownIcon from "../../fundamentals/icons/chevron-down";
 
 export type FilteringOptionProps = {
-  title: string
+  title: string;
   options: {
-    title: string
-    count?: number
-    onClick: () => void
-  }[]
-} & React.HTMLAttributes<HTMLDivElement>
+    title: string;
+    count?: number;
+    onClick: () => void;
+  }[];
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const FilteringOptions: React.FC<FilteringOptionProps> = ({
   title,
@@ -19,8 +19,8 @@ const FilteringOptions: React.FC<FilteringOptionProps> = ({
   className,
   ...props
 }) => {
-  const [selected, setSelected] = useState(options?.[0]?.title || "All")
-  const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState(options?.[0]?.title || "All");
+  const [open, setOpen] = useState(false);
   return (
     <div
       className={clsx(
@@ -53,8 +53,8 @@ const FilteringOptions: React.FC<FilteringOptionProps> = ({
             <DropdownMenu.DropdownMenuItem
               key={`${idx}-${opt.title}`}
               onSelect={() => {
-                opt.onClick()
-                setSelected(opt.title)
+                opt.onClick();
+                setSelected(opt.title);
               }}
               disabled={typeof opt.count !== "undefined" && opt.count < 1}
               className={clsx(
@@ -90,7 +90,7 @@ const FilteringOptions: React.FC<FilteringOptionProps> = ({
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     </div>
-  )
-}
+  );
+};
 
-export default FilteringOptions
+export default FilteringOptions;

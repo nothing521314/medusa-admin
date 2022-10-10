@@ -1,30 +1,30 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 
 export const defaultInterfaceContext = {
-  onSearch: query => {},
+  onSearch: (query) => {},
   setOnSearch: (query) => {},
   onUnmount: () => {},
   display: false,
-}
+};
 
-export const InterfaceContext = React.createContext(defaultInterfaceContext)
+export const InterfaceContext = React.createContext(defaultInterfaceContext);
 
 export const InterfaceProvider = ({ children }) => {
-  const [searchHandler, setSearchHandler] = useState(() => () => {})
-  const [display, setDisplay] = useState(false)
+  const [searchHandler, setSearchHandler] = useState(() => () => {});
+  const [display, setDisplay] = useState(false);
 
-  const setOnSearch = handler => {
+  const setOnSearch = (handler) => {
     if (handler) {
-      setDisplay(true)
+      setDisplay(true);
       setSearchHandler(() => {
-        return handler
-      })
+        return handler;
+      });
     }
-  }
+  };
 
   const unmountAction = () => {
-    return () => setDisplay(false)
-  }
+    return () => setDisplay(false);
+  };
 
   return (
     <InterfaceContext.Provider
@@ -37,5 +37,5 @@ export const InterfaceProvider = ({ children }) => {
     >
       {children}
     </InterfaceContext.Provider>
-  )
-}
+  );
+};

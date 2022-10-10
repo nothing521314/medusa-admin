@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const AlertIcon: React.FC<IconProps> = ({
   size = "20",
@@ -37,7 +37,7 @@ const AlertIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default AlertIcon
+export default AlertIcon;

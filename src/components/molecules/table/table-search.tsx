@@ -1,13 +1,13 @@
-import clsx from "clsx"
-import React, { useEffect, useRef } from "react"
-import SearchIcon from "../../fundamentals/icons/search-icon"
+import clsx from "clsx";
+import React, { useEffect, useRef } from "react";
+import SearchIcon from "../../fundamentals/icons/search-icon";
 
 type TableSearchProps = {
-  autoFocus?: boolean
-  onSearch: (term: string) => void
-  placeholder?: string
-  searchValue?: string
-} & React.HTMLAttributes<HTMLDivElement>
+  autoFocus?: boolean;
+  onSearch: (term: string) => void;
+  placeholder?: string;
+  searchValue?: string;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const TableSearch: React.FC<TableSearchProps> = ({
   autoFocus,
@@ -17,15 +17,15 @@ const TableSearch: React.FC<TableSearchProps> = ({
   className,
   ...props
 }) => {
-  const ref = useRef(null)
-  const inputRef: React.RefObject<HTMLInputElement> = useRef(null)
+  const ref = useRef(null);
+  const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
 
   useEffect(() => {
     if (inputRef && inputRef.current) {
       inputRef.current.size =
-        inputRef?.current?.placeholder?.replace(/\s+/g, "").length || 20
+        inputRef?.current?.placeholder?.replace(/\s+/g, "").length || 20;
     }
-  }, [])
+  }, []);
 
   return (
     <div
@@ -51,11 +51,11 @@ const TableSearch: React.FC<TableSearchProps> = ({
         )}
         placeholder={placeholder}
         onChange={(e) => {
-          onSearch(e.target.value)
+          onSearch(e.target.value);
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default TableSearch
+export default TableSearch;

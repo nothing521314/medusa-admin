@@ -1,15 +1,15 @@
-import { RouteComponentProps } from "@reach/router"
-import { useAdminOrders } from "../../../../medusa-react"
-import moment from "moment"
-import React, { useRef } from "react"
-import { useObserveWidth } from "../../../hooks/use-observe-width"
-import { stringDisplayPrice } from "../../../utils/prices"
-import StatusDot from "../../fundamentals/status-indicator"
-import Table from "../../molecules/table"
+import { RouteComponentProps } from "@reach/router";
+import { useAdminOrders } from "../../../../medusa-react";
+import moment from "moment";
+import React, { useRef } from "react";
+import { useObserveWidth } from "../../../hooks/use-observe-width";
+import { stringDisplayPrice } from "../../../utils/prices";
+import StatusDot from "../../fundamentals/status-indicator";
+import Table from "../../molecules/table";
 
 type CustomerOrdersTableProps = {
-  customerId: string
-} & RouteComponentProps
+  customerId: string;
+} & RouteComponentProps;
 
 const CustomerOrdersTable: React.FC<CustomerOrdersTableProps> = ({
   customerId,
@@ -24,31 +24,31 @@ const CustomerOrdersTable: React.FC<CustomerOrdersTableProps> = ({
     offset: 0,
     limit: 14,
     expand: "items",
-  })
+  });
 
-  const containerRef = useRef(null)
-  const width = useObserveWidth(containerRef)
+  const containerRef = useRef(null);
+  const width = useObserveWidth(containerRef);
 
   const calcImages = (order) => {
-    const columns = Math.max(Math.floor(width / 20) - 1, 1)
-    const visibleImages = order.items.slice(0, columns)
-    const remainder = order.items.length - columns
+    const columns = Math.max(Math.floor(width / 20) - 1, 1);
+    const visibleImages = order.items.slice(0, columns);
+    const remainder = order.items.length - columns;
 
-    return { visibleImages, remainder }
-  }
+    return { visibleImages, remainder };
+  };
 
   const decideStatus = (order) => {
     switch (order.payment_status) {
       case "captured":
-        return <StatusDot variant="success" title={"Paid"} />
+        return <StatusDot variant="success" title={"Paid"} />;
       case "awaiting":
-        return <StatusDot variant="warning" title={"Awaiting"} />
+        return <StatusDot variant="warning" title={"Awaiting"} />;
       case "requires":
-        return <StatusDot variant="danger" title={"Requires action"} />
+        return <StatusDot variant="danger" title={"Requires action"} />;
       default:
-        return <StatusDot variant="primary" title={"N/A"} />
+        return <StatusDot variant="primary" title={"N/A"} />;
     }
-  }
+  };
 
   return (
     <div className="w-full h-full overflow-y-auto">
@@ -65,7 +65,7 @@ const CustomerOrdersTable: React.FC<CustomerOrdersTableProps> = ({
         </Table.Head>
         <Table.Body>
           {orders?.map((order, index) => {
-            const { remainder, visibleImages } = calcImages(order)
+            const { remainder, visibleImages } = calcImages(order);
 
             return (
               <Table.Row
@@ -111,12 +111,12 @@ const CustomerOrdersTable: React.FC<CustomerOrdersTableProps> = ({
                 </Table.Cell>
                 <Table.Cell />
               </Table.Row>
-            )
+            );
           })}
         </Table.Body>
       </Table>
     </div>
-  )
-}
+  );
+};
 
-export default CustomerOrdersTable
+export default CustomerOrdersTable;

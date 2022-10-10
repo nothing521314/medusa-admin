@@ -1,26 +1,26 @@
-import { Discount } from "@medusajs/medusa"
-import { navigate } from "gatsby"
-import * as React from "react"
-import Button from "../../../../components/fundamentals/button"
-import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
-import FocusModal from "../../../../components/molecules/modal/focus-modal"
-import Accordion from "../../../../components/organisms/accordion"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
-import { useDiscountForm } from "./form/discount-form-context"
-import { DiscountFormValues } from "./form/mappers"
-import { useFormActions } from "./form/use-form-actions"
-import Conditions from "./sections/conditions"
-import Configuration from "./sections/configuration"
-import DiscountType from "./sections/discount-type"
-import General from "./sections/general"
+import { Discount } from "@medusajs/medusa";
+import { navigate } from "gatsby";
+import * as React from "react";
+import Button from "../../../../components/fundamentals/button";
+import CrossIcon from "../../../../components/fundamentals/icons/cross-icon";
+import FocusModal from "../../../../components/molecules/modal/focus-modal";
+import Accordion from "../../../../components/organisms/accordion";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
+import { useDiscountForm } from "./form/discount-form-context";
+import { DiscountFormValues } from "./form/mappers";
+import { useFormActions } from "./form/use-form-actions";
+import Conditions from "./sections/conditions";
+import Configuration from "./sections/configuration";
+import DiscountType from "./sections/discount-type";
+import General from "./sections/general";
 
 type DiscountFormProps = {
-  discount?: Discount
-  isEdit?: boolean
-  additionalOpen?: string[]
-  closeForm?: () => void
-}
+  discount?: Discount;
+  isEdit?: boolean;
+  additionalOpen?: string[];
+  closeForm?: () => void;
+};
 
 const DiscountForm: React.FC<DiscountFormProps> = ({
   discount,
@@ -28,45 +28,45 @@ const DiscountForm: React.FC<DiscountFormProps> = ({
   additionalOpen = [],
   isEdit = false,
 }) => {
-  const notification = useNotification()
-  const { handleSubmit, handleReset } = useDiscountForm()
+  const notification = useNotification();
+  const { handleSubmit, handleReset } = useDiscountForm();
 
-  const { onSaveAsActive, onSaveAsInactive } = useFormActions()
+  const { onSaveAsActive, onSaveAsInactive } = useFormActions();
 
   const closeFormModal = () => {
     if (closeForm) {
-      closeForm()
+      closeForm();
     } else {
-      navigate("/a/discounts")
+      navigate("/a/discounts");
     }
-    handleReset()
-  }
+    handleReset();
+  };
 
   const submitGhost = async (data: DiscountFormValues) => {
     if (!isEdit) {
       onSaveAsInactive(data)
         .then(() => {
-          closeFormModal()
-          handleReset()
+          closeFormModal();
+          handleReset();
         })
         .catch((error) => {
-          notification("Error", getErrorMessage(error), "error")
-        })
+          notification("Error", getErrorMessage(error), "error");
+        });
     } else {
-      closeFormModal()
-      handleReset()
+      closeFormModal();
+      handleReset();
     }
-  }
+  };
 
   const submitCTA = async (data: DiscountFormValues) => {
     try {
-      await onSaveAsActive(data)
-      closeFormModal()
-      handleReset()
+      await onSaveAsActive(data);
+      closeFormModal();
+      handleReset();
     } catch (error) {
-      notification("Error", getErrorMessage(error), "error")
+      notification("Error", getErrorMessage(error), "error");
     }
-  }
+  };
 
   return (
     <FocusModal>
@@ -150,7 +150,7 @@ const DiscountForm: React.FC<DiscountFormProps> = ({
         </div>
       </FocusModal.Main>
     </FocusModal>
-  )
-}
+  );
+};
 
-export default DiscountForm
+export default DiscountForm;

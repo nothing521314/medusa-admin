@@ -1,41 +1,41 @@
-import { Discount } from "@medusajs/medusa"
-import clsx from "clsx"
-import React, { useEffect, useState } from "react"
-import { Controller } from "react-hook-form"
-import DatePicker from "../../../../../components/atoms/date-picker/date-picker"
-import TimePicker from "../../../../../components/atoms/date-picker/time-picker"
-import Switch from "../../../../../components/atoms/switch"
-import AvailabilityDuration from "../../../../../components/molecules/availability-duration"
-import InputField from "../../../../../components/molecules/input"
-import Accordion from "../../../../../components/organisms/accordion"
-import { useDiscountForm } from "../form/discount-form-context"
+import { Discount } from "@medusajs/medusa";
+import clsx from "clsx";
+import React, { useEffect, useState } from "react";
+import { Controller } from "react-hook-form";
+import DatePicker from "../../../../../components/atoms/date-picker/date-picker";
+import TimePicker from "../../../../../components/atoms/date-picker/time-picker";
+import Switch from "../../../../../components/atoms/switch";
+import AvailabilityDuration from "../../../../../components/molecules/availability-duration";
+import InputField from "../../../../../components/molecules/input";
+import Accordion from "../../../../../components/organisms/accordion";
+import { useDiscountForm } from "../form/discount-form-context";
 
 type SettingsProps = {
-  isEdit?: boolean
-  promotion?: Discount
-}
+  isEdit?: boolean;
+  promotion?: Discount;
+};
 
 const getActiveTabs = (promotion: Discount) => {
-  const activeTabs: string[] = []
+  const activeTabs: string[] = [];
 
   if (promotion.usage_limit !== null) {
-    activeTabs.push("usage_limit")
+    activeTabs.push("usage_limit");
   }
 
   if (promotion.starts_at !== null) {
-    activeTabs.push("starts_at")
+    activeTabs.push("starts_at");
   }
 
   if (promotion.ends_at !== null) {
-    activeTabs.push("ends_at")
+    activeTabs.push("ends_at");
   }
 
   if (promotion.valid_duration !== null) {
-    activeTabs.push("valid_duration")
+    activeTabs.push("valid_duration");
   }
 
-  return activeTabs
-}
+  return activeTabs;
+};
 
 const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
   const {
@@ -44,21 +44,21 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
     isDynamic,
     hasExpiryDate,
     handleConfigurationChanged,
-  } = useDiscountForm()
+  } = useDiscountForm();
 
   const [openItems, setOpenItems] = React.useState<string[]>(
     isEdit && promotion
       ? getActiveTabs(promotion)
       : [...(hasExpiryDate ? ["ends_at"] : [])]
-  )
+  );
 
   const marginTransition =
-    "transition-[margin] duration-300 ease-[cubic-bezier(0.87, 0, 0.13, 1) forwards]"
+    "transition-[margin] duration-300 ease-[cubic-bezier(0.87, 0, 0.13, 1) forwards]";
 
-  const [render, setRender] = useState(false)
+  const [render, setRender] = useState(false);
   useEffect(() => {
-    setTimeout(() => setRender(true), 300)
-  }, [])
+    setTimeout(() => setRender(true), 300);
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -67,9 +67,9 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
         type="multiple"
         value={openItems || []}
         onValueChange={(values) => {
-          handleConfigurationChanged(values)
+          handleConfigurationChanged(values);
 
-          setOpenItems(values)
+          setOpenItems(values);
         }}
       >
         {render && (
@@ -98,8 +98,8 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 <Controller
                   name="starts_at"
                   control={control}
-                  render={({ field: { value, onChange } }) => {
-                    const date = value || new Date()
+                  render={({ field: { value, onChange } }) => {
+                    const date = value || new Date();
                     return (
                       <>
                         <DatePicker
@@ -113,7 +113,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                           onSubmitDate={onChange}
                         />
                       </>
-                    )
+                    );
                   }}
                 />
               </div>
@@ -142,10 +142,10 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 <Controller
                   name="ends_at"
                   control={control}
-                  render={({ field: { value, onChange } }) => {
+                  render={({ field: { value, onChange } }) => {
                     const date =
                       value ||
-                      new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
+                      new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
                     return (
                       <>
                         <DatePicker
@@ -159,7 +159,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                           onSubmitDate={onChange}
                         />
                       </>
-                    )
+                    );
                   }}
                 />
               </div>
@@ -182,7 +182,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 })}
               >
                 <InputField
-                  {...register("usage_limit",{ valueAsNumber: true })}
+                  {...register("usage_limit", { valueAsNumber: true })}
                   label="Number of redemptions"
                   type="number"
                   placeholder="5"
@@ -219,7 +219,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                           value={value ?? undefined}
                           onChange={onChange}
                         />
-                      )
+                      );
                     }}
                   />
                 </div>
@@ -229,7 +229,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
         )}
       </Accordion>
     </div>
-  )
-}
+  );
+};
 
-export default Settings
+export default Settings;

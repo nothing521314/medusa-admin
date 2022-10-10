@@ -3,18 +3,18 @@ import {
   AdminProductsRes,
   AdminGetProductsParams,
   AdminProductsListTagsRes,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_PRODUCTS_QUERY_KEY = `admin_products` as const
+const ADMIN_PRODUCTS_QUERY_KEY = `admin_products` as const;
 
-export const adminProductKeys = queryKeysFactory(ADMIN_PRODUCTS_QUERY_KEY)
+export const adminProductKeys = queryKeysFactory(ADMIN_PRODUCTS_QUERY_KEY);
 
-type ProductQueryKeys = typeof adminProductKeys
+type ProductQueryKeys = typeof adminProductKeys;
 
 export const useAdminProducts = (
   query?: AdminGetProductsParams,
@@ -24,14 +24,14 @@ export const useAdminProducts = (
     ReturnType<ProductQueryKeys["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminProductKeys.list(query),
     () => client.admin.products.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminProduct = (
   id: string,
@@ -41,14 +41,14 @@ export const useAdminProduct = (
     ReturnType<ProductQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminProductKeys.detail(id),
     () => client.admin.products.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminProductTagUsage = (
   options?: UseQueryOptionsWrapper<
@@ -57,11 +57,11 @@ export const useAdminProductTagUsage = (
     ReturnType<ProductQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminProductKeys.detail("tags"),
     () => client.admin.products.listTags(),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

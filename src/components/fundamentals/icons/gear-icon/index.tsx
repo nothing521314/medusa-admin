@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const GearIcon: React.FC<IconProps> = ({
   size = "24",
@@ -30,7 +30,7 @@ const GearIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default GearIcon
+export default GearIcon;

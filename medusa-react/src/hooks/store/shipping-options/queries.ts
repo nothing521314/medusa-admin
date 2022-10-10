@@ -1,21 +1,21 @@
-import { queryKeysFactory } from "../../utils/index"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
+import { queryKeysFactory } from "../../utils/index";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
 import {
   StoreShippingOptionsListRes,
   StoreGetShippingOptionsParams,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
 
-const SHIPPING_OPTION_QUERY_KEY = `shipping_options` as const
+const SHIPPING_OPTION_QUERY_KEY = `shipping_options` as const;
 
 const shippingOptionKey = {
   ...queryKeysFactory(SHIPPING_OPTION_QUERY_KEY),
   cart: (cartId: string) => [...shippingOptionKey.all, "cart", cartId] as const,
-}
+};
 
-type ShippingOptionQueryKey = typeof shippingOptionKey
+type ShippingOptionQueryKey = typeof shippingOptionKey;
 
 export const useShippingOptions = (
   query?: StoreGetShippingOptionsParams,
@@ -25,14 +25,14 @@ export const useShippingOptions = (
     ReturnType<ShippingOptionQueryKey["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     shippingOptionKey.list(query),
     async () => client.shippingOptions.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useCartShippingOptions = (
   cartId: string,
@@ -42,11 +42,11 @@ export const useCartShippingOptions = (
     ReturnType<ShippingOptionQueryKey["cart"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     shippingOptionKey.cart(cartId),
     async () => client.shippingOptions.listCartOptions(cartId),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

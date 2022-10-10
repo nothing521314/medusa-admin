@@ -2,20 +2,20 @@ import {
   AdminSalesChannelsRes,
   AdminSalesChannelsListRes,
   AdminGetSalesChannelsParams,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils";
 
-const ADMIN_SALES_CHANNELS_QUERY_KEY = `admin_sales_channels` as const
+const ADMIN_SALES_CHANNELS_QUERY_KEY = `admin_sales_channels` as const;
 
 export const adminSalesChannelsKeys = queryKeysFactory(
   ADMIN_SALES_CHANNELS_QUERY_KEY
-)
+);
 
-type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
+type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys;
 
 /** retrieve a sales channel
  * @experimental This feature is under development and may change in the future.
@@ -31,14 +31,14 @@ export const useAdminSalesChannel = (
     ReturnType<SalesChannelsQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminSalesChannelsKeys.detail(id),
     () => client.admin.salesChannels.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 /**
  * retrieve a list of sales channels
@@ -55,11 +55,11 @@ export const useAdminSalesChannels = (
     ReturnType<SalesChannelsQueryKeys["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminSalesChannelsKeys.list(query),
     () => client.admin.salesChannels.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

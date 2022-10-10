@@ -1,11 +1,11 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import GiftCardBanner from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import GiftCardBanner from ".";
 
 export default {
   title: "Organisms/GiftCardBanner",
   component: GiftCardBanner,
-} as ComponentMeta<typeof GiftCardBanner>
+} as ComponentMeta<typeof GiftCardBanner>;
 
 const GiftCardRes = {
   id: "prod_01FSM2R78R63VKXFAG3G7F52CD",
@@ -292,31 +292,31 @@ const GiftCardRes = {
       metadata: null,
     },
   ],
-}
+};
 
-const Template = (args) => <GiftCardBanner {...args} />
+const Template = (args) => <GiftCardBanner {...args} />;
 
-export const GiftCardPublished = Template.bind({})
+export const GiftCardPublished = Template.bind({});
 GiftCardPublished.args = {
   ...GiftCardRes,
   defaultCurrency: "usd",
-}
+};
 
-export const GiftCardUnpublished = Template.bind({})
+export const GiftCardUnpublished = Template.bind({});
 GiftCardUnpublished.args = {
   ...GiftCardRes,
   status: "unpublished",
   defaultCurrency: "usd",
-}
+};
 
-export const GiftCardNoSubunitCurrency = Template.bind({})
+export const GiftCardNoSubunitCurrency = Template.bind({});
 GiftCardNoSubunitCurrency.args = {
   ...GiftCardRes,
   defaultCurrency: "krw",
-}
+};
 
-export const GiftCardThreeDigitSubunitCurrency = Template.bind({})
+export const GiftCardThreeDigitSubunitCurrency = Template.bind({});
 GiftCardThreeDigitSubunitCurrency.args = {
   ...GiftCardRes,
   defaultCurrency: "bhd",
-}
+};

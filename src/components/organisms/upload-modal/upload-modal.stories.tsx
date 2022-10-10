@@ -1,18 +1,18 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
-import React from "react"
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import React from "react";
 
-import UploadModal from "./"
+import UploadModal from "./";
 
 export default {
   title: "Organisms/UploadModal",
   component: UploadModal,
-} as ComponentMeta<typeof UploadModal>
+} as ComponentMeta<typeof UploadModal>;
 
 const Template: ComponentStory<typeof UploadModal> = (args) => (
   <UploadModal {...args} />
-)
+);
 
-export const Default = Template.bind({})
+export const Default = Template.bind({});
 Default.args = {
   fileTitle: "price list",
   actionButtonText: "Add Products Manually",
@@ -21,4 +21,4 @@ Default.args = {
   description2Title: "Unsure about how to arrange your list?",
   description2Text:
     "We have created a template file for you. Type in your own information and experience how much time and frustration this functionality can save you. Feel free to reach out if you have any questions.",
-}
+};

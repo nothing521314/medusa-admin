@@ -1,13 +1,13 @@
-import * as RadixPopover from "@radix-ui/react-popover"
-import React, { ReactNode, useEffect, useRef, useState } from "react"
-import { useWindowDimensions } from "../../../hooks/use-window-dimensions"
-import Button from "../../fundamentals/button"
+import * as RadixPopover from "@radix-ui/react-popover";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
+import { useWindowDimensions } from "../../../hooks/use-window-dimensions";
+import Button from "../../fundamentals/button";
 
 type FilterDropdownContainerProps = {
-  submitFilters: () => void
-  clearFilters: () => void
-  triggerElement: ReactNode
-}
+  submitFilters: () => void;
+  clearFilters: () => void;
+  triggerElement: ReactNode;
+};
 
 const FilterDropdownContainer: React.FC<FilterDropdownContainerProps> = ({
   submitFilters,
@@ -15,28 +15,28 @@ const FilterDropdownContainer: React.FC<FilterDropdownContainerProps> = ({
   triggerElement,
   children,
 }) => {
-  const { height } = useWindowDimensions()
-  const ref = useRef(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const { height } = useWindowDimensions();
+  const ref = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
   const [heightStyle, setHeightStyle] = useState({
     maxHeight: height,
-  })
+  });
 
   useEffect(() => {
     setHeightStyle({
       maxHeight: height - ref?.current?.getBoundingClientRect().y - 50,
-    })
-  }, [ref])
+    });
+  }, [ref]);
 
   const onSubmit = () => {
-    setIsOpen(false)
-    submitFilters()
-  }
+    setIsOpen(false);
+    submitFilters();
+  };
 
   const onClear = () => {
-    setIsOpen(false)
-    clearFilters()
-  }
+    setIsOpen(false);
+    clearFilters();
+  };
 
   return (
     <RadixPopover.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -73,11 +73,11 @@ const FilterDropdownContainer: React.FC<FilterDropdownContainerProps> = ({
             <div className="border-b border-grey-20 py-2 px-4 last:pb-0 last:border-0">
               {child}
             </div>
-          )
+          );
         })}
       </RadixPopover.Content>
     </RadixPopover.Root>
-  )
-}
+  );
+};
 
-export default FilterDropdownContainer
+export default FilterDropdownContainer;

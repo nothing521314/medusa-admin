@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "./types/icon-type"
+import React from "react";
+import IconProps from "./types/icon-type";
 
 const TileIcon: React.FC<IconProps> = ({
   size = "20px",
@@ -44,7 +44,7 @@ const TileIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default TileIcon
+export default TileIcon;

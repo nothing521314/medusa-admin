@@ -1,33 +1,33 @@
-import * as Dropdown from "@radix-ui/react-dropdown-menu"
-import clsx from "clsx"
-import React, { Children, HTMLAttributes, useMemo } from "react"
-import { Toast } from "react-hot-toast"
-import Spinner from "../../atoms/spinner"
-import ChevronDownIcon from "../../fundamentals/icons/chevron-down"
-import RefreshIcon from "../../fundamentals/icons/refresh-icon"
+import * as Dropdown from "@radix-ui/react-dropdown-menu";
+import clsx from "clsx";
+import React, { Children, HTMLAttributes, useMemo } from "react";
+import { Toast } from "react-hot-toast";
+import Spinner from "../../atoms/spinner";
+import ChevronDownIcon from "../../fundamentals/icons/chevron-down";
+import RefreshIcon from "../../fundamentals/icons/refresh-icon";
 
 type FormToasterContainerProps = {
-  toast?: Toast
-  isLoading?: boolean
-  loadingMessage?: string
-  unsavedChangesMessage?: string
-  icon?: React.ReactNode
-}
+  toast?: Toast;
+  isLoading?: boolean;
+  loadingMessage?: string;
+  unsavedChangesMessage?: string;
+  icon?: React.ReactNode;
+};
 
 type MultiActionButtonProps = {
   actions: {
-    onClick: () => void | Promise<void>
-    label: string
-    icon?: any
-  }[]
-  className?: string
-}
+    onClick: () => void | Promise<void>;
+    label: string;
+    icon?: any;
+  }[];
+  className?: string;
+};
 
 const FormToasterContainer: React.FC<FormToasterContainerProps> & {
-  Actions: React.FC
-  DiscardButton: React.FC<HTMLAttributes<HTMLButtonElement>>
-  ActionButton: React.FC<HTMLAttributes<HTMLButtonElement>>
-  MultiActionButton: React.FC<MultiActionButtonProps>
+  Actions: React.FC;
+  DiscardButton: React.FC<HTMLAttributes<HTMLButtonElement>>;
+  ActionButton: React.FC<HTMLAttributes<HTMLButtonElement>>;
+  MultiActionButton: React.FC<MultiActionButtonProps>;
 } = ({
   children,
   toast,
@@ -45,7 +45,7 @@ const FormToasterContainer: React.FC<FormToasterContainerProps> & {
           </span>
           <span className="inter-small-regular">{loadingMessage}</span>
         </div>
-      )
+      );
     } else {
       return (
         <>
@@ -55,9 +55,9 @@ const FormToasterContainer: React.FC<FormToasterContainerProps> & {
           </div>
           {children}
         </>
-      )
+      );
     }
-  }, [isLoading, children])
+  }, [isLoading, children]);
 
   return (
     <div
@@ -71,8 +71,8 @@ const FormToasterContainer: React.FC<FormToasterContainerProps> & {
         {content}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Actions: React.FC = ({ children }) => {
   return (
@@ -82,11 +82,11 @@ const Actions: React.FC = ({ children }) => {
           <div className="flex items-center justify-center border-b border-grey-70 last:border-none h-1/2 w-[72px]">
             {child}
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
 const DiscardButton: React.FC<HTMLAttributes<HTMLButtonElement>> = ({
   children,
@@ -103,8 +103,8 @@ const DiscardButton: React.FC<HTMLAttributes<HTMLButtonElement>> = ({
     >
       {children}
     </button>
-  )
-}
+  );
+};
 
 const ActionButton: React.FC<HTMLAttributes<HTMLButtonElement>> = ({
   children,
@@ -121,8 +121,8 @@ const ActionButton: React.FC<HTMLAttributes<HTMLButtonElement>> = ({
     >
       {children}
     </button>
-  )
-}
+  );
+};
 
 const MultiActionButton: React.FC<MultiActionButtonProps> = ({
   children,
@@ -162,16 +162,16 @@ const MultiActionButton: React.FC<MultiActionButtonProps> = ({
                 {action.label}
               </button>
             </Dropdown.Item>
-          )
+          );
         })}
       </Dropdown.Content>
     </Dropdown.Root>
-  )
-}
+  );
+};
 
-FormToasterContainer.Actions = Actions
-FormToasterContainer.DiscardButton = DiscardButton
-FormToasterContainer.ActionButton = ActionButton
-FormToasterContainer.MultiActionButton = MultiActionButton
+FormToasterContainer.Actions = Actions;
+FormToasterContainer.DiscardButton = DiscardButton;
+FormToasterContainer.ActionButton = ActionButton;
+FormToasterContainer.MultiActionButton = MultiActionButton;
 
-export default FormToasterContainer
+export default FormToasterContainer;

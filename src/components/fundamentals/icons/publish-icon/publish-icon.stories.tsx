@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import PublishIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import PublishIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/PublishIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof PublishIcon>
+} as ComponentMeta<typeof PublishIcon>;
 
-const Template = args => <PublishIcon {...args} />
+const Template = (args) => <PublishIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "20",
   color: "currentColor",
-}
+};

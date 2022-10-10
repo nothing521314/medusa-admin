@@ -1,6 +1,6 @@
-import React from "react"
-import clsx from "clsx"
-import { formatAmountWithSymbol } from "../../../../utils/prices"
+import React from "react";
+import clsx from "clsx";
+import { formatAmountWithSymbol } from "../../../../utils/prices";
 
 export const DisplayTotal = ({
   totalAmount,
@@ -44,4 +44,4 @@ export const DisplayTotal = ({
       )}
     </div>
   </div>
-)
+);

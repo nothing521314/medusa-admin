@@ -1,11 +1,11 @@
-import React from "react"
-import IconTooltip from "../icon-tooltip"
+import React from "react";
+import IconTooltip from "../icon-tooltip";
 
 type SectionProps = {
-  title: string
-  description: string
-  tooltip?: string
-}
+  title: string;
+  description: string;
+  tooltip?: string;
+};
 
 const Section: React.FC<SectionProps> = ({
   title,
@@ -26,7 +26,7 @@ const Section: React.FC<SectionProps> = ({
       <p className="inter-small-regular text-grey-50 mb-base">{description}</p>
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default Section
+export default Section;

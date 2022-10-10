@@ -1,40 +1,40 @@
-import React from "react"
-import { UseFormReturn } from "react-hook-form"
-import InputError from "../../../../../components/atoms/input-error"
-import IconTooltip from "../../../../../components/molecules/icon-tooltip"
-import Accordion from "../../../../../components/organisms/accordion"
-import { nestedForm } from "../../../../../utils/nested-form"
-import CustomsForm, { CustomsFormType } from "../../customs-form"
-import DimensionsForm, { DimensionsFormType } from "../../dimensions-form"
-import { PricesFormType } from "../../prices-form"
+import React from "react";
+import { UseFormReturn } from "react-hook-form";
+import InputError from "../../../../../components/atoms/input-error";
+import IconTooltip from "../../../../../components/molecules/icon-tooltip";
+import Accordion from "../../../../../components/organisms/accordion";
+import { nestedForm } from "../../../../../utils/nested-form";
+import CustomsForm, { CustomsFormType } from "../../customs-form";
+import DimensionsForm, { DimensionsFormType } from "../../dimensions-form";
+import { PricesFormType } from "../../prices-form";
 import VariantGeneralForm, {
   VariantGeneralFormType,
-} from "../variant-general-form"
-import VariantPricesForm from "../variant-prices-form"
+} from "../variant-general-form";
+import VariantPricesForm from "../variant-prices-form";
 import VariantSelectOptionsForm, {
   VariantOptionValueType,
   VariantSelectOptionsFormType,
-} from "../variant-select-options-form"
-import VariantStockForm, { VariantStockFormType } from "../variant-stock-form"
+} from "../variant-select-options-form";
+import VariantStockForm, { VariantStockFormType } from "../variant-stock-form";
 
 export type CreateFlowVariantFormType = {
   /**
    * Used to identify the variant during product create flow. Will not be submitted to the backend.
    */
-  _internal_id?: string
-  general: VariantGeneralFormType
-  prices: PricesFormType
-  stock: VariantStockFormType
-  options: VariantSelectOptionsFormType
-  customs: CustomsFormType
-  dimensions: DimensionsFormType
-}
+  _internal_id?: string;
+  general: VariantGeneralFormType;
+  prices: PricesFormType;
+  stock: VariantStockFormType;
+  options: VariantSelectOptionsFormType;
+  customs: CustomsFormType;
+  dimensions: DimensionsFormType;
+};
 
 type Props = {
-  form: UseFormReturn<CreateFlowVariantFormType, any>
-  options: VariantOptionValueType[]
-  onCreateOption: (optionId: string, value: string) => void
-}
+  form: UseFormReturn<CreateFlowVariantFormType, any>;
+  options: VariantOptionValueType[];
+  onCreateOption: (optionId: string, value: string) => void;
+};
 
 /**
  * Re-usable Product Variant form used to add and edit product variants during the product create flow.
@@ -105,7 +105,7 @@ const CreateFlowVariantForm = ({ form, options, onCreateOption }: Props) => {
         </div>
       </Accordion.Item>
     </Accordion>
-  )
-}
+  );
+};
 
-export default CreateFlowVariantForm
+export default CreateFlowVariantForm;

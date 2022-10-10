@@ -1,32 +1,32 @@
-import React, { useState } from "react"
-import { useAdminUpdateSalesChannel } from "../../../../medusa-react"
+import React, { useState } from "react";
+import { useAdminUpdateSalesChannel } from "../../../../medusa-react";
 
-import { SalesChannel } from "@medusajs/medusa"
+import { SalesChannel } from "@medusajs/medusa";
 
-import Modal from "../../../components/molecules/modal"
-import InputField from "../../../components/molecules/input"
-import Button from "../../../components/fundamentals/button"
-import useNotification from "../../../hooks/use-notification"
+import Modal from "../../../components/molecules/modal";
+import InputField from "../../../components/molecules/input";
+import Button from "../../../components/fundamentals/button";
+import useNotification from "../../../hooks/use-notification";
 
 type EditSalesChannelProps = {
-  salesChannel: SalesChannel
-  handleClose: () => void
-}
+  salesChannel: SalesChannel;
+  handleClose: () => void;
+};
 
 /**
  * Modal with sales channels edit form.
  */
 function EditSalesChannel(props: EditSalesChannelProps) {
-  const { handleClose, salesChannel } = props
+  const { handleClose, salesChannel } = props;
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   const { mutate: updateSalesChannel } = useAdminUpdateSalesChannel(
     salesChannel.id
-  )
+  );
 
-  const [name, setName] = useState(salesChannel.name)
-  const [description, setDescription] = useState(salesChannel.description)
+  const [name, setName] = useState(salesChannel.name);
+  const [description, setDescription] = useState(salesChannel.description);
 
   const handleSubmit = () => {
     updateSalesChannel(
@@ -37,14 +37,14 @@ function EditSalesChannel(props: EditSalesChannelProps) {
             "Success",
             "The sales channel is successfully updated",
             "success"
-          )
-          handleClose()
+          );
+          handleClose();
         },
         onError: () =>
           notification("Error", "Failed to update the sales channel", "error"),
       }
-    )
-  }
+    );
+  };
 
   return (
     <Modal handleClose={handleClose}>
@@ -95,7 +95,7 @@ function EditSalesChannel(props: EditSalesChannelProps) {
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
+  );
 }
 
-export default EditSalesChannel
+export default EditSalesChannel;

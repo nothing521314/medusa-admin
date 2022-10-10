@@ -1,6 +1,6 @@
-import { AdminAuthRes, AdminPostAuthReq } from "@medusajs/medusa"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
+import { AdminAuthRes, AdminPostAuthReq } from "@medusajs/medusa";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
 
 class AdminAuthResource extends BaseResource {
   /**
@@ -12,8 +12,8 @@ class AdminAuthResource extends BaseResource {
   getSession(
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminAuthRes> {
-    const path = `/admin/auth`
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    const path = `/admin/auth`;
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -24,8 +24,8 @@ class AdminAuthResource extends BaseResource {
   deleteSession(
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<void> {
-    const path = `/admin/auth`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/auth`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
   /**
@@ -38,9 +38,9 @@ class AdminAuthResource extends BaseResource {
     payload: AdminPostAuthReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminAuthRes> {
-    const path = `/admin/auth`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    const path = `/admin/auth`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 }
 
-export default AdminAuthResource
+export default AdminAuthResource;

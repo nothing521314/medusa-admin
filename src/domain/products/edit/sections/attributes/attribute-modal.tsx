@@ -1,46 +1,46 @@
-import { Product } from "@medusajs/medusa"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import { countries } from "../../../../../utils/countries"
-import { nestedForm } from "../../../../../utils/nested-form"
-import CustomsForm, { CustomsFormType } from "../../../components/customs-form"
+import { Product } from "@medusajs/medusa";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../../components/fundamentals/button";
+import Modal from "../../../../../components/molecules/modal";
+import { countries } from "../../../../../utils/countries";
+import { nestedForm } from "../../../../../utils/nested-form";
+import CustomsForm, { CustomsFormType } from "../../../components/customs-form";
 import DimensionsForm, {
   DimensionsFormType,
-} from "../../../components/dimensions-form"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
+} from "../../../components/dimensions-form";
+import useEditProductActions from "../../hooks/use-edit-product-actions";
 
 type Props = {
-  product: Product
-  open: boolean
-  onClose: () => void
-}
+  product: Product;
+  open: boolean;
+  onClose: () => void;
+};
 
 type AttributesForm = {
-  dimensions: DimensionsFormType
-  customs: CustomsFormType
-}
+  dimensions: DimensionsFormType;
+  customs: CustomsFormType;
+};
 
 const AttributeModal = ({ product, open, onClose }: Props) => {
-  const { onUpdate, updating } = useEditProductActions(product.id)
+  const { onUpdate, updating } = useEditProductActions(product.id);
   const form = useForm<AttributesForm>({
     defaultValues: getDefaultValues(product),
-  })
+  });
   const {
     formState: { isDirty },
     handleSubmit,
     reset,
-  } = form
+  } = form;
 
   useEffect(() => {
-    reset(getDefaultValues(product))
-  }, [product])
+    reset(getDefaultValues(product));
+  }, [product]);
 
   const onReset = () => {
-    reset(getDefaultValues(product))
-    onClose()
-  }
+    reset(getDefaultValues(product));
+    onClose();
+  };
 
   const onSubmit = handleSubmit((data) => {
     onUpdate(
@@ -60,8 +60,8 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
         origin_country: data.customs.origin_country?.value,
       },
       onReset
-    )
-  })
+    );
+  });
 
   return (
     <Modal open={open} handleClose={onReset} isLargeModal>
@@ -110,16 +110,16 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const getDefaultValues = (product: Product): AttributesForm => {
   const country = countries.find(
     (country) => country.alpha2 === product.origin_country
-  )
+  );
   const countryOption = country
     ? { label: country.name, value: country.alpha2 }
-    : null
+    : null;
 
   return {
     dimensions: {
@@ -133,7 +133,7 @@ const getDefaultValues = (product: Product): AttributesForm => {
       hs_code: product.hs_code,
       origin_country: countryOption,
     },
-  }
-}
+  };
+};
 
-export default AttributeModal
+export default AttributeModal;

@@ -1,22 +1,22 @@
-import React from "react"
-import { Controller } from "react-hook-form"
-import Switch from "../../../../../components/atoms/switch"
-import InputField from "../../../../../components/molecules/input"
-import { NestedForm } from "../../../../../utils/nested-form"
+import React from "react";
+import { Controller } from "react-hook-form";
+import Switch from "../../../../../components/atoms/switch";
+import InputField from "../../../../../components/molecules/input";
+import { NestedForm } from "../../../../../utils/nested-form";
 
 export type VariantStockFormType = {
-  manage_inventory: boolean
-  allow_backorder: boolean
-  inventory_quantity: number | null
-  sku: string | null
-  ean: string | null
-  upc: string | null
-  barcode: string | null
-}
+  manage_inventory: boolean;
+  allow_backorder: boolean;
+  inventory_quantity: number | null;
+  sku: string | null;
+  ean: string | null;
+  upc: string | null;
+  barcode: string | null;
+};
 
 type Props = {
-  form: NestedForm<VariantStockFormType>
-}
+  form: NestedForm<VariantStockFormType>;
+};
 
 const VariantStockForm = ({ form }: Props) => {
   const {
@@ -24,7 +24,7 @@ const VariantStockForm = ({ form }: Props) => {
     control,
     register,
     formState: { errors },
-  } = form
+  } = form;
 
   return (
     <div>
@@ -39,7 +39,7 @@ const VariantStockForm = ({ form }: Props) => {
               control={control}
               name={path("manage_inventory")}
               render={({ field: { value, onChange } }) => {
-                return <Switch checked={value} onCheckedChange={onChange} />
+                return <Switch checked={value} onCheckedChange={onChange} />;
               }}
             />
           </div>
@@ -55,7 +55,7 @@ const VariantStockForm = ({ form }: Props) => {
               control={control}
               name={path("allow_backorder")}
               render={({ field: { value, onChange } }) => {
-                return <Switch checked={value} onCheckedChange={onChange} />
+                return <Switch checked={value} onCheckedChange={onChange} />;
               }}
             />
           </div>
@@ -97,7 +97,7 @@ const VariantStockForm = ({ form }: Props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default VariantStockForm
+export default VariantStockForm;

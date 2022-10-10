@@ -1,16 +1,16 @@
-import { SalesChannel } from "@medusajs/medusa"
-import { useAdminSalesChannels } from "../../../../medusa-react"
-import React from "react"
-import Tooltip from "../../atoms/tooltip"
-import Badge from "../../fundamentals/badge"
+import { SalesChannel } from "@medusajs/medusa";
+import { useAdminSalesChannels } from "../../../../medusa-react";
+import React from "react";
+import Tooltip from "../../atoms/tooltip";
+import Badge from "../../fundamentals/badge";
 
 type Props = {
-  channels?: SalesChannel[]
-}
+  channels?: SalesChannel[];
+};
 
 const SalesChannelsDisplay = ({ channels = [] }: Props) => {
-  const { count } = useAdminSalesChannels()
-  const remainder = Math.max(channels.length - 3, 0)
+  const { count } = useAdminSalesChannels();
+  const remainder = Math.max(channels.length - 3, 0);
 
   return (
     <div className="flex flex-col gap-y-small">
@@ -26,7 +26,7 @@ const SalesChannelsDisplay = ({ channels = [] }: Props) => {
               content={
                 <div className="flex flex-col">
                   {channels.slice(3).map((sc) => {
-                    return <span key={sc.id}>{sc.name}</span>
+                    return <span key={sc.id}>{sc.name}</span>;
                   })}
                 </div>
               }
@@ -50,12 +50,12 @@ const SalesChannelsDisplay = ({ channels = [] }: Props) => {
         Sales Channels
       </p>
     </div>
-  )
-}
+  );
+};
 
 type SalesChannelBadgeProps = {
-  channel: SalesChannel
-}
+  channel: SalesChannel;
+};
 
 const SalesChannelBadge: React.FC<SalesChannelBadgeProps> = ({ channel }) => {
   return (
@@ -64,7 +64,7 @@ const SalesChannelBadge: React.FC<SalesChannelBadgeProps> = ({ channel }) => {
         <span className="inter-small-regular text-grey-90">{channel.name}</span>
       </div>
     </Badge>
-  )
-}
+  );
+};
 
-export default SalesChannelsDisplay
+export default SalesChannelsDisplay;

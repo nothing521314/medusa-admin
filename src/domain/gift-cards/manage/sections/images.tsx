@@ -1,26 +1,26 @@
-import React from "react"
-import { Controller, useFieldArray } from "react-hook-form"
-import FileUploadField from "../../../../components/atoms/file-upload-field"
-import BodyCard from "../../../../components/organisms/body-card"
-import RadioGroup from "../../../../components/organisms/radio-group"
+import React from "react";
+import { Controller, useFieldArray } from "react-hook-form";
+import FileUploadField from "../../../../components/atoms/file-upload-field";
+import BodyCard from "../../../../components/organisms/body-card";
+import RadioGroup from "../../../../components/organisms/radio-group";
 import ImageTable, {
   ImageTableDataType,
-} from "../../../../components/templates/image-table"
-import { nestedForm } from "../../../../utils/nested-form"
-import { useGiftCardForm } from "../form/gift-card-form-context"
+} from "../../../../components/templates/image-table";
+import { nestedForm } from "../../../../utils/nested-form";
+import { useGiftCardForm } from "../form/gift-card-form-context";
 
 const Images = () => {
-  const { form, setImageDirtyState } = useGiftCardForm()
+  const { form, setImageDirtyState } = useGiftCardForm();
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "images",
-  })
+  });
 
   const handleRemove = (index: number) => {
-    setImageDirtyState(true)
-    remove(index)
-  }
+    setImageDirtyState(true);
+    remove(index);
+  };
 
   const handleFilesChosen = (files: File[]) => {
     if (files.length) {
@@ -29,11 +29,11 @@ const Images = () => {
         name: file.name,
         size: file.size,
         nativeFile: file,
-      }))
+      }));
 
-      append(toAppend)
+      append(toAppend);
     }
-  }
+  };
 
   return (
     <BodyCard title="Images" subtitle="Add up to 10 images to your product">
@@ -46,7 +46,7 @@ const Images = () => {
               <RadioGroup.Root
                 value={value ? `${value}` : undefined}
                 onValueChange={(value) => {
-                  onChange(parseInt(value))
+                  onChange(parseInt(value));
                 }}
               >
                 <ImageTable
@@ -83,10 +83,10 @@ const Images = () => {
                         </>
                       )}
                     </div>
-                  )
+                  );
                 })}
               </RadioGroup.Root>
-            )
+            );
           }}
         />
       </div>
@@ -99,7 +99,7 @@ const Images = () => {
         />
       </div>
     </BodyCard>
-  )
-}
+  );
+};
 
-export default Images
+export default Images;

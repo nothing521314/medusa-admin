@@ -1,50 +1,50 @@
-import { Region } from "@medusajs/medusa"
-import React from "react"
-import { Controller, UseFormReturn } from "react-hook-form"
-import IncludesTaxTooltip from "../../../../../components/atoms/includes-tax-tooltip"
-import Switch from "../../../../../components/atoms/switch"
-import InputHeader from "../../../../../components/fundamentals/input-header"
-import InputField from "../../../../../components/molecules/input"
-import { NextSelect } from "../../../../../components/molecules/select/next-select"
-import { Option } from "../../../../../types/shared"
-import FormValidator from "../../../../../utils/form-validator"
-import PriceFormInput from "../../../../products/components/prices-form/price-form-input"
-import { useShippingOptionFormData } from "./use-shipping-option-form-data"
+import { Region } from "@medusajs/medusa";
+import React from "react";
+import { Controller, UseFormReturn } from "react-hook-form";
+import IncludesTaxTooltip from "../../../../../components/atoms/includes-tax-tooltip";
+import Switch from "../../../../../components/atoms/switch";
+import InputHeader from "../../../../../components/fundamentals/input-header";
+import InputField from "../../../../../components/molecules/input";
+import { NextSelect } from "../../../../../components/molecules/select/next-select";
+import { Option } from "../../../../../types/shared";
+import FormValidator from "../../../../../utils/form-validator";
+import PriceFormInput from "../../../../products/components/prices-form/price-form-input";
+import { useShippingOptionFormData } from "./use-shipping-option-form-data";
 
 type Requirement = {
-  amount: number | null
-  id: string | null
-}
+  amount: number | null;
+  id: string | null;
+};
 
 export type ShippingOptionFormType = {
-  store_option: boolean
-  name: string | null
-  amount: number | null
-  shipping_profile: Option | null
-  fulfillment_provider: Option | null
+  store_option: boolean;
+  name: string | null;
+  amount: number | null;
+  shipping_profile: Option | null;
+  fulfillment_provider: Option | null;
   requirements: {
-    min_subtotal: Requirement | null
-    max_subtotal: Requirement | null
-  }
-}
+    min_subtotal: Requirement | null;
+    max_subtotal: Requirement | null;
+  };
+};
 
 type Props = {
-  form: UseFormReturn<ShippingOptionFormType, any>
-  region: Region
-  isEdit?: boolean
-}
+  form: UseFormReturn<ShippingOptionFormType, any>;
+  region: Region;
+  isEdit?: boolean;
+};
 
 const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
   const {
     register,
     control,
     formState: { errors },
-  } = form
+  } = form;
 
   const {
     shippingProfileOptions,
     fulfillmentOptions,
-  } = useShippingOptionFormData(region.id)
+  } = useShippingOptionFormData(region.id);
 
   return (
     <div>
@@ -56,7 +56,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
               control={control}
               name={"store_option"}
               render={({ field: { value, onChange } }) => {
-                return <Switch checked={value} onCheckedChange={onChange} />
+                return <Switch checked={value} onCheckedChange={onChange} />;
               }}
             />
           </div>
@@ -104,7 +104,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                     errors={errors}
                   />
                 </div>
-              )
+              );
             }}
           />
           {!isEdit && (
@@ -122,7 +122,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                       {...field}
                       errors={errors}
                     />
-                  )
+                  );
                 }}
               />
               <Controller
@@ -138,7 +138,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                       {...field}
                       errors={errors}
                     />
-                  )
+                  );
                 }}
               />
             </>
@@ -160,16 +160,16 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
               ),
               validate: (value) => {
                 if (!value) {
-                  return true
+                  return true;
                 }
 
                 const maxSubtotal = form.getValues(
                   "requirements.max_subtotal.amount"
-                )
+                );
                 if (maxSubtotal && value > maxSubtotal) {
-                  return "Min. subtotal must be less than max. subtotal"
+                  return "Min. subtotal must be less than max. subtotal";
                 }
-                return true
+                return true;
               },
             }}
             render={({ field: { value, onChange } }) => {
@@ -190,7 +190,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                     errors={errors}
                   />
                 </div>
-              )
+              );
             }}
           />
           <Controller
@@ -204,16 +204,16 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
               ),
               validate: (value) => {
                 if (!value) {
-                  return true
+                  return true;
                 }
 
                 const minSubtotal = form.getValues(
                   "requirements.min_subtotal.amount"
-                )
+                );
                 if (minSubtotal && value < minSubtotal) {
-                  return "Max. subtotal must be greater than min. subtotal"
+                  return "Max. subtotal must be greater than min. subtotal";
                 }
-                return true
+                return true;
               },
             }}
             render={({ field: { value, onChange, ref } }) => {
@@ -234,13 +234,13 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                     errors={errors}
                   />
                 </div>
-              )
+              );
             }}
           />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ShippingOptionForm
+export default ShippingOptionForm;

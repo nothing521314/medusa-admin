@@ -1,14 +1,14 @@
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-import React from "react"
-import Button from "../../fundamentals/button"
-import StatusIndicator from "../../fundamentals/status-indicator"
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import React from "react";
+import Button from "../../fundamentals/button";
+import StatusIndicator from "../../fundamentals/status-indicator";
 
 type StatusSelectorProps = {
-  isDraft: boolean
-  activeState: string
-  draftState: string
-  onChange: () => void
-}
+  isDraft: boolean;
+  activeState: string;
+  draftState: string;
+  onChange: () => void;
+};
 
 const StatusSelector: React.FC<StatusSelectorProps> = ({
   isDraft,
@@ -49,7 +49,7 @@ const StatusSelector: React.FC<StatusSelectorProps> = ({
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     </div>
-  )
-}
+  );
+};
 
-export default StatusSelector
+export default StatusSelector;

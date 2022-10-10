@@ -1,21 +1,21 @@
-import clsx from "clsx"
-import React, { ComponentPropsWithRef } from "react"
+import clsx from "clsx";
+import React, { ComponentPropsWithRef } from "react";
 import {
   ContainerProps,
   GroupBase,
   IndicatorsContainerProps,
   ValueContainerProps,
-} from "react-select"
-import InputError from "../../../../atoms/input-error"
+} from "react-select";
+import InputError from "../../../../atoms/input-error";
 
 type AdjacentContainerProps = {
-  label?: string
-  helperText?: string
-  required?: boolean
-  name?: string
-  errors?: Record<string, unknown>
-  children?: React.ReactNode
-} & ComponentPropsWithRef<"div">
+  label?: string;
+  helperText?: string;
+  required?: boolean;
+  name?: string;
+  errors?: Record<string, unknown>;
+  children?: React.ReactNode;
+} & ComponentPropsWithRef<"div">;
 
 export const AdjacentContainer = ({
   label,
@@ -40,8 +40,8 @@ export const AdjacentContainer = ({
         <p className="inter-small-regular text-grey-50">{helperText}</p>
       ) : null}
     </div>
-  )
-}
+  );
+};
 
 export const SelectContainer = <
   Option,
@@ -69,8 +69,8 @@ export const SelectContainer = <
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
 export const ValueContainer = <
   Option,
@@ -87,7 +87,7 @@ export const ValueContainer = <
     isMulti,
     hasValue,
     selectProps: { value, inputValue, label, selectedPlaceholder },
-  } = props
+  } = props;
 
   if (isMulti && Array.isArray(value)) {
     return (
@@ -122,7 +122,7 @@ export const ValueContainer = <
           )}
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -145,8 +145,8 @@ export const ValueContainer = <
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
 export const IndicatorsContainer = <
   Option,
@@ -170,5 +170,5 @@ export const IndicatorsContainer = <
     >
       {children}
     </div>
-  )
-}
+  );
+};

@@ -1,15 +1,15 @@
-import { AdminReturnsListRes } from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+import { AdminReturnsListRes } from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_RETURNS_QUERY_KEY = `admin_returns` as const
+const ADMIN_RETURNS_QUERY_KEY = `admin_returns` as const;
 
-export const adminReturnKeys = queryKeysFactory(ADMIN_RETURNS_QUERY_KEY)
+export const adminReturnKeys = queryKeysFactory(ADMIN_RETURNS_QUERY_KEY);
 
-type ReturnQueryKeys = typeof adminReturnKeys
+type ReturnQueryKeys = typeof adminReturnKeys;
 
 export const useAdminReturns = (
   options?: UseQueryOptionsWrapper<
@@ -18,11 +18,11 @@ export const useAdminReturns = (
     ReturnType<ReturnQueryKeys["lists"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminReturnKeys.lists(),
     () => client.admin.returns.list(),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

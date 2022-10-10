@@ -1,19 +1,19 @@
-import moment from "moment"
-import React, { useMemo } from "react"
-import { getColor } from "../../../utils/color"
-import StatusDot from "../../fundamentals/status-indicator"
-import CustomerAvatarItem from "../../molecules/customer-avatar-item"
-import Table from "../../molecules/table"
+import moment from "moment";
+import React, { useMemo } from "react";
+import { getColor } from "../../../utils/color";
+import StatusDot from "../../fundamentals/status-indicator";
+import CustomerAvatarItem from "../../molecules/customer-avatar-item";
+import Table from "../../molecules/table";
 
 const useDraftOrderTableColumns = () => {
   const decideStatus = (status) => {
     switch (status) {
       case "completed":
-        return <StatusDot variant="success" title={"Completed"} />
+        return <StatusDot variant="success" title={"Completed"} />;
       default:
-        return <StatusDot variant="primary" title={"Open"} />
+        return <StatusDot variant="primary" title={"Open"} />;
     }
-  }
+  };
 
   const columns = useMemo(
     () => [
@@ -35,7 +35,7 @@ const useDraftOrderTableColumns = () => {
             <Table.Cell {...getCellProps()}>
               {value?.display_id ? `#${value?.display_id}` : "-"}
             </Table.Cell>
-          )
+          );
         },
       },
       {
@@ -74,9 +74,9 @@ const useDraftOrderTableColumns = () => {
       },
     ],
     []
-  )
+  );
 
-  return [columns]
-}
+  return [columns];
+};
 
-export default useDraftOrderTableColumns
+export default useDraftOrderTableColumns;

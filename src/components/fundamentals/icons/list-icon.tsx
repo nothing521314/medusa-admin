@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "./types/icon-type"
+import React from "react";
+import IconProps from "./types/icon-type";
 
 const ListIcon: React.FC<IconProps> = ({
   size = "20px",
@@ -58,7 +58,7 @@ const ListIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default ListIcon
+export default ListIcon;

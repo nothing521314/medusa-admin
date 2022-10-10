@@ -1,24 +1,24 @@
-import { Product } from "@medusajs/medusa"
-import clsx from "clsx"
-import React from "react"
-import TwoStepDelete from "../../../../../components/atoms/two-step-delete"
-import Button from "../../../../../components/fundamentals/button"
-import Section from "../../../../../components/organisms/section"
-import useNotification from "../../../../../hooks/use-notification"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import { getErrorMessage } from "../../../../../utils/error-messages"
-import useEditProductActions from "../../hooks/use-edit-product-actions"
-import ThumbnailModal from "./thumbnail-modal"
+import { Product } from "@medusajs/medusa";
+import clsx from "clsx";
+import React from "react";
+import TwoStepDelete from "../../../../../components/atoms/two-step-delete";
+import Button from "../../../../../components/fundamentals/button";
+import Section from "../../../../../components/organisms/section";
+import useNotification from "../../../../../hooks/use-notification";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import { getErrorMessage } from "../../../../../utils/error-messages";
+import useEditProductActions from "../../hooks/use-edit-product-actions";
+import ThumbnailModal from "./thumbnail-modal";
 
 type Props = {
-  product: Product
-}
+  product: Product;
+};
 
 const TumbnailSection = ({ product }: Props) => {
-  const { onUpdate, updating } = useEditProductActions(product.id)
-  const { state, toggle, close } = useToggleState()
+  const { onUpdate, updating } = useEditProductActions(product.id);
+  const { state, toggle, close } = useToggleState();
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   const handleDelete = () => {
     onUpdate(
@@ -28,14 +28,14 @@ const TumbnailSection = ({ product }: Props) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully deleted thumbnail", "success")
+          notification("Success", "Successfully deleted thumbnail", "success");
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification("Error", getErrorMessage(err), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -76,7 +76,7 @@ const TumbnailSection = ({ product }: Props) => {
 
       <ThumbnailModal product={product} open={state} onClose={close} />
     </>
-  )
-}
+  );
+};
 
-export default TumbnailSection
+export default TumbnailSection;

@@ -1,119 +1,119 @@
-import { Address } from "@medusajs/medusa"
-import { RouteComponentProps } from "@reach/router"
-import { navigate } from "gatsby"
+import { Address } from "@medusajs/medusa";
+import { RouteComponentProps } from "@reach/router";
+import { navigate } from "gatsby";
 import {
   useAdminDeleteDraftOrder,
   useAdminDraftOrder,
   useAdminDraftOrderRegisterPayment,
   useAdminStore,
   useAdminUpdateDraftOrder,
-} from "../../../../medusa-react"
-import moment from "moment"
-import React, { useEffect, useState } from "react"
-import ReactJson from "react-json-view"
-import Avatar from "../../../components/atoms/avatar"
-import CopyToClipboard from "../../../components/atoms/copy-to-clipboard"
-import Spinner from "../../../components/atoms/spinner"
-import Badge from "../../../components/fundamentals/badge"
-import Button from "../../../components/fundamentals/button"
-import DetailsIcon from "../../../components/fundamentals/details-icon"
-import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
-import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
-import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
-import StatusDot from "../../../components/fundamentals/status-indicator"
-import Breadcrumb from "../../../components/molecules/breadcrumb"
-import BodyCard from "../../../components/organisms/body-card"
-import DeletePrompt from "../../../components/organisms/delete-prompt"
-import { AddressType } from "../../../components/templates/address-form"
-import useNotification from "../../../hooks/use-notification"
-import { isoAlpha2Countries } from "../../../utils/countries"
-import { getErrorMessage } from "../../../utils/error-messages"
-import extractCustomerName from "../../../utils/extract-customer-name"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import AddressModal from "../details/address-modal"
-import { DisplayTotal, FormattedAddress } from "../details/templates"
+} from "../../../../medusa-react";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import ReactJson from "react-json-view";
+import Avatar from "../../../components/atoms/avatar";
+import CopyToClipboard from "../../../components/atoms/copy-to-clipboard";
+import Spinner from "../../../components/atoms/spinner";
+import Badge from "../../../components/fundamentals/badge";
+import Button from "../../../components/fundamentals/button";
+import DetailsIcon from "../../../components/fundamentals/details-icon";
+import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon";
+import TruckIcon from "../../../components/fundamentals/icons/truck-icon";
+import ImagePlaceholder from "../../../components/fundamentals/image-placeholder";
+import StatusDot from "../../../components/fundamentals/status-indicator";
+import Breadcrumb from "../../../components/molecules/breadcrumb";
+import BodyCard from "../../../components/organisms/body-card";
+import DeletePrompt from "../../../components/organisms/delete-prompt";
+import { AddressType } from "../../../components/templates/address-form";
+import useNotification from "../../../hooks/use-notification";
+import { isoAlpha2Countries } from "../../../utils/countries";
+import { getErrorMessage } from "../../../utils/error-messages";
+import extractCustomerName from "../../../utils/extract-customer-name";
+import { formatAmountWithSymbol } from "../../../utils/prices";
+import AddressModal from "../details/address-modal";
+import { DisplayTotal, FormattedAddress } from "../details/templates";
 
-type DraftOrderDetailsProps = RouteComponentProps<{ id: string }>
+type DraftOrderDetailsProps = RouteComponentProps<{ id: string }>;
 
 const DraftOrderDetails = ({ id }: DraftOrderDetailsProps) => {
   type DeletePromptData = {
-    resource: string
-    onDelete: () => any
-    show: boolean
-  }
+    resource: string;
+    onDelete: () => any;
+    show: boolean;
+  };
 
   const initDeleteState: DeletePromptData = {
     resource: "",
     onDelete: () => Promise.resolve(console.log("Delete resource")),
     show: false,
-  }
+  };
 
   const [deletePromptData, setDeletePromptData] = useState<DeletePromptData>(
     initDeleteState
-  )
+  );
   const [addressModal, setAddressModal] = useState<null | {
-    address: Address
-    type: AddressType
-  }>(null)
+    address: Address;
+    type: AddressType;
+  }>(null);
 
-  const { draft_order, isLoading } = useAdminDraftOrder(id)
-  const { store, isLoading: isLoadingStore } = useAdminStore()
+  const { draft_order, isLoading } = useAdminDraftOrder(id);
+  const { store, isLoading: isLoadingStore } = useAdminStore();
 
-  const [paymentLink, setPaymentLink] = useState("")
+  const [paymentLink, setPaymentLink] = useState("");
 
   useEffect(() => {
     if (store && draft_order && store.payment_link_template) {
       setPaymentLink(
         store.payment_link_template.replace(/\{cart_id\}/, draft_order.cart_id)
-      )
+      );
     }
-  }, [isLoading, isLoadingStore])
+  }, [isLoading, isLoadingStore]);
 
-  const markPaid = useAdminDraftOrderRegisterPayment(id)
-  const cancelOrder = useAdminDeleteDraftOrder(id)
-  const updateOrder = useAdminUpdateDraftOrder(id)
+  const markPaid = useAdminDraftOrderRegisterPayment(id);
+  const cancelOrder = useAdminDeleteDraftOrder(id);
+  const updateOrder = useAdminUpdateDraftOrder(id);
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   const OrderStatusComponent = () => {
     switch (draft_order?.status) {
       case "completed":
-        return <StatusDot title="Completed" variant="success" />
+        return <StatusDot title="Completed" variant="success" />;
       case "open":
-        return <StatusDot title="Open" variant="default" />
+        return <StatusDot title="Open" variant="default" />;
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   const PaymentActionables = () => {
     // Default label and action
-    const label = "Mark as paid"
+    const label = "Mark as paid";
     const action = () => {
       markPaid.mutate(void {}, {
         onSuccess: () =>
           notification("Success", "Successfully mark as paid", "success"),
         onError: (err) => notification("Error", getErrorMessage(err), "error"),
-      })
-    }
+      });
+    };
 
     return (
       <Button variant="secondary" size="small" onClick={action}>
         {label}
       </Button>
-    )
-  }
+    );
+  };
 
   const handleDeleteOrder = async () => {
     return cancelOrder.mutate(void {}, {
       onSuccess: () =>
         notification("Success", "Successfully canceled order", "success"),
       onError: (err) => notification("Error", getErrorMessage(err), "error"),
-    })
-  }
+    });
+  };
 
-  const { cart } = draft_order || {}
-  const { region } = cart || {}
+  const { cart } = draft_order || {};
+  const { region } = cart || {};
 
   return (
     <div>
@@ -400,7 +400,7 @@ const DraftOrderDetails = ({ id }: DraftOrderDetailsProps) => {
                       setAddressModal({
                         address: cart?.billing_address,
                         type: AddressType.BILLING,
-                      })
+                      });
                     }
                   },
                 },
@@ -494,7 +494,7 @@ const DraftOrderDetails = ({ id }: DraftOrderDetailsProps) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default DraftOrderDetails
+export default DraftOrderDetails;

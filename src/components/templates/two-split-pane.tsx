@@ -1,28 +1,28 @@
-import clsx from "clsx"
-import React, { Children } from "react"
-import { useComputedHeight } from "../../hooks/use-computed-height"
+import clsx from "clsx";
+import React, { Children } from "react";
+import { useComputedHeight } from "../../hooks/use-computed-height";
 
 type TwoSplitPaneProps = {
-  className?: string
-  threeCols?: boolean
-}
+  className?: string;
+  threeCols?: boolean;
+};
 
 const TwoSplitPane: React.FC<TwoSplitPaneProps> = ({
   threeCols,
   className,
   children,
 }) => {
-  const childrenCount = Children.count(children)
-  const { ref, height } = useComputedHeight(32)
+  const childrenCount = Children.count(children);
+  const { ref, height } = useComputedHeight(32);
 
   const heightClass = height
     ? {
         gridTemplateRows: `${height}px`,
       }
-    : undefined
+    : undefined;
 
   if (childrenCount > 2) {
-    throw new Error("TwoSplitPane can only have two or less children")
+    throw new Error("TwoSplitPane can only have two or less children");
   }
 
   return (
@@ -44,10 +44,10 @@ const TwoSplitPane: React.FC<TwoSplitPaneProps> = ({
           >
             {child}
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default TwoSplitPane
+export default TwoSplitPane;

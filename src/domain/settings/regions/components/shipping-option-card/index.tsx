@@ -1,20 +1,20 @@
-import { ShippingOption } from "@medusajs/medusa"
-import clsx from "clsx"
-import { useAdminDeleteShippingOption } from "../../../../../../medusa-react"
-import React from "react"
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
-import FastDeliveryIcon from "../../../../../components/fundamentals/icons/fast-delivery-icon"
-import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
-import Actionables from "../../../../../components/molecules/actionables"
-import useNotification from "../../../../../hooks/use-notification"
-import useToggleState from "../../../../../hooks/use-toggle-state"
-import { getErrorMessage } from "../../../../../utils/error-messages"
-import { stringDisplayPrice } from "../../../../../utils/prices"
-import EditModal from "./edit-modal"
+import { ShippingOption } from "@medusajs/medusa";
+import clsx from "clsx";
+import { useAdminDeleteShippingOption } from "../../../../../../medusa-react";
+import React from "react";
+import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
+import FastDeliveryIcon from "../../../../../components/fundamentals/icons/fast-delivery-icon";
+import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon";
+import Actionables from "../../../../../components/molecules/actionables";
+import useNotification from "../../../../../hooks/use-notification";
+import useToggleState from "../../../../../hooks/use-toggle-state";
+import { getErrorMessage } from "../../../../../utils/error-messages";
+import { stringDisplayPrice } from "../../../../../utils/prices";
+import EditModal from "./edit-modal";
 
 type Props = {
-  option: ShippingOption
-}
+  option: ShippingOption;
+};
 
 enum ShippingOptionPriceType {
   FLAT_RATE = "flat_rate",
@@ -22,21 +22,21 @@ enum ShippingOptionPriceType {
 }
 
 const ShippingOptionCard = ({ option }: Props) => {
-  const { state, toggle, close } = useToggleState()
-  const { mutate } = useAdminDeleteShippingOption(option.id)
+  const { state, toggle, close } = useToggleState();
+  const { mutate } = useAdminDeleteShippingOption(option.id);
 
-  const notification = useNotification()
+  const notification = useNotification();
 
   const handleDeleteOption = () => {
     mutate(undefined, {
       onSuccess: () => {
-        notification("Success", "Shipping option has been deleted", "success")
+        notification("Success", "Shipping option has been deleted", "success");
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification("Error", getErrorMessage(error), "error");
       },
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -107,7 +107,7 @@ const ShippingOptionCard = ({ option }: Props) => {
       </div>
       <EditModal option={option} open={state} onClose={close} />
     </>
-  )
-}
+  );
+};
 
-export default ShippingOptionCard
+export default ShippingOptionCard;

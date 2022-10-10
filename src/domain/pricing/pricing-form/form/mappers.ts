@@ -2,15 +2,15 @@ import {
   AdminPostPriceListsPriceListPriceListReq,
   AdminPostPriceListsPriceListReq,
   PriceList,
-} from "@medusajs/medusa"
-import xorObjFields from "../../../../utils/xorObjFields"
+} from "@medusajs/medusa";
+import xorObjFields from "../../../../utils/xorObjFields";
 import {
   CreatePriceListFormValues,
   CreatePriceListPricesFormValues,
   PriceListFormValues,
   PriceListStatus,
   PriceListType,
-} from "../types"
+} from "../types";
 
 export const mapPriceListToFormValues = (
   priceList: PriceList
@@ -34,14 +34,14 @@ export const mapPriceListToFormValues = (
       value: pl.id,
     })),
     includes_tax: priceList.includes_tax,
-  }
-}
+  };
+};
 
 export const mapFormValuesToCreatePriceList = (
   values: CreatePriceListFormValues,
   status: PriceListStatus
 ): AdminPostPriceListsPriceListReq => {
-  let prices
+  let prices;
   if (values.prices) {
     prices = Object.entries(values.prices)
       .map(([variantId, price]) =>
@@ -53,7 +53,7 @@ export const mapFormValuesToCreatePriceList = (
           max_quantity: pr.max_quantity,
         }))
       )
-      .flat(1)
+      .flat(1);
   }
 
   return {
@@ -67,8 +67,8 @@ export const mapFormValuesToCreatePriceList = (
     ends_at: values.ends_at || undefined,
     starts_at: values.starts_at || undefined,
     prices,
-  }
-}
+  };
+};
 
 export const mapFormValuesToUpdatePriceListDetails = (
   values: PriceListFormValues
@@ -82,13 +82,13 @@ export const mapFormValuesToUpdatePriceListDetails = (
     ends_at: values.ends_at,
     starts_at: values.starts_at,
     type: values.type || undefined,
-  }
-}
+  };
+};
 
 export const mapFormValuesToUpdatePriceListPrices = (
   values: PriceListFormValues & { prices: CreatePriceListPricesFormValues }
 ): AdminPostPriceListsPriceListPriceListReq | void => {
-  let prices
+  let prices;
   if (values.prices) {
     prices = Object.entries(values.prices)
       .map(([variantId, price]) =>
@@ -100,10 +100,10 @@ export const mapFormValuesToUpdatePriceListPrices = (
           max_quantity: pr.max_quantity,
         }))
       )
-      .flat(1)
+      .flat(1);
 
     return {
       prices,
-    }
+    };
   }
-}
+};

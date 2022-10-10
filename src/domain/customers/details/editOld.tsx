@@ -1,26 +1,26 @@
-import { Customer } from "@medusajs/medusa"
-import { useAdminUpdateCustomer } from "../../../../medusa-react"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../components/fundamentals/button"
-import LockIcon from "../../../components/fundamentals/icons/lock-icon"
-import InputField from "../../../components/molecules/input"
-import Modal from "../../../components/molecules/modal"
-import useNotification from "../../../hooks/use-notification"
-import { getErrorMessage } from "../../../utils/error-messages"
-import { validateEmail } from "../../../utils/validate-email"
+import { Customer } from "@medusajs/medusa";
+import { useAdminUpdateCustomer } from "../../../../medusa-react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../components/fundamentals/button";
+import LockIcon from "../../../components/fundamentals/icons/lock-icon";
+import InputField from "../../../components/molecules/input";
+import Modal from "../../../components/molecules/modal";
+import useNotification from "../../../hooks/use-notification";
+import { getErrorMessage } from "../../../utils/error-messages";
+import { validateEmail } from "../../../utils/validate-email";
 
 type EditCustomerModalProps = {
-  customer: Customer
-  handleClose: () => void
-}
+  customer: Customer;
+  handleClose: () => void;
+};
 
 type EditCustomerFormType = {
-  first_name: string
-  last_name: string
-  email: string
-  phone: string | null
-}
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+};
 
 const EditCustomerModal = ({
   handleClose,
@@ -33,11 +33,11 @@ const EditCustomerModal = ({
     formState: { isDirty },
   } = useForm<EditCustomerFormType>({
     defaultValues: getDefaultValues(customer),
-  })
+  });
 
-  const notification = useNotification()
+  const notification = useNotification();
 
-  const updateCustomer = useAdminUpdateCustomer(customer.id)
+  const updateCustomer = useAdminUpdateCustomer(customer.id);
 
   const onSubmit = handleSubmit((data) => {
     updateCustomer.mutate(
@@ -50,20 +50,20 @@ const EditCustomerModal = ({
       },
       {
         onSuccess: () => {
-          handleClose()
-          notification("Success", "Successfully updated customer", "success")
+          handleClose();
+          notification("Success", "Successfully updated customer", "success");
         },
         onError: (err) => {
-          handleClose()
-          notification("Error", getErrorMessage(err), "error")
+          handleClose();
+          notification("Error", getErrorMessage(err), "error");
         },
       }
-    )
-  })
+    );
+  });
 
   useEffect(() => {
-    reset(getDefaultValues(customer))
-  }, [customer])
+    reset(getDefaultValues(customer));
+  }, [customer]);
 
   return (
     <Modal handleClose={handleClose}>
@@ -131,8 +131,8 @@ const EditCustomerModal = ({
         </Modal.Footer>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const getDefaultValues = (customer: Customer): EditCustomerFormType => {
   return {
@@ -140,7 +140,7 @@ const getDefaultValues = (customer: Customer): EditCustomerFormType => {
     email: customer.email,
     last_name: customer.last_name,
     phone: customer.phone,
-  }
-}
+  };
+};
 
-export default EditCustomerModal
+export default EditCustomerModal;

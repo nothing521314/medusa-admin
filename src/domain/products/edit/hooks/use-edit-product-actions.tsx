@@ -2,8 +2,8 @@ import {
   AdminPostProductsProductReq,
   AdminPostProductsProductVariantsReq,
   AdminPostProductsProductVariantsVariantReq,
-} from "@medusajs/medusa"
-import { navigate } from "gatsby"
+} from "@medusajs/medusa";
+import { navigate } from "gatsby";
 import {
   useAdminCreateVariant,
   useAdminDeleteProduct,
@@ -11,38 +11,38 @@ import {
   useAdminProduct,
   useAdminUpdateProduct,
   useAdminUpdateVariant,
-} from "../../../../../medusa-react"
-import useImperativeDialog from "../../../../hooks/use-imperative-dialog"
-import useNotification from "../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../utils/error-messages"
+} from "../../../../../medusa-react";
+import useImperativeDialog from "../../../../hooks/use-imperative-dialog";
+import useNotification from "../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../utils/error-messages";
 
 const useEditProductActions = (productId: string) => {
-  const dialog = useImperativeDialog()
-  const notification = useNotification()
-  const getProduct = useAdminProduct(productId)
-  const updateProduct = useAdminUpdateProduct(productId)
-  const deleteProduct = useAdminDeleteProduct(productId)
-  const updateVariant = useAdminUpdateVariant(productId)
-  const deleteVariant = useAdminDeleteVariant(productId)
-  const addVariant = useAdminCreateVariant(productId)
+  const dialog = useImperativeDialog();
+  const notification = useNotification();
+  const getProduct = useAdminProduct(productId);
+  const updateProduct = useAdminUpdateProduct(productId);
+  const deleteProduct = useAdminDeleteProduct(productId);
+  const updateVariant = useAdminUpdateVariant(productId);
+  const deleteVariant = useAdminDeleteVariant(productId);
+  const addVariant = useAdminCreateVariant(productId);
 
   const onDelete = async () => {
     const shouldDelete = await dialog({
       heading: "Delete Product",
       text: "Are you sure you want to delete this product",
-    })
+    });
     if (shouldDelete) {
       deleteProduct.mutate(undefined, {
         onSuccess: () => {
-          notification("Success", "Product deleted successfully", "success")
-          navigate("/a/products/")
+          notification("Success", "Product deleted successfully", "success");
+          navigate("/a/products/");
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification("Error", getErrorMessage(err), "error");
         },
-      })
+      });
     }
-  }
+  };
 
   const onAddVariant = (
     payload: AdminPostProductsProductVariantsReq,
@@ -51,15 +51,15 @@ const useEditProductActions = (productId: string) => {
   ) => {
     addVariant.mutate(payload, {
       onSuccess: () => {
-        notification("Success", successMessage, "success")
-        getProduct.refetch()
-        onSuccess()
+        notification("Success", successMessage, "success");
+        getProduct.refetch();
+        onSuccess();
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification("Error", getErrorMessage(err), "error");
       },
-    })
-  }
+    });
+  };
 
   const onUpdateVariant = (
     id: string,
@@ -72,16 +72,16 @@ const useEditProductActions = (productId: string) => {
       { variant_id: id, ...payload },
       {
         onSuccess: () => {
-          notification("Success", successMessage, "success")
-          getProduct.refetch()
-          onSuccess()
+          notification("Success", successMessage, "success");
+          getProduct.refetch();
+          onSuccess();
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification("Error", getErrorMessage(err), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   const onDeleteVariant = (
     variantId: string,
@@ -90,17 +90,17 @@ const useEditProductActions = (productId: string) => {
   ) => {
     deleteVariant.mutate(variantId, {
       onSuccess: () => {
-        notification("Success", successMessage, "success")
-        getProduct.refetch()
+        notification("Success", successMessage, "success");
+        getProduct.refetch();
         if (onSuccess) {
-          onSuccess()
+          onSuccess();
         }
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification("Error", getErrorMessage(err), "error");
       },
-    })
-  }
+    });
+  };
 
   const onUpdate = (
     payload: Partial<AdminPostProductsProductReq>,
@@ -112,18 +112,18 @@ const useEditProductActions = (productId: string) => {
       payload,
       {
         onSuccess: () => {
-          notification("Success", successMessage, "success")
-          onSuccess()
+          notification("Success", successMessage, "success");
+          onSuccess();
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification("Error", getErrorMessage(err), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   const onStatusChange = (currentStatus: string) => {
-    const newStatus = currentStatus === "published" ? "draft" : "published"
+    const newStatus = currentStatus === "published" ? "draft" : "published";
     updateProduct.mutate(
       {
         // @ts-ignore TODO fix update type in API
@@ -131,19 +131,19 @@ const useEditProductActions = (productId: string) => {
       },
       {
         onSuccess: () => {
-          const pastTense = newStatus === "published" ? "published" : "drafted"
+          const pastTense = newStatus === "published" ? "published" : "drafted";
           notification(
             "Success",
             `Product ${pastTense} successfully`,
             "success"
-          )
+          );
         },
         onError: (err) => {
-          notification("Ooops", getErrorMessage(err), "error")
+          notification("Ooops", getErrorMessage(err), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   return {
     getProduct,
@@ -158,7 +158,7 @@ const useEditProductActions = (productId: string) => {
     addingVariant: addVariant.isLoading,
     updatingVariant: updateVariant.isLoading,
     deletingVariant: deleteVariant.isLoading,
-  }
-}
+  };
+};
 
-export default useEditProductActions
+export default useEditProductActions;

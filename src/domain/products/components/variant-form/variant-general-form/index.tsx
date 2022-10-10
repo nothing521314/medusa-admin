@@ -1,23 +1,23 @@
-import React from "react"
-import InputField from "../../../../../components/molecules/input"
-import FormValidator from "../../../../../utils/form-validator"
-import { NestedForm } from "../../../../../utils/nested-form"
+import React from "react";
+import InputField from "../../../../../components/molecules/input";
+import FormValidator from "../../../../../utils/form-validator";
+import { NestedForm } from "../../../../../utils/nested-form";
 
 export type VariantGeneralFormType = {
-  title: string | null
-  material: string | null
-}
+  title: string | null;
+  material: string | null;
+};
 
 type Props = {
-  form: NestedForm<VariantGeneralFormType>
-}
+  form: NestedForm<VariantGeneralFormType>;
+};
 
 const VariantGeneralForm = ({ form }: Props) => {
   const {
     path,
     register,
     formState: { errors },
-  } = form
+  } = form;
 
   return (
     <div>
@@ -45,7 +45,7 @@ const VariantGeneralForm = ({ form }: Props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default VariantGeneralForm
+export default VariantGeneralForm;

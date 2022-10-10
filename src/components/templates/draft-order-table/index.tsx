@@ -1,42 +1,42 @@
-import { RouteComponentProps, useLocation } from "@reach/router"
-import { useAdminDraftOrders } from "../../../../medusa-react"
-import React, { Fragment, useEffect, useState } from "react"
-import { usePagination, useTable } from "react-table"
-import Spinner from "../../atoms/spinner"
-import Table, { TablePagination } from "../../molecules/table"
-import useDraftOrderTableColumns from "./use-draft-order-column"
-import { useDraftOrderFilters } from "./use-draft-order-filters"
+import { RouteComponentProps, useLocation } from "@reach/router";
+import { useAdminDraftOrders } from "../../../../medusa-react";
+import React, { Fragment, useEffect, useState } from "react";
+import { usePagination, useTable } from "react-table";
+import Spinner from "../../atoms/spinner";
+import Table, { TablePagination } from "../../molecules/table";
+import useDraftOrderTableColumns from "./use-draft-order-column";
+import { useDraftOrderFilters } from "./use-draft-order-filters";
 
-const DEFAULT_PAGE_SIZE = 15
+const DEFAULT_PAGE_SIZE = 15;
 
 const DraftOrderTable: React.FC<RouteComponentProps> = () => {
-  const location = useLocation()
+  const location = useLocation();
 
   const {
     reset,
     paginate,
     setQuery: setFreeText,
     queryObject,
-  } = useDraftOrderFilters(location.search, {})
+  } = useDraftOrderFilters(location.search, {});
 
-  const filtersOnLoad = queryObject
+  const filtersOnLoad = queryObject;
 
-  const offs = parseInt(filtersOnLoad?.offset) || 0
-  const lim = parseInt(filtersOnLoad?.limit) || DEFAULT_PAGE_SIZE
+  const offs = parseInt(filtersOnLoad?.offset) || 0;
+  const lim = parseInt(filtersOnLoad?.limit) || DEFAULT_PAGE_SIZE;
 
-  const [query, setQuery] = useState(filtersOnLoad?.query)
-  const [numPages, setNumPages] = useState(0)
+  const [query, setQuery] = useState(filtersOnLoad?.query);
+  const [numPages, setNumPages] = useState(0);
 
   const { draft_orders, isLoading, isRefetching, count } = useAdminDraftOrders(
     queryObject
-  )
+  );
 
   useEffect(() => {
-    const controlledPageCount = Math.ceil(count! / queryObject.limit)
-    setNumPages(controlledPageCount)
-  }, [count, queryObject])
+    const controlledPageCount = Math.ceil(count! / queryObject.limit);
+    setNumPages(controlledPageCount);
+  }, [count, queryObject]);
 
-  const [columns] = useDraftOrderTableColumns()
+  const [columns] = useDraftOrderTableColumns();
 
   const {
     getTableProps,
@@ -65,36 +65,36 @@ const DraftOrderTable: React.FC<RouteComponentProps> = () => {
       autoResetPage: false,
     },
     usePagination
-  )
+  );
 
   // Debounced search
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (query) {
-        setFreeText(query)
-        gotoPage(0)
+        setFreeText(query);
+        gotoPage(0);
       } else {
         // if we delete query string, we reset the table view
-        reset()
+        reset();
       }
-    }, 400)
+    }, 400);
 
-    return () => clearTimeout(delayDebounceFn)
-  }, [query])
+    return () => clearTimeout(delayDebounceFn);
+  }, [query]);
 
   const handleNext = () => {
     if (canNextPage) {
-      paginate(1)
-      nextPage()
+      paginate(1);
+      nextPage();
     }
-  }
+  };
 
   const handlePrev = () => {
     if (canPreviousPage) {
-      paginate(-1)
-      previousPage()
+      paginate(-1);
+      previousPage();
     }
-  }
+  };
 
   return (
     <div className="w-full h-full overflow-y-auto flex flex-col justify-between">
@@ -123,15 +123,15 @@ const DraftOrderTable: React.FC<RouteComponentProps> = () => {
                         >
                           {col.render("Header", { customIndex: index })}
                         </Table.HeadCell>
-                      )
+                      );
                     })}
                   </Table.HeadRow>
-                )
+                );
               })}
             </Table.Head>
             <Table.Body {...getTableBodyProps()}>
               {rows.map((row) => {
-                prepareRow(row)
+                prepareRow(row);
                 return (
                   <Table.Row
                     color={"inherit"}
@@ -141,10 +141,10 @@ const DraftOrderTable: React.FC<RouteComponentProps> = () => {
                     {row.cells.map((cell, index) => {
                       return (
                         <Fragment key={index}>{cell.render("Cell")}</Fragment>
-                      )
+                      );
                     })}
                   </Table.Row>
-                )
+                );
               })}
             </Table.Body>
           </Table>
@@ -164,7 +164,7 @@ const DraftOrderTable: React.FC<RouteComponentProps> = () => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default DraftOrderTable
+export default DraftOrderTable;

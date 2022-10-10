@@ -1,15 +1,15 @@
-import { queryKeysFactory } from "../../utils/index"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { StoreRegionsRes, StoreRegionsListRes } from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
+import { queryKeysFactory } from "../../utils/index";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { StoreRegionsRes, StoreRegionsListRes } from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
 
-const REGIONS_QUERY_KEY = `regions` as const
+const REGIONS_QUERY_KEY = `regions` as const;
 
-const regionsKey = queryKeysFactory(REGIONS_QUERY_KEY)
+const regionsKey = queryKeysFactory(REGIONS_QUERY_KEY);
 
-type RegionQueryType = typeof regionsKey
+type RegionQueryType = typeof regionsKey;
 
 export const useRegions = (
   options?: UseQueryOptionsWrapper<
@@ -18,14 +18,14 @@ export const useRegions = (
     ReturnType<RegionQueryType["lists"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     regionsKey.lists(),
     () => client.regions.list(),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useRegion = (
   id: string,
@@ -35,11 +35,11 @@ export const useRegion = (
     ReturnType<RegionQueryType["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     regionsKey.detail(id),
     () => client.regions.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

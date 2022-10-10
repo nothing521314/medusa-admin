@@ -1,44 +1,44 @@
-import { ShippingOption } from "@medusajs/medusa"
-import { useAdminUpdateShippingOption } from "../../../../../../medusa-react"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import Button from "../../../../../components/fundamentals/button"
-import Modal from "../../../../../components/molecules/modal"
-import useNotification from "../../../../../hooks/use-notification"
-import { getErrorMessage } from "../../../../../utils/error-messages"
+import { ShippingOption } from "@medusajs/medusa";
+import { useAdminUpdateShippingOption } from "../../../../../../medusa-react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Button from "../../../../../components/fundamentals/button";
+import Modal from "../../../../../components/molecules/modal";
+import useNotification from "../../../../../hooks/use-notification";
+import { getErrorMessage } from "../../../../../utils/error-messages";
 import ShippingOptionForm, {
   ShippingOptionFormType,
-} from "../shipping-option-form"
-import { useShippingOptionFormData } from "../shipping-option-form/use-shipping-option-form-data"
+} from "../shipping-option-form";
+import { useShippingOptionFormData } from "../shipping-option-form/use-shipping-option-form-data";
 
 type Props = {
-  open: boolean
-  onClose: () => void
-  option: ShippingOption
-}
+  open: boolean;
+  onClose: () => void;
+  option: ShippingOption;
+};
 
 const EditModal = ({ open, onClose, option }: Props) => {
   const form = useForm<ShippingOptionFormType>({
     defaultValues: getDefaultValues(option),
-  })
-  const { mutate, isLoading } = useAdminUpdateShippingOption(option.id)
-  const { getRequirementsData } = useShippingOptionFormData(option.region_id)
-  const notification = useNotification()
+  });
+  const { mutate, isLoading } = useAdminUpdateShippingOption(option.id);
+  const { getRequirementsData } = useShippingOptionFormData(option.region_id);
+  const notification = useNotification();
 
   const {
     reset,
     handleSubmit,
     formState: { isDirty },
-  } = form
+  } = form;
 
   useEffect(() => {
-    reset(getDefaultValues(option))
-  }, [option])
+    reset(getDefaultValues(option));
+  }, [option]);
 
   const closeAndReset = () => {
-    reset(getDefaultValues(option))
-    onClose()
-  }
+    reset(getDefaultValues(option));
+    onClose();
+  };
 
   const onSubmit = handleSubmit((data) => {
     mutate(
@@ -51,15 +51,15 @@ const EditModal = ({ open, onClose, option }: Props) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Shipping option updated", "success")
-          closeAndReset()
+          notification("Success", "Shipping option updated", "success");
+          closeAndReset();
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification("Error", getErrorMessage(error), "error");
         },
       }
-    )
-  })
+    );
+  });
 
   return (
     <Modal open={open} handleClose={closeAndReset}>
@@ -101,12 +101,16 @@ const EditModal = ({ open, onClose, option }: Props) => {
         </form>
       </Modal.Body>
     </Modal>
-  )
-}
+  );
+};
 
 const getDefaultValues = (option: ShippingOption): ShippingOptionFormType => {
-  const minSubtotal = option.requirements.find((r) => r.type === "min_subtotal")
-  const maxSubtotal = option.requirements.find((r) => r.type === "max_subtotal")
+  const minSubtotal = option.requirements.find(
+    (r) => r.type === "min_subtotal"
+  );
+  const maxSubtotal = option.requirements.find(
+    (r) => r.type === "max_subtotal"
+  );
 
   return {
     store_option: option.admin_only ? false : true,
@@ -128,7 +132,7 @@ const getDefaultValues = (option: ShippingOption): ShippingOptionFormType => {
         : null,
     },
     amount: option.amount,
-  }
-}
+  };
+};
 
-export default EditModal
+export default EditModal;

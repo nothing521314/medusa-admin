@@ -1,27 +1,27 @@
-import clsx from "clsx"
-import React, { useRef, useState } from "react"
-import Tooltip from "../../atoms/tooltip"
-import CrossIcon from "../../fundamentals/icons/cross-icon"
-import InputHeader from "../../fundamentals/input-header"
+import clsx from "clsx";
+import React, { useRef, useState } from "react";
+import Tooltip from "../../atoms/tooltip";
+import CrossIcon from "../../fundamentals/icons/cross-icon";
+import InputHeader from "../../fundamentals/input-header";
 
-const ENTER_KEY = 13
-const TAB_KEY = 9
-const BACKSPACE_KEY = 8
-const ARROW_LEFT_KEY = 37
-const ARROW_RIGHT_KEY = 39
+const ENTER_KEY = 13;
+const TAB_KEY = 9;
+const BACKSPACE_KEY = 8;
+const ARROW_LEFT_KEY = 37;
+const ARROW_RIGHT_KEY = 39;
 
 type TagInputProps = {
-  onChange: (values: string[]) => void
-  onValidate?: (value: string) => void
-  label?: string
-  showLabel?: boolean
-  values: string[]
-  containerProps?: React.HTMLAttributes<HTMLDivElement>
-  withTooltip?: boolean
-  tooltipContent?: string
-  tooltip?: React.ReactNode
-  invalidMessage?: string
-} & React.InputHTMLAttributes<HTMLInputElement>
+  onChange: (values: string[]) => void;
+  onValidate?: (value: string) => void;
+  label?: string;
+  showLabel?: boolean;
+  values: string[];
+  containerProps?: React.HTMLAttributes<HTMLDivElement>;
+  withTooltip?: boolean;
+  tooltipContent?: string;
+  tooltip?: React.ReactNode;
+  invalidMessage?: string;
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 const TagInput: React.FC<TagInputProps> = ({
   onChange,
@@ -39,120 +39,120 @@ const TagInput: React.FC<TagInputProps> = ({
   invalidMessage = "is not a valid tag",
   ...props
 }) => {
-  const [invalid, setInvalid] = useState(false)
-  const [highlighted, setHighlighted] = useState(-1)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [invalid, setInvalid] = useState(false);
+  const [highlighted, setHighlighted] = useState(-1);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleAddValue = (newVal) => {
-    let update = newVal
+    let update = newVal;
 
     if (typeof onValidate !== "undefined") {
-      update = onValidate(newVal)
+      update = onValidate(newVal);
     }
 
     if (update) {
-      onChange([...values, update])
+      onChange([...values, update]);
       if (inputRef?.current) {
-        inputRef.current.value = ""
+        inputRef.current.value = "";
       }
     } else {
-      setInvalid(true)
+      setInvalid(true);
     }
-  }
+  };
 
   const handleKeyDown = (e) => {
     if (invalid) {
-      setInvalid(false)
+      setInvalid(false);
     }
 
     if (!inputRef?.current) {
-      return
+      return;
     }
 
-    const { value, selectionStart } = inputRef.current
+    const { value, selectionStart } = inputRef.current;
 
     switch (e.keyCode) {
       case ARROW_LEFT_KEY:
         if (highlighted !== -1) {
           // highlight previous element
           if (highlighted > 0) {
-            setHighlighted(highlighted - 1)
+            setHighlighted(highlighted - 1);
           }
         } else if (!selectionStart) {
           // else highlight last element
-          setHighlighted(values.length - 1)
-          e.preventDefault()
+          setHighlighted(values.length - 1);
+          e.preventDefault();
         }
-        break
+        break;
       case ARROW_RIGHT_KEY:
         if (highlighted !== -1) {
           // highlight next element
           if (highlighted < values.length - 1) {
-            setHighlighted(highlighted + 1)
-            e.preventDefault()
+            setHighlighted(highlighted + 1);
+            e.preventDefault();
           } else {
             // else remove highlighting entirely
-            setHighlighted(-1)
+            setHighlighted(-1);
           }
         }
-        break
+        break;
       case ENTER_KEY: // Fall through
-        e.preventDefault()
-        break
+        e.preventDefault();
+        break;
       case TAB_KEY: // Creates new tag
         if (value) {
-          handleAddValue(value)
-          e.preventDefault()
+          handleAddValue(value);
+          e.preventDefault();
         }
-        break
+        break;
 
       case BACKSPACE_KEY: // Removes tag
         // if no element is currently highlighted, highlight last element
         if (!inputRef.current.selectionStart && highlighted === -1) {
-          setHighlighted(values.length - 1)
-          e.preventDefault()
+          setHighlighted(values.length - 1);
+          e.preventDefault();
         }
         // if element is highlighted, remove it
         if (highlighted !== -1) {
-          const newValues = [...values]
-          newValues.splice(highlighted, 1)
-          onChange(newValues)
-          setHighlighted(-1)
+          const newValues = [...values];
+          newValues.splice(highlighted, 1);
+          onChange(newValues);
+          setHighlighted(-1);
         }
-        break
+        break;
       default:
         // Remove highlight from any tag
-        setHighlighted(-1)
+        setHighlighted(-1);
     }
-  }
+  };
 
   const handleRemove = (index) => {
-    const newValues = [...values]
-    newValues.splice(index, 1)
-    onChange(newValues)
-  }
+    const newValues = [...values];
+    newValues.splice(index, 1);
+    onChange(newValues);
+  };
 
   const handleBlur = (e) => {
-    const value = inputRef?.current?.value
-    setHighlighted(-1)
+    const value = inputRef?.current?.value;
+    setHighlighted(-1);
 
     if (value) {
-      handleAddValue(value)
+      handleAddValue(value);
     }
-  }
+  };
 
   const handleInput = () => {
     if (!inputRef?.current) {
-      return
+      return;
     }
 
-    const value = inputRef.current.value
+    const value = inputRef.current.value;
 
     if (value?.endsWith(",")) {
-      inputRef.current.value = value.slice(0, -1)
-      handleAddValue(value.slice(0, -1))
+      inputRef.current.value = value.slice(0, -1);
+      handleAddValue(value.slice(0, -1));
     }
-  }
+  };
 
   return (
     <div className={className}>
@@ -225,7 +225,7 @@ const TagInput: React.FC<TagInputProps> = ({
         </div>
       </Tooltip>
     </div>
-  )
-}
+  );
+};
 
-export default TagInput
+export default TagInput;

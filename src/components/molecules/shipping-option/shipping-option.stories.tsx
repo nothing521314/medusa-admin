@@ -1,15 +1,15 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import ShippingOption from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import ShippingOption from ".";
 
 export default {
   title: "Atoms/ShippingOption",
   component: ShippingOption,
-} as ComponentMeta<typeof ShippingOption>
+} as ComponentMeta<typeof ShippingOption>;
 
-const Template = args => <ShippingOption {...args} />
+const Template = (args) => <ShippingOption {...args} />;
 
-export const FlatRate = Template.bind({})
+export const FlatRate = Template.bind({});
 FlatRate.args = {
   option: {
     name: "Standard",
@@ -26,9 +26,9 @@ FlatRate.args = {
   },
   currency_code: "USD",
   editFn: () => {},
-}
+};
 
-export const CalculatedRate = Template.bind({})
+export const CalculatedRate = Template.bind({});
 CalculatedRate.args = {
   option: {
     name: "Standard",
@@ -45,9 +45,9 @@ CalculatedRate.args = {
   },
   currency_code: "USD",
   editFn: () => {},
-}
+};
 
-export const AdminOnly = Template.bind({})
+export const AdminOnly = Template.bind({});
 AdminOnly.args = {
   option: {
     name: "Standard",
@@ -61,4 +61,4 @@ AdminOnly.args = {
   },
   currency_code: "USD",
   editFn: () => {},
-}
+};

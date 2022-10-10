@@ -1,8 +1,8 @@
-import isEqual from "lodash/isEqual"
-import { useEffect, useState } from "react"
-import { ActionMeta, GroupBase, OnChangeValue, Props } from "react-select"
-import Components from "./components"
-import { formatOptionLabel, hasLabel } from "./utils"
+import isEqual from "lodash/isEqual";
+import { useEffect, useState } from "react";
+import { ActionMeta, GroupBase, OnChangeValue, Props } from "react-select";
+import Components from "./components";
+import { formatOptionLabel, hasLabel } from "./utils";
 
 export const useSelectProps = <
   Option,
@@ -20,46 +20,46 @@ export const useSelectProps = <
   onChange: changeFn,
   ...props
 }: Props<Option, IsMulti, Group>): Props<Option, IsMulti, Group> => {
-  const [stateOptions, setStateOptions] = useState(options || [])
+  const [stateOptions, setStateOptions] = useState(options || []);
 
   const sortOptions = (values: Option[]) => {
-    const tmp = values || []
+    const tmp = values || [];
 
     const unselectedOptions = stateOptions.filter(
       (option) => !tmp.find((op) => isEqual(op, option))
-    )
+    );
 
     const orderedNewOptions = tmp.sort((a, b) => {
       if (hasLabel(a) && hasLabel(b)) {
-        return a.label > b.label ? 1 : b.label > a.label ? -1 : 0
+        return a.label > b.label ? 1 : b.label > a.label ? -1 : 0;
       }
 
-      return 0
-    })
+      return 0;
+    });
 
-    setStateOptions(orderedNewOptions.concat(unselectedOptions as Option[]))
-  }
+    setStateOptions(orderedNewOptions.concat(unselectedOptions as Option[]));
+  };
 
   useEffect(() => {
     if (isMulti && options) {
-      sortOptions(props.value as Option[])
+      sortOptions(props.value as Option[]);
     } else {
-      setStateOptions(options || [])
+      setStateOptions(options || []);
     }
-  }, [options, props.value, isMulti])
+  }, [options, props.value, isMulti]);
 
   const onChange = (
     newValue: OnChangeValue<Option, IsMulti>,
     actionMeta: ActionMeta<Option>
   ) => {
     if (isMulti) {
-      sortOptions(newValue as Option[])
+      sortOptions(newValue as Option[]);
     }
 
     if (changeFn) {
-      changeFn(newValue, actionMeta)
+      changeFn(newValue, actionMeta);
     }
-  }
+  };
 
   return {
     label,
@@ -79,5 +79,5 @@ export const useSelectProps = <
     options: stateOptions,
     onChange,
     ...props,
-  }
-}
+  };
+};

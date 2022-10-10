@@ -1,11 +1,11 @@
-import clsx from "clsx"
-import React from "react"
-import { Toast } from "react-hot-toast"
+import clsx from "clsx";
+import React from "react";
+import { Toast } from "react-hot-toast";
 
 export type TableToasterContainerProps = {
-  children: React.ReactElement[] | React.ReactElement | React.ReactNode
-  toast?: Toast
-}
+  children: React.ReactElement[] | React.ReactElement | React.ReactNode;
+  toast?: Toast;
+};
 
 export const TableToasterContainer = ({
   children,
@@ -23,5 +23,5 @@ export const TableToasterContainer = ({
         {children}
       </div>
     </div>
-  )
-}
+  );
+};

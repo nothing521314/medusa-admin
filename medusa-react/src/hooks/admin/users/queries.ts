@@ -1,15 +1,15 @@
-import { AdminUsersListRes, AdminUserRes } from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+import { AdminUsersListRes, AdminUserRes } from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_USERS_QUERY_KEY = `admin_users` as const
+const ADMIN_USERS_QUERY_KEY = `admin_users` as const;
 
-export const adminUserKeys = queryKeysFactory(ADMIN_USERS_QUERY_KEY)
+export const adminUserKeys = queryKeysFactory(ADMIN_USERS_QUERY_KEY);
 
-type UserQueryKeys = typeof adminUserKeys
+type UserQueryKeys = typeof adminUserKeys;
 
 export const useAdminUsers = (
   options?: UseQueryOptionsWrapper<
@@ -18,14 +18,14 @@ export const useAdminUsers = (
     ReturnType<UserQueryKeys["lists"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminUserKeys.lists(),
     () => client.admin.users.list(),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminUser = (
   id: string,
@@ -35,11 +35,11 @@ export const useAdminUser = (
     ReturnType<UserQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminUserKeys.detail(id),
     () => client.admin.users.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

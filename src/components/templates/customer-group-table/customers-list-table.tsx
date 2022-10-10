@@ -1,44 +1,44 @@
-import React from "react"
+import React from "react";
 import {
   HeaderGroup,
   Row,
   usePagination,
   useSortBy,
   useTable,
-} from "react-table"
-import { UseMutateFunction } from "react-query"
-import { navigate } from "gatsby"
+} from "react-table";
+import { UseMutateFunction } from "react-query";
+import { navigate } from "gatsby";
 
-import { Customer } from "@medusajs/medusa"
+import { Customer } from "@medusajs/medusa";
 
-import { CUSTOMER_GROUPS_CUSTOMERS_LIST_TABLE_COLUMNS } from "./config"
-import Table, { TablePagination } from "../../molecules/table"
-import DetailsIcon from "../../fundamentals/details-icon"
-import MailIcon from "../../fundamentals/icons/mail-icon"
-import TrashIcon from "../../fundamentals/icons/trash-icon"
-import useQueryFilters from "../../../hooks/use-query-filters"
-import { FilteringOptionProps } from "../../molecules/table/filtering-option"
+import { CUSTOMER_GROUPS_CUSTOMERS_LIST_TABLE_COLUMNS } from "./config";
+import Table, { TablePagination } from "../../molecules/table";
+import DetailsIcon from "../../fundamentals/details-icon";
+import MailIcon from "../../fundamentals/icons/mail-icon";
+import TrashIcon from "../../fundamentals/icons/trash-icon";
+import useQueryFilters from "../../../hooks/use-query-filters";
+import { FilteringOptionProps } from "../../molecules/table/filtering-option";
 
 /* ********************************** */
 /* ************** TYPES ************* */
 /* ********************************** */
 
 type CustomersListTableHeaderRowProps = {
-  headerGroup: HeaderGroup<Customer>
-}
+  headerGroup: HeaderGroup<Customer>;
+};
 
 interface CustomersListTableRowProps {
-  row: Row<Customer>
-  removeCustomers: Function
+  row: Row<Customer>;
+  removeCustomers: Function;
 }
 
 type CustomersListTableProps = ReturnType<typeof useQueryFilters> & {
-  count: number
-  groupId: string
-  customers: Customer[]
-  filteringOptions: FilteringOptionProps[]
-  removeCustomers: UseMutateFunction<any, Error, any, unknown>
-}
+  count: number;
+  groupId: string;
+  customers: Customer[];
+  filteringOptions: FilteringOptionProps[];
+  removeCustomers: UseMutateFunction<any, Error, any, unknown>;
+};
 
 /* ********************************************* */
 /* ************** TABLE COMPONENTS ************* */
@@ -48,13 +48,13 @@ type CustomersListTableProps = ReturnType<typeof useQueryFilters> & {
  * Renders customer group customers list header row.
  */
 function CustomersListTableHeaderRow(props: CustomersListTableHeaderRowProps) {
-  const { headerGroup } = props
+  const { headerGroup } = props;
 
   return (
     <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
       {props.headerGroup.headers.map((col, index) => {
-        const { render, getHeaderProps, getSortByToggleProps } = col
-        const className = index ? "w-[100px]" : "w-[60px]"
+        const { render, getHeaderProps, getSortByToggleProps } = col;
+        const className = index ? "w-[100px]" : "w-[60px]";
 
         return (
           <Table.HeadCell
@@ -63,22 +63,22 @@ function CustomersListTableHeaderRow(props: CustomersListTableHeaderRowProps) {
           >
             {render("Header")}
           </Table.HeadCell>
-        )
+        );
       })}
     </Table.HeadRow>
-  )
+  );
 }
 
 interface CustomersListTableRowProps {
-  row: Row<Customer>
-  removeCustomers: Function
+  row: Row<Customer>;
+  removeCustomers: Function;
 }
 
 /*
  * Renders customer group customers list table row.
  */
 function CustomersListTableRow(props: CustomersListTableRowProps) {
-  const { row, removeCustomers } = props
+  const { row, removeCustomers } = props;
 
   const actions = [
     {
@@ -100,7 +100,7 @@ function CustomersListTableRow(props: CustomersListTableRowProps) {
         }),
       icon: <TrashIcon size={20} />,
     },
-  ]
+  ];
 
   return (
     <Table.Row
@@ -115,7 +115,7 @@ function CustomersListTableRow(props: CustomersListTableRowProps) {
         </Table.Cell>
       ))}
     </Table.Row>
-  )
+  );
 }
 
 /*
@@ -131,7 +131,7 @@ function CustomersListTable(props: CustomersListTableProps) {
     query,
     queryObject,
     count,
-  } = props
+  } = props;
 
   const tableConfig = {
     data: customers,
@@ -143,37 +143,37 @@ function CustomersListTable(props: CustomersListTableProps) {
     pageCount: Math.ceil(count / queryObject.limit),
     manualPagination: true,
     autoResetPage: false,
-  }
+  };
 
-  const table = useTable(tableConfig, useSortBy, usePagination)
+  const table = useTable(tableConfig, useSortBy, usePagination);
 
   // ********* HANDLERS *********
 
   const handleNext = () => {
     if (!table.canNextPage) {
-      return
+      return;
     }
 
-    paginate(1)
-    table.nextPage()
-  }
+    paginate(1);
+    table.nextPage();
+  };
 
   const handlePrev = () => {
     if (!table.canPreviousPage) {
-      return
+      return;
     }
 
-    paginate(-1)
-    table.previousPage()
-  }
+    paginate(-1);
+    table.previousPage();
+  };
 
   const handleSearch = (text: string) => {
-    setQuery(text)
+    setQuery(text);
 
     if (text) {
-      table.gotoPage(0)
+      table.gotoPage(0);
     }
-  }
+  };
 
   return (
     <>
@@ -195,14 +195,14 @@ function CustomersListTable(props: CustomersListTableProps) {
 
         <Table.Body {...table.getTableBodyProps()}>
           {table.rows.map((row) => {
-            table.prepareRow(row)
+            table.prepareRow(row);
             return (
               <CustomersListTableRow
                 row={row}
                 key={row.id}
                 removeCustomers={removeCustomers}
               />
-            )
+            );
           })}
         </Table.Body>
       </Table>
@@ -221,7 +221,7 @@ function CustomersListTable(props: CustomersListTableProps) {
         hasPrev={table.canPreviousPage}
       />
     </>
-  )
+  );
 }
 
-export default CustomersListTable
+export default CustomersListTable;

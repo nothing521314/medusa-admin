@@ -1,13 +1,13 @@
-import React from "react"
-import { Controller } from "react-hook-form"
-import Switch from "../../../../components/atoms/switch"
-import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
-import InputField from "../../../../components/molecules/input"
-import Accordion from "../../../../components/organisms/accordion"
-import { usePriceListForm } from "../form/pricing-form-context"
+import React from "react";
+import { Controller } from "react-hook-form";
+import Switch from "../../../../components/atoms/switch";
+import FeatureToggle from "../../../../components/fundamentals/feature-toggle";
+import InputField from "../../../../components/molecules/input";
+import Accordion from "../../../../components/organisms/accordion";
+import { usePriceListForm } from "../form/pricing-form-context";
 
 const General = () => {
-  const { control, register } = usePriceListForm()
+  const { control, register } = usePriceListForm();
 
   return (
     <Accordion.Item
@@ -38,7 +38,9 @@ const General = () => {
                 control={control}
                 name="includes_tax"
                 render={({ field: { value, onChange } }) => {
-                  return <Switch checked={!!value} onCheckedChange={onChange} />
+                  return (
+                    <Switch checked={!!value} onCheckedChange={onChange} />
+                  );
                 }}
               />
             </div>
@@ -49,7 +51,7 @@ const General = () => {
         </FeatureToggle>
       </div>
     </Accordion.Item>
-  )
-}
+  );
+};
 
-export default General
+export default General;

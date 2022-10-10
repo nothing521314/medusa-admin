@@ -1,16 +1,16 @@
-import clsx from "clsx"
-import React from "react"
-import Actionables, { ActionType } from "../../molecules/actionables"
+import clsx from "clsx";
+import React from "react";
+import Actionables, { ActionType } from "../../molecules/actionables";
 
 type SectionProps = {
-  children?: React.ReactNode
-  title?: string
-  actions?: ActionType[]
-  customActions?: React.ReactNode
-  forceDropdown?: boolean
-  status?: React.ReactNode
-  className?: string
-}
+  children?: React.ReactNode;
+  title?: string;
+  actions?: ActionType[];
+  customActions?: React.ReactNode;
+  forceDropdown?: boolean;
+  status?: React.ReactNode;
+  className?: string;
+};
 
 const Section = ({
   title,
@@ -21,7 +21,7 @@ const Section = ({
   children,
   className,
 }: SectionProps) => {
-  const hasHeader = title || actions || customActions || status
+  const hasHeader = title || actions || customActions || status;
 
   return (
     <div
@@ -46,7 +46,7 @@ const Section = ({
       )}
       <div>{children}</div>
     </div>
-  )
-}
+  );
+};
 
-export default Section
+export default Section;

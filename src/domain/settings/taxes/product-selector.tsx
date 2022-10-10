@@ -1,34 +1,34 @@
-import { useAdminProducts } from "../../../../medusa-react"
-import React, { useMemo, useState } from "react"
-import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
-import { useDebounce } from "../../../hooks/use-debounce"
-import { SelectableTable } from "./selectable-table"
+import { useAdminProducts } from "../../../../medusa-react";
+import React, { useMemo, useState } from "react";
+import ImagePlaceholder from "../../../components/fundamentals/image-placeholder";
+import { useDebounce } from "../../../hooks/use-debounce";
+import { SelectableTable } from "./selectable-table";
 
 export const ProductSelector = ({ items, onChange }) => {
-  const PAGE_SIZE = 12
+  const PAGE_SIZE = 12;
 
   const [pagination, setPagination] = useState({
     limit: PAGE_SIZE,
     offset: 0,
-  })
-  const [query, setQuery] = useState("")
+  });
+  const [query, setQuery] = useState("");
 
-  const debouncedSearchTerm = useDebounce(query, 500)
+  const debouncedSearchTerm = useDebounce(query, 500);
 
   const { isLoading, count, products } = useAdminProducts({
     q: debouncedSearchTerm,
     ...pagination,
-  })
+  });
 
   const handleSearch = (q) => {
     setPagination((p) => {
       return {
         ...p,
         offset: 0,
-      }
-    })
-    setQuery(q)
-  }
+      };
+    });
+    setQuery(q);
+  };
 
   const columns = useMemo(() => {
     return [
@@ -52,11 +52,11 @@ export const ProductSelector = ({ items, onChange }) => {
                 <span>{original.title}</span>
               </div>
             </div>
-          )
+          );
         },
       },
-    ]
-  }, [])
+    ];
+  }, []);
 
   return (
     <SelectableTable
@@ -72,5 +72,5 @@ export const ProductSelector = ({ items, onChange }) => {
       onSearch={handleSearch}
       onChange={onChange}
     />
-  )
-}
+  );
+};

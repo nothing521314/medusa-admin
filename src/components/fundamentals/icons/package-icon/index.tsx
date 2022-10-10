@@ -1,5 +1,5 @@
-import React from "react"
-import IconProps from "../types/icon-type"
+import React from "react";
+import IconProps from "../types/icon-type";
 
 const PackageIcon: React.FC<IconProps> = ({
   size = "16",
@@ -44,7 +44,7 @@ const PackageIcon: React.FC<IconProps> = ({
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default PackageIcon
+export default PackageIcon;

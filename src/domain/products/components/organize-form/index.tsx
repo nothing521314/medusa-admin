@@ -1,40 +1,40 @@
-import React from "react"
-import { Controller } from "react-hook-form"
+import React from "react";
+import { Controller } from "react-hook-form";
 import {
   NextCreateableSelect,
   NextSelect,
-} from "../../../../components/molecules/select/next-select"
-import TagInput from "../../../../components/molecules/tag-input"
-import { Option } from "../../../../types/shared"
-import { NestedForm } from "../../../../utils/nested-form"
-import useOrganizeData from "./use-organize-data"
+} from "../../../../components/molecules/select/next-select";
+import TagInput from "../../../../components/molecules/tag-input";
+import { Option } from "../../../../types/shared";
+import { NestedForm } from "../../../../utils/nested-form";
+import useOrganizeData from "./use-organize-data";
 
 export type OrganizeFormType = {
-  type: Option | null
-  collection: Option | null
-  tags: string[] | null
-}
+  type: Option | null;
+  collection: Option | null;
+  tags: string[] | null;
+};
 
 type Props = {
-  form: NestedForm<OrganizeFormType>
-}
+  form: NestedForm<OrganizeFormType>;
+};
 
 const OrganizeForm = ({ form }: Props) => {
-  const { control, path, setValue } = form
-  const { productTypeOptions, collectionOptions } = useOrganizeData()
+  const { control, path, setValue } = form;
+  const { productTypeOptions, collectionOptions } = useOrganizeData();
 
-  const typeOptions = productTypeOptions
+  const typeOptions = productTypeOptions;
 
   const onCreateOption = (value: string) => {
-    typeOptions.push({ label: value, value })
+    typeOptions.push({ label: value, value });
     setValue(
       path("type"),
       { label: value, value },
       {
         shouldDirty: true,
       }
-    )
-  }
+    );
+  };
 
   return (
     <div>
@@ -53,7 +53,7 @@ const OrganizeForm = ({ form }: Props) => {
                 onCreateOption={onCreateOption}
                 isClearable
               />
-            )
+            );
           }}
         />
         <Controller
@@ -69,7 +69,7 @@ const OrganizeForm = ({ form }: Props) => {
                 placeholder="Choose a collection"
                 isClearable
               />
-            )
+            );
           }}
         />
       </div>
@@ -77,11 +77,11 @@ const OrganizeForm = ({ form }: Props) => {
         control={control}
         name={path("tags")}
         render={({ field: { value, onChange } }) => {
-          return <TagInput onChange={onChange} values={value || []} />
+          return <TagInput onChange={onChange} values={value || []} />;
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default OrganizeForm
+export default OrganizeForm;

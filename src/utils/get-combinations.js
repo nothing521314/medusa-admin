@@ -1,26 +1,26 @@
 export const getCombinations = (options) => {
   if (options.length === 0) {
-    return []
+    return [];
   }
 
   if (options.length === 1) {
-    const values = options.shift().values
+    const values = options.shift().values;
     if (values.length > 0) {
-      return values.map((v) => [v])
+      return values.map((v) => [v]);
     }
 
-    return [""]
+    return [""];
   }
 
-  const combinations = []
-  const theseValues = options.shift().values
+  const combinations = [];
+  const theseValues = options.shift().values;
 
-  const lowerCombinations = getCombinations(options)
+  const lowerCombinations = getCombinations(options);
   for (const v of theseValues) {
     for (const second of lowerCombinations) {
-      combinations.push([v, second].flat())
+      combinations.push([v, second].flat());
     }
   }
 
-  return combinations
-}
+  return combinations;
+};

@@ -1,6 +1,6 @@
-import { AdminPostProductsProductReq, Product } from "@medusajs/medusa"
-import { prepareImages } from "../../../../utils/images"
-import { ManageGiftCardFormData } from "../utils/types"
+import { AdminPostProductsProductReq, Product } from "@medusajs/medusa";
+import { prepareImages } from "../../../../utils/images";
+import { ManageGiftCardFormData } from "../utils/types";
 
 export const formValuesToUpdateGiftCardMapper = async (
   values: ManageGiftCardFormData
@@ -8,17 +8,17 @@ export const formValuesToUpdateGiftCardMapper = async (
   const imagePayload = {} as Pick<
     AdminPostProductsProductReq,
     "images" | "thumbnail"
-  >
+  >;
 
   if (values.images?.length) {
-    const images = await prepareImages(values.images)
-    imagePayload.images = images.map((img) => img.url)
+    const images = await prepareImages(values.images);
+    imagePayload.images = images.map((img) => img.url);
   }
 
   if (values.thumbnail) {
     imagePayload.thumbnail = imagePayload.images?.length
       ? imagePayload.images[values.thumbnail]
-      : undefined
+      : undefined;
   }
 
   return {
@@ -33,16 +33,16 @@ export const formValuesToUpdateGiftCardMapper = async (
     // @ts-ignore
     sales_channels: undefined,
     ...imagePayload,
-  }
-}
+  };
+};
 
 export const giftCardToFormValuesMapper = (
   giftCard: Product
 ): ManageGiftCardFormData => {
   let thumbnail = giftCard.images?.length
     ? giftCard.images.findIndex((img) => img.url === giftCard.thumbnail)
-    : 0
-  thumbnail = thumbnail === -1 ? 0 : thumbnail
+    : 0;
+  thumbnail = thumbnail === -1 ? 0 : thumbnail;
 
   return {
     title: giftCard.title,
@@ -55,5 +55,5 @@ export const giftCardToFormValuesMapper = (
     tags: giftCard.tags.map((t) => t.value),
     images: giftCard.images.map((img) => ({ url: img.url })),
     thumbnail,
-  }
-}
+  };
+};

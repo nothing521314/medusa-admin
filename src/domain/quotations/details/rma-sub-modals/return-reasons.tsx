@@ -1,23 +1,23 @@
-import { useAdminReturnReasons } from "../../../../../medusa-react"
-import React, { useContext, useState } from "react"
-import FileUploadField from "../../../../components/atoms/file-upload-field"
-import Button from "../../../../components/fundamentals/button"
-import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
-import InputField from "../../../../components/molecules/input"
-import Modal from "../../../../components/molecules/modal"
-import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal"
-import Select from "../../../../components/molecules/select"
-import Medusa from "../../../../services/api"
+import { useAdminReturnReasons } from "../../../../../medusa-react";
+import React, { useContext, useState } from "react";
+import FileUploadField from "../../../../components/atoms/file-upload-field";
+import Button from "../../../../components/fundamentals/button";
+import TrashIcon from "../../../../components/fundamentals/icons/trash-icon";
+import InputField from "../../../../components/molecules/input";
+import Modal from "../../../../components/molecules/modal";
+import { LayeredModalContext } from "../../../../components/molecules/modal/layered-modal";
+import Select from "../../../../components/molecules/select";
+import Medusa from "../../../../services/api";
 
 type RMAReturnReasonSubModalProps = {
-  onSubmit: (reason, note, images) => void
-  reason?: any
-  existingNote?: string
-  customReturnOptions?: any[]
-  addImage?: boolean
-  images: string[]
-  isLargeModal?: boolean
-}
+  onSubmit: (reason, note, images) => void;
+  reason?: any;
+  existingNote?: string;
+  customReturnOptions?: any[];
+  addImage?: boolean;
+  images: string[];
+  isLargeModal?: boolean;
+};
 
 const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
   onSubmit,
@@ -28,31 +28,31 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
   images,
   isLargeModal = true,
 }) => {
-  const { pop } = useContext(LayeredModalContext)
-  const { return_reasons } = useAdminReturnReasons()
-  const [note, setNote] = useState(existingNote || "")
-  const [files, setFiles] = useState<any[]>([])
+  const { pop } = useContext(LayeredModalContext);
+  const { return_reasons } = useAdminReturnReasons();
+  const [note, setNote] = useState(existingNote || "");
+  const [files, setFiles] = useState<any[]>([]);
   const [selectedReason, setSelectedReason] = useState(
     reason ? { value: reason, label: reason.label } : null
-  )
+  );
 
   const onFileChosen = (file) => {
-    setFiles((files) => [...files, ...file])
-  }
+    setFiles((files) => [...files, ...file]);
+  };
 
   const removeFileFromList = (file) => {
-    const newFiles = [...files]
-    newFiles.splice(newFiles.indexOf(file), 1)
-    setFiles(newFiles)
-  }
+    const newFiles = [...files];
+    newFiles.splice(newFiles.indexOf(file), 1);
+    setFiles(newFiles);
+  };
 
   const handleImageDelete = (url) => {
-    Medusa.uploads.delete(url)
-  }
+    Medusa.uploads.delete(url);
+  };
 
   const onChange = (value) => {
-    setNote(value.target.value)
-  }
+    setNote(value.target.value);
+  };
 
   return (
     <>
@@ -144,8 +144,8 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
             size="small"
             disabled={typeof selectedReason === "undefined"}
             onClick={() => {
-              onSubmit(selectedReason, note, files)
-              pop()
+              onSubmit(selectedReason, note, files);
+              pop();
             }}
           >
             Add
@@ -153,8 +153,8 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
         </div>
       </Modal.Footer>
     </>
-  )
-}
+  );
+};
 
 const ImageRow = ({ url, onDelete, name, size }) => (
   <div className="flex items-center w-full justify-between my-8">
@@ -176,5 +176,5 @@ const ImageRow = ({ url, onDelete, name, size }) => (
       <TrashIcon size={20} />
     </Button>
   </div>
-)
-export default RMAReturnReasonSubModal
+);
+export default RMAReturnReasonSubModal;

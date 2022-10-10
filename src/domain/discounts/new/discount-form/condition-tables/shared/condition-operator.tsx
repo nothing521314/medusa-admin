@@ -1,11 +1,11 @@
-import React from "react"
-import RadioGroup from "../../../../../../components/organisms/radio-group"
-import { DiscountConditionOperator } from "../../../../types"
+import React from "react";
+import RadioGroup from "../../../../../../components/organisms/radio-group";
+import { DiscountConditionOperator } from "../../../../types";
 
 type ConditionOperatorProps = {
-  value: "in" | "not_in"
-  onChange: (value: DiscountConditionOperator) => void
-}
+  value: "in" | "not_in";
+  onChange: (value: DiscountConditionOperator) => void;
+};
 
 const ConditionOperator: React.FC<ConditionOperatorProps> = ({
   value,
@@ -30,7 +30,7 @@ const ConditionOperator: React.FC<ConditionOperatorProps> = ({
         description="Applies to all items except the selected items."
       />
     </RadioGroup.Root>
-  )
-}
+  );
+};
 
-export default ConditionOperator
+export default ConditionOperator;

@@ -5,13 +5,13 @@ import {
   AdminPostCustomerGroupsGroupCustomersBatchReq,
   AdminPostCustomerGroupsGroupReq,
   AdminPostCustomerGroupsReq,
-} from "@medusajs/medusa"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { Response } from "../../../../../medusa-js"
+} from "@medusajs/medusa";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { Response } from "../../../../../medusa-js";
 
-import { useMedusa } from "../../../contexts"
-import { buildOptions } from "../../utils/buildOptions"
-import { adminCustomerGroupKeys } from "./queries"
+import { useMedusa } from "../../../contexts";
+import { buildOptions } from "../../utils/buildOptions";
+import { adminCustomerGroupKeys } from "./queries";
 
 /**
  * Hook returns functions for creating customer groups.
@@ -25,15 +25,15 @@ export const useAdminCreateCustomerGroup = (
     AdminPostCustomerGroupsReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostCustomerGroupsReq) =>
       client.admin.customerGroups.create(payload),
     buildOptions(queryClient, adminCustomerGroupKeys.lists(), options)
-  )
-}
+  );
+};
 
 /**
  * Hook return functions for updating a customer group.
@@ -49,8 +49,8 @@ export const useAdminUpdateCustomerGroup = (
     AdminPostCustomerGroupsGroupReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostCustomerGroupsGroupReq) =>
@@ -60,8 +60,8 @@ export const useAdminUpdateCustomerGroup = (
       [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 /**
  * Hook return functions for deleting a customer group.
@@ -77,8 +77,8 @@ export const useAdminDeleteCustomerGroup = (
     void
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.customerGroups.delete(id),
@@ -87,8 +87,8 @@ export const useAdminDeleteCustomerGroup = (
       [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
       options
     )
-  )
-}
+  );
+};
 
 /**
  * Hook returns functions for addition of multiple customers to a customer group.
@@ -104,8 +104,8 @@ export const useAdminAddCustomersToCustomerGroup = (
     AdminPostCustomerGroupsGroupCustomersBatchReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostCustomerGroupsGroupCustomersBatchReq) =>
@@ -118,8 +118,8 @@ export const useAdminAddCustomersToCustomerGroup = (
       ],
       options
     )
-  )
-}
+  );
+};
 
 /**
  * Hook returns function for removal of multiple customers from a customer group.
@@ -135,8 +135,8 @@ export const useAdminRemoveCustomersFromCustomerGroup = (
     AdminDeleteCustomerGroupsGroupCustomerBatchReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminDeleteCustomerGroupsGroupCustomerBatchReq) =>
@@ -149,5 +149,5 @@ export const useAdminRemoveCustomersFromCustomerGroup = (
       ],
       options
     )
-  )
-}
+  );
+};

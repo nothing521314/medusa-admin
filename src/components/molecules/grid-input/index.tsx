@@ -1,6 +1,6 @@
-import React from "react"
+import React from "react";
 
-type GridInputProps = React.InputHTMLAttributes<HTMLInputElement>
+type GridInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 const GridInput: React.FC<GridInputProps> = ({ value, ...props }) => {
   return (
@@ -9,7 +9,7 @@ const GridInput: React.FC<GridInputProps> = ({ value, ...props }) => {
       value={value}
       {...props}
     />
-  )
-}
+  );
+};
 
-export default GridInput
+export default GridInput;

@@ -1,18 +1,18 @@
-import { Discount } from "@medusajs/medusa"
-import React, { useState } from "react"
-import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
-import NumberedItem from "../../../../components/molecules/numbered-item"
-import BodyCard from "../../../../components/organisms/body-card"
-import EditConfigurations from "./edit-configurations"
-import useDiscountConfigurations from "./use-discount-configurations"
+import { Discount } from "@medusajs/medusa";
+import React, { useState } from "react";
+import EditIcon from "../../../../components/fundamentals/icons/edit-icon";
+import NumberedItem from "../../../../components/molecules/numbered-item";
+import BodyCard from "../../../../components/organisms/body-card";
+import EditConfigurations from "./edit-configurations";
+import useDiscountConfigurations from "./use-discount-configurations";
 
 type ConfigurationsProps = {
-  discount: Discount
-}
+  discount: Discount;
+};
 
 const Configurations: React.FC<ConfigurationsProps> = ({ discount }) => {
-  const configurations = useDiscountConfigurations(discount)
-  const [showModal, setShowModal] = useState(false)
+  const configurations = useDiscountConfigurations(discount);
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <>
@@ -54,7 +54,7 @@ const Configurations: React.FC<ConfigurationsProps> = ({ discount }) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default Configurations
+export default Configurations;

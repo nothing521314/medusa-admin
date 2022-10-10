@@ -15,10 +15,10 @@ import {
   AdminPostTaxRatesTaxRateProductsReq,
   AdminPostTaxRatesTaxRateProductTypesReq,
   AdminPostTaxRatesTaxRateShippingOptionsReq,
-} from "@medusajs/medusa"
-import qs from "qs"
-import { ResponsePromise } from "../../typings"
-import BaseResource from "../base"
+} from "@medusajs/medusa";
+import qs from "qs";
+import { ResponsePromise } from "../../typings";
+import BaseResource from "../base";
 
 class AdminTaxRatesResource extends BaseResource {
   retrieve(
@@ -26,28 +26,28 @@ class AdminTaxRatesResource extends BaseResource {
     query?: AdminGetTaxRatesTaxRateParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
-    let path = `/admin/tax-rates/${id}`
+    let path = `/admin/tax-rates/${id}`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/tax-rates/${id}?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/tax-rates/${id}?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   list(
     query?: AdminGetTaxRatesParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesListRes> {
-    let path = `/admin/tax-rates`
+    let path = `/admin/tax-rates`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/tax-rates?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/tax-rates?${queryString}`;
     }
 
-    return this.client.request("GET", path, undefined, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
   create(
@@ -55,14 +55,14 @@ class AdminTaxRatesResource extends BaseResource {
     query?: AdminGetTaxRatesTaxRateParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
-    let path = `/admin/tax-rates`
+    let path = `/admin/tax-rates`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/tax-rates?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/tax-rates?${queryString}`;
     }
 
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   update(
@@ -71,14 +71,14 @@ class AdminTaxRatesResource extends BaseResource {
     query?: AdminGetTaxRatesTaxRateParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
-    let path = `/admin/tax-rates/${id}`
+    let path = `/admin/tax-rates/${id}`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/tax-rates/${id}?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/tax-rates/${id}?${queryString}`;
     }
 
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   addProducts(
@@ -87,14 +87,14 @@ class AdminTaxRatesResource extends BaseResource {
     query?: AdminGetTaxRatesTaxRateParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
-    let path = `/admin/tax-rates/${id}/products/batch`
+    let path = `/admin/tax-rates/${id}/products/batch`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/tax-rates/${id}/products/batch?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/tax-rates/${id}/products/batch?${queryString}`;
     }
 
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   addProductTypes(
@@ -103,14 +103,14 @@ class AdminTaxRatesResource extends BaseResource {
     query?: AdminGetTaxRatesTaxRateParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
-    let path = `/admin/tax-rates/${id}/product-types/batch`
+    let path = `/admin/tax-rates/${id}/product-types/batch`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/tax-rates/${id}/product-types/batch?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/tax-rates/${id}/product-types/batch?${queryString}`;
     }
 
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   addShippingOptions(
@@ -119,14 +119,14 @@ class AdminTaxRatesResource extends BaseResource {
     query?: AdminGetTaxRatesTaxRateParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
-    let path = `/admin/tax-rates/${id}/shipping-options/batch`
+    let path = `/admin/tax-rates/${id}/shipping-options/batch`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/tax-rates/${id}/shipping-options/batch?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/tax-rates/${id}/shipping-options/batch?${queryString}`;
     }
 
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
   removeProducts(
@@ -135,14 +135,14 @@ class AdminTaxRatesResource extends BaseResource {
     query?: AdminDeleteTaxRatesTaxRateProductsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
-    let path = `/admin/tax-rates/${id}/products/batch`
+    let path = `/admin/tax-rates/${id}/products/batch`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/tax-rates/${id}/products/batch?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/tax-rates/${id}/products/batch?${queryString}`;
     }
 
-    return this.client.request("DELETE", path, payload, {}, customHeaders)
+    return this.client.request("DELETE", path, payload, {}, customHeaders);
   }
 
   removeProductTypes(
@@ -151,14 +151,14 @@ class AdminTaxRatesResource extends BaseResource {
     query?: AdminDeleteTaxRatesTaxRateProductTypesParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
-    let path = `/admin/tax-rates/${id}/product-types/batch`
+    let path = `/admin/tax-rates/${id}/product-types/batch`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/tax-rates/${id}/product-types/batch?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/tax-rates/${id}/product-types/batch?${queryString}`;
     }
 
-    return this.client.request("DELETE", path, payload, {}, customHeaders)
+    return this.client.request("DELETE", path, payload, {}, customHeaders);
   }
 
   removeShippingOptions(
@@ -167,23 +167,23 @@ class AdminTaxRatesResource extends BaseResource {
     query?: AdminDeleteTaxRatesTaxRateShippingOptionsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
-    let path = `/admin/tax-rates/${id}/shipping-options/batch`
+    let path = `/admin/tax-rates/${id}/shipping-options/batch`;
 
     if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/tax-rates/${id}/shipping-options/batch?${queryString}`
+      const queryString = qs.stringify(query);
+      path = `/admin/tax-rates/${id}/shipping-options/batch?${queryString}`;
     }
 
-    return this.client.request("DELETE", path, payload, {}, customHeaders)
+    return this.client.request("DELETE", path, payload, {}, customHeaders);
   }
 
   delete(
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesDeleteRes> {
-    const path = `/admin/tax-rates/${id}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
+    const path = `/admin/tax-rates/${id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 }
 
-export default AdminTaxRatesResource
+export default AdminTaxRatesResource;

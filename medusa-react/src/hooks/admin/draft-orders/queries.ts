@@ -2,20 +2,20 @@ import {
   AdminDraftOrdersListRes,
   AdminDraftOrdersRes,
   AdminGetDraftOrdersParams,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useQuery } from "react-query";
+import { useMedusa } from "../../../contexts";
+import { UseQueryOptionsWrapper } from "../../../types";
+import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_DRAFT_ORDERS_QUERY_KEY = `admin_draft_orders` as const
+const ADMIN_DRAFT_ORDERS_QUERY_KEY = `admin_draft_orders` as const;
 
 export const adminDraftOrderKeys = queryKeysFactory(
   ADMIN_DRAFT_ORDERS_QUERY_KEY
-)
+);
 
-type DraftOrderQueryKeys = typeof adminDraftOrderKeys
+type DraftOrderQueryKeys = typeof adminDraftOrderKeys;
 
 export const useAdminDraftOrders = (
   query?: AdminGetDraftOrdersParams,
@@ -25,14 +25,14 @@ export const useAdminDraftOrders = (
     ReturnType<DraftOrderQueryKeys["list"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminDraftOrderKeys.list(query),
     () => client.admin.draftOrders.list(query),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};
 
 export const useAdminDraftOrder = (
   id: string,
@@ -42,11 +42,11 @@ export const useAdminDraftOrder = (
     ReturnType<DraftOrderQueryKeys["detail"]>
   >
 ) => {
-  const { client } = useMedusa()
+  const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     adminDraftOrderKeys.detail(id),
     () => client.admin.draftOrders.retrieve(id),
     options
-  )
-  return { ...data, ...rest } as const
-}
+  );
+  return { ...data, ...rest } as const;
+};

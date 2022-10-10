@@ -3,12 +3,12 @@ import {
   AdminNotesRes,
   AdminPostNotesNoteReq,
   AdminPostNotesReq,
-} from "@medusajs/medusa"
-import { Response } from "../../../../../medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { adminNoteKeys } from "."
-import { useMedusa } from "../../../contexts/medusa"
-import { buildOptions } from "../../utils/buildOptions"
+} from "@medusajs/medusa";
+import { Response } from "../../../../../medusa-js";
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
+import { adminNoteKeys } from ".";
+import { useMedusa } from "../../../contexts/medusa";
+import { buildOptions } from "../../utils/buildOptions";
 
 export const useAdminCreateNote = (
   options?: UseMutationOptions<
@@ -17,13 +17,13 @@ export const useAdminCreateNote = (
     AdminPostNotesReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
   return useMutation(
     (payload: AdminPostNotesReq) => client.admin.notes.create(payload),
     buildOptions(queryClient, adminNoteKeys.lists(), options)
-  )
-}
+  );
+};
 
 export const useAdminUpdateNote = (
   id: string,
@@ -33,8 +33,8 @@ export const useAdminUpdateNote = (
     AdminPostNotesNoteReq
   >
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     (payload: AdminPostNotesNoteReq) => client.admin.notes.update(id, payload),
@@ -43,15 +43,15 @@ export const useAdminUpdateNote = (
       [adminNoteKeys.detail(id), adminNoteKeys.lists()],
       options
     )
-  )
-}
+  );
+};
 
 export const useAdminDeleteNote = (
   id: string,
   options?: UseMutationOptions<Response<AdminNotesDeleteRes>, Error, void>
 ) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
 
   return useMutation(
     () => client.admin.notes.delete(id),
@@ -60,5 +60,5 @@ export const useAdminDeleteNote = (
       [adminNoteKeys.detail(id), adminNoteKeys.lists()],
       options
     )
-  )
-}
+  );
+};

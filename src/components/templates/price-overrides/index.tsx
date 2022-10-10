@@ -1,30 +1,30 @@
-import { MoneyAmount, ProductVariant } from "@medusajs/medusa"
-import React from "react"
-import { Control, Controller, useForm, useWatch } from "react-hook-form"
-import Checkbox, { CheckboxProps } from "../../atoms/checkbox"
-import Button from "../../fundamentals/button"
-import Modal from "../../molecules/modal"
-import RadioGroup from "../../organisms/radio-group"
-import PriceAmount from "./price-amount"
+import { MoneyAmount, ProductVariant } from "@medusajs/medusa";
+import React from "react";
+import { Control, Controller, useForm, useWatch } from "react-hook-form";
+import Checkbox, { CheckboxProps } from "../../atoms/checkbox";
+import Button from "../../fundamentals/button";
+import Modal from "../../molecules/modal";
+import RadioGroup from "../../organisms/radio-group";
+import PriceAmount from "./price-amount";
 
 const MODES = {
   APPLY_ALL: "all",
   SELECTED_ONLY: "selected",
-}
+};
 
 export type PriceOverridesFormValues = {
-  variants: string[]
-  prices: MoneyAmount[]
-}
+  variants: string[];
+  prices: MoneyAmount[];
+};
 
 type PriceOverridesType = {
-  onClose: () => void
-  prices: MoneyAmount[]
-  variants: ProductVariant[]
-  onSubmit: (values: PriceOverridesFormValues) => void
-  defaultVariant?: ProductVariant
-  isEdit?: boolean
-}
+  onClose: () => void;
+  prices: MoneyAmount[];
+  variants: ProductVariant[];
+  onSubmit: (values: PriceOverridesFormValues) => void;
+  defaultVariant?: ProductVariant;
+  isEdit?: boolean;
+};
 
 // TODO: Clean up this components typing to avoid circular dependencies
 const PriceOverrides = ({
@@ -35,46 +35,46 @@ const PriceOverrides = ({
   defaultVariant,
   isEdit = false,
 }: PriceOverridesType) => {
-  const [mode, setMode] = React.useState(MODES.SELECTED_ONLY)
+  const [mode, setMode] = React.useState(MODES.SELECTED_ONLY);
   const { handleSubmit, control, reset } = useForm<PriceOverridesFormValues>({
     defaultValues: {
       variants: [],
       prices: prices,
     },
-  })
+  });
 
   const onClick = handleSubmit((values) => {
     if (mode === MODES.APPLY_ALL) {
       onSubmit({
         ...values,
         variants: variants?.map((variant) => variant.id),
-      })
+      });
     } else {
       onSubmit({
         ...values,
         // remove null or undefined
         variants: values.variants?.filter(Boolean),
-      })
+      });
     }
-  })
+  });
 
   // set default variant
   React.useEffect(() => {
     if (prices.length > 0 && variants?.length > 0) {
       const selectedVariantId = defaultVariant
         ? defaultVariant.id
-        : prices[0]?.variant_id
+        : prices[0]?.variant_id;
       const selectedIndex = variants.findIndex(
         (variant) => variant.id === selectedVariantId
-      )
-      const variantOptions = Array(variants.length).fill(null)
-      variantOptions[selectedIndex] = selectedVariantId
+      );
+      const variantOptions = Array(variants.length).fill(null);
+      variantOptions[selectedIndex] = selectedVariantId;
       reset({
         prices,
         variants: variantOptions,
-      })
+      });
     }
-  }, [variants, prices, defaultVariant])
+  }, [variants, prices, defaultVariant]);
 
   return (
     <>
@@ -131,10 +131,10 @@ const PriceOverrides = ({
                         field.onChange({
                           ...field.value,
                           amount,
-                        })
+                        });
                       }}
                     />
-                  )
+                  );
                 }}
               />
             ))}
@@ -162,15 +162,15 @@ const PriceOverrides = ({
         </div>
       </Modal.Footer>
     </>
-  )
-}
+  );
+};
 
 type ControlledCheckboxProps = {
-  control: Control
-  name: string
-  id: string
-  index: number
-} & CheckboxProps
+  control: Control;
+  name: string;
+  id: string;
+  index: number;
+} & CheckboxProps;
 
 const ControlledCheckbox = ({
   control,
@@ -183,7 +183,7 @@ const ControlledCheckbox = ({
   const variants = useWatch({
     control,
     name,
-  })
+  });
 
   return (
     <Controller
@@ -198,19 +198,19 @@ const ControlledCheckbox = ({
             checked={variants?.some((variant) => variant === value)}
             onChange={(e) => {
               // copy field value
-              const valueCopy = [...(variants || [])] as any[]
+              const valueCopy = [...(variants || [])] as any[];
 
               // update checkbox value
-              valueCopy[index] = e.target.checked ? id : null
+              valueCopy[index] = e.target.checked ? id : null;
 
               // update field value
-              field.onChange(valueCopy)
+              field.onChange(valueCopy);
             }}
           />
-        )
+        );
       }}
     />
-  )
-}
+  );
+};
 
-export default PriceOverrides
+export default PriceOverrides;

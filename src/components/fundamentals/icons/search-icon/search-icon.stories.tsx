@@ -1,6 +1,6 @@
-import { ComponentMeta } from "@storybook/react"
-import React from "react"
-import SearchIcon from "."
+import { ComponentMeta } from "@storybook/react";
+import React from "react";
+import SearchIcon from ".";
 
 export default {
   title: "Fundamentals/Icons/SearchIcon",
@@ -13,12 +13,12 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof SearchIcon>
+} as ComponentMeta<typeof SearchIcon>;
 
-const Template = args => <SearchIcon {...args} />
+const Template = (args) => <SearchIcon {...args} />;
 
-export const Icon = Template.bind({})
+export const Icon = Template.bind({});
 Icon.args = {
   size: "24",
   color: "currentColor",
-}
+};
