@@ -1,35 +1,26 @@
-import moment from "moment"
-import React, { useMemo } from "react"
-import ReactCountryFlag from "react-country-flag"
-import { getColor } from "../../../utils/color"
-import { isoAlpha2Countries } from "../../../utils/countries"
-import { formatAmountWithSymbol } from "../../../utils/prices"
-import Tooltip from "../../atoms/tooltip"
-import StatusDot from "../../fundamentals/status-indicator"
-import CustomerAvatarItem from "../../molecules/customer-avatar-item"
-import Table from "../../molecules/table"
+import { Order } from "@medusajs/medusa";
+import moment from "moment";
+import React, { useMemo } from "react";
+import ReactCountryFlag from "react-country-flag";
+import { Column } from "react-table";
+import { getColor } from "../../../utils/color";
+import { isoAlpha2Countries } from "../../../utils/countries";
+import { formatAmountWithSymbol } from "../../../utils/prices";
+import Tooltip from "../../atoms/tooltip";
+import CustomerAvatarItem from "../../molecules/customer-avatar-item";
+import Table from "../../molecules/table";
 
-const useOrderTableColums = () => {
-  const decideStatus = (status) => {
-    switch (status) {
-      case "captured":
-        return <StatusDot variant="success" title={"Paid"} />
-      case "awaiting":
-        return <StatusDot variant="default" title={"Awaiting"} />
-      case "requires_action":
-        return <StatusDot variant="danger" title={"Requires action"} />
-      case "canceled":
-        return <StatusDot variant="warning" title={"Canceled"} />
-      default:
-        return <StatusDot variant="primary" title={"N/A"} />
-    }
-  }
-
-  const columns = useMemo(
+const useOrderTableColumns = (): Column<Order>[] => {
+  return useMemo(
     () => [
       {
-        Header: <Table.HeadCell className="pl-2">Order</Table.HeadCell>,
+        Header: (
+          <Table.HeadCell className="pl-2 flex items-center">
+            No #
+          </Table.HeadCell>
+        ),
         accessor: "display_id",
+        disableSortBy: true,
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell
             key={index}
@@ -38,7 +29,18 @@ const useOrderTableColums = () => {
         ),
       },
       {
-        Header: "Date added",
+        Header: "Quotation code",
+        accessor: "cart_id",
+        disableSortBy: true,
+        Cell: ({ cell: { value }, index }) => (
+          <Table.Cell
+            key={index}
+            className="text-grey-90 group-hover:text-violet-60 min-w-[100px]"
+          >{`#${value}`}</Table.Cell>
+        ),
+      },
+      {
+        Header: "Date created",
         accessor: "created_at",
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell key={index}>
@@ -50,6 +52,7 @@ const useOrderTableColums = () => {
       },
       {
         Header: "Customer",
+        disableSortBy: true,
         accessor: "customer",
         Cell: ({ row, cell: { value }, index }) => (
           <Table.Cell key={index}>
@@ -57,54 +60,36 @@ const useOrderTableColums = () => {
               customer={{
                 first_name:
                   value?.first_name ||
-                  row.original.shipping_address?.first_name,
+                  row.original.shipping_address?.first_name ||
+                  "",
                 last_name:
-                  value?.last_name || row.original.shipping_address?.last_name,
+                  value?.last_name ||
+                  row.original.shipping_address?.last_name ||
+                  "",
                 email: row.original.email,
               }}
               color={getColor(row.index)}
+              className="!px-0"
             />
           </Table.Cell>
         ),
       },
       {
-        Header: "Fulfillment",
-        accessor: "fulfillment_status",
-        Cell: ({ cell: { value }, index }) => (
-          <Table.Cell key={index}>{value}</Table.Cell>
-        ),
-      },
-      {
-        Header: "Payment status",
-        accessor: "payment_status",
-        Cell: ({ cell: { value }, index }) => (
-          <Table.Cell key={index}>{decideStatus(value)}</Table.Cell>
-        ),
-      },
-      {
-        Header: "Sales Channel",
-        accessor: "sales_channel",
-        Cell: ({ cell: { value }, index }) => (
-          <Table.Cell key={index}>{value?.name ?? "N/A"}</Table.Cell>
-        ),
-      },
-      {
-        Header: () => <div className="text-right">Total</div>,
+        Header: "Total",
         accessor: "total",
         Cell: ({ row, cell: { value }, index }) => (
           <Table.Cell key={index}>
-            <div className="text-right">
-              {formatAmountWithSymbol({
-                amount: value,
-                currency: row.original.currency_code,
-                digits: 2,
-              })}
-            </div>
+            {formatAmountWithSymbol({
+              amount: value,
+              currency: row.original.currency_code,
+              digits: 2,
+            })}
           </Table.Cell>
         ),
       },
       {
         Header: "",
+        disableSortBy: true,
         accessor: "currency_code",
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell key={index} className="w-[5%]">
@@ -114,7 +99,8 @@ const useOrderTableColums = () => {
       },
       {
         Header: "",
-        accessor: "country_code",
+        disableSortBy: true,
+        accessor: "currency",
         Cell: ({ row, index }) => (
           <Table.Cell className="w-[5%] pr-2" key={index}>
             <div className="flex rounded-rounded w-full justify-end">
@@ -138,9 +124,7 @@ const useOrderTableColums = () => {
       },
     ],
     []
-  )
+  );
+};
 
-  return [columns]
-}
-
-export default useOrderTableColums
+export default useOrderTableColumns;

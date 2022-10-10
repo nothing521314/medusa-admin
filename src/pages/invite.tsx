@@ -1,42 +1,42 @@
-import ConfettiGenerator from "confetti-js"
-import { Link, navigate } from "gatsby"
-import { useAdminAcceptInvite } from "../../medusa-react"
-import qs from "qs"
-import React, { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import { decodeToken } from "react-jwt"
-import Button from "../components/fundamentals/button"
-import LongArrowRightIcon from "../components/fundamentals/icons/long-arrow-right-icon"
-import MedusaIcon from "../components/fundamentals/icons/medusa-icon"
-import MedusaVice from "../components/fundamentals/icons/medusa-vice"
-import SigninInput from "../components/molecules/input-signin"
-import SEO from "../components/seo"
-import LoginLayout from "../components/templates/login-layout"
-import useNotification from "../hooks/use-notification"
-import { getErrorMessage } from "../utils/error-messages"
+import ConfettiGenerator from "confetti-js";
+import { Link, navigate } from "gatsby";
+import { useAdminAcceptInvite } from "../../medusa-react";
+import qs from "qs";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { decodeToken } from "react-jwt";
+import Button from "../components/fundamentals/button";
+import LongArrowRightIcon from "../components/fundamentals/icons/long-arrow-right-icon";
+import MedusaIcon from "../components/fundamentals/icons/medusa-icon";
+import MedusaVice from "../components/fundamentals/icons/medusa-vice";
+import SigninInput from "../components/molecules/input-signin";
+import SEO from "../components/seo";
+import LoginLayout from "../components/templates/login-layout";
+import useNotification from "../hooks/use-notification";
+import { getErrorMessage } from "../utils/error-messages";
 
 type formValues = {
-  password: string
-  repeat_password: string
-  first_name: string
-  last_name: string
-}
+  password: string;
+  repeat_password: string;
+  first_name: string;
+  last_name: string;
+};
 
 const InvitePage = ({ location }) => {
-  const parsed = qs.parse(location.search.substring(1))
-  const [signUp, setSignUp] = useState(false)
+  const parsed = qs.parse(location.search.substring(1));
+  const [signUp, setSignUp] = useState(false);
 
-  let token: Object | null = null
+  let token: Object | null = null;
   if (parsed?.token) {
     try {
-      token = decodeToken(parsed.token as string)
+      token = decodeToken(parsed.token as string);
     } catch (e) {
-      token = null
+      token = null;
     }
   }
 
-  const [passwordMismatch, setPasswordMismatch] = useState(false)
-  const [ready, setReady] = useState(false)
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const confettiSettings = {
@@ -54,12 +54,12 @@ const InvitePage = ({ location }) => {
         [232, 121, 249],
       ],
       max: 26,
-    }
-    const confetti = new ConfettiGenerator(confettiSettings)
-    confetti.render()
+    };
+    const confetti = new ConfettiGenerator(confettiSettings);
+    confetti.render();
 
-    return () => confetti.clear()
-  }, [])
+    return () => confetti.clear();
+  }, []);
 
   const { register, handleSubmit, formState } = useForm<formValues>({
     defaultValues: {
@@ -68,17 +68,17 @@ const InvitePage = ({ location }) => {
       password: "",
       repeat_password: "",
     },
-  })
+  });
 
-  const accept = useAdminAcceptInvite()
-  const notification = useNotification()
+  const accept = useAdminAcceptInvite();
+  const notification = useNotification();
 
   const handleAcceptInvite = (data: formValues) => {
-    setPasswordMismatch(false)
+    setPasswordMismatch(false);
 
     if (data.password !== data.repeat_password) {
-      setPasswordMismatch(true)
-      return
+      setPasswordMismatch(true);
+      return;
     }
 
     accept.mutate(
@@ -92,14 +92,14 @@ const InvitePage = ({ location }) => {
       },
       {
         onSuccess: () => {
-          navigate("/login")
+          navigate("/login");
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification("Error", getErrorMessage(err), "error");
         },
       }
-    )
-  }
+    );
+  };
 
   useEffect(() => {
     if (
@@ -108,11 +108,11 @@ const InvitePage = ({ location }) => {
       formState.dirtyFields.first_name &&
       formState.dirtyFields.last_name
     ) {
-      setReady(true)
+      setReady(true);
     } else {
-      setReady(false)
+      setReady(false);
     }
-  }, [formState])
+  }, [formState]);
 
   return (
     <>
@@ -221,7 +221,7 @@ const InvitePage = ({ location }) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default InvitePage
+export default InvitePage;

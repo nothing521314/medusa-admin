@@ -1,81 +1,47 @@
-import { RouteComponentProps, Router } from "@reach/router"
-import { navigate } from "gatsby"
-import { useAdminCreateBatchJob } from "../../../medusa-react"
-import React, { useMemo } from "react"
-import Button from "../../components/fundamentals/button"
-import ExportIcon from "../../components/fundamentals/icons/export-icon"
-import BodyCard from "../../components/organisms/body-card"
-import TableViewHeader from "../../components/organisms/custom-table-header"
-import ExportModal from "../../components/organisms/export-modal"
-import OrderTable from "../../components/templates/order-table"
-import useNotification from "../../hooks/use-notification"
-import useToggleState from "../../hooks/use-toggle-state"
-import { getErrorMessage } from "../../utils/error-messages"
-import Details from "./details"
-
-const VIEWS = ["orders", "drafts"]
+import { RouteComponentProps, Router } from "@reach/router";
+import React from "react";
+import { useAdminCreateBatchJob } from "../../../medusa-react";
+import BodyCard from "../../components/organisms/body-card";
+import ExportModal from "../../components/organisms/export-modal";
+import OrderTable from "../../components/templates/order-table";
+import useNotification from "../../hooks/use-notification";
+import useToggleState from "../../hooks/use-toggle-state";
+import { getErrorMessage } from "../../utils/error-messages";
+import Details from "./details";
 
 const OrderIndex: React.FC<RouteComponentProps> = () => {
-  const view = "orders"
+  const createBatchJob = useAdminCreateBatchJob();
+  const notification = useNotification();
 
-  const createBatchJob = useAdminCreateBatchJob()
-  const notification = useNotification()
-
-  const {
-    open: openExportModal,
-    close: closeExportModal,
-    state: exportModalOpen,
-  } = useToggleState(false)
-
-  const actions = useMemo(() => {
-    return [
-      <Button
-        variant="secondary"
-        size="small"
-        onClick={() => openExportModal()}
-      >
-        <ExportIcon size={20} />
-        Export Orders
-      </Button>,
-    ]
-  }, [view])
+  const { close: closeExportModal, state: exportModalOpen } = useToggleState(
+    false
+  );
 
   const handleCreateExport = () => {
     const reqObj = {
       type: "order-export",
       context: {},
       dry_run: false,
-    }
+    };
 
     createBatchJob.mutate(reqObj, {
       onSuccess: () => {
-        notification("Success", "Successfully initiated export", "success")
+        notification("Success", "Successfully initiated export", "success");
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification("Error", getErrorMessage(err), "error");
       },
-    })
+    });
 
-    closeExportModal()
-  }
+    closeExportModal();
+  };
 
   return (
     <>
       <div className="flex flex-col grow h-full">
         <div className="w-full flex flex-col grow">
           <BodyCard
-            customHeader={
-              <TableViewHeader
-                views={VIEWS}
-                setActiveView={(v) => {
-                  if (v === "drafts") {
-                    navigate(`/a/draft-orders`)
-                  }
-                }}
-                activeView={view}
-              />
-            }
-            customActionable={actions}
+            customHeader={<div className="inter-large-semibold">Quotation</div>}
           >
             <OrderTable />
           </BodyCard>
@@ -90,8 +56,8 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
 const Orders = () => {
   return (
@@ -99,7 +65,7 @@ const Orders = () => {
       <OrderIndex path="/" />
       <Details path=":id" />
     </Router>
-  )
-}
+  );
+};
 
-export default Orders
+export default Orders;

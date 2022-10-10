@@ -105,6 +105,7 @@
     "eslint-plugin-react": "^7.31.8",
     "gatsby-plugin-alias-imports": "^1.0.5",
     "gatsby-plugin-postcss": "^5.4.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "gatsby-plugin-root-import": "^2.0.8",
     "postcss": "^8.4.5",
     "prettier": "2.0.5",
@@ -117,7 +118,7 @@
   },
   "scripts": {
     "build": "gatsby build",
-    "develop": "gatsby develop -p 7000",
+    "develop": "gatsby develop -p 9001",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",

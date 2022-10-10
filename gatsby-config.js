@@ -1,14 +1,14 @@
 module.exports = {
   siteMetadata: {
-    title: `Admin`,
-    description: `The best ecommerce software.`,
-    author: `@medusajs`,
+    title: "Admin",
+    description: "The best ecommerce software.",
+    author: "@medusajs",
   },
   plugins: [
-    `gatsby-plugin-react-helmet`,
+    "gatsby-plugin-react-helmet",
     "gatsby-plugin-root-import",
     {
-      resolve: `gatsby-plugin-alias-imports`,
+      resolve: "gatsby-plugin-alias-imports",
       options: {
         alias: {
           "@src": "src",
@@ -20,10 +20,10 @@ module.exports = {
       },
     },
     // {
-    //  resolve: `gatsby-source-filesystem`,
+    //  resolve: "gatsby-source-filesystem",
     //  options: {
-    //    name: `images`,
-    //    path: `${__dirname}/src/images`,
+    //    name: "images",
+    //    path: "${__dirname}/src/images",
     //  },
     // },
     {
@@ -33,21 +33,21 @@ module.exports = {
         svgo: true, // use svgo to optimize SVGs (default)
       },
     },
-    `gatsby-transformer-sharp`,
+    "gatsby-transformer-sharp",
     {
-      resolve: `gatsby-plugin-manifest`,
+      resolve: "gatsby-plugin-manifest",
       options: {
-        name: `medusa-admin`,
-        short_name: `medusa`,
-        icon: `src/images/logo.svg`,
+        name: "medusa-admin",
+        short_name: "medusa",
+        icon: "src/images/logo.svg",
       },
     },
-    `gatsby-plugin-sharp`,
+    "gatsby-plugin-sharp",
     {
-      resolve: `gatsby-plugin-create-client-paths`,
-      options: { prefixes: [`/a/*`] },
+      resolve: "gatsby-plugin-create-client-paths",
+      options: { prefixes: ["/a/*"] },
     },
     "gatsby-plugin-postcss",
     "gatsby-plugin-typescript",
   ],
-}
+};
