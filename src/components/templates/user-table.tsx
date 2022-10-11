@@ -1,7 +1,7 @@
 import { Invite, User } from "@medusajs/medusa";
 import copy from "copy-to-clipboard";
 import { useAdminStore } from "../../../medusa-react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useNotification from "../../hooks/use-notification";
 import Medusa from "../../services/api";
 import ClipboardCopyIcon from "../fundamentals/icons/clipboard-copy-icon";
@@ -17,7 +17,7 @@ import EditUser from "../organisms/edit-user-modal";
 type UserListElement = {
   entity: any;
   entityType: string;
-  tableElement: JSX.Element;
+  tableElement: React.ReactNode;
 };
 
 type UserTableProps = {
@@ -43,6 +43,75 @@ const UserTable: React.FC<UserTableProps> = ({
   const notification = useNotification();
   const { store, isLoading } = useAdminStore();
 
+  const getInviteTableRow = useCallback(
+    (invite: Invite, index: number) => {
+      return (
+        <Table.Row
+          key={`invite-${index}`}
+          actions={[
+            {
+              label: "Resend Invitation",
+              onClick: () => {
+                Medusa.invites
+                  .resend(invite.id)
+                  .then(() => {
+                    notification(
+                      "Success",
+                      "Invitiation link has been resent",
+                      "success"
+                    );
+                  })
+                  .then(() => triggerRefetch());
+              },
+              icon: <RefreshIcon size={20} />,
+            },
+            {
+              label: "Copy invite link",
+              disabled: isLoading,
+              onClick: () => {
+                const link_template =
+                  store?.invite_link_template ??
+                  `${window.location.origin}/invite?token={invite_token}`;
+
+                copy(link_template.replace("{invite_token}", invite.token));
+                notification(
+                  "Success",
+                  "Invite link copied to clipboard",
+                  "success"
+                );
+              },
+              icon: <ClipboardCopyIcon size={20} />,
+            },
+            {
+              label: "Remove Invitation",
+              variant: "danger",
+              onClick: () => {
+                setSelectedInvite(invite);
+              },
+              icon: <TrashIcon size={20} />,
+            },
+          ]}
+        >
+          <Table.Cell className="text-grey-40">
+            <SidebarTeamMember user={{ email: invite.user_email }} />
+          </Table.Cell>
+          <Table.Cell className="text-grey-40 w-80">
+            {invite.user_email}
+          </Table.Cell>
+          <Table.Cell></Table.Cell>
+          <Table.Cell>
+            {new Date(invite?.expires_at) < new Date() ? (
+              <StatusIndicator title={"Expired"} variant={"danger"} />
+            ) : (
+              <StatusIndicator title={"Pending"} variant={"success"} />
+            )}
+          </Table.Cell>
+        </Table.Row>
+      );
+    },
+    [isLoading, notification, store?.invite_link_template, triggerRefetch]
+  );
+
   useEffect(() => {
     setElements([
       ...users.map((user, i) => ({
@@ -56,7 +125,7 @@ const UserTable: React.FC<UserTableProps> = ({
         tableElement: getInviteTableRow(invite, i),
       })),
     ]);
-  }, [users, invites]);
+  }, [users, invites, getInviteTableRow]);
 
   useEffect(() => {
     setShownElements(elements);
@@ -99,72 +168,6 @@ const UserTable: React.FC<UserTableProps> = ({
           {user.role.slice(1)}
         </Table.Cell>
         <Table.Cell></Table.Cell>
-      </Table.Row>
-    );
-  };
-
-  const getInviteTableRow = (invite: Invite, index: number) => {
-    return (
-      <Table.Row
-        key={`invite-${index}`}
-        actions={[
-          {
-            label: "Resend Invitation",
-            onClick: () => {
-              Medusa.invites
-                .resend(invite.id)
-                .then(() => {
-                  notification(
-                    "Success",
-                    "Invitiation link has been resent",
-                    "success"
-                  );
-                })
-                .then(() => triggerRefetch());
-            },
-            icon: <RefreshIcon size={20} />,
-          },
-          {
-            label: "Copy invite link",
-            disabled: isLoading,
-            onClick: () => {
-              const link_template =
-                store?.invite_link_template ??
-                `${window.location.origin}/invite?token={invite_token}`;
-
-              copy(link_template.replace("{invite_token}", invite.token));
-              notification(
-                "Success",
-                "Invite link copied to clipboard",
-                "success"
-              );
-            },
-            icon: <ClipboardCopyIcon size={20} />,
-          },
-          {
-            label: "Remove Invitation",
-            variant: "danger",
-            onClick: () => {
-              setSelectedInvite(invite);
-            },
-            icon: <TrashIcon size={20} />,
-          },
-        ]}
-      >
-        <Table.Cell className="text-grey-40">
-          <SidebarTeamMember user={{ email: invite.user_email }} />
-        </Table.Cell>
-        <Table.Cell className="text-grey-40 w-80">
-          {invite.user_email}
-        </Table.Cell>
-        <Table.Cell></Table.Cell>
-        <Table.Cell>
-          {new Date(invite?.expires_at) < new Date() ? (
-            <StatusIndicator title={"Expired"} variant={"danger"} />
-          ) : (
-            <StatusIndicator title={"Pending"} variant={"success"} />
-          )}
-        </Table.Cell>
       </Table.Row>
     );
   };

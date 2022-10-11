@@ -11,7 +11,10 @@ import EditIcon from "src/components/fundamentals/icons/edit-icon";
 import MailIcon from "src/components/fundamentals/icons/mail-icon";
 import SortingIcon from "src/components/fundamentals/icons/sorting-icon";
 import TrashIcon from "src/components/fundamentals/icons/trash-icon";
+import { SUB_TAB } from "src/domain/quotations";
+import DeleteTheQuotationModal from "src/domain/quotations/modal/delete-the-quotation-modal";
 import { useDebounce } from "src/hooks/use-debounce";
+import useToggleState from "src/hooks/use-toggle-state";
 import Spinner from "../../atoms/spinner";
 import Table, { TablePagination } from "../../molecules/table";
 import {
@@ -19,12 +22,18 @@ import {
   removeEmptyProperties,
   TQuotationFilters,
 } from "./quotation-filters";
-import useOrderTableColumns from "./use-order-column";
+import useOrderTableColumns from "./use-quotations-column";
 
 const DEFAULT_PAGE_SIZE = 15;
 
-const OrderTable: React.FC<RouteComponentProps> = () => {
+const QuotationTable: React.FC<RouteComponentProps> = () => {
   const location = useLocation();
+
+  const {
+    open: handleOpenDeleteQuotationModal,
+    close: handleCloseDeleteQuotationModal,
+    state: isVisibleDeleteQuotationModal,
+  } = useToggleState(false);
 
   const defaultFilter = useMemo(() => {
     if (location.search && location.search[0] === "?") {
@@ -118,10 +127,6 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
     [toggleSortBy]
   );
 
-  const handleDelete = useCallback((id: number | string) => {
-    return id;
-  }, []);
-
   const handleSetQuery = useCallback(
     (value: string) => {
       setFilters((pre) => ({
@@ -151,6 +156,76 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
   useEffect(() => {
     refreshWithFilters();
   }, [refreshWithFilters]);
+
+  const renderTableBody = useCallback(() => {
+    if (isLoading || !orders) {
+      return (
+        <div className="flex w-full h-full absolute items-center justify-center mt-10">
+          <div className="">
+            <Spinner size={"large"} variant={"secondary"} />
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <Table.Body {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <Table.Row
+              color={"inherit"}
+              linkTo={`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`}
+              actions={[
+                {
+                  label: "Revise",
+                  onClick: () =>
+                    navigate(`${SUB_TAB.REVISE_QUOTATION}/${row.original.id}`),
+                  icon: <EditIcon size={20} />,
+                },
+                {
+                  label: "Download",
+                  onClick: () =>
+                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`),
+                  icon: <DownloadIcon size={20} />,
+                },
+                {
+                  label: "Email",
+                  onClick: () =>
+                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`),
+                  icon: <MailIcon size={20} />,
+                },
+                {
+                  label: "Delete Quotation",
+                  variant: "danger",
+                  onClick: () => handleOpenDeleteQuotationModal(),
+                  icon: <TrashIcon size={20} />,
+                },
+              ]}
+              {...row.getRowProps()}
+            >
+              {row.cells.map((cell, index) => {
+                return cell.render("Cell", { index });
+              })}
+            </Table.Row>
+          );
+        })}
+      </Table.Body>
+    );
+  }, [getTableBodyProps, handleOpenDeleteQuotationModal, isLoading, orders, prepareRow, rows]);
+
+  const renderModal = useCallback(() => {
+    if (isVisibleDeleteQuotationModal) {
+      return (
+        <DeleteTheQuotationModal
+          handleClickCancelButton={handleCloseDeleteQuotationModal}
+          handleClickConfirmButton={handleCloseDeleteQuotationModal}
+        />
+      );
+    }
+
+    return null;
+  }, [handleCloseDeleteQuotationModal, isVisibleDeleteQuotationModal]);
 
   return (
     <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full">
@@ -185,53 +260,7 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
             </Table.HeadRow>
           ))}
         </Table.Head>
-        {isLoading || !orders ? (
-          <div className="flex w-full h-full absolute items-center justify-center mt-10">
-            <div className="">
-              <Spinner size={"large"} variant={"secondary"} />
-            </div>
-          </div>
-        ) : (
-          <Table.Body {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <Table.Row
-                  color={"inherit"}
-                  linkTo={row.original.id}
-                  actions={[
-                    {
-                      label: "Revise",
-                      onClick: () => navigate(row.original.id),
-                      icon: <EditIcon size={20} />,
-                    },
-                    {
-                      label: "Download",
-                      onClick: () => navigate(row.original.id),
-                      icon: <DownloadIcon size={20} />,
-                    },
-                    {
-                      label: "Email",
-                      onClick: () => navigate(row.original.id),
-                      icon: <MailIcon size={20} />,
-                    },
-                    {
-                      label: "Delete Quotation",
-                      variant: "danger",
-                      onClick: () => handleDelete(row.original.id),
-                      icon: <TrashIcon size={20} />,
-                    },
-                  ]}
-                  {...row.getRowProps()}
-                >
-                  {row.cells.map((cell, index) => {
-                    return cell.render("Cell", { index });
-                  })}
-                </Table.Row>
-              );
-            })}
-          </Table.Body>
-        )}
+        {renderTableBody()}
       </Table>
       <TablePagination
         count={count!}
@@ -246,8 +275,9 @@ const OrderTable: React.FC<RouteComponentProps> = () => {
         hasNext={canNextPage}
         hasPrev={canPreviousPage}
       />
+      {renderModal()}
     </div>
   );
 };
 
-export default OrderTable;
+export default QuotationTable;

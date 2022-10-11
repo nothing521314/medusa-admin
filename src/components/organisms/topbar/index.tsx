@@ -11,8 +11,9 @@ import GearIcon from "../../fundamentals/icons/gear-icon";
 import HelpCircleIcon from "../../fundamentals/icons/help-circle";
 import SignOutIcon from "../../fundamentals/icons/log-out-icon";
 import SearchBar from "../../molecules/search-bar";
-import CanNotMakeQuotationModal from "../can-not-make-quotation-modal";
+import CanNotMakeQuotationModal from "../../../domain/quotations/modal/can-not-make-quotation-modal";
 import MailDialog from "../help-dialog";
+import { SUB_TAB } from "src/domain/quotations";
 
 const Topbar: React.FC = () => {
   const { first_name, last_name, email, handleLogout } = useContext(
@@ -34,11 +35,11 @@ const Topbar: React.FC = () => {
     return cart.items.reduce((sum, i) => sum + i.quantity, 0);
   }, [cart]);
 
-  const [showSupportform, setShowSupportForm] = useState(false);
+  const [showSupportForm, setShowSupportForm] = useState(false);
 
   const handleClickCartIcon = useCallback(() => {
     if (totalCart) {
-      console.log("aa");
+      navigate(`${SUB_TAB.QUOTATION_DETAILS}`);
     } else {
       openCanNotMakeQuoteModal();
     }
@@ -57,7 +58,7 @@ const Topbar: React.FC = () => {
           size="small"
           variant="ghost"
           className="w-8 h-8 mr-3"
-          onClick={() => setShowSupportForm(!showSupportform)}
+          onClick={() => setShowSupportForm(!showSupportForm)}
         >
           <HelpCircleIcon size={24} />
         </Button>
@@ -110,9 +111,9 @@ const Topbar: React.FC = () => {
           </DropdownMenu.Root>
         </div>
       </div>
-      {showSupportform && (
+      {showSupportForm && (
         <MailDialog
-          open={showSupportform}
+          open={showSupportForm}
           onClose={() => setShowSupportForm(false)}
         />
       )}

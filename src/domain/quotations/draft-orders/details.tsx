@@ -1,6 +1,10 @@
 import { Address } from "@medusajs/medusa";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import ReactJson from "react-json-view";
 import {
   useAdminDeleteDraftOrder,
   useAdminDraftOrder,
@@ -8,9 +12,6 @@ import {
   useAdminStore,
   useAdminUpdateDraftOrder,
 } from "../../../../medusa-react";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
-import ReactJson from "react-json-view";
 import Avatar from "../../../components/atoms/avatar";
 import CopyToClipboard from "../../../components/atoms/copy-to-clipboard";
 import Spinner from "../../../components/atoms/spinner";
@@ -30,12 +31,14 @@ import { isoAlpha2Countries } from "../../../utils/countries";
 import { getErrorMessage } from "../../../utils/error-messages";
 import extractCustomerName from "../../../utils/extract-customer-name";
 import { formatAmountWithSymbol } from "../../../utils/prices";
+import { IQuotationDetailForm } from "../details";
 import AddressModal from "../details/address-modal";
+import { DEFAULT_QUOTATION_DETAIL_FORM_VALUE } from "../details/default-value-form";
 import { DisplayTotal, FormattedAddress } from "../details/templates";
 
 type DraftOrderDetailsProps = RouteComponentProps<{ id: string }>;
 
-const DraftOrderDetails = ({ id }: DraftOrderDetailsProps) => {
+const DraftOrderDetails = ({ id = "" }: DraftOrderDetailsProps) => {
   type DeletePromptData = {
     resource: string;
     onDelete: () => any;
@@ -67,7 +70,7 @@ const DraftOrderDetails = ({ id }: DraftOrderDetailsProps) => {
         store.payment_link_template.replace(/\{cart_id\}/, draft_order.cart_id)
       );
     }
-  }, [isLoading, isLoadingStore]);
+  }, [draft_order, isLoading, isLoadingStore, store]);
 
   const markPaid = useAdminDraftOrderRegisterPayment(id);
   const cancelOrder = useAdminDeleteDraftOrder(id);
@@ -237,7 +240,7 @@ const DraftOrderDetails = ({ id }: DraftOrderDetailsProps) => {
                         <div className="inter-small-regular text-grey-50">
                           {formatAmountWithSymbol({
                             amount: item.unit_price,
-                            currency: region?.currency_code,
+                            currency: region?.currency_code!,
                             digits: 2,
                             tax: region?.tax_rate,
                           })}
@@ -248,7 +251,7 @@ const DraftOrderDetails = ({ id }: DraftOrderDetailsProps) => {
                         <div className="inter-small-regular text-grey-90">
                           {formatAmountWithSymbol({
                             amount: item.unit_price * item.quantity,
-                            currency: region?.currency_code,
+                            currency: region?.currency_code!,
                             digits: 2,
                             tax: region?.tax_rate,
                           })}
@@ -279,7 +282,7 @@ const DraftOrderDetails = ({ id }: DraftOrderDetailsProps) => {
                     <div className="inter-small-regular text-grey-90">
                       -
                       {formatAmountWithSymbol({
-                        amount: cart?.discount_total,
+                        amount: cart?.discount_total!,
                         currency: region?.currency_code || "",
                         digits: 2,
                         tax: region?.tax_rate,
@@ -295,13 +298,13 @@ const DraftOrderDetails = ({ id }: DraftOrderDetailsProps) => {
                 <DisplayTotal
                   currency={region?.currency_code}
                   totalAmount={cart?.tax_total}
-                  totalTitle={`Tax`}
+                  totalTitle={"Tax"}
                 />
                 <DisplayTotal
                   currency={region?.currency_code}
                   variant="large"
                   totalAmount={cart?.total}
-                  totalTitle={`Total`}
+                  totalTitle={"Total"}
                 />
               </div>
             </BodyCard>
@@ -388,7 +391,7 @@ const DraftOrderDetails = ({ id }: DraftOrderDetailsProps) => {
                   icon: <TruckIcon size={"20"} />,
                   onClick: () =>
                     setAddressModal({
-                      address: cart?.shipping_address,
+                      address: cart?.shipping_address!,
                       type: AddressType.SHIPPING,
                     }),
                 },

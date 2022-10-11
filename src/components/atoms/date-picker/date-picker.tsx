@@ -32,7 +32,7 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
   const [tempDate, setTempDate] = useState(date);
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => setTempDate(date), [isOpen]);
+  useEffect(() => setTempDate(date), [date, isOpen]);
 
   const submitDate = () => {
     // update only date, month and year
