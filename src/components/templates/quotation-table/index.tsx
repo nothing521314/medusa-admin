@@ -119,9 +119,13 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
   const handleSorting = useCallback(
     (
       columnId: string,
+      disableSortBy?: boolean,
       descending?: boolean | undefined,
       isMulti?: boolean | undefined
     ) => {
+      if (disableSortBy) {
+        return;
+      }
       toggleSortBy(columnId, !descending, isMulti);
     },
     [toggleSortBy]
@@ -131,7 +135,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
     (value: string) => {
       setFilters((pre) => ({
         ...pre,
-        query: value,
+        q: value,
       }));
       gotoPage(0);
     },
@@ -212,7 +216,14 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
         })}
       </Table.Body>
     );
-  }, [getTableBodyProps, handleOpenDeleteQuotationModal, isLoading, orders, prepareRow, rows]);
+  }, [
+    getTableBodyProps,
+    handleOpenDeleteQuotationModal,
+    isLoading,
+    orders,
+    prepareRow,
+    rows,
+  ]);
 
   const renderModal = useCallback(() => {
     if (isVisibleDeleteQuotationModal) {
@@ -232,7 +243,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
       <Table
         enableSearch
         handleSearch={handleSetQuery}
-        searchValue={filters.query}
+        searchValue={filters.q}
         {...getTableProps()}
         className={clsx({ ["relative"]: isLoading })}
       >
@@ -242,7 +253,14 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
               {headerGroup.headers.map((col) => (
                 <Table.HeadCell
                   {...col.getHeaderProps(col.getSortByToggleProps())}
-                  onClick={() => handleSorting(col.id, col.isSortedDesc, true)}
+                  onClick={() =>
+                    handleSorting(
+                      col.id,
+                      col.disableSortBy,
+                      col.isSortedDesc,
+                      true
+                    )
+                  }
                 >
                   <div className="flex items-center">
                     {col.render("Header")}

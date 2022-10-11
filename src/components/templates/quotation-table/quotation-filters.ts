@@ -1,11 +1,11 @@
 import qs from "qs";
 
-const allowedFilters = ["query", "offset", "limit"];
+const allowedFilters = ["q", "offset", "limit"];
 
 export type TQuotationFilters = {
   limit: number;
   offset: number;
-  query: string;
+  q: string;
 };
 
 const DEFAULT_PAGE_SIZE = 15;
@@ -14,7 +14,7 @@ export const parseQuotationQueryString = (queryString?: string): unknown => {
   const defaultVal: TQuotationFilters = {
     offset: 0,
     limit: DEFAULT_PAGE_SIZE,
-    query: "",
+    q: "",
   };
 
   if (queryString) {
@@ -34,9 +34,9 @@ export const parseQuotationQueryString = (queryString?: string): unknown => {
             }
             break;
           }
-          case "query": {
+          case "q": {
             if (typeof value === "string") {
-              defaultVal.query = value;
+              defaultVal.q = value;
             }
             break;
           }

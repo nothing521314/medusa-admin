@@ -45,7 +45,7 @@ const PaginationArrows: React.FC<PaginationArrowsProps> = ({
       <span
         onClick={handlePreviousPage}
         className={clsx(
-          `mr-1.5 w-5 h-5 transition rounded-base flex justify-center items-center`,
+          "mr-1.5 w-5 h-5 transition rounded-base flex justify-center items-center",
           {
             [`${disabledClasses}`]: currentPage === 0,
             [`${enabledClasses}`]: currentPage !== 0,
@@ -57,7 +57,7 @@ const PaginationArrows: React.FC<PaginationArrowsProps> = ({
       <span
         onClick={handleNextPage}
         className={clsx(
-          `w-5 h-5 transition rounded-base flex justify-center items-center`,
+          "w-5 h-5 transition rounded-base flex justify-center items-center",
           {
             [`${disabledClasses}`]: currentPage + 1 === paginationLength,
             [`${enabledClasses}`]: currentPage + 1 !== paginationLength,
@@ -122,7 +122,7 @@ const SidebarTeam: React.FC = () => {
         onClick={() => setIsOpen(true)}
         className="flex items-center bg-grey-0 px-2.5 py-1.5 cursor-pointer text-violet-60"
       >
-        <div className="w-[24px] h-[24px]  bg-violet-20 text-violet-60 rounded-full text-center flex justify-center items-center text-violet-60">
+        <div className="w-[24px] h-[24px]  bg-violet-20 text-violet-60 rounded-full text-center flex justify-center items-center">
           <PlusIcon size={16} />
         </div>
         <span className="ml-2.5">Invite your team</span>

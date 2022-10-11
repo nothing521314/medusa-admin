@@ -4,7 +4,7 @@ import { navigate } from "gatsby";
 import React, { useCallback, useMemo } from "react";
 import Button from "../../components/fundamentals/button";
 import BodyCard from "../../components/organisms/body-card";
-import OrderTable from "../../components/templates/quotation-table";
+import QuotationTable from "../../components/templates/quotation-table";
 import useToggleState from "../../hooks/use-toggle-state";
 import Details from "./details";
 import CanNotMakeQuotationModal from "./modal/can-not-make-quotation-modal";
@@ -55,7 +55,7 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
             customHeader={<div className="inter-large-semibold">Quotation</div>}
             customActionable={actions}
           >
-            <OrderTable />
+            <QuotationTable />
           </BodyCard>
         </div>
       </div>

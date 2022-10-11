@@ -19,11 +19,11 @@ export default {
       return medusaRequest("GET", path);
     },
     list() {
-      const path = `/admin/return-reasons`;
+      const path = "/admin/return-reasons";
       return medusaRequest("GET", path);
     },
     create(payload) {
-      const path = `/admin/return-reasons`;
+      const path = "/admin/return-reasons";
       return medusaRequest("POST", path, payload);
     },
     update(id, payload) {
@@ -37,26 +37,26 @@ export default {
   },
   apps: {
     authorize(data) {
-      const path = `/admin/apps/authorizations`;
+      const path = "/admin/apps/authorizations";
       return medusaRequest("POST", path, data);
     },
 
     list() {
-      const path = `/admin/apps`;
+      const path = "/admin/apps";
       return medusaRequest("GET", path);
     },
   },
   auth: {
     session() {
-      const path = `/admin/auth`;
+      const path = "/admin/auth";
       return medusaRequest("GET", path);
     },
     authenticate(details) {
-      const path = `/admin/auth`;
+      const path = "/admin/auth";
       return medusaRequest("POST", path, details);
     },
     deauthenticate(details) {
-      const path = `/admin/auth`;
+      const path = "/admin/auth";
       return medusaRequest("DELETE", path);
     },
   },
@@ -79,7 +79,7 @@ export default {
       return medusaRequest("GET", path);
     },
     async create(resourceId, resourceType, value) {
-      const path = `/admin/notes/`;
+      const path = "/admin/notes/";
       return medusaRequest("POST", path, {
         resource_id: resourceId,
         resource_type: resourceType,
@@ -112,12 +112,12 @@ export default {
   },
   store: {
     retrieve() {
-      const path = `/admin/store`;
+      const path = "/admin/store";
       return medusaRequest("GET", path);
     },
 
     update(update) {
-      const path = `/admin/store`;
+      const path = "/admin/store";
       return medusaRequest("POST", path, update);
     },
 
@@ -132,18 +132,18 @@ export default {
     },
 
     listPaymentProviders() {
-      const path = `/admin/store/payment-providers`;
+      const path = "/admin/store/payment-providers";
       return medusaRequest("GET", path);
     },
   },
   shippingProfiles: {
     list() {
-      const path = `/admin/shipping-profiles`;
+      const path = "/admin/shipping-profiles";
       return medusaRequest("GET", path);
     },
 
     create(data) {
-      const path = `/admin/shipping-profiles`;
+      const path = "/admin/shipping-profiles";
       return medusaRequest("POST", path, data);
     },
 
@@ -160,7 +160,7 @@ export default {
 
   giftCards: {
     create(giftCard) {
-      const path = `/admin/gift-cards`;
+      const path = "/admin/gift-cards";
       return medusaRequest("POST", path, giftCard);
     },
 
@@ -200,7 +200,7 @@ export default {
 
   products: {
     create(product) {
-      const path = `/admin/products`;
+      const path = "/admin/products";
       return medusaRequest("POST", path, product);
     },
 
@@ -228,12 +228,12 @@ export default {
     },
 
     listTypes() {
-      const path = `/admin/products/types`;
+      const path = "/admin/products/types";
       return medusaRequest("GET", path);
     },
 
     listTagsByUsage() {
-      const path = `/admin/products/tag-usage`;
+      const path = "/admin/products/tag-usage";
       return medusaRequest("GET", path);
     },
 
@@ -322,7 +322,7 @@ export default {
 
   collections: {
     create(payload) {
-      const path = `/admin/collections`;
+      const path = "/admin/collections";
       return medusaRequest("POST", path, payload);
     },
 
@@ -332,7 +332,7 @@ export default {
     },
 
     list(search = {}) {
-      const path = `/admin/collections`;
+      const path = "/admin/collections";
       return medusaRequest("GET", path);
     },
 
@@ -349,7 +349,7 @@ export default {
 
   orders: {
     create(order) {
-      const path = `/admin/orders`;
+      const path = "/admin/orders";
       return medusaRequest("POST", path, order);
     },
 
@@ -513,7 +513,7 @@ export default {
 
   shippingOptions: {
     create(shippingOption) {
-      const path = `/admin/shipping-options`;
+      const path = "/admin/shipping-options";
       return medusaRequest("POST", path, shippingOption);
     },
 
@@ -543,7 +543,7 @@ export default {
 
   discounts: {
     create(discount) {
-      const path = `/admin/discounts`;
+      const path = "/admin/discounts";
       return medusaRequest("POST", path, discount);
     },
 
@@ -576,7 +576,7 @@ export default {
 
   regions: {
     list() {
-      const path = `/admin/regions`;
+      const path = "/admin/regions";
       return medusaRequest("GET", path);
     },
 
@@ -586,7 +586,7 @@ export default {
     },
 
     create(region) {
-      const path = `/admin/regions`;
+      const path = "/admin/regions";
       return medusaRequest("POST", path, region);
     },
 
@@ -621,7 +621,7 @@ export default {
 
   draftOrders: {
     create(draftOrder) {
-      const path = `/admin/draft-orders`;
+      const path = "/admin/draft-orders";
       return medusaRequest("POST", path, draftOrder);
     },
 
@@ -676,7 +676,7 @@ export default {
   },
   invites: {
     create(data) {
-      const path = `/admin/invites`;
+      const path = "/admin/invites";
       return medusaRequest("POST", path, data);
     },
     resend(inviteId) {
@@ -688,78 +688,26 @@ export default {
       return medusaRequest("DELETE", path);
     },
     list() {
-      const path = `/admin/invites`;
+      const path = "/admin/invites";
       return medusaRequest("GET", path);
     },
     accept(data) {
-      const path = `/admin/invites/accept`;
+      const path = "/admin/invites/accept";
       return medusaRequest("POST", path, data);
     },
   },
   users: {
     resetPasswordToken(data) {
-      const path = `/admin/users/password-token`;
+      const path = "/admin/users/password-token";
       return medusaRequest("POST", path, data);
     },
     resetPassword(data) {
-      const path = `/admin/users/reset-password`;
+      const path = "/admin/users/reset-password";
       return medusaRequest("POST", path, data);
     },
 
     list() {
-      const path = `/admin/users`;
-      return medusaRequest("GET", path);
-    },
-
-    retrieve(userId) {
-      const path = `/admin/users/${userId}`;
-      return medusaRequest("GET", path);
-    },
-
-    update(userId, data) {
-      const path = `/admin/users/${userId}`;
-      return medusaRequest("POST", path, data);
-    },
-
-    delete(userId) {
-      const path = `/admin/users/${userId}`;
-      return medusaRequest("DELETE", path);
-    },
-  },
-  invites: {
-    create(data) {
-      const path = `/admin/invites`;
-      return medusaRequest("POST", path, data);
-    },
-    resend(inviteId) {
-      const path = `/admin/invites/${inviteId}/resend`;
-      return medusaRequest("POST", path);
-    },
-    delete(inviteId) {
-      const path = `/admin/invites/${inviteId}`;
-      return medusaRequest("DELETE", path);
-    },
-    list() {
-      const path = `/admin/invites`;
-      return medusaRequest("GET", path);
-    },
-    accept(data) {
-      const path = `/admin/invites/accept`;
-      return medusaRequest("POST", path, data);
-    },
-  },
-  users: {
-    resetPasswordToken(data) {
-      const path = `/admin/users/password-token`;
-      return medusaRequest("POST", path, data);
-    },
-    resetPassword(data) {
-      const path = `/admin/users/reset-password`;
-      return medusaRequest("POST", path, data);
-    },
-
-    list() {
-      const path = `/admin/users`;
+      const path = "/admin/users";
       return medusaRequest("GET", path);
     },
 
