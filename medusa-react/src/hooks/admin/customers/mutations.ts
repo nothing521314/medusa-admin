@@ -1,7 +1,8 @@
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 
-import { AdminCustomersRes, AdminPostCustomersReq } from "@medusajs/medusa";
-import Medusa, { Response } from "../../../../../medusa-js";
+import { AdminCustomersRes, AdminPostCustomersReq } from "@medusa-types";
+
+import { Response } from "@medusa-js";
 
 import { useMedusa } from "../../../contexts";
 import { buildOptions } from "../../utils/buildOptions";

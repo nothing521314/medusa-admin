@@ -15,6 +15,7 @@
     "paths": {
       "@medusa-react": ["medusa-react/src/index.ts"],
       "@medusa-js": ["medusa-js/index.ts"],
+      "@medusa-types": ["medusa-types/index.ts"],
       "@components": ["src/components/"]
     }
   },

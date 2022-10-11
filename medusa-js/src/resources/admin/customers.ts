@@ -4,7 +4,7 @@ import {
   AdminGetCustomersParams,
   AdminPostCustomersReq,
   AdminPostCustomersCustomerReq,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import qs from "qs";
 import { ResponsePromise } from "../..";
 import BaseResource from "../base";

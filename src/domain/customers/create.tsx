@@ -1,6 +1,7 @@
+import { useAdminCreateCustomer } from "@medusa-react";
+import { AdminPostCustomersReq } from "@medusa-types";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useAdminCreateCustomer } from "@medusa-react";
 import Button from "../../components/fundamentals/button";
 import LockIcon from "../../components/fundamentals/icons/lock-icon";
 import InputField from "../../components/molecules/input";
@@ -13,23 +14,15 @@ type CreateCustomerModalProps = {
   handleClose: () => void;
 };
 
-type CreateCustomerFormType = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string | null;
-  password: string;
-};
-
 const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
   const {
     register,
     reset,
     handleSubmit,
     formState: { isDirty },
-  } = useForm<CreateCustomerFormType>({
+  } = useForm<AdminPostCustomersReq>({
     defaultValues: {
-      password: "12345678",
+      person_in_charge: "Mr",
     },
   });
 
@@ -38,26 +31,16 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
   const createCustomer = useAdminCreateCustomer({});
 
   const onSubmit = handleSubmit((data) => {
-    createCustomer.mutate(
-      {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        // @ts-ignore
-        phone: data.phone,
-        email: data.email,
-        password: data.password,
+    createCustomer.mutate(data, {
+      onSuccess: () => {
+        handleClose();
+        notification("Success", "Successfully created customer", "success");
       },
-      {
-        onSuccess: () => {
-          handleClose();
-          notification("Success", "Successfully created customer", "success");
-        },
-        onError: (err) => {
-          handleClose();
-          notification("Error", getErrorMessage(err), "error");
-        },
-      }
-    );
+      onError: (err) => {
+        handleClose();
+        notification("Error", getErrorMessage(err), "error");
+      },
+    });
   });
 
   return (
@@ -70,13 +53,13 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
           <div className="w-full flex mb-4 space-x-2">
             <InputField
               label="First Name"
-              {...register("first_name")}
+              {...register("name")}
               placeholder="Lebron"
             />
             <InputField
-              label="Last Name"
-              {...register("last_name")}
-              placeholder="James"
+              label="person_in_charge"
+              {...register("person_in_charge", {})}
+              prefix={<LockIcon size={16} className="text-grey-50" />}
             />
           </div>
           <div className="flex space-x-2">
@@ -84,6 +67,12 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
               label="Email"
               {...register("email", {
                 validate: (value) => !!validateEmail(value),
+              })}
+              prefix={<LockIcon size={16} className="text-grey-50" />}
+            />
+            <InputField
+              label="Address"
+              {...register("address", {
               })}
               prefix={<LockIcon size={16} className="text-grey-50" />}
             />

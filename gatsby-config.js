@@ -15,6 +15,7 @@ module.exports = {
           "@components": "src/components",
           "@medusa-react": "medusa-react",
           "@medusa-js": "medusa-js",
+          "@medusa-types": "medusa-types",
         },
         extensions: ["ts"],
       },
