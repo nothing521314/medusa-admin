@@ -24,12 +24,11 @@ export const DisplayTotal = ({
         <div className="inter-small-regular text-grey-50 mt-1">{subtitle}</div>
       )}
     </div>
-    <div className="flex">
+    <div className="grid grid-cols-2 small:space-x-2 medium:space-x-4 large:space-x-5 justify-end">
       <div
-        className={clsx(totalColor, {
-          "inter-small-regular mr-3": variant === "regular",
-          "inter-large-semibold": variant === "bold",
-          "inter-xlarge-semibold": variant === "large",
+        className={clsx("text-right inter-small-regular shrink-0", totalColor, {
+          "!font-normal": variant === "regular",
+          "!font-bold": variant === "bold" || variant === "large",
         })}
       >
         {formatAmountWithSymbol({
@@ -37,11 +36,14 @@ export const DisplayTotal = ({
           currency,
         })}
       </div>
-      {variant === "regular" && (
-        <div className="inter-small-regular text-grey-50">
-          {currency.toUpperCase()}
-        </div>
-      )}
+      <div
+        className={clsx("text-right inter-small-regular w-11", totalColor, {
+          "!font-normal": variant === "regular",
+          "!font-bold": variant === "bold" || variant === "large",
+        })}
+      >
+        {currency.toUpperCase()}
+      </div>
     </div>
   </div>
 );
