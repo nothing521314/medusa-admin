@@ -10,6 +10,7 @@ export type ActionType = {
   variant?: "normal" | "danger";
   disabled?: boolean;
   icon?: React.ReactNode;
+  isShowing?: boolean;
 };
 
 type ActionablesProps = {

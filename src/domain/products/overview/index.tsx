@@ -1,14 +1,12 @@
 import { navigate, RouteComponentProps, useLocation } from "@reach/router";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   useAdminCreateBatchJob,
   useAdminCreateCollection,
 } from "../../../../medusa-react";
-import React, { useEffect, useState } from "react";
 import Fade from "../../../components/atoms/fade-wrapper";
 import Button from "../../../components/fundamentals/button";
-import ExportIcon from "../../../components/fundamentals/icons/export-icon";
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
-import UploadIcon from "../../../components/fundamentals/icons/upload-icon";
 import BodyCard from "../../../components/organisms/body-card";
 import TableViewHeader from "../../../components/organisms/custom-table-header";
 import ExportModal from "../../../components/organisms/export-modal";
@@ -23,9 +21,11 @@ import NewProduct from "../new";
 
 const VIEWS = ["products", "collections"];
 
-const Overview = (_props: RouteComponentProps) => {
+const Overview: React.FC<RouteComponentProps> = () => {
   const location = useLocation();
   const [view, setView] = useState("products");
+  const [showNewCollection, setShowNewCollection] = useState(false);
+
   const {
     state: createProductState,
     close: closeProductCreate,
@@ -46,23 +46,23 @@ const Overview = (_props: RouteComponentProps) => {
 
   useEffect(() => {
     location.search = "";
-  }, [view]);
+  }, [location, view]);
 
-  const CurrentView = () => {
+  const CurrentView = useCallback(() => {
     switch (view) {
       case "products":
         return <ProductTable />;
       default:
         return <CollectionsTable />;
     }
-  };
+  }, [view]);
 
-  const CurrentAction = () => {
+  const CurrentAction = useCallback(() => {
     switch (view) {
       case "products":
         return (
           <div className="flex space-x-2">
-            <Button
+            {/* <Button
               variant="secondary"
               size="small"
               onClick={() => openImportModal()}
@@ -77,7 +77,7 @@ const Overview = (_props: RouteComponentProps) => {
             >
               <ExportIcon size={20} />
               Export Products
-            </Button>
+            </Button> */}
             <Button
               variant="secondary"
               size="small"
@@ -102,17 +102,16 @@ const Overview = (_props: RouteComponentProps) => {
           </div>
         );
     }
-  };
+  }, [openProductCreate, showNewCollection, view]);
 
-  const [showNewCollection, setShowNewCollection] = useState(false);
   const {
-    open: openExportModal,
+    // open: openExportModal,
     close: closeExportModal,
     state: exportModalOpen,
   } = useToggleState(false);
 
   const {
-    open: openImportModal,
+    // open: openImportModal,
     close: closeImportModal,
     state: importModalOpen,
   } = useToggleState(false);

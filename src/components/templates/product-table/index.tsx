@@ -2,7 +2,7 @@ import { useLocation } from "@reach/router";
 import { isEmpty } from "lodash";
 import { useAdminProducts } from "../../../../medusa-react";
 import qs from "qs";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePagination, useTable } from "react-table";
 import { useFeatureFlag } from "../../../context/feature-flag";
 import ProductsFilter from "../../../domain/products/filter-dropdown";
@@ -12,6 +12,7 @@ import ProductOverview from "./overview";
 import useProductActions from "./use-product-actions";
 import useProductTableColumn from "./use-product-column";
 import { useProductFilters } from "./use-product-filters";
+import { Product } from "@medusajs/medusa";
 
 const DEFAULT_PAGE_SIZE = 15;
 const DEFAULT_PAGE_SIZE_TILE_VIEW = 18;
@@ -37,11 +38,11 @@ const ProductTable: React.FC<ProductTableProps> = () => {
   }
 
   const {
-    removeTab,
-    setTab,
-    saveTab,
-    availableTabs: filterTabs,
-    activeFilterTab,
+    // removeTab,
+    // setTab,
+    // saveTab,
+    // availableTabs: filterTabs,
+    // activeFilterTab,
     reset,
     paginate,
     setFilters,
@@ -52,11 +53,15 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     representationObject,
   } = useProductFilters(location.search, defaultQueryProps);
 
-  const offs = parseInt(queryObject.offset) || 0;
-  const limit = parseInt(queryObject.limit);
+  const { offs, limit } = useMemo(() => {
+    return {
+      offs: queryObject.offset || 0,
+      limit: queryObject.limit,
+    };
+  }, [queryObject.limit, queryObject.offset]);
 
   const [query, setQuery] = useState(queryObject.query);
-  const [numPages, setNumPages] = useState(0);
+  const [showList, setShowList] = React.useState(true);
 
   const clearFilters = () => {
     reset();
@@ -67,42 +72,22 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     ...queryObject,
   });
 
-  useEffect(() => {
+  const numPages = useMemo(() => {
     if (typeof count !== "undefined") {
-      const controlledPageCount = Math.ceil(count / limit);
-      setNumPages(controlledPageCount);
+      return Math.ceil(count / limit);
     }
-  }, [count]);
+    return 0;
+  }, [count, limit]);
 
-  const updateUrlFromFilter = (obj = {}) => {
-    const stringified = qs.stringify(obj);
-    window.history.replaceState(`/a/products`, "", `${`?${stringified}`}`);
-  };
-
-  const refreshWithFilters = () => {
-    const filterObj = representationObject;
-
-    if (isEmpty(filterObj)) {
-      updateUrlFromFilter({ offset: 0, limit: DEFAULT_PAGE_SIZE });
-    } else {
-      updateUrlFromFilter(filterObj);
-    }
-  };
-
-  useEffect(() => {
-    refreshWithFilters();
-  }, [representationObject]);
-
-  const setTileView = () => {
+  const setTileView = useCallback(() => {
     setLimit(DEFAULT_PAGE_SIZE_TILE_VIEW);
     setShowList(false);
-  };
-
-  const setListView = () => {
+  }, [setLimit]);
+  const setListView = useCallback(() => {
     setLimit(DEFAULT_PAGE_SIZE);
     setShowList(true);
-  };
-  const [showList, setShowList] = React.useState(true);
+  }, [setLimit]);
+
   const [columns] = useProductTableColumn({
     setTileView,
     setListView,
@@ -122,11 +107,11 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     nextPage,
     previousPage,
     // Get the state from the instance
-    state: { pageIndex, pageSize },
+    state: { pageIndex },
   } = useTable(
     {
       columns,
-      data: products || [],
+      data: (products as Product[]) || [],
       manualPagination: true,
       initialState: {
         pageIndex: Math.floor(offs / limit),
@@ -154,21 +139,40 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     }, 400);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [query]);
-
-  const handleNext = () => {
+  }, [gotoPage, query, reset, setFreeText]);
+  
+  const handleNext = useCallback(() => {
     if (canNextPage) {
       paginate(1);
       nextPage();
     }
-  };
+  }, [canNextPage, nextPage, paginate]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (canPreviousPage) {
       paginate(-1);
       previousPage();
     }
-  };
+  }, [canPreviousPage, paginate, previousPage]);
+
+  const updateUrlFromFilter = useCallback((obj = {}) => {
+    const stringified = qs.stringify(obj);
+    window.history.replaceState("/a/products", "", `${`?${stringified}`}`);
+  }, []);
+
+  const refreshWithFilters = useCallback(() => {
+    const filterObj = representationObject;
+
+    if (isEmpty(filterObj)) {
+      updateUrlFromFilter({ offset: 0, limit: DEFAULT_PAGE_SIZE });
+    } else {
+      updateUrlFromFilter(filterObj);
+    }
+  }, [representationObject, updateUrlFromFilter]);
+
+  useEffect(() => {
+    refreshWithFilters();
+  }, [refreshWithFilters]);
 
   return (
     <div className="w-full h-full overflow-y-auto">
@@ -179,11 +183,11 @@ const ProductTable: React.FC<ProductTableProps> = () => {
               filters={filters}
               submitFilters={setFilters}
               clearFilters={clearFilters}
-              tabs={filterTabs}
-              onTabClick={setTab}
-              activeTab={activeFilterTab}
-              onRemoveTab={removeTab}
-              onSaveTab={saveTab}
+              // tabs={filterTabs}
+              // onTabClick={setTab}
+              // activeTab={activeFilterTab}
+              // onRemoveTab={removeTab}
+              // onSaveTab={saveTab}
             />
           }
           enableSearch
@@ -220,7 +224,7 @@ const ProductTable: React.FC<ProductTableProps> = () => {
               isLoading={isLoading || isRefetching || !products}
             >
               <ProductOverview
-                products={products}
+                products={products as Product[]}
                 toggleListView={setListView}
               />
             </LoadingContainer>

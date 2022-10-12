@@ -1,12 +1,14 @@
 import clsx from "clsx";
 import { useAdminStore } from "../../../../medusa-react";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { defaultChannelsSorter } from "../../../utils/sales-channel-compare-operator";
 import Tooltip from "../../atoms/tooltip";
 import ListIcon from "../../fundamentals/icons/list-icon";
 import TileIcon from "../../fundamentals/icons/tile-icon";
 import ImagePlaceholder from "../../fundamentals/image-placeholder";
 import StatusIndicator from "../../fundamentals/status-indicator";
+import { Column } from "react-table";
+import { Product } from "@medusajs/medusa";
 
 const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const getProductStatus = (status) => {
@@ -26,38 +28,41 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
 
   const { store } = useAdminStore();
 
-  const getProductSalesChannels = (salesChannels) => {
-    if (salesChannels?.length) {
-      salesChannels.sort(
-        defaultChannelsSorter(store?.default_sales_channel_id || "")
-      );
-      return (
-        <span className="inter-small-regular">
-          {salesChannels[0].name}
-          {salesChannels.length > 1 && (
-            <Tooltip
-              content={
-                <div className="flex flex-col">
-                  {salesChannels.slice(1).map((sc) => (
-                    <span>{sc.name}</span>
-                  ))}
-                </div>
-              }
-            >
-              <span className="text-grey-40">
-                {" "}
-                + {salesChannels.length - 1} more
-              </span>
-            </Tooltip>
-          )}
-        </span>
-      );
-    }
-    return <></>;
-  };
+  const getProductSalesChannels = useCallback(
+    (salesChannels) => {
+      if (salesChannels?.length) {
+        salesChannels.sort(
+          defaultChannelsSorter(store?.default_sales_channel_id || "")
+        );
+        return (
+          <span className="inter-small-regular">
+            {salesChannels[0].name}
+            {salesChannels.length > 1 && (
+              <Tooltip
+                content={
+                  <div className="flex flex-col">
+                    {salesChannels.slice(1).map((sc) => (
+                      <span>{sc.name}</span>
+                    ))}
+                  </div>
+                }
+              >
+                <span className="text-grey-40">
+                  {" "}
+                  + {salesChannels.length - 1} more
+                </span>
+              </Tooltip>
+            )}
+          </span>
+        );
+      }
+      return <></>;
+    },
+    [store?.default_sales_channel_id]
+  );
 
   const columns = useMemo(
-    () => [
+    (): Column<Product>[] => [
       {
         Header: "Name",
         accessor: "title",
@@ -108,7 +113,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         ),
       },
       {
-        accessor: "col-3",
+        accessor: "width",
         Header: (
           <div className="text-right flex justify-end">
             <span
@@ -133,7 +138,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         ),
       },
     ],
-    [showList]
+    [getProductSalesChannels, setListView, setTileView, showList]
   );
 
   return [columns] as const;

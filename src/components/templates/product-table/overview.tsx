@@ -2,12 +2,13 @@ import { Product } from "@medusajs/medusa";
 import clsx from "clsx";
 import { Link } from "gatsby";
 import * as React from "react";
+import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
+import ImagePlaceholderIcon from "src/components/fundamentals/icons/image-placeholder-icon";
 import { getProductStatusVariant } from "../../../utils/product-status-variant";
 import Button from "../../fundamentals/button";
 import ListIcon from "../../fundamentals/icons/list-icon";
 import MoreHorizontalIcon from "../../fundamentals/icons/more-horizontal-icon";
 import TileIcon from "../../fundamentals/icons/tile-icon";
-import ImagePlaceholder from "../../fundamentals/image-placeholder";
 import StatusIndicator from "../../fundamentals/status-indicator";
 import Actionables from "../../molecules/actionables";
 import useProductActions from "./use-product-actions";
@@ -21,6 +22,10 @@ const ProductOverview = ({
   products,
   toggleListView,
 }: ProductOverviewProps) => {
+  if (!products) {
+    return null;
+  }
+
   return (
     <>
       <div className="flex justify-end border-t border-b border-grey-20 py-2.5 pr-xlarge">
@@ -42,7 +47,7 @@ const ProductOverview = ({
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-6">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,5fr))] gap-4">
         {products.map((product) => (
           <ProductTile product={product} />
         ))}
@@ -51,14 +56,16 @@ const ProductOverview = ({
   );
 };
 
-const ProductTile = ({ product }) => {
+const ProductTile = ({ product }: { product: Product }) => {
   const { getActions } = useProductActions(product);
 
   return (
     <div className="p-base group rounded-rounded hover:bg-grey-5 flex-col">
       <div className="relative">
         <div
-          className={clsx("rounded-base inline-block absolute top-2 right-2")}
+          className={clsx(
+            "rounded-base inline-block absolute top-2 right-2 z-10"
+          )}
         >
           <Actionables
             actions={getActions()}
@@ -74,19 +81,33 @@ const ProductTile = ({ product }) => {
           />
         </div>
         <Link to={`${product.id}`}>
-          {product.thumbnail ? (
-            <img
-              className="min-h-[230px] block object-cover rounded-rounded"
-              src={product.thumbnail}
-            />
-          ) : (
-            <div className="min-h-[230px] flex items-center justify-center bg-grey-5 rounded-rounded">
+          <div
+            className={clsx(
+              "min-h-[230px] flex items-center justify-center bg-grey-5 rounded-rounded relative",
+              "bg-cover bg-no-repeat bg-center"
+            )}
+            style={{ backgroundImage: `url(${product.thumbnail})` }}
+          >
+            {/* {product.thumbnail ? (
+              <div
+                className={clsx(
+                  "bg-grey-40/80 w-full h-full absolute top-0 flex items-center justify-center rounded-rounded",
+                  "invisible group-hover:visible transition-visibility duration-75"
+                )}
+              >
+                <Button variant="secondary" className="" size="small">
+                  View Details
+                </Button>
+              </div>
+            ) : (
               <ImagePlaceholder />
-            </div>
-          )}
+            )} */}
+            {!product.thumbnail && <ImagePlaceholderIcon size={12} />}
+          </div>
+
           <div>
             <div className="mt-base flex items-center justify-between">
-              <p className="inter-small-regular text-grey-90 line-clamp-1 mr-3">
+              <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1 mr-3">
                 {product.title}
               </p>
               <StatusIndicator
@@ -94,11 +115,22 @@ const ProductTile = ({ product }) => {
                 className="shrink-0"
               />
             </div>
-            <span className="inter-small-regular text-grey-50 line-clamp-1">
+            <span
+              className={clsx(
+                "inter-small-regular text-grey-50 line-clamp-1",
+                "text-center max-w-full text-ellipsis whitespace-nowrap overflow-hidden"
+              )}
+            >
               {product.collection?.title}
             </span>
           </div>
         </Link>
+        <div className="flex justify-center mt-4">
+          <Button variant="secondary" size="small">
+            <CartPlusIcon size={20} />
+            Add To Cart
+          </Button>
+        </div>
       </div>
     </div>
   );

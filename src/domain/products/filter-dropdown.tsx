@@ -1,16 +1,9 @@
 import clsx from "clsx";
-import React, { useMemo, useEffect, useState } from "react";
-import {
-  useAdminProductTags,
-  useAdminCollections,
-} from "../../../medusa-react";
-import CheckIcon from "../../components/fundamentals/icons/check-icon";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useAdminCollections } from "../../../medusa-react";
 import PlusIcon from "../../components/fundamentals/icons/plus-icon";
 import FilterDropdownContainer from "../../components/molecules/filter-dropdown/container";
 import FilterDropdownItem from "../../components/molecules/filter-dropdown/item";
-import SaveFilterItem from "../../components/molecules/filter-dropdown/save-field";
-import TagInput from "../../components/molecules/tag-input";
-import TabFilter from "../../components/molecules/filter-tab";
 
 const statusFilters = ["proposed", "draft", "published", "rejected"];
 
@@ -20,49 +13,55 @@ const ProductsFilter = ({
   filters,
   submitFilters,
   clearFilters,
-  tabs,
-  onTabClick,
-  activeTab,
-  onRemoveTab,
-  onSaveTab,
+  // tabs,
+  // onTabClick,
+  // onRemoveTab,
+  // activeTab,
+  // onSaveTab,
 }) => {
   const [tempState, setTempState] = useState(filters);
-  const [name, setName] = useState("");
+  // const [name, setName] = useState("");
 
-  const handleRemoveTab = (val) => {
-    if (onRemoveTab) {
-      onRemoveTab(val);
-    }
-  };
+  // const handleRemoveTab = useCallback(
+  //   (val) => {
+  //     if (onRemoveTab) {
+  //       onRemoveTab(val);
+  //     }
+  //   },
+  //   [onRemoveTab]
+  // );
 
-  const handleSaveTab = () => {
-    if (onSaveTab) {
-      onSaveTab(name, tempState);
-    }
-  };
+  // const handleSaveTab = useCallback(() => {
+  //   if (onSaveTab) {
+  //     onSaveTab(name, tempState);
+  //   }
+  // }, [name, onSaveTab, tempState]);
 
-  const handleTabClick = (tabName: string) => {
-    if (onTabClick) {
-      onTabClick(tabName);
-    }
-  };
+  // const handleTabClick = useCallback(
+  //   (tabName: string) => {
+  //     if (onTabClick) {
+  //       onTabClick(tabName);
+  //     }
+  //   },
+  //   [onTabClick]
+  // );
 
   useEffect(() => {
     setTempState(filters);
   }, [filters]);
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     submitFilters(tempState);
-  };
+  }, [submitFilters, tempState]);
 
-  const onClear = () => {
+  const onClear = useCallback(() => {
     clearFilters();
-  };
+  }, [clearFilters]);
 
   const numberOfFilters = useMemo(
     () =>
       Object.entries(filters || {}).reduce((acc, [, value]) => {
-        if (value?.open) {
+        if ((value as { open })?.open) {
           acc = acc + 1;
         }
         return acc;
@@ -88,7 +87,7 @@ const ProductsFilter = ({
     isLoading: isLoadingCollections,
   } = useAdminCollections(collectionsPagination);
 
-  const { product_tags } = useAdminProductTags();
+  // const { product_tags } = useAdminProductTags();
 
   const handlePaginateCollections = (direction) => {
     if (direction > 0) {
@@ -130,14 +129,19 @@ const ProductsFilter = ({
         }
       >
         <FilterDropdownItem
-          filterTitle="Status"
+          filterTitle="Category"
           options={statusFilters}
           filters={tempState.status.filter}
           open={tempState.status.open}
           setFilter={(v) => setSingleFilter("status", v)}
+          isLoading={undefined}
+          hasMore={undefined}
+          hasPrev={undefined}
+          onShowNext={undefined}
+          onShowPrev={undefined}
         />
         <FilterDropdownItem
-          filterTitle="Collection"
+          filterTitle="Brand"
           options={
             collections?.map((c) => ({ value: c.id, label: c.title })) || []
           }
@@ -153,7 +157,7 @@ const ProductsFilter = ({
           open={tempState.collection.open}
           setFilter={(v) => setSingleFilter("collection", v)}
         />
-        <div className="flex flex-col w-full pb-2">
+        {/* <div className="flex flex-col w-full pb-2">
           <div
             className="flex w-full items-center px-3 mb-1 py-1.5 hover:bg-grey-5 rounded cursor-pointer"
             onClick={() => {
@@ -222,14 +226,14 @@ const ProductsFilter = ({
               />
             </div>
           )}
-        </div>
-        <SaveFilterItem
+        </div> */}
+        {/* <SaveFilterItem
           saveFilter={handleSaveTab}
           name={name}
           setName={setName}
-        />
+        /> */}
       </FilterDropdownContainer>
-      {tabs &&
+      {/* {tabs &&
         tabs.map((t) => (
           <TabFilter
             key={t.value}
@@ -239,7 +243,7 @@ const ProductsFilter = ({
             removable={!!t.removable}
             onRemove={() => handleRemoveTab(t.value)}
           />
-        ))}
+        ))} */}
     </div>
   );
 };

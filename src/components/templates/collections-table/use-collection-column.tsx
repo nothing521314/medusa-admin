@@ -1,9 +1,11 @@
+import { ProductCollection } from "@medusajs/medusa";
 import moment from "moment";
 import React, { useMemo } from "react";
+import { Column } from "react-table";
 import Tooltip from "../../atoms/tooltip";
 
 const useCollectionTableColumn = () => {
-  const columns = useMemo(
+  const columns: Column<ProductCollection>[] = useMemo(
     () => [
       {
         Header: "Title",

@@ -1,6 +1,6 @@
 import { omit } from "lodash";
 import qs from "qs";
-import { useMemo, useReducer, useState } from "react";
+import { useCallback, useMemo, useReducer, useState } from "react";
 import { relativeDateFormatToTimestamp } from "../../../utils/time";
 
 type ProductDateFilter = null | {
@@ -21,6 +21,7 @@ type ProductFilterAction =
   | { type: "setLimit"; payload: number };
 
 interface ProductFilterState {
+  payment?: { open: boolean; filter: string };
   query?: string | null;
   status: {
     open: boolean;
@@ -181,42 +182,50 @@ export const useProductFilters = (
   const [state, dispatch] = useReducer(reducer, initial);
   const [tabs, setTabs] = useState(initialTabs);
 
-  const setDateFilter = (filter: ProductDateFilter | null) => {
+  const setDateFilter = useCallback((filter: ProductDateFilter | null) => {
     dispatch({ type: "setDate", payload: filter });
-  };
+  }, []);
 
-  const setFulfillmentFilter = (filter: string[] | string | null) => {
-    dispatch({ type: "setFulfillment", payload: filter });
-  };
+  const setFulfillmentFilter = useCallback(
+    (filter: string[] | string | null) => {
+      dispatch({ type: "setFulfillment", payload: filter });
+    },
+    []
+  );
 
-  const setPaymentFilter = (filter: string[] | string | null) => {
+  const setPaymentFilter = useCallback((filter: string[] | string | null) => {
     dispatch({ type: "setPayment", payload: filter });
-  };
+  }, []);
 
-  const setStatusFilter = (filter: string[] | string | null) => {
+  const setStatusFilter = useCallback((filter: string[] | string | null) => {
     dispatch({ type: "setStatus", payload: filter });
-  };
+  }, []);
 
-  const setDefaultFilters = (filters: ProductDefaultFilters | null) => {
-    dispatch({ type: "setDefaults", payload: filters });
-  };
+  const setDefaultFilters = useCallback(
+    (filters: ProductDefaultFilters | null) => {
+      dispatch({ type: "setDefaults", payload: filters });
+    },
+    []
+  );
 
-  const setLimit = (limit: number) => {
+  const setLimit = useCallback((limit: number) => {
     dispatch({ type: "setLimit", payload: limit });
-  };
+  }, []);
 
-  const paginate = (direction: 1 | -1) => {
-    if (direction > 0) {
-      const nextOffset = state.offset + state.limit;
+  const paginate = useCallback(
+    (direction: 1 | -1) => {
+      if (direction > 0) {
+        const nextOffset = state.offset + state.limit;
 
-      dispatch({ type: "setOffset", payload: nextOffset });
-    } else {
-      const nextOffset = Math.max(state.offset - state.limit, 0);
-      dispatch({ type: "setOffset", payload: nextOffset });
-    }
-  };
-
-  const reset = () => {
+        dispatch({ type: "setOffset", payload: nextOffset });
+      } else {
+        const nextOffset = Math.max(state.offset - state.limit, 0);
+        dispatch({ type: "setOffset", payload: nextOffset });
+      }
+    },
+    [state.limit, state.offset]
+  );
+  const reset = useCallback(() => {
     dispatch({
       type: "setFilters",
       payload: {
@@ -241,17 +250,17 @@ export const useProductFilters = (
         query: null,
       },
     });
-  };
+  }, [state]);
 
-  const setFilters = (filters: ProductFilterState) => {
+  const setFilters = useCallback((filters: ProductFilterState) => {
     dispatch({ type: "setFilters", payload: filters });
-  };
+  }, []);
 
-  const setQuery = (queryString: string | null) => {
+  const setQuery = useCallback((queryString: string | null) => {
     dispatch({ type: "setQuery", payload: queryString });
-  };
+  }, []);
 
-  const getQueryObject = () => {
+  const getQueryObject = useCallback(() => {
     const toQuery: any = { ...state.additionalFilters };
     for (const [key, value] of Object.entries(state)) {
       if (key === "query") {
@@ -272,44 +281,43 @@ export const useProductFilters = (
     }
 
     return toQuery;
-  };
+  }, [state]);
 
-  const getQueryString = () => {
+  const getQueryString = useCallback(() => {
     const obj = getQueryObject();
     return qs.stringify(obj, { skipNulls: true });
-  };
+  }, [getQueryObject]);
 
-  const getRepresentationObject = (fromObject?: ProductFilterState) => {
-    const objToUse = fromObject ?? state;
+  const getRepresentationObject = useCallback(
+    (fromObject?: ProductFilterState) => {
+      const objToUse = fromObject ?? state;
 
-    const toQuery: any = {};
-    for (const [key, value] of Object.entries(objToUse)) {
-      if (key === "query") {
-        if (value && typeof value === "string") {
-          toQuery["q"] = value;
+      const toQuery: any = {};
+      for (const [key, value] of Object.entries(objToUse)) {
+        if (key === "query") {
+          if (value && typeof value === "string") {
+            toQuery["q"] = value;
+          }
+        } else if (key === "offset" || key === "limit") {
+          toQuery[key] = value;
+        } else if (value.open) {
+          toQuery[stateFilterMap[key]] = value.filter;
         }
-      } else if (key === "offset" || key === "limit") {
-        toQuery[key] = value;
-      } else if (value.open) {
-        toQuery[stateFilterMap[key]] = value.filter;
       }
-    }
 
-    return toQuery;
-  };
+      return toQuery;
+    },
+    [state]
+  );
 
-  const getRepresentationString = () => {
+  const queryObject = useMemo(() => getQueryObject(), [getQueryObject]);
+  const representationObject = useMemo(() => getRepresentationObject(), [
+    getRepresentationObject,
+  ]);
+  const representationString = useMemo(() => {
     const obj = getRepresentationObject();
     return qs.stringify(obj, { skipNulls: true });
-  };
-
-  const queryObject = useMemo(() => getQueryObject(), [state]);
-  const representationObject = useMemo(() => getRepresentationObject(), [
-    state,
-  ]);
-  const representationString = useMemo(() => getRepresentationString(), [
-    state,
-  ]);
+  }, [getRepresentationObject]);
 
   const activeFilterTab = useMemo(() => {
     const clean = omit(representationObject, ["limit", "offset"]);
@@ -356,101 +364,99 @@ export const useProductFilters = (
   }, [representationObject, tabs]);
 
   const availableTabs = useMemo(() => {
-    return [
-      {
-        label: "Unpublished",
-        value: "drafts",
-      },
-      ...tabs,
-    ];
+    return [...tabs];
   }, [tabs]);
 
-  const setTab = (tabName: string) => {
-    let tabToUse: object | null = null;
-    if (tabName in DefaultTabs) {
-      tabToUse = DefaultTabs[tabName];
-    } else {
-      const tabFound = tabs.find((t) => t.value === tabName);
-      if (tabFound) {
-        tabToUse = qs.parse(tabFound.representationString);
+  const setTab = useCallback(
+    (tabName: string) => {
+      let tabToUse: object | null = null;
+      if (tabName in DefaultTabs) {
+        tabToUse = DefaultTabs[tabName];
+      } else {
+        const tabFound = tabs.find((t) => t.value === tabName);
+        if (tabFound) {
+          tabToUse = qs.parse(tabFound.representationString as string);
+        }
       }
-    }
 
-    if (tabToUse) {
-      const toSubmit = {
-        ...state,
-        date: {
-          open: false,
-          filter: null,
-        },
-        status: {
-          open: false,
-          filter: null,
-        },
-        tags: {
-          open: false,
-          filter: null,
-        },
-        collection: {
-          open: false,
-          filter: null,
-        },
-      };
-
-      for (const [filter, val] of Object.entries(tabToUse)) {
-        toSubmit[filterStateMap[filter]] = {
-          open: true,
-          filter: val,
+      if (tabToUse) {
+        const toSubmit = {
+          ...state,
+          date: {
+            open: false,
+            filter: null,
+          },
+          status: {
+            open: false,
+            filter: null,
+          },
+          tags: {
+            open: false,
+            filter: null,
+          },
+          collection: {
+            open: false,
+            filter: null,
+          },
         };
+
+        for (const [filter, val] of Object.entries(tabToUse)) {
+          toSubmit[filterStateMap[filter]] = {
+            open: true,
+            filter: val,
+          };
+        }
+        dispatch({ type: "setFilters", payload: toSubmit });
       }
-      dispatch({ type: "setFilters", payload: toSubmit });
-    }
-  };
+    },
+    [state, tabs]
+  );
+  const saveTab = useCallback(
+    (tabName: string, filters: ProductFilterState) => {
+      const repObj = getRepresentationObject({ ...filters });
+      const clean = omit(repObj, ["limit", "offset"]);
+      const repString = qs.stringify(clean, { skipNulls: true });
 
-  const saveTab = (tabName: string, filters: ProductFilterState) => {
-    const repObj = getRepresentationObject({ ...filters });
-    const clean = omit(repObj, ["limit", "offset"]);
-    const repString = qs.stringify(clean, { skipNulls: true });
+      const storedString = localStorage.getItem("products::filters");
 
-    const storedString = localStorage.getItem("products::filters");
+      let existing: null | object = null;
 
-    let existing: null | object = null;
-
-    if (storedString) {
-      existing = JSON.parse(storedString);
-    }
-
-    if (existing) {
-      existing[tabName] = repString;
-      localStorage.setItem("products::filters", JSON.stringify(existing));
-    } else {
-      const newFilters = {};
-      newFilters[tabName] = repString;
-      localStorage.setItem("products::filters", JSON.stringify(newFilters));
-    }
-
-    setTabs((prev) => {
-      const duplicate = prev.findIndex(
-        (prev) => prev.label?.toLowerCase() === tabName.toLowerCase()
-      );
-      if (duplicate !== -1) {
-        prev.splice(duplicate, 1);
+      if (storedString) {
+        existing = JSON.parse(storedString);
       }
-      return [
-        ...prev,
-        {
-          label: tabName,
-          value: tabName,
-          representationString: repString,
-          removable: true,
-        },
-      ];
-    });
 
-    dispatch({ type: "setFilters", payload: filters });
-  };
+      if (existing) {
+        existing[tabName] = repString;
+        localStorage.setItem("products::filters", JSON.stringify(existing));
+      } else {
+        const newFilters = {};
+        newFilters[tabName] = repString;
+        localStorage.setItem("products::filters", JSON.stringify(newFilters));
+      }
 
-  const removeTab = (tabValue: string) => {
+      setTabs((prev) => {
+        const duplicate = prev.findIndex(
+          (prev) => prev.label?.toLowerCase() === tabName.toLowerCase()
+        );
+        if (duplicate !== -1) {
+          prev.splice(duplicate, 1);
+        }
+        return [
+          ...prev,
+          {
+            label: tabName,
+            value: tabName,
+            representationString: repString,
+            removable: true,
+          },
+        ];
+      });
+
+      dispatch({ type: "setFilters", payload: filters });
+    },
+    [getRepresentationObject]
+  );
+  const removeTab = useCallback((tabValue: string) => {
     const storedString = localStorage.getItem("products::filters");
 
     let existing: null | object = null;
@@ -468,7 +474,7 @@ export const useProductFilters = (
       const newTabs = prev.filter((p) => p.value !== tabValue);
       return newTabs;
     });
-  };
+  }, []);
 
   return {
     ...state,
@@ -565,7 +571,7 @@ const parseQueryString = (
             if (typeof value === "string" || Array.isArray(value)) {
               defaultVal.status = {
                 open: true,
-                filter: value,
+                filter: value as string,
               };
             }
             break;
@@ -574,7 +580,7 @@ const parseQueryString = (
             if (typeof value === "string" || Array.isArray(value)) {
               defaultVal.collection = {
                 open: true,
-                filter: value,
+                filter: value as string,
               };
             }
             break;
@@ -583,7 +589,7 @@ const parseQueryString = (
             if (typeof value === "string" || Array.isArray(value)) {
               defaultVal.payment = {
                 open: true,
-                filter: value,
+                filter: value as string,
               };
             }
             break;
@@ -591,7 +597,7 @@ const parseQueryString = (
           case "created_at": {
             defaultVal.date = {
               open: true,
-              filter: value,
+              filter: value as ProductDateFilter,
             };
             break;
           }

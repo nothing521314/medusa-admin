@@ -1,5 +1,5 @@
 import { useAdminCollections } from "../../../../medusa-react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePagination, useTable } from "react-table";
 import { useDebounce } from "../../../hooks/use-debounce";
 import Spinner from "../../atoms/spinner";
@@ -18,7 +18,6 @@ const CollectionsTable: React.FC = () => {
   const limit = DEFAULT_PAGE_SIZE;
 
   const [query, setQuery] = useState("");
-  const [numPages, setNumPages] = useState(0);
 
   const debouncedSearchTerm = useDebounce(query, 500);
   const { collections, isLoading, isRefetching, count } = useAdminCollections({
@@ -27,12 +26,12 @@ const CollectionsTable: React.FC = () => {
     limit,
   });
 
-  useEffect(() => {
+  const numPages = useMemo(() => {
     if (typeof count !== "undefined") {
-      const controlledPageCount = Math.ceil(count / limit);
-      setNumPages(controlledPageCount);
+      return Math.ceil(count / limit);
     }
-  }, [count]);
+    return 0;
+  }, [count, limit]);
 
   const [columns] = useCollectionTableColumn();
 
@@ -64,24 +63,24 @@ const CollectionsTable: React.FC = () => {
     usePagination
   );
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (canNextPage) {
       setOffset(offset + limit);
       nextPage();
     }
-  };
+  }, [canNextPage, limit, nextPage, offset]);
 
-  const handleSearch = (q) => {
+  const handleSearch = useCallback((q) => {
     setOffset(0);
     setQuery(q);
-  };
+  }, []);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (canPreviousPage) {
       setOffset(offset - limit);
       previousPage();
     }
-  };
+  }, [canPreviousPage, limit, offset, previousPage]);
 
   useEffect(() => {
     setFilteringOptions([
