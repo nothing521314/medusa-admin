@@ -5,7 +5,7 @@ import Button from "../fundamentals/button";
 import Actionables, { ActionType } from "../molecules/actionables";
 
 type BodyCardProps = {
-  title?: string | JSX.Element | React.ReactNode;
+  title?: string | React.ReactNode;
   subtitle?: string;
   events?: {
     label: string;

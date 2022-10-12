@@ -14,10 +14,10 @@ type Props = {
 };
 
 const CustomerDialog = ({ open, onClose, handleSelectCustomer }: Props) => {
-  const [customerList, setCustomerList] = useState([]);
+  const [customerList, setCustomerList] = useState<Customer[]>([]);
   const [query, setQuery] = useState<string>("");
   const debounceQuery = useDebounce(query, 200);
-  const responseApi = useAdminCustomers({
+  const { customers } = useAdminCustomers({
     q: debounceQuery,
     offset: 0,
     limit: 50,
@@ -35,10 +35,10 @@ const CustomerDialog = ({ open, onClose, handleSelectCustomer }: Props) => {
   );
 
   useEffect(() => {
-    if (responseApi?.response?.status === 200) {
-      setCustomerList(responseApi.customers);
+    if (customers) {
+      setCustomerList(customers);
     }
-  }, [responseApi, responseApi.customers, responseApi.status]);
+  }, []);
 
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
