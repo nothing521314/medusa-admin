@@ -1,169 +1,127 @@
-import { Product, SalesChannel } from "@medusa-types";
-import React from "react";
-import Badge from "../../../../../components/fundamentals/badge";
-import FeatureToggle from "../../../../../components/fundamentals/feature-toggle";
-import ChannelsIcon from "../../../../../components/fundamentals/icons/channels-icon";
-import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
-import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon";
-import { ActionType } from "../../../../../components/molecules/actionables";
-import SalesChannelsDisplay from "../../../../../components/molecules/sales-channels-display";
-import StatusSelector from "../../../../../components/molecules/status-selector";
-import Section from "../../../../../components/organisms/section";
-import { useFeatureFlag } from "../../../../../context/feature-flag";
-import useToggleState from "../../../../../hooks/use-toggle-state";
+import { Product } from "@medusa-types";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Section from "src/components/organisms/section";
+import Button from "../../../../../components/fundamentals/button";
+import Modal from "../../../../../components/molecules/modal";
+import { nestedForm } from "../../../../../utils/nested-form";
+import DiscountableForm, {
+  DiscountableFormType,
+} from "../../../components/discountable-form";
+import GeneralForm, { GeneralFormType } from "../../../components/general-form";
+import OrganizeForm, {
+  OrganizeFormType,
+} from "../../../components/organize-form";
 import useEditProductActions from "../../hooks/use-edit-product-actions";
-import ChannelsModal from "./channels-modal";
-import GeneralModal from "./general-modal";
 
 type Props = {
   product: Product;
 };
 
-const GeneralSection = ({ product }: Props) => {
-  const { onDelete, onStatusChange } = useEditProductActions(product.id);
+type GeneralForm = {
+  general: GeneralFormType;
+  organize: OrganizeFormType;
+  discountable: DiscountableFormType;
+};
+
+const GeneralModal = ({ product }: Props) => {
+  const { onUpdate, updating } = useEditProductActions(product.id);
+  const form = useForm<GeneralForm>({
+    defaultValues: getDefaultValues(product),
+  });
+
   const {
-    state: infoState,
-    close: closeInfo,
-    toggle: toggleInfo,
-  } = useToggleState();
+    formState: { isDirty },
+    handleSubmit,
+    reset,
+  } = form;
 
-  const {
-    state: channelsState,
-    close: closeChannels,
-    toggle: toggleChannels,
-  } = useToggleState(false);
+  useEffect(() => {
+    reset(getDefaultValues(product));
+  }, [product]);
 
-  const { isFeatureEnabled } = useFeatureFlag();
+  const onReset = () => {
+    reset(getDefaultValues(product));
+  };
 
-  const actions: ActionType[] = [
-    {
-      label: "Edit General Information",
-      onClick: toggleInfo,
-      icon: <EditIcon size={20} />,
+  const onSubmit = handleSubmit((data) => {
+    onUpdate(
+      {
+        title: data.general.title,
+        handle: data.general.handle,
+        // @ts-ignore
+        material: data.general.material,
+        // @ts-ignore
+        subtitle: data.general.subtitle,
+        // @ts-ignore
+        description: data.general.description,
+        // @ts-ignore
+        type: data.organize.type
+          ? {
+              id: data.organize.type.value,
+              value: data.organize.type.label,
+            }
+          : null,
+        // @ts-ignore
+        collection_id: data.organize.collection
+          ? data.organize.collection.value
+          : null,
+        // @ts-ignore
+        tags: data.organize.tags
+          ? data.organize.tags.map((t) => ({ value: t }))
+          : null,
+        discountable: data.discountable.value,
+      },
+      onReset
+    );
+  });
+
+  return (
+    <Section title="General">
+      <form onSubmit={onSubmit}>
+        <div className="my-large">
+          <GeneralForm form={nestedForm(form, "general")} />
+        </div>
+        {/* <div className="my-large">
+          <h2 className="inter-base-semibold mb-base">Organize Product</h2>
+          <OrganizeForm form={nestedForm(form, "organize")} />
+        </div> */}
+        {/* <DiscountableForm form={nestedForm(form, "discountable")} /> */}
+      </form>
+    </Section>
+  );
+};
+
+const getDefaultValues = (product: Product): GeneralForm => {
+  return {
+    general: {
+      ...product,
+      title: product.title,
+      subtitle: product.subtitle,
+      material: product.material,
+      handle: product.handle!,
+      description: product.description || null,
+      collection: product.collection
+        ? { label: product.collection.title, value: product.collection.id }
+        : null,
+      weight: product.weight ?? 100,
+      width: product.width ?? 200,
+      height: product.height ?? 500,
+      deliveryTime: '12-16 days'
     },
-    {
-      label: "Delete",
-      onClick: onDelete,
-      variant: "danger",
-      icon: <TrashIcon size={20} />,
+    organize: {
+      collection: product.collection
+        ? { label: product.collection.title, value: product.collection.id }
+        : null,
+      type: product.type
+        ? { label: product.type.value, value: product.type.id }
+        : null,
+      tags: product.tags ? product.tags.map((t) => t.value) : null,
     },
-  ];
-
-  if (isFeatureEnabled("sales_channels")) {
-    actions.splice(1, 0, {
-      label: "Edit Sales Channels",
-      onClick: toggleChannels,
-      icon: <ChannelsIcon size={20} />,
-    });
-  }
-
-  return (
-    <>
-      <Section
-        title={product.title}
-        actions={actions}
-        forceDropdown
-        status={
-          <StatusSelector
-            isDraft={product?.status === "draft"}
-            activeState="Published"
-            draftState="Draft"
-            onChange={() => onStatusChange(product.status)}
-          />
-        }
-      >
-        <p className="inter-base-regular text-grey-50 mt-2">
-          {product.description}
-        </p>
-        <ProductTags product={product} />
-        <ProductDetails product={product} />
-        <ProductSalesChannels product={product} />
-      </Section>
-
-      <GeneralModal product={product} open={infoState} onClose={closeInfo} />
-
-      <FeatureToggle featureFlag="sales_channels">
-        <ChannelsModal
-          product={product}
-          open={channelsState}
-          onClose={closeChannels}
-        />
-      </FeatureToggle>
-    </>
-  );
+    discountable: {
+      value: product.discountable,
+    },
+  };
 };
 
-type DetailProps = {
-  title: string;
-  value?: string | null;
-};
-
-const Detail = ({ title, value }: DetailProps) => {
-  return (
-    <div className="flex justify-between items-center inter-base-regular text-grey-50">
-      <p>{title}</p>
-      <p>{value ? value : "–"}</p>
-    </div>
-  );
-};
-
-const ProductDetails = ({ product }: Props) => {
-  return (
-    <div className="flex flex-col gap-y-3 mt-8">
-      <h2 className="inter-base-semibold">Details</h2>
-      <Detail title="Subtitle" value={product.subtitle} />
-      <Detail title="Handle" value={product.handle} />
-      <Detail title="Type" value={product.type?.value} />
-      <Detail title="Collection" value={product.collection?.title} />
-      <Detail
-        title="Discountable"
-        value={product.discountable ? "True" : "False"}
-      />
-    </div>
-  );
-};
-
-const ProductTags = ({ product }: Props) => {
-  if (product.tags?.length === 0) {
-    return null;
-  }
-
-  return (
-    <ul className="flex items-center gap-x-1 mt-4">
-      {product.tags.map((t) => (
-        <li key={t.id}>
-          <div className="text-grey-50 bg-grey-10 inter-small-semibold px-3 py-[6px] rounded-rounded">
-            {t.value}
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-type SalesChannelBadgeProps = {
-  channel: SalesChannel;
-};
-
-const SalesChannelBadge: React.FC<SalesChannelBadgeProps> = ({ channel }) => {
-  return (
-    <Badge variant="ghost" className="px-3 py-1.5">
-      <div className="flex items-center">
-        <span className="inter-small-regular text-grey-90">{channel.name}</span>
-      </div>
-    </Badge>
-  );
-};
-
-const ProductSalesChannels = ({ product }: Props) => {
-  return (
-    <FeatureToggle featureFlag="sales_channels">
-      <div className="mt-xlarge">
-        <h2 className="inter-base-semibold mb-xsmall">Sales channels</h2>
-        <SalesChannelsDisplay channels={product.sales_channels} />
-      </div>
-    </FeatureToggle>
-  );
-};
-
-export default GeneralSection;
+export default GeneralModal;

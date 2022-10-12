@@ -61,7 +61,7 @@ const Sidebar: React.FC = () => {
             triggerHandler={triggerHandler}
             text={"Discounts"}
           />
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             pageLink={"/a/gift-cards"}
             icon={<GiftIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
@@ -78,7 +78,7 @@ const Sidebar: React.FC = () => {
             icon={<GearIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
             text={"Settings"}
-          />
+          /> */}
         </div>
 
         {/* <div className="font-semibold mt-5 flex flex-col text-small">

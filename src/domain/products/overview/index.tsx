@@ -26,11 +26,11 @@ const Overview: React.FC<RouteComponentProps> = () => {
   const [view, setView] = useState("products");
   const [showNewCollection, setShowNewCollection] = useState(false);
 
-  const {
-    state: createProductState,
-    close: closeProductCreate,
-    open: openProductCreate,
-  } = useToggleState();
+  // const {
+  //   state: createProductState,
+  //   close: closeProductCreate,
+  //   open: openProductCreate,
+  // } = useToggleState();
 
   const createBatchJob = useAdminCreateBatchJob();
 
@@ -81,7 +81,7 @@ const Overview: React.FC<RouteComponentProps> = () => {
             <Button
               variant="secondary"
               size="small"
-              onClick={openProductCreate}
+              onClick={() =>  navigate("/a/products/create")}
             >
               <PlusIcon size={20} />
               New Product
@@ -102,7 +102,7 @@ const Overview: React.FC<RouteComponentProps> = () => {
           </div>
         );
     }
-  }, [openProductCreate, showNewCollection, view]);
+  }, [ showNewCollection, view]);
 
   const {
     // open: openExportModal,
@@ -194,9 +194,7 @@ const Overview: React.FC<RouteComponentProps> = () => {
       {importModalOpen && (
         <ImportProducts handleClose={() => closeImportModal()} />
       )}
-      <Fade isVisible={createProductState} isFullScreen={true}>
-        <NewProduct onClose={closeProductCreate} />
-      </Fade>
+     
     </>
   );
 };

@@ -78,27 +78,8 @@ const MediaForm = ({ form }: Props) => {
 
   return (
     <div>
-      <div>
-        <div>
-          <FileUploadField
-            onFileChosen={handleFilesChosen}
-            placeholder="1200 x 1600 (3:4) recommended, up to 10MB each"
-            multiple
-            filetypes={["image/gif", "image/jpeg", "image/png", "image/webp"]}
-            className="py-large"
-          />
-        </div>
-      </div>
       {fields.length > 0 && (
-        <div className="mt-large">
-          <div className="mb-small flex items-center justify-between">
-            <h2 className="inter-large-semibold">Uploads</h2>
-            <ModalActions
-              number={selected.length}
-              onDeselect={handleDeselect}
-              onRemove={handleRemove}
-            />
-          </div>
+        <div className="mt-3 mb-3">
           <div className="flex flex-col gap-y-2xsmall">
             {fields.map((field, index) => {
               return (
@@ -114,6 +95,25 @@ const MediaForm = ({ form }: Props) => {
           </div>
         </div>
       )}
+      <div className="mb-small flex items-center justify-between">
+        <h2 className="inter-large-semibold">Uploads</h2>
+        <ModalActions
+          number={selected.length}
+          onDeselect={handleDeselect}
+          onRemove={handleRemove}
+        />
+      </div>
+      <div>
+        <div>
+          <FileUploadField
+            onFileChosen={handleFilesChosen}
+            placeholder="1200 x 1600 (3:4) recommended, up to 10MB each"
+            multiple
+            filetypes={["image/gif", "image/jpeg", "image/png", "image/webp"]}
+            className="py-large"
+          />
+        </div>
+      </div>
     </div>
   );
 };
@@ -145,7 +145,7 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
         return (
           <button
             className={clsx(
-              "px-base py-xsmall group hover:bg-grey-5 rounded-rounded flex items-center justify-between",
+              "px-base py-xsmall group hover:bg-grey-5 rounded-rounded flex items-center justify-between border border-gray-30",
               {
                 "bg-grey-5": value,
               }

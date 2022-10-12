@@ -1,17 +1,18 @@
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
+import { useAdminProduct } from "../../../../medusa-react";
 import React from "react";
 import ReactJson from "react-json-view";
-import Button from "src/components/fundamentals/button";
-import { useAdminProduct } from "../../../../medusa-react";
 import BackButton from "../../../components/atoms/back-button";
 import Spinner from "../../../components/atoms/spinner";
 import Section from "../../../components/organisms/section";
 import { getErrorStatus } from "../../../utils/get-error-status";
-import AdditionalHardwares from "./sections/additionalHw";
+import AttributesSection from "./sections/attributes";
 import GeneralSection from "./sections/general";
 import MediaSection from "./sections/media";
-import VariantsSection from "./sections/price";
+import RawSection from "./sections/raw";
+import ThumbnailSection from "./sections/thumbnail";
+import VariantsSection from "./sections/variants";
 
 interface EditProps extends RouteComponentProps {
   id?: string;
@@ -59,8 +60,6 @@ const Edit = ({ id }: EditProps) => {
     );
   }
 
-  console.log("product", JSON.stringify(product));
-
   return (
     <div className="pb-5xlarge">
       <BackButton
@@ -69,29 +68,16 @@ const Edit = ({ id }: EditProps) => {
         className="mb-xsmall"
       />
       <div className="grid grid-cols-12 gap-x-base">
-        <div className="col-span-12 flex flex-col gap-y-xsmall">
-          <MediaSection product={product} />
+        <div className="col-span-8 flex flex-col gap-y-xsmall">
           <GeneralSection product={product} />
           <VariantsSection product={product} />
-          <AdditionalHardwares />
-
-          {/* <AttributesSection product={product} /> */}
-          {/* <RawSection product={product} /> */}
+          <AttributesSection product={product} />
+          <RawSection product={product} />
         </div>
-      </div>
-      <div className="flex flex-row items-center justify-center space-x-10 mt-5">
-        <Button
-          onClick={() => navigate("/a/products")}
-          variant="secondary"
-          size="medium"
-          className="w-[200px]"
-          type="button"
-        >
-          Cancel
-        </Button>
-        <Button variant="primary" size="medium" className="w-[200px]">
-          Save
-        </Button>
+        <div className="flex flex-col col-span-4 gap-y-xsmall">
+          <ThumbnailSection product={product} />
+          <MediaSection product={product} />
+        </div>
       </div>
     </div>
   );

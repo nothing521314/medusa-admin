@@ -3,7 +3,7 @@ import { navigate } from "gatsby";
 import * as React from "react";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import ViewListIcon from "src/components/fundamentals/icons/view-list-icon";
-import { CartContext, useAdminDeleteProduct } from "../../../../medusa-react";
+import { CartContext, useAdminDeleteProduct } from "@medusa-react";
 import useImperativeDialog from "../../../hooks/use-imperative-dialog";
 import TrashIcon from "../../fundamentals/icons/trash-icon";
 import { ActionType } from "../../molecules/actionables";

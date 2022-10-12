@@ -1,100 +1,53 @@
 import { AdminPostProductsReq } from "@medusa-types";
 import { navigate } from "gatsby";
+import { useAdminCreateProduct } from "../../../../medusa-react";
 import React, { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import BackButton from "src/components/atoms/back-button";
-import { useAdminCreateProduct } from "../../../../medusa-react";
 import Button from "../../../components/fundamentals/button";
+import FeatureToggle from "../../../components/fundamentals/feature-toggle";
+import CrossIcon from "../../../components/fundamentals/icons/cross-icon";
+import FocusModal from "../../../components/molecules/modal/focus-modal";
+import Accordion from "../../../components/organisms/accordion";
 import { useFeatureFlag } from "../../../context/feature-flag";
 import useNotification from "../../../hooks/use-notification";
 import { FormImage, ProductStatus } from "../../../types/shared";
 import { getErrorMessage } from "../../../utils/error-messages";
 import { prepareImages } from "../../../utils/images";
-import { CustomsFormType } from "../components/customs-form";
-import
-  {
-    DimensionsFormType
-  } from "../components/dimensions-form";
-import
-  {
-    DiscountableFormType
-  } from "../components/discountable-form";
-import { GeneralFormType } from "../components/general-form";
-import { MediaFormType } from "../components/media-form";
-import { OrganizeFormType } from "../components/organize-form";
+import { nestedForm } from "../../../utils/nested-form";
+import CustomsForm, { CustomsFormType } from "../components/customs-form";
+import DimensionsForm, {
+  DimensionsFormType,
+} from "../components/dimensions-form";
+import DiscountableForm, {
+  DiscountableFormType,
+} from "../components/discountable-form";
+import GeneralForm, { GeneralFormType } from "../components/general-form";
+import MediaForm, { MediaFormType } from "../components/media-form";
+import OrganizeForm, { OrganizeFormType } from "../components/organize-form";
 import { PricesFormType } from "../components/prices-form";
-import { ThumbnailFormType } from "../components/thumbnail-form";
-import AdditionalHardwares from "../edit/sections/additionalHw";
-import GeneralSection from "./../edit/sections/general";
-import MediaSection from "./../edit/sections/media";
-import VariantsSection from "./../edit/sections/price";
+import ThumbnailForm, { ThumbnailFormType } from "../components/thumbnail-form";
+import AddSalesChannelsForm, {
+  AddSalesChannelsFormType,
+} from "./add-sales-channels";
+import AddVariantsForm, { AddVariantsFormType } from "./add-variants";
 
 type NewProductForm = {
   general: GeneralFormType;
   discounted: DiscountableFormType;
   organize: OrganizeFormType;
-  variants: any;
+  variants: AddVariantsFormType;
   customs: CustomsFormType;
   dimensions: DimensionsFormType;
   thumbnail: ThumbnailFormType;
   media: MediaFormType;
-  salesChannels: any;
+  salesChannels: AddSalesChannelsFormType;
 };
 
-type Props = {};
-
-// Draft
-const product = {
-  id: "",
-  created_at: "",
-  updated_at: "",
-  deleted_at: null,
-  title: "",
-  brand: "",
-  dimension: "",
-  delivery_lead_time: null,
-  warranty: "",
-  subtitle: null,
-  description: "",
-  handle: "",
-  is_giftcard: false,
-  status: "",
-  thumbnail: "",
-  profile_id: null,
-  weight: 0,
-  length: null,
-  height: null,
-  width: null,
-  hs_code: null,
-  origin_country: null,
-  mid_code: null,
-  material: null,
-  collection_id: "",
-  type_id: null,
-  discountable: true,
-  external_id: null,
-  metadata: {},
-  variants: [],
-  images: [
-    
-  ],
-  options: [],
-  tags: [],
-  type: null,
-  collection: {
-    id: "",
-    created_at: "",
-    updated_at: "",
-    deleted_at: null,
-    title: "",
-    handle: "",
-    metadata: { fields: "" },
-  },
-  prices: [],
-  additional_hardwares: [],
+type Props = {
+  onClose: () => void;
 };
 
-const NewProduct = ({}: Props) => {
+const NewProduct = ({ onClose }: Props) => {
   const form = useForm<NewProductForm>({
     defaultValues: createBlank(),
   });
@@ -119,6 +72,7 @@ const NewProduct = ({}: Props) => {
 
   const closeAndReset = () => {
     reset(createBlank());
+    onClose();
   };
 
   useEffect(() => {
@@ -197,37 +151,125 @@ const NewProduct = ({}: Props) => {
     });
 
   return (
-    <div className="pb-5xlarge">
-      <BackButton
-        path="/a/products"
-        label="Back to Products"
-        className="mb-xsmall"
-      />
-      <div className="grid grid-cols-12 gap-x-base">
-        <div className="col-span-12 flex flex-col gap-y-xsmall">
-          <MediaSection product={product} />
-          <GeneralSection product={product} />
-          <VariantsSection product={product} />
-          <AdditionalHardwares />
-          {/* <AttributesSection product={product} /> */}
-          {/* <RawSection product={product} /> */}
-        </div>
-      </div>
-      <div className="flex flex-row items-center justify-center space-x-10 mt-5">
-        <Button
-          onClick={() => navigate("/a/products")}
-          variant="secondary"
-          size="medium"
-          className="w-[200px]"
-          type="button"
-        >
-          Cancel
-        </Button>
-        <Button variant="primary" size="medium" className="w-[200px]">
-          Save
-        </Button>
-      </div>
-    </div>
+    <form className="w-full">
+      <FocusModal>
+        <FocusModal.Header>
+          <div className="medium:w-8/12 w-full px-8 flex justify-between">
+            <Button
+              size="small"
+              variant="ghost"
+              type="button"
+              onClick={closeAndReset}
+            >
+              <CrossIcon size={20} />
+            </Button>
+            <div className="gap-x-small flex">
+              <Button
+                size="small"
+                variant="secondary"
+                type="button"
+                disabled={!isDirty}
+                onClick={onSubmit(false)}
+              >
+                Save as draft
+              </Button>
+              <Button
+                size="small"
+                variant="primary"
+                type="button"
+                disabled={!isDirty}
+                onClick={onSubmit(true)}
+              >
+                Publish product
+              </Button>
+            </div>
+          </div>
+        </FocusModal.Header>
+        <FocusModal.Main className="w-full no-scrollbar flex justify-center">
+          <div className="medium:w-7/12 large:w-6/12 small:w-4/5 max-w-[700px] my-16">
+            <Accordion defaultValue={["general"]} type="multiple">
+              <Accordion.Item
+                value={"general"}
+                title="General information"
+                required
+              >
+                <p className="inter-base-regular text-grey-50">
+                  To start selling, all you need is a name and a price.
+                </p>
+                <div className="mt-xlarge flex flex-col gap-y-xlarge">
+                  <GeneralForm
+                    form={nestedForm(form, "general")}
+                    requireHandle={false}
+                  />
+                  <DiscountableForm form={nestedForm(form, "discounted")} />
+                </div>
+              </Accordion.Item>
+              <Accordion.Item title="Organize" value="organize">
+                <p className="inter-base-regular text-grey-50">
+                  To start selling, all you need is a name and a price.
+                </p>
+                <div className="mt-xlarge flex flex-col gap-y-xlarge pb-xsmall">
+                  <div>
+                    <h3 className="inter-base-semibold mb-base">
+                      Organize Product
+                    </h3>
+                    <OrganizeForm form={nestedForm(form, "organize")} />
+                    <FeatureToggle featureFlag="sales_channels">
+                      <div className="mt-xlarge">
+                        <AddSalesChannelsForm
+                          form={nestedForm(form, "salesChannels")}
+                        />
+                      </div>
+                    </FeatureToggle>
+                  </div>
+                </div>
+              </Accordion.Item>
+              <Accordion.Item title="Variants" value="variants">
+                <p className="text-grey-50 inter-base-regular">
+                  Add variations of this product.
+                  <br />
+                  Offer your customers different options for color, format,
+                  size, shape, etc.
+                </p>
+                <div className="mt-large">
+                  <AddVariantsForm
+                    form={nestedForm(form, "variants")}
+                    productCustoms={watchedCustoms}
+                    productDimensions={watchedDimensions}
+                  />
+                </div>
+              </Accordion.Item>
+              <Accordion.Item title="Attributes" value="attributes">
+                <p className="inter-base-regular text-grey-50">
+                  Used for shipping and customs purposes.
+                </p>
+                <div className="my-xlarge">
+                  <h3 className="inter-base-semibold mb-base">Dimensions</h3>
+                  <DimensionsForm form={nestedForm(form, "dimensions")} />
+                </div>
+                <div>
+                  <h3 className="inter-base-semibold mb-base">Customs</h3>
+                  <CustomsForm form={nestedForm(form, "customs")} />
+                </div>
+              </Accordion.Item>
+              <Accordion.Item title="Thumbnail" value="thumbnail">
+                <p className="inter-base-regular text-grey-50 mb-large">
+                  Used to represent your product during checkout, social sharing
+                  and more.
+                </p>
+                <ThumbnailForm form={nestedForm(form, "thumbnail")} />
+              </Accordion.Item>
+              <Accordion.Item title="Media" value="media">
+                <p className="inter-base-regular text-grey-50 mb-large">
+                  Add images to your product.
+                </p>
+                <MediaForm form={nestedForm(form, "media")} />
+              </Accordion.Item>
+            </Accordion>
+          </div>
+        </FocusModal.Main>
+      </FocusModal>
+    </form>
   );
 };
 

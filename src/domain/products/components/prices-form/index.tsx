@@ -52,6 +52,9 @@ const PricesForm = ({ form }: Props) => {
     name: path("prices"),
   });
 
+  console.log('regions', regions)
+  
+
   useEffect(() => {
     if (!regions) {
       return;
@@ -144,19 +147,15 @@ const PricesForm = ({ form }: Props) => {
   }, [fields]);
 
   return (
-    <div>
-      <div>
-        {Object.values(priceObj).map((po) => {
-          return (
-            <NestedPrice
-              form={form}
-              nestedPrice={po}
-              key={po.currencyPrice.id}
-            />
-          );
-        })}
-      </div>
-    </div>
+    Object.values(priceObj).map((po) => {
+      return (
+        <NestedPrice
+          form={form}
+          nestedPrice={po}
+          key={po.currencyPrice.id}
+        />
+      );
+    })
   );
 };
 
