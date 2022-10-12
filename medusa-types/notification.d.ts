@@ -1,4 +1,4 @@
-import { BaseEntity } from "../interfaces/models/base-entity";
+import { BaseEntity } from "./interfaces";
 import { Customer } from "./customer";
 import { NotificationProvider } from "./notification-provider";
 export declare class Notification extends BaseEntity {

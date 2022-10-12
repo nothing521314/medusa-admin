@@ -1,4 +1,4 @@
-import { BaseEntity } from "../interfaces/models/base-entity";
+import { BaseEntity } from "./interfaces";
 import { Cart } from "./cart";
 import { Currency } from "./currency";
 import { Order } from "./order";

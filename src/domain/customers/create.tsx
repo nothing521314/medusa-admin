@@ -3,12 +3,11 @@ import { AdminPostCustomersReq } from "@medusa-types";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../components/fundamentals/button";
-import LockIcon from "../../components/fundamentals/icons/lock-icon";
 import InputField from "../../components/molecules/input";
 import Modal from "../../components/molecules/modal";
 import useNotification from "../../hooks/use-notification";
 import { getErrorMessage } from "../../utils/error-messages";
-import { validateEmail } from "../../utils/validate-email";
+import Validator from "../../utils/validator";
 
 type CreateCustomerModalProps = {
   handleClose: () => void;
@@ -21,9 +20,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
     handleSubmit,
     formState: { isDirty },
   } = useForm<AdminPostCustomersReq>({
-    defaultValues: {
-      person_in_charge: "Mr",
-    },
+    defaultValues: {},
   });
 
   const notification = useNotification();
@@ -31,16 +28,19 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
   const createCustomer = useAdminCreateCustomer({});
 
   const onSubmit = handleSubmit((data) => {
-    createCustomer.mutate(data, {
-      onSuccess: () => {
-        handleClose();
-        notification("Success", "Successfully created customer", "success");
-      },
-      onError: (err) => {
-        handleClose();
-        notification("Error", getErrorMessage(err), "error");
-      },
-    });
+    createCustomer.mutate(
+      { ...data, person_in_charge: "Mr" },
+      {
+        onSuccess: () => {
+          handleClose();
+          notification("Success", "Successfully created customer", "success");
+        },
+        onError: (err) => {
+          handleClose();
+          notification("Error", getErrorMessage(err), "error");
+        },
+      }
+    );
   });
 
   return (
@@ -51,35 +51,37 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
         </Modal.Header>
         <Modal.Content>
           <div className="w-full flex mb-4 space-x-2">
+            <InputField label="Name" {...register("name")} />
             <InputField
-              label="First Name"
-              {...register("name")}
-              placeholder="Lebron"
+              label="Person in charge"
+              {...register("person_in_charge", {
+                required: true,
+              })}
+              placeholder=""
+              prefix={"Mr/Mrs"}
+            />
+          </div>
+          <div className="flex mb-4 space-x-2">
+            <InputField
+              label="Email"
+              {...register("email", {
+                validate: (value) => Validator.email(value),
+              })}
             />
             <InputField
-              label="person_in_charge"
-              {...register("person_in_charge", {})}
-              prefix={<LockIcon size={16} className="text-grey-50" />}
+              label="Phone number"
+              {...register("phone", {
+                required: true,
+                validate: (value) => !!Validator.phone(value),
+              })}
             />
           </div>
           <div className="flex space-x-2">
             <InputField
-              label="Email"
-              {...register("email", {
-                validate: (value) => !!validateEmail(value),
-              })}
-              prefix={<LockIcon size={16} className="text-grey-50" />}
-            />
-            <InputField
               label="Address"
               {...register("address", {
+                required: true,
               })}
-              prefix={<LockIcon size={16} className="text-grey-50" />}
-            />
-            <InputField
-              label="Phone number"
-              {...register("phone")}
-              placeholder="+45 42 42 42 42"
             />
           </div>
         </Modal.Content>

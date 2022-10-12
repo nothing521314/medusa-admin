@@ -1,4 +1,4 @@
-import { BaseEntity } from "../interfaces/models/base-entity";
+import { BaseEntity } from "./interfaces";
 export declare class TaxLine extends BaseEntity {
     rate: number;
     name: string;

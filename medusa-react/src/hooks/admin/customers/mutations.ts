@@ -34,15 +34,9 @@ export const useAdminUpdateCustomer = (
 ) => {
   const { client } = useMedusa();
   const queryClient = useQueryClient();
-  return useMutation(
-    (payload: AdminPostCustomersReq) =>
-      client.admin.customers.update(id, payload),
-    buildOptions(
-      queryClient,
-      [adminCustomerKeys.lists(), adminCustomerKeys.detail(id)],
-      options
-    )
-  );
+  return useMutation((payload: AdminPostCustomersReq) => {
+    return client.admin.customers.update(id, payload);
+  }, buildOptions(queryClient, [adminCustomerKeys.lists(), adminCustomerKeys.detail(id)], options));
 };
 
 export const useAdminDeleteCustomer = (

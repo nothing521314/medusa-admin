@@ -1,5 +1,5 @@
-import { BaseEntity } from "../interfaces/models/base-entity";
 import { Cart } from "./cart";
+import { BaseEntity } from "./interfaces";
 import { Order } from "./order";
 export declare enum DraftOrderStatus {
     OPEN = "open",

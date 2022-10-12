@@ -1,4 +1,4 @@
-import { BaseEntity } from "../interfaces/models/base-entity";
+import { BaseEntity } from "./interfaces";
 import { Product } from "./product";
 import { ProductType } from "./product-type";
 import { Region } from "./region";

@@ -46,5 +46,5 @@ export const useAdminCustomer = (
     () => client.admin.customers.retrieve(id),
     options
   );
-  return { ...data, ...rest } as const;
+  return { ...data, ...rest } ;
 };

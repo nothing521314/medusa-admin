@@ -1,4 +1,4 @@
-import { BaseEntity } from "../interfaces/models/base-entity";
+import { BaseEntity } from "./interfaces";
 import { ClaimOrder } from "./claim-order";
 import { FulfillmentItem } from "./fulfillment-item";
 import { FulfillmentProvider } from "./fulfillment-provider";

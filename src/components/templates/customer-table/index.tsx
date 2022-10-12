@@ -156,7 +156,7 @@ const CustomerTable: React.FC<RouteComponentProps> = () => {
                   actions={[
                     {
                       label: "Edit",
-                      onClick: () => navigate(row.original.id),
+                      onClick: () => navigate(String(row.original.id)),
                       icon: <EditIcon size={20} />,
                     },
                     // {
@@ -167,7 +167,8 @@ const CustomerTable: React.FC<RouteComponentProps> = () => {
                     {
                       label: "Delete",
                       variant: "danger",
-                      onClick: () => handleDelete(row.id),
+                      onClick: () =>
+                        row.original.id && handleDelete(row.original.id),
                       icon: <TrashIcon size={20} />,
                     },
                   ]}

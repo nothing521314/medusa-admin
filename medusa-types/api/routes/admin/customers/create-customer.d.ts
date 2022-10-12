@@ -1,3 +1,5 @@
+import { Customer } from "@medusa-types";
+
 /**
  * @oas [post] /customers
  * operationId: "PostCustomers"
@@ -91,11 +93,11 @@
  */
 declare const _default: (req: any, res: any) => Promise<void>;
 export default _default;
-export declare class AdminPostCustomersReq {
-  email: string;
-  name: string;
-  phone: string;
-  person_in_charge: string;
-  address: string;
-  metadata?: Record<string, unknown>;
+export declare class AdminPostCustomersReq extends Customer {
+  // email: string;
+  // name: string;
+  // phone: string;
+  // person_in_charge: string;
+  // address: string;
+  // metadata?: Record<string, unknown>;
 }

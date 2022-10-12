@@ -1,4 +1,4 @@
-import { BaseEntity } from "../interfaces/models/base-entity";
+import { BaseEntity } from "./interfaces";
 import { Currency } from "./currency";
 import { SalesChannel } from "./sales-channel";
 export declare class Store extends BaseEntity {

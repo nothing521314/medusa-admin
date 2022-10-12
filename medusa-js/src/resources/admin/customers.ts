@@ -42,8 +42,8 @@ class AdminCustomersResource extends BaseResource {
    *
    */
   delete(id: string): ResponsePromise<AdminCustomersRes> {
-    const path = `/admin/customers/${id}`;
-    return this.client.request("DELETE", path, {}, {}, {});
+    const path = `/admin/customers/${id}/delete`;
+    return this.client.request("POST", path, {}, {}, {});
   }
 
   /**

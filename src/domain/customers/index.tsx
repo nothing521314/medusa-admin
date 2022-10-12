@@ -5,7 +5,7 @@ import Button from "../../components/fundamentals/button";
 import BodyCard from "../../components/organisms/body-card";
 import CustomerTable from "../../components/templates/customer-table";
 import CreateCustomerModal from "./create";
-import Details from "./details/index";
+import Details from "./details";
 import CustomerGroups from "./groups";
 import CustomersPageTableHeader from "./header";
 

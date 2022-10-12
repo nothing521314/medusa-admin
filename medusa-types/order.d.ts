@@ -1,5 +1,4 @@
 import { Address } from "./address";
-import { BaseEntity } from "../interfaces/models/base-entity";
 import { Cart } from "./cart";
 import { ClaimOrder } from "./claim-order";
 import { Currency } from "./currency";
@@ -18,6 +17,7 @@ import { SalesChannel } from "./sales-channel";
 import { ShippingMethod } from "./shipping-method";
 import { Swap } from "./swap";
 import { OrderEdit } from "./order-edit";
+import { BaseEntity } from "./interfaces";
 export declare enum OrderStatus {
     PENDING = "pending",
     COMPLETED = "completed",

@@ -1,4 +1,4 @@
-import { BaseEntity } from "../interfaces/models/base-entity";
+import { BaseEntity } from "./interfaces";
 import { Order } from "./order";
 export declare enum RefundReason {
     DISCOUNT = "discount",
