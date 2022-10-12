@@ -19,7 +19,7 @@ import { getErrorMessage } from "../../../utils/error-messages";
 import ImportProducts from "../batch-job/import";
 import NewProduct from "../new";
 
-const VIEWS = ["products", "collections"];
+const VIEWS = ["products"];
 
 const Overview: React.FC<RouteComponentProps> = () => {
   const location = useLocation();

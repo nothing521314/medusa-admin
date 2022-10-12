@@ -85,33 +85,47 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         },
       },
       {
-        Header: "Collection",
-        accessor: "collection", // accessor is the "key" in the data
+        Header: "Description",
+        accessor: "description", // accessor is the "key" in the data
         Cell: ({ cell: { value } }) => {
-          return <div>{value?.title || "-"}</div>;
+          return <div>{value || "-"}</div>;
         },
       },
       {
-        Header: "Status",
-        accessor: "status",
-        Cell: ({ cell: { value } }) => getProductStatus(value),
+        Header: "Prices",
+        accessor: "prices", // accessor is the "key" in the data
+        Cell: ({ cell: { value } }) => {
+          return <div>{value?.[0]?.price ? `$${value?.[0]?.price}` : "-"}</div>;
+        },
       },
-      {
-        Header: "Availability",
-        accessor: "sales_channels",
-        Cell: ({ cell: { value } }) => getProductSalesChannels(value),
-      },
-      {
-        Header: "Inventory",
-        accessor: "variants",
-        Cell: ({ cell: { value } }) => (
-          <div>
-            {value.reduce((acc, next) => acc + next.inventory_quantity, 0)}
-            {" in stock for "}
-            {value.length} variant(s)
-          </div>
-        ),
-      },
+      // {
+      //   Header: "Collection",
+      //   accessor: "collection", // accessor is the "key" in the data
+      //   Cell: ({ cell: { value } }) => {
+      //     return <div>{value?.title || "-"}</div>;
+      //   },
+      // },
+      // {
+      //   Header: "Status",
+      //   accessor: "status",
+      //   Cell: ({ cell: { value } }) => getProductStatus(value),
+      // },
+      // {
+      //   Header: "Availability",
+      //   accessor: "sales_channels",
+      //   Cell: ({ cell: { value } }) => getProductSalesChannels(value),
+      // },
+      // {
+      //   Header: "Inventory",
+      //   accessor: "variants",
+      //   Cell: ({ cell: { value } }) => (
+      //     <div>
+      //       {value.reduce((acc, next) => acc + next.inventory_quantity, 0)}
+      //       {" in stock for "}
+      //       {value.length} variant(s)
+      //     </div>
+      //   ),
+      // },
       {
         accessor: "width",
         Header: (

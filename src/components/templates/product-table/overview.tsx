@@ -47,7 +47,7 @@ const ProductOverview = ({
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,5fr))] gap-4">
+      <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(250px,5fr))] gap-4">
         {products.map((product) => (
           <ProductTile product={product} />
         ))}
@@ -58,9 +58,10 @@ const ProductOverview = ({
 
 const ProductTile = ({ product }: { product: Product }) => {
   const { getActions } = useProductActions(product);
+  const price = product.prices?.[0]?.price;
 
   return (
-    <div className="p-base group rounded-rounded hover:bg-grey-5 flex-col">
+    <div className="p-base group rounded-rounded hover:bg-grey-5 flex-col border border-grey-30">
       <div className="relative">
         <div
           className={clsx(
@@ -110,18 +111,21 @@ const ProductTile = ({ product }: { product: Product }) => {
               <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1 mr-3">
                 {product.title}
               </p>
-              <StatusIndicator
+              <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1 mr-3">
+                {price ? `$${price}` : "-"}
+              </p>
+              {/* <StatusIndicator
                 variant={getProductStatusVariant(product.status)}
                 className="shrink-0"
-              />
+              /> */}
             </div>
             <span
               className={clsx(
-                "inter-small-regular text-grey-50 line-clamp-1",
+                "mt-3 inter-small-regular text-grey-50 line-clamp-1",
                 "text-center max-w-full text-ellipsis whitespace-nowrap overflow-hidden"
               )}
             >
-              {product.collection?.title}
+              {product.description ?? "-"}
             </span>
           </div>
         </Link>

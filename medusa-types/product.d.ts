@@ -13,10 +13,23 @@ export declare enum ProductStatus {
   PUBLISHED = "published",
   REJECTED = "rejected",
 }
+
+export interface IPrice {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+  product_id: string;
+  region_id: string;
+  price: number;
+}
+
 export declare class Product extends SoftDeletableEntity {
   title: string;
   subtitle: string | null;
   description: string | null;
+  prices: IPrice[];
+
   handle: string | null;
   is_giftcard: boolean;
   status: ProductStatus;

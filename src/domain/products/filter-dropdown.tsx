@@ -130,18 +130,6 @@ const ProductsFilter = ({
       >
         <FilterDropdownItem
           filterTitle="Category"
-          options={statusFilters}
-          filters={tempState.status.filter}
-          open={tempState.status.open}
-          setFilter={(v) => setSingleFilter("status", v)}
-          isLoading={undefined}
-          hasMore={undefined}
-          hasPrev={undefined}
-          onShowNext={undefined}
-          onShowPrev={undefined}
-        />
-        <FilterDropdownItem
-          filterTitle="Brand"
           options={
             collections?.map((c) => ({ value: c.id, label: c.title })) || []
           }
@@ -156,6 +144,18 @@ const ProductsFilter = ({
           filters={tempState.collection.filter}
           open={tempState.collection.open}
           setFilter={(v) => setSingleFilter("collection", v)}
+        />
+        <FilterDropdownItem
+          filterTitle="Status"
+          options={statusFilters}
+          filters={tempState.status.filter}
+          open={tempState.status.open}
+          setFilter={(v) => setSingleFilter("status", v)}
+          isLoading={undefined}
+          hasMore={undefined}
+          hasPrev={undefined}
+          onShowNext={undefined}
+          onShowPrev={undefined}
         />
         {/* <div className="flex flex-col w-full pb-2">
           <div
