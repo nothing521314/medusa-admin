@@ -1,4 +1,4 @@
-import { Currency } from "@medusajs/medusa";
+import { Currency } from "@medusa-types";
 import { useAdminUpdateCurrency } from "../../../../../medusa-react";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";

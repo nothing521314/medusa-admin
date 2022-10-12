@@ -1,4 +1,4 @@
-import { SalesChannel } from "@medusajs/medusa";
+import { SalesChannel } from "@medusa-types";
 import React from "react";
 import Button from "../../../../components/fundamentals/button";
 import Modal from "../../../../components/molecules/modal";

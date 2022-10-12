@@ -1,4 +1,4 @@
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 import { useAdminProducts } from "../../../../medusa-react";
 import * as React from "react";
 import Button from "../../fundamentals/button";

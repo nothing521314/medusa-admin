@@ -5,7 +5,7 @@ import {
   AdminPostCustomerGroupsGroupCustomersBatchReq,
   AdminPostCustomerGroupsGroupReq,
   AdminPostCustomerGroupsReq,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 import { Response } from "../../../../../medusa-js";
 

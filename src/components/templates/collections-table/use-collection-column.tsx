@@ -1,4 +1,4 @@
-import { ProductCollection } from "@medusajs/medusa";
+import { ProductCollection } from "@medusa-types";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { Column } from "react-table";

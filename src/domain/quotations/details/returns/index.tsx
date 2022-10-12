@@ -1,4 +1,4 @@
-import { LineItem as RawLineItem, Order } from "@medusajs/medusa";
+import { LineItem as RawLineItem, Order } from "@medusa-types";
 import {
   useAdminRequestReturn,
   useAdminShippingOptions,

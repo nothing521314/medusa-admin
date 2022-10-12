@@ -1,4 +1,4 @@
-import { SalesChannel } from "@medusajs/medusa";
+import { SalesChannel } from "@medusa-types";
 import { useAdminSalesChannels } from "../../../../medusa-react";
 import React from "react";
 import Tooltip from "../../atoms/tooltip";

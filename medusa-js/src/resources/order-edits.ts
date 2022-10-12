@@ -1,4 +1,4 @@
-import { StoreOrderEditsRes } from "@medusajs/medusa";
+import { StoreOrderEditsRes } from "@medusa-types";
 import { ResponsePromise } from "../typings";
 import BaseResource from "./base";
 

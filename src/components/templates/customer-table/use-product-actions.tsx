@@ -1,5 +1,5 @@
 import { useAdminDeleteCustomer } from "@medusa-react";
-import { Customer } from "@medusajs/medusa";
+import { Customer } from "@medusa-types";
 import { navigate } from "gatsby";
 import * as React from "react";
 import useImperativeDialog from "../../../hooks/use-imperative-dialog";

@@ -1,4 +1,4 @@
-import { ShippingOption } from "@medusajs/medusa";
+import { ShippingOption } from "@medusa-types";
 import clsx from "clsx";
 import { useAdminDeleteShippingOption } from "../../../../../../medusa-react";
 import React from "react";

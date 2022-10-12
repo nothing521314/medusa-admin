@@ -1,4 +1,4 @@
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 import clsx from "clsx";
 import * as React from "react";
 import { Column, HeaderGroup, Row } from "react-table";

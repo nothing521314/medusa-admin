@@ -1,4 +1,4 @@
-import { Product, SalesChannel } from "@medusajs/medusa";
+import { Product, SalesChannel } from "@medusa-types";
 import React from "react";
 import Badge from "../../../../../components/fundamentals/badge";
 import FeatureToggle from "../../../../../components/fundamentals/feature-toggle";

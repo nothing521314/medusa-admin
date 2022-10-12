@@ -1,4 +1,4 @@
-import { LineItem } from "@medusajs/medusa";
+import { LineItem } from "@medusa-types";
 import React, { useCallback } from "react";
 import MinusIcon from "src/components/fundamentals/icons/minus-icon";
 import PlusIcon from "src/components/fundamentals/icons/plus-icon";

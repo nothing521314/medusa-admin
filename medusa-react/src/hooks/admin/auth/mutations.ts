@@ -1,4 +1,4 @@
-import { AdminAuthRes, AdminPostAuthReq } from "@medusajs/medusa";
+import { AdminAuthRes, AdminPostAuthReq } from "@medusa-types";
 import { Response } from "@medusa-js";
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 import { adminAuthKeys } from ".";

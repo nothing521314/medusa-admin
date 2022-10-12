@@ -2,7 +2,7 @@ import BaseResource from "./base";
 import {
   StoreReturnReasonsListRes,
   StoreReturnReasonsRes,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { ResponsePromise } from "../typings";
 
 class ReturnReasonsResource extends BaseResource {

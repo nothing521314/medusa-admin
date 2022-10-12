@@ -1,4 +1,4 @@
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 import React, { useCallback, useContext, useEffect } from "react";
 import {
   FieldArrayWithId,

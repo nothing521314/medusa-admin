@@ -1,4 +1,4 @@
-import { AdminGetBatchParams } from "@medusajs/medusa";
+import { AdminGetBatchParams } from "@medusa-types";
 import { BatchJob } from "@medusajs/medusa/dist";
 import { useAdminBatchJobs } from "../../medusa-react";
 import React, { useContext, useEffect, useState } from "react";

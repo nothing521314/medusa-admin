@@ -1,4 +1,4 @@
-import { Store } from "@medusajs/medusa";
+import { Store } from "@medusa-types";
 import React, { createContext, useContext } from "react";
 import LayeredModal, {
   LayeredModalContext,

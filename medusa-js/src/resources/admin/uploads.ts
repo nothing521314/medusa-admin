@@ -5,7 +5,7 @@ import {
   AdminPostUploadsDownloadUrlReq,
   AdminUploadsDownloadUrlRes,
   AdminUploadsRes,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import FormData from "form-data";
 import { ResponsePromise } from "../../typings";
 import BaseResource from "../base";

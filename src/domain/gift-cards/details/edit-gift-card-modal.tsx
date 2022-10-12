@@ -1,4 +1,4 @@
-import { AdminPostGiftCardsGiftCardReq, Region } from "@medusajs/medusa";
+import { AdminPostGiftCardsGiftCardReq, Region } from "@medusa-types";
 import React, { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Button from "../../../components/fundamentals/button";

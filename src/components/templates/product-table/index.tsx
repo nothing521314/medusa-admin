@@ -12,7 +12,7 @@ import ProductOverview from "./overview";
 import useProductActions from "./use-product-actions";
 import useProductTableColumn from "./use-product-column";
 import { useProductFilters } from "./use-product-filters";
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 
 const DEFAULT_PAGE_SIZE = 15;
 const DEFAULT_PAGE_SIZE_TILE_VIEW = 18;

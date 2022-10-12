@@ -3,7 +3,7 @@ import {
   AdminPostDraftOrdersReq,
   AdminPostOrdersOrderReq,
   Country,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { MutateOptions } from "react-query";

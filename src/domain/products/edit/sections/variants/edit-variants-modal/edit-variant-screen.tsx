@@ -2,7 +2,7 @@ import {
   AdminPostProductsProductVariantsVariantReq,
   Product,
   ProductVariant,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import React, { useContext, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../../../../../components/fundamentals/button";

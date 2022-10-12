@@ -1,4 +1,4 @@
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 import React from "react";
 import { ActionType } from "../../../../../components/molecules/actionables";
 import Section from "../../../../../components/organisms/section";

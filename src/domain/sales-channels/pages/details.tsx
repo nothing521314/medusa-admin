@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { navigate } from "gatsby";
 import React, { useEffect, useRef, useState } from "react";
 
-import { SalesChannel } from "@medusajs/medusa";
+import { SalesChannel } from "@medusa-types";
 import {
   useAdminDeleteSalesChannel,
   useAdminProducts,

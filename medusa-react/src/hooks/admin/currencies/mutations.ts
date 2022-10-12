@@ -1,7 +1,7 @@
 import {
   AdminCurrenciesRes,
   AdminPostCurrenciesCurrencyReq,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { Response } from "../../../../../medusa-js";
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 import { adminCurrenciesKeys } from ".";

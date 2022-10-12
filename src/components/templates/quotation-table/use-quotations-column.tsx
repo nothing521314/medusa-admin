@@ -1,4 +1,4 @@
-import { Order } from "@medusajs/medusa";
+import { Order } from "@medusa-types";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { Column } from "react-table";

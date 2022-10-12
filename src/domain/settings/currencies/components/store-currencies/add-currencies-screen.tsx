@@ -1,4 +1,4 @@
-import { Currency } from "@medusajs/medusa";
+import { Currency } from "@medusa-types";
 import {
   useAdminCurrencies,
   useAdminUpdateStore,

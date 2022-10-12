@@ -1,4 +1,4 @@
-import { Customer } from "@medusajs/medusa";
+import { Customer } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

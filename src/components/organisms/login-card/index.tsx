@@ -21,7 +21,8 @@ const LoginCard: React.FC<LoginCardProps> = ({ toResetPassword }) => {
 
   const onSubmit = (values: FormValues) => {
     login.mutate(values, {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        console.log('data', data)
         navigate("/a/orders");
       },
       onError: () => {

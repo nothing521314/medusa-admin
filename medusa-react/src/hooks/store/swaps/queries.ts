@@ -1,5 +1,5 @@
 import { queryKeysFactory } from "../../utils/index";
-import { StoreSwapsRes } from "@medusajs/medusa";
+import { StoreSwapsRes } from "@medusa-types";
 import { Response } from "../../../../../medusa-js";
 import { useQuery } from "react-query";
 import { useMedusa } from "../../../contexts";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { BatchJob } from "@medusajs/medusa";
+import { BatchJob } from "@medusa-types";
 import {
   useAdminBatchJob,
   useAdminCancelBatchJob,

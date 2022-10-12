@@ -1,4 +1,4 @@
-import { AdminPostRegionsRegionReq, Region } from "@medusajs/medusa";
+import { AdminPostRegionsRegionReq, Region } from "@medusa-types";
 import { useAdminUpdateRegion } from "../../../../../../medusa-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";

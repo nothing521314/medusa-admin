@@ -1,4 +1,4 @@
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 import clsx from "clsx";
 import { Link } from "gatsby";
 import * as React from "react";

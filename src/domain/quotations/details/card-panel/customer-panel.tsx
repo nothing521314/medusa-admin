@@ -1,4 +1,4 @@
-import { Order } from "@medusajs/medusa";
+import { Order } from "@medusa-types";
 import React from "react";
 import Avatar from "src/components/atoms/avatar";
 import BodyCard from "src/components/organisms/body-card";

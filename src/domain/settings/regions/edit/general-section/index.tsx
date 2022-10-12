@@ -1,4 +1,4 @@
-import { Region } from "@medusajs/medusa";
+import { Region } from "@medusa-types";
 import { navigate } from "gatsby";
 import { useAdminDeleteRegion } from "../../../../../../medusa-react";
 import React from "react";

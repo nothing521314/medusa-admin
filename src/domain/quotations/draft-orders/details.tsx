@@ -1,4 +1,4 @@
-import { Address } from "@medusajs/medusa";
+import { Address } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import moment from "moment";

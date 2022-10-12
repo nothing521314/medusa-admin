@@ -1,4 +1,4 @@
-import { TaxRate } from "@medusajs/medusa";
+import { TaxRate } from "@medusa-types";
 import {
   useAdminUpdateRegion,
   useAdminUpdateTaxRate,

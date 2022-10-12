@@ -4,7 +4,7 @@ import {
   Order,
   ProductVariant,
   ShippingOption,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import clsx from "clsx";
 import {
   useAdminCreateClaim,

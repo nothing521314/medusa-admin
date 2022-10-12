@@ -70,3 +70,4 @@ export * from "./tax-provider";
 export * from "./tax-rate";
 export * from "./tracking-link";
 export * from "./user";
+export * from "./role";

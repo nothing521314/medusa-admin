@@ -1,4 +1,4 @@
-import { ReturnReason } from "@medusajs/medusa";
+import { ReturnReason } from "@medusa-types";
 import { useAdminCreateReturnReason } from "../../../../medusa-react";
 import React from "react";
 import { useForm } from "react-hook-form";

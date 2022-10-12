@@ -2,7 +2,7 @@ import {
   StoreCartsRes,
   StorePostCartsCartLineItemsItemReq,
   StorePostCartsCartLineItemsReq,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { ResponsePromise } from "../typings";
 import BaseResource from "./base";
 

@@ -2,7 +2,7 @@ import {
   AdminPostProductsProductReq,
   AdminPostProductsProductVariantsReq,
   AdminPostProductsProductVariantsVariantReq,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { navigate } from "gatsby";
 import {
   useAdminCreateVariant,

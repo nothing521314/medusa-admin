@@ -1,4 +1,4 @@
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 import { useAdminCreateVariant } from "../../../../medusa-react";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";

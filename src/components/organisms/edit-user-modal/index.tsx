@@ -1,4 +1,4 @@
-import { User } from "@medusajs/medusa";
+import { User } from "@medusa-types";
 import { useAdminUpdateUser } from "../../../../medusa-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";

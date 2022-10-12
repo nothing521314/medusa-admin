@@ -1,4 +1,4 @@
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 import { navigate } from "gatsby";
 import {
   useAdminDeleteProduct,

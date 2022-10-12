@@ -1,4 +1,4 @@
-import { MoneyAmount, Product } from "@medusajs/medusa";
+import { MoneyAmount, Product } from "@medusa-types";
 import { useParams } from "@reach/router";
 import {
   useAdminStore,

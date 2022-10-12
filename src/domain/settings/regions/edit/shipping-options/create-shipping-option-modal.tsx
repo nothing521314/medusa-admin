@@ -1,4 +1,4 @@
-import { Region } from "@medusajs/medusa";
+import { Region } from "@medusa-types";
 import { useAdminCreateShippingOption } from "../../../../../../medusa-react";
 import React from "react";
 import { useForm } from "react-hook-form";

@@ -1,4 +1,4 @@
-import { Order } from "@medusajs/medusa";
+import { Order } from "@medusa-types";
 import { sum } from "lodash";
 import React, { useMemo } from "react";
 import CopyToClipboard from "src/components/atoms/copy-to-clipboard";

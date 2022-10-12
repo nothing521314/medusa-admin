@@ -1,4 +1,4 @@
-import { Customer } from "@medusajs/medusa";
+import { Customer } from "@medusa-types";
 import {
   useAdminCustomerGroups,
   useAdminCustomers,

@@ -1,18 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AccountContext } from "src/context/account";
 
-type SidebarCompanyLogoProps = {
-  storeName?: string;
-};
+type SidebarCompanyLogoProps = {};
 
-const SidebarCompanyLogo: React.FC<SidebarCompanyLogoProps> = ({
-  storeName,
-}: SidebarCompanyLogoProps) => {
+const SidebarCompanyLogo: React.FC<SidebarCompanyLogoProps> = () => {
+  const { name } = useContext(AccountContext);
+
   return (
     <div className="flex items-center bg-grey-0 px-2.5 pb-6 w-full mb-4">
       <div className="w-[32px] h-[32px] flex items-center justify-center bg-grey-90 text-grey-0 rounded">
-        <div>{storeName?.slice(0, 1) || "M"}</div>
+        <div>{name?.slice(0, 1) || "A"}</div>
       </div>
-      <span className="font-semibold ml-2.5">{storeName}</span>
+      <span className="font-semibold ml-2.5">{name ?? "admin"}</span>
     </div>
   );
 };

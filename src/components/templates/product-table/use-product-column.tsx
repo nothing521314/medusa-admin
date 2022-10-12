@@ -8,7 +8,7 @@ import TileIcon from "../../fundamentals/icons/tile-icon";
 import ImagePlaceholder from "../../fundamentals/image-placeholder";
 import StatusIndicator from "../../fundamentals/status-indicator";
 import { Column } from "react-table";
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 
 const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const getProductStatus = (status) => {

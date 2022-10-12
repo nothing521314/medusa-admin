@@ -1,4 +1,4 @@
-import { SalesChannel } from "@medusajs/medusa";
+import { SalesChannel } from "@medusa-types";
 
 export const defaultChannelsSorter = (defaultSalesChanenlId: string) => (
   sc1: SalesChannel,

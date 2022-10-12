@@ -2,7 +2,7 @@ import {
   AdminPostReturnReasonsReasonReq,
   AdminPostReturnReasonsReq,
   AdminReturnReasonsRes,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { Response } from "../../../../../medusa-js";
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 import { adminReturnReasonKeys } from ".";

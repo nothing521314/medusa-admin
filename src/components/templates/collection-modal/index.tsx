@@ -1,4 +1,4 @@
-import { ProductCollection } from "@medusajs/medusa";
+import { ProductCollection } from "@medusa-types";
 import {
   useAdminCreateCollection,
   useAdminUpdateCollection,

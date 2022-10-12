@@ -1,4 +1,4 @@
-import { Address } from "@medusajs/medusa";
+import { Address } from "@medusa-types";
 import React from "react";
 
 type FormattedAddressProps = {

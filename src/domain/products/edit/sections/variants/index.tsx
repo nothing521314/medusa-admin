@@ -1,4 +1,4 @@
-import { Product, ProductVariant } from "@medusajs/medusa";
+import { Product, ProductVariant } from "@medusa-types";
 import React, { useState } from "react";
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
 import GearIcon from "../../../../../components/fundamentals/icons/gear-icon";

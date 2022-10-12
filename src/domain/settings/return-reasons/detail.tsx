@@ -1,4 +1,4 @@
-import { ReturnReason } from "@medusajs/medusa";
+import { ReturnReason } from "@medusa-types";
 import {
   useAdminDeleteReturnReason,
   useAdminUpdateReturnReason,

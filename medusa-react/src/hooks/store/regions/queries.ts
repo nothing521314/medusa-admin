@@ -2,7 +2,7 @@ import { queryKeysFactory } from "../../utils/index";
 import { UseQueryOptionsWrapper } from "../../../types";
 import { useQuery } from "react-query";
 import { useMedusa } from "../../../contexts";
-import { StoreRegionsRes, StoreRegionsListRes } from "@medusajs/medusa";
+import { StoreRegionsRes, StoreRegionsListRes } from "@medusa-types";
 import { Response } from "../../../../../medusa-js";
 
 const REGIONS_QUERY_KEY = `regions` as const;

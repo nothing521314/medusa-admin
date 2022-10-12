@@ -1,4 +1,4 @@
-import { AdminUsersListRes, AdminUserRes } from "@medusajs/medusa";
+import { AdminUsersListRes, AdminUserRes } from "@medusa-types";
 import { Response } from "../../../../../medusa-js";
 import { useQuery } from "react-query";
 import { useMedusa } from "../../../contexts";

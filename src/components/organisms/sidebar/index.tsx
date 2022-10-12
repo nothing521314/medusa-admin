@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useAdminStore } from "../../../../medusa-react";
 import CashIcon from "../../fundamentals/icons/cash-icon";
 import CustomerIcon from "../../fundamentals/icons/customer-icon";
 import DollarSignIcon from "../../fundamentals/icons/dollar-sign-icon";
@@ -9,14 +8,11 @@ import SaleIcon from "../../fundamentals/icons/sale-icon";
 import TagIcon from "../../fundamentals/icons/tag-icon";
 import SidebarCompanyLogo from "../../molecules/sidebar-company-logo";
 import SidebarMenuItem from "../../molecules/sidebar-menu-item";
-import SidebarTeam from "../sidebar-team";
 
 const ICON_SIZE = 18;
 
 const Sidebar: React.FC = () => {
   const [currentlyOpen, setCurrentlyOpen] = useState(-1);
-
-  const { store } = useAdminStore();
 
   const triggerHandler = () => {
     const id = triggerHandler.id++;
@@ -32,7 +28,7 @@ const Sidebar: React.FC = () => {
   return (
     <div className="min-w-sidebar max-w-sidebar h-screen overflow-y-auto bg-gray-0 border-r border-grey-20 py-base px-base">
       <div className="h-full ">
-        <SidebarCompanyLogo storeName={store?.name} />
+        <SidebarCompanyLogo />
 
         <div className="border-b pb-3.5 border-grey-20">
           <SidebarMenuItem
@@ -85,9 +81,9 @@ const Sidebar: React.FC = () => {
           />
         </div>
 
-        <div className="font-semibold mt-5 flex flex-col text-small">
+        {/* <div className="font-semibold mt-5 flex flex-col text-small">
           <SidebarTeam />
-        </div>
+        </div> */}
       </div>
     </div>
   );

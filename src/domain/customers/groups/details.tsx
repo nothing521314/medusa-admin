@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { difference } from "lodash";
 import { navigate } from "gatsby";
-import { CustomerGroup } from "@medusajs/medusa";
+import { CustomerGroup } from "@medusa-types";
 import {
   useAdminAddCustomersToCustomerGroup,
   useAdminCustomerGroup,

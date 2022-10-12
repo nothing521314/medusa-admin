@@ -1,4 +1,4 @@
-import { Region, ShippingOption } from "@medusajs/medusa";
+import { Region, ShippingOption } from "@medusa-types";
 import {
   useAdminRegion,
   useAdminShippingOption,

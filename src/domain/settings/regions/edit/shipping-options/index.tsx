@@ -1,4 +1,4 @@
-import { Region } from "@medusajs/medusa";
+import { Region } from "@medusa-types";
 import { useAdminShippingOptions } from "../../../../../../medusa-react";
 import React from "react";
 import Section from "../../../../../components/organisms/section";

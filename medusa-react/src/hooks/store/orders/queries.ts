@@ -1,5 +1,5 @@
 import { queryKeysFactory } from "../../utils/index";
-import { StoreOrdersRes, StoreGetOrdersParams } from "@medusajs/medusa";
+import { StoreOrdersRes, StoreGetOrdersParams } from "@medusa-types";
 import { useQuery } from "react-query";
 import { useMedusa } from "../../../contexts";
 import { UseQueryOptionsWrapper } from "../../../types";

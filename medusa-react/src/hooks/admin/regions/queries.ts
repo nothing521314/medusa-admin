@@ -3,7 +3,7 @@ import {
   AdminRegionsRes,
   AdminGetRegionsParams,
   AdminGetRegionsRegionFulfillmentOptionsRes,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { Response } from "../../../../../medusa-js";
 import { useQuery } from "react-query";
 import { useMedusa } from "../../../contexts";

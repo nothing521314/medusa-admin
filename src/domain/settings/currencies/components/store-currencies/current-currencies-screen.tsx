@@ -1,4 +1,4 @@
-import { Currency } from "@medusajs/medusa";
+import { Currency } from "@medusa-types";
 import clsx from "clsx";
 import { useAdminUpdateStore } from "../../../../../../medusa-react";
 import React, { useContext, useMemo, useState } from "react";

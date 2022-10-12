@@ -1,4 +1,4 @@
-import { AdminPostGiftCardsGiftCardReq } from "@medusajs/medusa";
+import { AdminPostGiftCardsGiftCardReq } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import {
   useAdminGiftCard,

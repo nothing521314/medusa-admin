@@ -1,4 +1,4 @@
-import { MoneyAmount, Product, ProductVariant } from "@medusajs/medusa";
+import { MoneyAmount, Product, ProductVariant } from "@medusa-types";
 import { useAdminStore } from "../../../../../medusa-react";
 import * as React from "react";
 import Button from "../../../../components/fundamentals/button";

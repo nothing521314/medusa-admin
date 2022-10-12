@@ -1,4 +1,4 @@
-import { ProductVariant } from "@medusajs/medusa";
+import { ProductVariant } from "@medusa-types";
 import React, { useMemo } from "react";
 import { Column, useTable } from "react-table";
 import DuplicateIcon from "../../../../../components/fundamentals/icons/duplicate-icon";

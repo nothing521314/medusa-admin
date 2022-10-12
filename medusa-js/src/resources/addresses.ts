@@ -2,7 +2,7 @@ import {
   StoreCustomersRes,
   StorePostCustomersCustomerAddressesAddressReq,
   StorePostCustomersCustomerAddressesReq,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { ResponsePromise } from "../typings";
 import BaseResource from "./base";
 

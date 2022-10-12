@@ -2,7 +2,7 @@ import {
   AdminPostPriceListsPriceListPriceListReq,
   AdminPostPriceListsPriceListReq,
   PriceList,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import xorObjFields from "../../../../utils/xorObjFields";
 import {
   CreatePriceListFormValues,

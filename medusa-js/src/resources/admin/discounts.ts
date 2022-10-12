@@ -12,7 +12,7 @@ import {
   AdminPostDiscountsDiscountDynamicCodesReq,
   AdminPostDiscountsDiscountReq,
   AdminPostDiscountsReq,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import qs from "qs";
 import { ResponsePromise } from "../../typings";
 import BaseResource from "../base";

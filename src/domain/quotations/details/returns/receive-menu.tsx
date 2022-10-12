@@ -3,7 +3,7 @@ import {
   Order,
   Return,
   ReturnItem,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import React, { useEffect, useMemo, useState } from "react";
 import Button from "../../../../components/fundamentals/button";
 import EditIcon from "../../../../components/fundamentals/icons/edit-icon";

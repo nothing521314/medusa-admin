@@ -2,7 +2,7 @@ import { queryKeysFactory } from "../../utils/index";
 import {
   StoreReturnReasonsListRes,
   StoreReturnReasonsRes,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { Response } from "../../../../../medusa-js";
 import { useQuery } from "react-query";
 import { useMedusa } from "../../../contexts";

@@ -1,4 +1,4 @@
-import { Cart, Order } from "@medusajs/medusa";
+import { Cart, Order } from "@medusa-types";
 
 /**
  * Utility for extracting the customer name from a cart or order.

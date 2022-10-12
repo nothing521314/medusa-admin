@@ -13,7 +13,7 @@ export const useCustomerColumns = () => {
       },
       {
         Header: "Name",
-        accessor: "customer",
+        accessor: "name",
         Cell: ({ row }) => (
           <CustomerAvatarItem
             customer={row.original}
@@ -22,12 +22,22 @@ export const useCustomerColumns = () => {
         ),
       },
       {
-        Header: "Email",
-        accessor: "email",
+        Header: "Contract",
+        Cell: ({
+          cell: {
+            row: { original },
+          },
+        }) => (
+          <>
+            {original.email}
+            <br />
+            {original.phone}
+          </>
+        ),
       },
       {
-        Header: "Phone",
-        accessor: "phone",
+        Header: "Person In Charge",
+        accessor: "person_in_charge",
       },
       // {
       //   accessor: "orders",

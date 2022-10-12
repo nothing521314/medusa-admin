@@ -1,4 +1,4 @@
-import { Product, ProductOption } from "@medusajs/medusa";
+import { Product, ProductOption } from "@medusa-types";
 import { useAdminProducts } from "../../../../../../medusa-react";
 import React, { createContext, useContext, useMemo } from "react";
 

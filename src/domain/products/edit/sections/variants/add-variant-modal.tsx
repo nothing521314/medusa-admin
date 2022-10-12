@@ -1,4 +1,4 @@
-import { AdminPostProductsProductVariantsReq, Product } from "@medusajs/medusa";
+import { AdminPostProductsProductVariantsReq, Product } from "@medusa-types";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../../../../components/fundamentals/button";

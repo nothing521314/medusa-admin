@@ -3,7 +3,7 @@ import {
   Order,
   ProductVariant,
   ReturnReason,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import {
   useAdminCreateSwap,
   useAdminOrder,

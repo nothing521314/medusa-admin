@@ -3,7 +3,7 @@ import {
   StoreGetProductsParams,
   StoreProductsListRes,
   StoreProductsRes,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { useQuery } from "react-query";
 import { useMedusa } from "../../../contexts";
 import { UseQueryOptionsWrapper } from "../../../types";

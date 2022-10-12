@@ -1,4 +1,4 @@
-import { AdminPostRegionsReq } from "@medusajs/medusa";
+import { AdminPostRegionsReq } from "@medusa-types";
 import { navigate } from "gatsby";
 import { useAdminCreateRegion } from "../../../../../medusa-react";
 import React, { useState } from "react";

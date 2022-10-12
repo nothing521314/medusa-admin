@@ -1,4 +1,4 @@
-import { AdminPostGiftCardsGiftCardReq, GiftCard } from "@medusajs/medusa";
+import { AdminPostGiftCardsGiftCardReq, GiftCard } from "@medusa-types";
 import React from "react";
 import clsx from "clsx";
 import { Controller, useForm, useWatch } from "react-hook-form";

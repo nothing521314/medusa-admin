@@ -3,7 +3,7 @@ import {
   Product,
   ProductCollection,
   ProductTag,
-} from "@medusajs/medusa";
+} from "@medusa-types";
 import { debounce } from "lodash";
 import React, { useEffect } from "react";
 import {

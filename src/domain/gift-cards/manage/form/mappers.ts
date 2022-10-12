@@ -1,4 +1,4 @@
-import { AdminPostProductsProductReq, Product } from "@medusajs/medusa";
+import { AdminPostProductsProductReq, Product } from "@medusa-types";
 import { prepareImages } from "../../../../utils/images";
 import { ManageGiftCardFormData } from "../utils/types";
 

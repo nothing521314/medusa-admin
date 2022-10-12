@@ -1,14 +1,11 @@
+import { User } from "@medusa-types";
 import clsx from "clsx";
 import React from "react";
 import Avatar from "../../atoms/avatar";
 
 type CustomerAvatarItemProps = {
   color?: string;
-  customer: {
-    first_name?: string;
-    last_name?: string;
-    email: string;
-  };
+  customer: User;
   className?: string;
 };
 
@@ -17,12 +14,7 @@ const CustomerAvatarItem: React.FC<CustomerAvatarItemProps> = ({
   customer,
   className = "",
 }: CustomerAvatarItemProps) => {
-  const identifier =
-    customer.first_name || customer.last_name
-      ? `${customer.first_name} ${customer.last_name}`
-      : customer.email
-      ? customer.email
-      : "-";
+  const identifier = customer.name ?? customer.email;
 
   return (
     <div className={clsx("flex items-center px-2.5 py-1.5 w-full", className)}>

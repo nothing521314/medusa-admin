@@ -1,4 +1,4 @@
-import { AdminPostProductsReq, Product } from "@medusajs/medusa";
+import { AdminPostProductsReq, Product } from "@medusa-types";
 import { navigate } from "gatsby";
 import { useAdminCreateProduct } from "../../../../medusa-react";
 import useNotification from "../../../hooks/use-notification";

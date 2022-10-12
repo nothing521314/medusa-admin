@@ -1,4 +1,4 @@
-import { LineItem, Order } from "@medusajs/medusa";
+import { LineItem, Order } from "@medusa-types";
 import clsx from "clsx";
 import React, { Fragment, useContext } from "react";
 import RMAReturnReasonSubModal from "../../../domain/quotations/details/rma-sub-modals/return-reasons";

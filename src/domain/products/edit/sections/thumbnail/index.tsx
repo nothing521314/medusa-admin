@@ -1,4 +1,4 @@
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 import clsx from "clsx";
 import React from "react";
 import TwoStepDelete from "../../../../../components/atoms/two-step-delete";

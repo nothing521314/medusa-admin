@@ -1,4 +1,4 @@
-import { Product, ProductVariant } from "@medusajs/medusa";
+import { Product, ProductVariant } from "@medusa-types";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../../../../components/fundamentals/button";

@@ -1,4 +1,4 @@
-import { Product } from "@medusajs/medusa";
+import { Product } from "@medusa-types";
 import React from "react";
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon";
 import { ActionType } from "../../../../../components/molecules/actionables";

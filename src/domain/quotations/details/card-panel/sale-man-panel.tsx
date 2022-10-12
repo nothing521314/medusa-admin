@@ -1,4 +1,4 @@
-import { Order } from "@medusajs/medusa";
+import { Order } from "@medusa-types";
 import * as RadixPopover from "@radix-ui/react-popover";
 import moment from "moment";
 import React from "react";

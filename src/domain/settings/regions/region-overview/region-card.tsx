@@ -1,4 +1,4 @@
-import { Region } from "@medusajs/medusa";
+import { Region } from "@medusa-types";
 import React from "react";
 import RadioGroup from "../../../../components/organisms/radio-group";
 import fulfillmentProvidersMapper from "../../../../utils/fulfillment-providers.mapper";

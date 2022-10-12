@@ -1,4 +1,4 @@
-import { Customer } from "@medusajs/medusa";
+import { Customer } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import React, { useEffect, useState } from "react";

@@ -13,7 +13,7 @@ import React, {
   useState,
 } from "react";
 import { usePagination, useRowSelect, useTable } from "react-table";
-import { Product, SalesChannel } from "@medusajs/medusa";
+import { Product, SalesChannel } from "@medusa-types";
 
 import Placeholder from "./placeholder";
 import Button from "../../../components/fundamentals/button";

@@ -1,4 +1,4 @@
-import { StoreSwapsRes, StorePostSwapsReq } from "@medusajs/medusa";
+import { StoreSwapsRes, StorePostSwapsReq } from "@medusa-types";
 import { useMutation, UseMutationOptions } from "react-query";
 import { useMedusa } from "../../../contexts";
 

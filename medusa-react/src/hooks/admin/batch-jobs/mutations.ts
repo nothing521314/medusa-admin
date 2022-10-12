@@ -1,4 +1,4 @@
-import { AdminBatchJobRes, AdminPostBatchesReq } from "@medusajs/medusa";
+import { AdminBatchJobRes, AdminPostBatchesReq } from "@medusa-types";
 import { Response } from "../../../../../medusa-js";
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 

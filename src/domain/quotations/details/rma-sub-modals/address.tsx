@@ -1,4 +1,4 @@
-import { Order } from "@medusajs/medusa";
+import { Order } from "@medusa-types";
 import { useAdminRegion } from "../../../../../medusa-react";
 import React, { useContext, useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";

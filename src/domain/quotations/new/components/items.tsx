@@ -1,4 +1,4 @@
-import { ProductVariant } from "@medusajs/medusa";
+import { ProductVariant } from "@medusa-types";
 import clsx from "clsx";
 import React, { useContext, useEffect, useState } from "react";
 import { Controller } from "react-hook-form";

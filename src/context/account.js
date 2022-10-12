@@ -7,8 +7,6 @@ export const defaultAccountContext = {
   isLoggedIn: false,
   id: "",
   name: "",
-  first_name: "",
-  last_name: "",
   email: "",
 };
 
@@ -22,8 +20,7 @@ const reducer = (state, action) => {
         isLoggedIn: true,
         id: action.payload.id,
         email: action.payload.email,
-        first_name: action.payload?.first_name,
-        last_name: action.payload?.last_name,
+        name: action.payload?.name,
       };
     case "updateUser":
       return {
@@ -38,8 +35,7 @@ const reducer = (state, action) => {
         isLoggedIn: true,
         id: action.payload.id,
         email: action.payload.email,
-        first_name: action.payload?.first_name,
-        last_name: action.payload?.last_name,
+        name: action.payload?.name,
       };
     default:
       return state;

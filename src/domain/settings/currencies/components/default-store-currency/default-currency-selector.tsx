@@ -1,4 +1,4 @@
-import { Store } from "@medusajs/medusa";
+import { Store } from "@medusa-types";
 import { useAdminUpdateStore } from "../../../../../../medusa-react";
 import React, { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
