@@ -1,4 +1,5 @@
-import { UserRoles } from "../../../../models/user";
+import { Roles } from "@medusa-types";
+// import { UserRoles } from "../../../../models/user";
 /**
  * @oas [post] /users
  * operationId: "PostUsers"
@@ -85,9 +86,12 @@ import { UserRoles } from "../../../../models/user";
 declare const _default: (req: any, res: any) => Promise<void>;
 export default _default;
 export declare class AdminCreateUserRequest {
-    email: string;
-    first_name?: string;
-    last_name?: string;
-    role?: UserRoles;
-    password: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  password: string;
+  regions: {
+    label: string;
+    value: string;
+  }[];
 }

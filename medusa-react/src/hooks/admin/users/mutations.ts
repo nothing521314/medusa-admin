@@ -8,7 +8,7 @@ import {
   AdminCreateUserPayload,
   AdminUpdateUserPayload,
   Response,
-} from "../../../../../medusa-js";
+} from "@medusa-js";
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 import { adminCustomerKeys } from "..";
 import { useMedusa } from "../../../contexts/medusa";

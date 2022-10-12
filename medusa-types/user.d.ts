@@ -1,20 +1,24 @@
 import { SoftDeletableEntity } from "./interfaces";
 import { Region } from "./region";
-export declare enum UserRoles {
-  ADMIN = "admin",
-  SALESMAN = "sale_man",
-  DEVELOPER = "developer",
-}
+import { Roles } from "./role";
+// export declare enum UserRoles {
+//   ADMIN = "admin",
+//   SALESMAN = "sale_man",
+//   DEVELOPER = "developer",
+// }
 export declare class User extends SoftDeletableEntity {
-  role: UserRoles;
+  role: Roles;
   email: string;
   name: string;
   phone: string;
+  password: string;
+  regions: string[];
+  // regions: Region[];
+
   password_hash: string;
   api_token: string;
-  regions: Region[];
-  metadata: Record<string, unknown>;
-  private beforeInsert;
+  // metadata: Record<string, unknown>;
+  // private beforeInsert;
 }
 /**
  * @schema user

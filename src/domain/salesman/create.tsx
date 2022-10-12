@@ -1,6 +1,10 @@
+import { AdminCreateUserRequest } from "@medusa-types";
 import React from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import { useAdminCreateCustomer } from "../../../medusa-react";
+import {
+  useAdminCreateCustomer,
+  useAdminCreateUser,
+} from "../../../medusa-react";
 import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select";
 import Button from "../../components/fundamentals/button";
 import LockIcon from "../../components/fundamentals/icons/lock-icon";
@@ -10,8 +14,7 @@ import Modal from "../../components/molecules/modal";
 import useNotification from "../../hooks/use-notification";
 import { countries } from "../../utils/countries";
 import { getErrorMessage } from "../../utils/error-messages";
-import { validateEmail } from "../../utils/validate-email";
-import { validatePass } from "../../utils/validate-pass";
+import Validator from "../../utils/validator";
 
 const countryOptions = countries.map((c) => ({
   label: c.name,
@@ -22,18 +25,6 @@ type CreateCustomerModalProps = {
   handleClose: () => void;
 };
 
-type CreateCustomerFormType = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string | null;
-  password: string;
-  regions: {
-    label: string;
-    value: string;
-  }[];
-};
-
 const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
   const {
     register,
@@ -42,7 +33,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
     control,
 
     formState: { isDirty },
-  } = useForm<CreateCustomerFormType>({
+  } = useForm<AdminCreateUserRequest>({
     mode: "onChange",
   });
   const watch = useWatch({
@@ -51,29 +42,19 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
 
   const notification = useNotification();
 
-  const createCustomer = useAdminCreateCustomer({});
+  const createCustomer = useAdminCreateUser({});
 
   const onSubmit = handleSubmit((data) => {
-    createCustomer.mutate(
-      {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        // @ts-ignore
-        phone: data.phone,
-        email: data.email,
-        password: data.password,
+    createCustomer.mutate(data, {
+      onSuccess: () => {
+        handleClose();
+        notification("Success", "Successfully created customer", "success");
       },
-      {
-        onSuccess: () => {
-          handleClose();
-          notification("Success", "Successfully created customer", "success");
-        },
-        onError: (err) => {
-          handleClose();
-          notification("Error", getErrorMessage(err), "error");
-        },
-      }
-    );
+      onError: (err) => {
+        handleClose();
+        notification("Error", getErrorMessage(err), "error");
+      },
+    });
   });
 
   return (
@@ -84,28 +65,27 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
         </Modal.Header>
         <Modal.Content>
           <div className="w-full flex mb-4 space-x-2">
+            <InputField label="Name" {...register("name")} />
             <InputField
-              label="First Name"
-              {...register("first_name")}
-              placeholder="Lebron"
-            />
-            <InputField
-              label="Last Name"
-              {...register("last_name")}
-              placeholder="James"
+              label="Email"
+              {...register("email", {
+                validate: (value) => Validator.email(value),
+              })}
             />
           </div>
           <div className="w-full flex mb-4 space-x-2">
             <InputField
-              label="Email"
-              {...register("email", {
-                validate: (value) => !!validateEmail(value),
+              label="Password"
+              {...register("password", {
+                required: true,
+                validate: (value) => !!Validator.phone(value),
               })}
-              prefix={<LockIcon size={16} className="text-grey-50" />}
             />
             <InputField
               label="Phone number"
-              {...register("phone")}
+              {...register("phone", {
+                validate: Validator.phone,
+              })}
               placeholder="+45 42 42 42 42"
             />
           </div>
@@ -113,7 +93,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
             <InputField
               label="Password"
               {...register("password", {
-                validate: (value) => !!validatePass(value),
+                validate: (value) => !!Validator.pass(value),
               })}
               prefix={<LockIcon size={16} className="text-grey-50" />}
             />

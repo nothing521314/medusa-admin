@@ -1,1 +1,1 @@
-export declare type Role = "sale_man" | "customer";
+export declare type Roles = "sale_man" | "admin";

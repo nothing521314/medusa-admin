@@ -2,7 +2,7 @@ import { RouteComponentProps, Router } from "@reach/router";
 import React, { useState } from "react";
 
 import BodyCard from "../../components/organisms/body-card";
-import CustomerTable from "../../components/templates/customer-table";
+import SalesmanTable from "../../components/templates/salesman-table";
 import Details from "./details";
 import SalesmanPageTableHeader from "./header";
 import CreateSalesmanModal from "./create";
@@ -30,7 +30,7 @@ const SalesmanIndex: React.FC<RouteComponentProps> = () => {
           <BodyCard
             customHeader={<SalesmanPageTableHeader activeView="salesman" />}
           >
-            <CustomerTable />
+            <SalesmanTable />
           </BodyCard>
         </div>
       </div>

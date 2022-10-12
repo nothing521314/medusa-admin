@@ -24,7 +24,7 @@ export const useAdminUsers = (
     () => client.admin.users.list(),
     options
   );
-  return { ...data, ...rest } as const;
+  return { ...data, ...rest };
 };
 
 export const useAdminUser = (
@@ -41,5 +41,5 @@ export const useAdminUser = (
     () => client.admin.users.retrieve(id),
     options
   );
-  return { ...data, ...rest } as const;
+  return { ...data, ...rest };
 };

@@ -4,7 +4,7 @@ export declare const unauthenticatedUserRoutes: (app: any) => void;
 declare const _default: (app: any) => any;
 export default _default;
 export declare type AdminUserRes = {
-    user: Omit<User, "password_hash">;
+    user: User;
 };
 export declare type AdminUsersListRes = {
     users: Omit<User, "password_hash">[];

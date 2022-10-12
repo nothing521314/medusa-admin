@@ -1,38 +1,26 @@
-import { Customer } from "@medusa-types";
+import { User } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { useSalesmanActions } from "src/hooks/use-salesman-actions";
-import {
-  useAdminCustomer,
-  useAdminUpdateCustomer,
-} from "../../../medusa-react";
+import
+  {
+    useAdminUpdateUser,
+    useAdminUser
+  } from "../../../medusa-react";
 import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select";
 import Button from "../../components/fundamentals/button";
-import LockIcon from "../../components/fundamentals/icons/lock-icon";
 import Breadcrumb from "../../components/molecules/breadcrumb";
 import InputField from "../../components/molecules/input";
 import BodyCard from "../../components/organisms/body-card";
 import useNotification from "../../hooks/use-notification";
 import { countries } from "../../utils/countries";
-import { getErrorMessage } from "../../utils/error-messages";
 import Validator from "../../utils/validator";
 
 type CustomerDetailProps = {
   id: string;
 } & RouteComponentProps;
-
-type EditCustomerFormType = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string | null;
-  regions?: {
-    label: string;
-    value: string;
-  }[];
-};
 
 const countryOptions = countries.map((c) => ({
   label: c.name,
@@ -40,67 +28,52 @@ const countryOptions = countries.map((c) => ({
 }));
 
 const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
-  const [customer, setCustomer] = useState<Customer>();
+  const [user, setUser] = useState<User>();
   const {
     register,
     reset,
     handleSubmit,
     control,
     formState: { isDirty, isValid },
-  } = useForm<EditCustomerFormType>();
+  } = useForm<User>();
   const watch = useWatch({
     control,
   });
   const notification = useNotification();
   const { handleDelete } = useSalesmanActions();
-  const updateCustomer = useAdminUpdateCustomer(id);
+  const updateCustomer = useAdminUpdateUser(id);
   // Fetch info
-  useAdminCustomer(id, {
+  useAdminUser(id, {
     onSuccess(data) {
-      setCustomer(data.customer);
+      setUser(data.user);
     },
     cacheTime: 0,
   });
 
   const onSubmit = handleSubmit((data) => {
-    updateCustomer.mutate(
-      {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        // @ts-ignore
-        phone: data.phone,
-        email: data.email,
-      },
-      {
-        onSuccess: () => {
-          notification("Success", "Successfully updated salesman", "success");
-        },
-        onError: (err) => {
-          notification("Error", getErrorMessage(err), "error");
-        },
-      }
-    );
+    // updateCustomer.mutate(data, {
+    //   onSuccess: () => {
+    //     notification("Success", "Successfully updated salesman", "success");
+    //   },
+    //   onError: (err) => {
+    //     notification("Error", getErrorMessage(err), "error");
+    //   },
+    // });
   });
 
   useEffect(() => {
-    if (customer) reset(getDefaultValues(customer));
-  }, [customer]);
+    if (user) reset(user);
+  }, [user]);
 
-  const customerName = () => {
-    if (customer?.first_name && customer?.last_name) {
-      return `${customer.first_name} ${customer.last_name}`;
-    } else {
-      return customer?.email;
-    }
-  };
   console.log(
     "!isDirty || !isValid || updateCustomer.isLoading",
     !isDirty,
     !isValid,
     updateCustomer.isLoading
   );
+  console.log("user", user);
 
-  if (!customer) return null;
+  if (!user) return null;
 
   return (
     <div>
@@ -120,30 +93,21 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
       </div>
       <BodyCard title="Salesman">
         <div className="w-full flex mb-4 space-x-2">
+          <InputField label="Name" {...register("name")} />
           <InputField
-            label="First Name"
-            {...register("first_name")}
-            placeholder="Lebron"
-          />
-          <InputField
-            label="Last Name"
-            {...register("last_name")}
-            placeholder="James"
+            label="Email"
+            {...register("email", {
+              validate: (value) => Validator.email(value),
+            })}
           />
         </div>
         <div className="w-full flex mb-4 space-x-2">
           <InputField
-            label="Email"
-            {...register("email", {
-              validate: Validator.email,
-              disabled: customer.has_account,
+            label="Password"
+            {...register("password", {
+              required: true,
+              validate: (value) => !!Validator.phone(value),
             })}
-            prefix={
-              customer.has_account && (
-                <LockIcon size={16} className="text-grey-50" />
-              )
-            }
-            disabled={customer.has_account}
           />
           <InputField
             label="Phone number"
@@ -194,13 +158,3 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
 };
 
 export default SalesmanDetail;
-
-const getDefaultValues = (customer: Customer): EditCustomerFormType => {
-  return {
-    first_name: customer.first_name,
-    email: customer.email,
-    last_name: customer.last_name,
-    phone: customer.phone,
-    regions: undefined,
-  };
-};

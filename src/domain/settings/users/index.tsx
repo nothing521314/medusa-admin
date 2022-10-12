@@ -8,7 +8,7 @@ import UserTable from "../../../components/templates/user-table";
 
 const Users: React.FC = () => {
   const [users, setUsers] = useState([]);
-  const [invites, setInvites] = useState([]);
+  // const [invites, setInvites] = useState([]);
   const [shouldRefetch, setShouldRefetch] = useState(0);
   const [showInviteModal, setShowInviteModal] = useState(false);
 
@@ -21,13 +21,15 @@ const Users: React.FC = () => {
       .list()
       .then((res) => res.data)
       .then((userData) => {
-        Medusa.invites
-          .list()
-          .then((res) => res.data)
-          .then((inviteData) => {
-            setUsers(userData.users);
-            setInvites(inviteData.invites);
-          });
+        setUsers(userData.users);
+
+        // Medusa.invites
+        //   .list()
+        //   .then((res) => res.data)
+        //   .then((inviteData) => {
+        //     setUsers(userData.users);
+        //     setInvites(inviteData.invites);
+        //   });
       });
   }, [shouldRefetch]);
 
@@ -59,7 +61,7 @@ const Users: React.FC = () => {
           <div className="flex grow  flex-col pt-2">
             <UserTable
               users={users}
-              invites={invites}
+              invites={[]}
               triggerRefetch={triggerRefetch}
             />
           </div>
