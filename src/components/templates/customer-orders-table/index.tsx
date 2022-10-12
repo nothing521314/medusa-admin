@@ -70,7 +70,7 @@ const CustomerOrdersTable: React.FC<CustomerOrdersTableProps> = ({
             return (
               <Table.Row
                 key={`invite-${index}`}
-                linkTo={`/a/orders/${order.id}`}
+                linkTo={`/a/quotations/${order.id}`}
                 className="py-2"
               >
                 <Table.Cell className="text-grey-90 w-20">

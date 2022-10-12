@@ -71,4 +71,5 @@ export declare class AdminGetCustomersParams extends AdminListCustomerSelector {
     limit: number;
     offset: number;
     expand?: string;
+    q?: string;
 }

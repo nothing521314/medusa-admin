@@ -68,7 +68,7 @@ class AdminCustomersResource extends BaseResource {
     query?: AdminGetCustomersParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCustomersListRes> {
-    let path = `/admin/customers`;
+    let path = "/admin/customers";
 
     if (query) {
       const queryString = qs.stringify(query);

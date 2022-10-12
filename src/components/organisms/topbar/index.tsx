@@ -1,26 +1,26 @@
-import { useCart } from "@medusa-react";
+import { CartContext } from "@medusa-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { navigate } from "gatsby";
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import CartIcon from "src/components/fundamentals/icons/cart-icon";
+import { SUB_TAB } from "src/domain/quotations";
 import useToggleState from "src/hooks/use-toggle-state";
 import { AccountContext } from "../../../context/account";
+import CanNotMakeQuotationModal from "../../../domain/quotations/modal/can-not-make-quotation-modal";
 import Avatar from "../../atoms/avatar";
 import Button from "../../fundamentals/button";
 import GearIcon from "../../fundamentals/icons/gear-icon";
 import HelpCircleIcon from "../../fundamentals/icons/help-circle";
 import SignOutIcon from "../../fundamentals/icons/log-out-icon";
 import SearchBar from "../../molecules/search-bar";
-import CanNotMakeQuotationModal from "../../../domain/quotations/modal/can-not-make-quotation-modal";
 import MailDialog from "../help-dialog";
-import { SUB_TAB } from "src/domain/quotations";
 
 const Topbar: React.FC = () => {
   const { first_name, last_name, email, handleLogout } = useContext(
     AccountContext
   );
 
-  const { cart } = useCart();
+  const { totalItems } = useContext(CartContext);
 
   const {
     open: openCanNotMakeQuoteModal,
@@ -28,22 +28,15 @@ const Topbar: React.FC = () => {
     state: canNotMakeQuoteModalOpen,
   } = useToggleState(false);
 
-  const totalCart = useMemo(() => {
-    if (!cart) {
-      return 0;
-    }
-    return cart.items.reduce((sum, i) => sum + i.quantity, 0);
-  }, [cart]);
-
   const [showSupportForm, setShowSupportForm] = useState(false);
 
   const handleClickCartIcon = useCallback(() => {
-    if (totalCart) {
-      navigate(`${SUB_TAB.QUOTATION_DETAILS}`);
+    if (totalItems) {
+      navigate(`/a/quotations/${SUB_TAB.MAKE_QUOTATION}/new-quotation`);
     } else {
       openCanNotMakeQuoteModal();
     }
-  }, [openCanNotMakeQuoteModal, totalCart]);
+  }, [openCanNotMakeQuoteModal, totalItems]);
 
   const logOut = useCallback(() => {
     handleLogout();
@@ -70,7 +63,7 @@ const Topbar: React.FC = () => {
           onClick={handleClickCartIcon}
         >
           <CartIcon size={24} />
-          <span>{totalCart ? totalCart : ""}</span>
+          <span>{totalItems ? totalItems : ""}</span>
         </Button>
 
         <div className="ml-large w-large h-large">

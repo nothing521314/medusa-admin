@@ -1,7 +1,8 @@
+import { useAdminGetSession } from "@medusa-react";
 import { Order } from "@medusa-types";
 import * as RadixPopover from "@radix-ui/react-popover";
 import moment from "moment";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { CalendarComponent } from "src/components/atoms/date-picker/date-picker";
 import Tooltip from "src/components/atoms/tooltip";
@@ -11,13 +12,38 @@ import useClipboard from "src/hooks/use-clipboard";
 import useNotification from "src/hooks/use-notification";
 
 type Props = {
-  order: Order;
+  order?: Order;
   date: string | null;
   onDateChange: (date: string) => void;
 };
 
+type TSaleManPanelData = {
+  quotation: {
+    title: string;
+    id: string;
+  };
+  sale_man: {
+    fullname: string;
+    email: string;
+    company: string;
+  };
+};
+
 const SaleMalePanel = ({ order, date, onDateChange }: Props) => {
   const notification = useNotification();
+
+  const { user } = useAdminGetSession();
+  const [saleManData, setSaleManData] = useState<TSaleManPanelData>({
+    quotation: {
+      id: "N/A",
+      title: "N/A",
+    },
+    sale_man: {
+      fullname: "N/A",
+      company: "N/A",
+      email: "N/A",
+    },
+  });
 
   const [, handleCopy] = useClipboard(`${order?.display_id!}`, {
     successDuration: 5500,
@@ -31,6 +57,35 @@ const SaleMalePanel = ({ order, date, onDateChange }: Props) => {
 
   useHotkeys("command+i", handleCopy);
 
+  useEffect(() => {
+    if (order) {
+      return setSaleManData({
+        quotation: {
+          id: order.cart_id,
+          title: String(order.display_id),
+        },
+        sale_man: {
+          fullname: `${order.shipping_address?.first_name} ${order.shipping_address?.last_name}`,
+          company: order.shipping_address.company || "N/A",
+          email: order.email,
+        },
+      });
+    }
+    if (user) {
+      return setSaleManData({
+        quotation: {
+          id: "N/A",
+          title: "N/A",
+        },
+        sale_man: {
+          fullname: ((user as unknown) as { name: string }).name || "N/A",
+          company: ((user as unknown) as { company: string }).company || "N/A",
+          email: user.email,
+        },
+      });
+    }
+  }, [order, user]);
+
   return (
     <BodyCard
       className={"w-full mb-4 min-h-[200px]"}
@@ -41,11 +96,11 @@ const SaleMalePanel = ({ order, date, onDateChange }: Props) => {
             type="button"
             onClick={handleCopy}
           >
-            #{order.display_id} <ClipboardCopyIcon size={16} />
+            #{saleManData?.quotation.title} <ClipboardCopyIcon size={16} />
           </button>
         </Tooltip>
       }
-      subtitle={order.cart_id}
+      subtitle={saleManData?.quotation.id}
       status={
         <RadixPopover.Root>
           <RadixPopover.Trigger className="w-full my-1">
@@ -69,15 +124,12 @@ const SaleMalePanel = ({ order, date, onDateChange }: Props) => {
       }
       forceDropdown={true}
     >
-      <div className="flex mt-6 space-x-6 divide-x justify-between">
+      <div className="grid grid-cols-3 mt-6 space-x-6 divide-x justify-between">
         <div className="flex flex-col">
           <div className="inter-smaller-regular text-grey-50 mb-1">
             Sale person
           </div>
-          <div>
-            {`${order.shipping_address?.first_name} ${order.shipping_address?.last_name}` ||
-              "N/A"}
-          </div>
+          <div>{saleManData.sale_man.fullname}</div>
         </div>
         <div className="flex flex-col pl-6">
           <div className="inter-smaller-regular text-grey-50 mb-1">Email</div>
@@ -86,13 +138,13 @@ const SaleMalePanel = ({ order, date, onDateChange }: Props) => {
             type="button"
             onClick={handleCopyEmail}
           >
-            {order.email}
+            {saleManData.sale_man.email}
             <ClipboardCopyIcon size={12} />
           </button>
         </div>
         <div className="flex flex-col pl-6">
           <div className="inter-smaller-regular text-grey-50 mb-1">Company</div>
-          <div>{order.shipping_address?.company || "N/A"}</div>
+          <div>{saleManData.sale_man.company}</div>
         </div>
       </div>
     </BodyCard>

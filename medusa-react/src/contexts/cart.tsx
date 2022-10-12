@@ -1,131 +1,137 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  useAddShippingMethodToCart,
-  useCompleteCart,
-  useCreateCart,
-  useSetPaymentSession,
-  useUpdateCart,
-  useCreatePaymentSession,
-  useGetCart,
-} from "../hooks/store";
+import { Product } from "@medusa-types";
+import React, { useCallback, useEffect, useReducer } from "react";
 import { Cart } from "../types";
 
 interface CartState {
   cart?: Cart;
 }
+interface IProductAdded extends Omit<Product, "beforeInsert"> {
+  quantity: number;
+}
 
 interface ICartContext extends CartState {
-  setCart: (cart: Cart) => void;
-  pay: ReturnType<typeof useSetPaymentSession>;
-  createCart: ReturnType<typeof useCreateCart>;
-  startCheckout: ReturnType<typeof useCreatePaymentSession>;
-  completeCheckout: ReturnType<typeof useCompleteCart>;
-  updateCart: ReturnType<typeof useUpdateCart>;
-  addShippingMethod: ReturnType<typeof useAddShippingMethodToCart>;
+  handleAddToCart?: (product: Product) => void;
+  productList: IProductAdded[];
+  handleDeleteFromCart?: (product: IProductAdded) => void;
   totalItems: number;
 }
 
-const CartContext = React.createContext<ICartContext | null>(null);
+const initialState = {
+  productList: [],
+  totalItems: 0,
+};
+
+export const CartContext = React.createContext<ICartContext>(initialState);
 
 const isBrowser = typeof window !== "undefined";
-const CART_ID = "cart_id";
-
-export const useCart = () => {
-  const context = React.useContext(CartContext);
-  if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
-  }
-  return context;
-};
+const CART_LIST = "cart_list";
 
 interface CartProps {
   children: React.ReactNode;
   initialState?: Cart;
 }
 
-const defaultInitialState = {
-  id: "",
-  items: [] as any,
-} as Cart;
+export const CartProvider = ({ children }: CartProps) => {
+  const [state, dispatch] = useReducer((state, action) => {
+    switch (action.type) {
+      case "productionList":
+        return {
+          ...state,
+          productList: action.payload,
+        };
+      case "totalItems":
+        return {
+          ...state,
+          totalItems: action.payload,
+        };
+      default:
+        return state;
+    }
+  }, initialState);
 
-export const CartProvider = ({
-  children,
-  initialState = defaultInitialState,
-}: CartProps) => {
-  const [cart, setCart] = useState<Cart>(initialState);
-
-  const handleSaveCard = useCallback((cart) => {
+  const handleSaveCard = useCallback((cart: IProductAdded[]) => {
+    dispatch({ type: "productionList", payload: [...cart] });
     if (isBrowser) {
-      localStorage.setItem(CART_ID, cart?.id);
+      localStorage.setItem(CART_LIST, JSON.stringify(cart));
     }
   }, []);
 
-  const createCart = useCreateCart({
-    onSuccess: ({ cart }) => {
-      handleSaveCard(cart);
-      setCart(cart);
+  const handleAddToCart = useCallback(
+    (product?: Product) => {
+      if (!product) {
+        return;
+      }
+
+      const cloneCart = [...state.productList];
+      const indexOfProduct = cloneCart.findIndex(
+        (item) => item.id === product.id
+      );
+
+      if (indexOfProduct !== -1) {
+        cloneCart[indexOfProduct] = {
+          ...cloneCart[indexOfProduct],
+          quantity: cloneCart[indexOfProduct].quantity++,
+        };
+      } else {
+        const productAdding: IProductAdded = {
+          ...product,
+          quantity: 1,
+        };
+        cloneCart.push(productAdding);
+      }
+
+      handleSaveCard(cloneCart);
     },
-  });
+    [handleSaveCard, state.productList]
+  );
 
-  const updateCart = useUpdateCart(cart?.id, {
-    onSuccess: ({ cart }) => setCart(cart),
-  });
+  const handleDeleteFromCart = useCallback(
+    (product?: IProductAdded) => {
+      if (!product) {
+        return;
+      }
 
-  const addShippingMethod = useAddShippingMethodToCart(cart?.id, {
-    onSuccess: ({ cart }) => setCart(cart),
-  });
+      const cloneCart = [...state.productList];
+      const indexOfProduct = cloneCart.findIndex(
+        (item) => item.id === product.id
+      );
 
-  const startCheckout = useCreatePaymentSession(cart?.id, {
-    onSuccess: ({ cart }) => setCart(cart),
-  });
+      if (product.quantity > 1) {
+        cloneCart[indexOfProduct] = {
+          ...product,
+          quantity: product.quantity--,
+        };
+      } else {
+        cloneCart.splice(indexOfProduct, 1);
+      }
 
-  const pay = useSetPaymentSession(cart?.id, {
-    onSuccess: ({ cart }) => {
-      setCart(cart);
+      handleSaveCard(cloneCart);
     },
-  });
-
-  const completeCheckout = useCompleteCart(cart?.id);
-
-  const totalItems = cart?.items
-    .map((i) => i.quantity)
-    .reduce((acc, curr) => acc + curr, 0);
-
-  const existingCartId = useMemo(() => {
-    const storage = isBrowser ? localStorage.getItem(CART_ID) : null;
-    if (!storage) {
-      return "";
-    }
-    return storage;
-  }, []);
-
-  const { cart: existedCart, isError } = useGetCart(existingCartId);
+    [handleSaveCard, state.productList]
+  );
 
   useEffect(() => {
-    if (isError) {
-      handleSaveCard(null);
-    } else {
-      if (!existedCart?.completed_at) {
-        setCart(
-          existedCart as Omit<Cart, "refundable_amount" | "refunded_total">
-        );
-        handleSaveCard(existedCart);
-      }
+    let total = 0;
+    if (state.productList) {
+      total = state.productList.reduce((sum, i) => sum + i.quantity, 0);
     }
-  }, [existedCart, handleSaveCard, isError]);
+    dispatch({ type: "totalItems", payload: total });
+  }, [state.productList]);
+
+  useEffect(() => {
+    const storageData = localStorage.getItem(CART_LIST);
+    const parseData = storageData ? JSON.parse(storageData) : null;
+    if (parseData) {
+      handleSaveCard(parseData);
+    }
+  }, [handleSaveCard]);
 
   return (
     <CartContext.Provider
       value={{
-        cart,
-        setCart,
-        createCart,
-        pay,
-        startCheckout,
-        completeCheckout,
-        updateCart,
-        addShippingMethod,
-        totalItems: totalItems || 0,
+        ...state,
+        handleAddToCart,
+        handleDeleteFromCart,
       }}
     >
       {children}

@@ -5,7 +5,7 @@ import Layout from "../components/templates/layout";
 
 const IndexPage = () => {
   useEffect(() => {
-    navigate("/a/orders");
+    navigate("/a/quotations");
   }, []);
 
   return (

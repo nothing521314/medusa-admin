@@ -1,13 +1,14 @@
+import { Customer } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import moment from "moment";
-import React, { ReactNode, useCallback, useMemo } from "react";
+import React, { ReactNode, useCallback, useContext, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import Button from "src/components/fundamentals/button";
 import useToggleState from "src/hooks/use-toggle-state";
 import { SUB_TAB } from "..";
-import { useAdminOrder } from "../../../../medusa-react";
+import { CartContext, useAdminOrder } from "../../../../medusa-react";
 import Spinner from "../../../components/atoms/spinner";
 import Breadcrumb from "../../../components/molecules/breadcrumb";
 import BodyCard from "../../../components/organisms/body-card";
@@ -24,7 +25,6 @@ type OrderDetailProps = RouteComponentProps<{ id: string; tab: string }>;
 
 export interface IQuotationDetailForm {
   updateAt: string;
-  customer: unknown;
   quotationHeading: string;
   summary: unknown;
   quotationConditions: string;
@@ -34,10 +34,14 @@ export interface IQuotationDetailForm {
   installationSupport: string;
   appendixA: string;
   appendixB: string;
+  customer?: unknown;
 }
 
 const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   const { order, isLoading } = useAdminOrder(id!);
+  const { productList } = useContext(CartContext);
+
+  console.log(productList);
 
   const {
     open: handleOpenDeleteQuotationModal,
@@ -58,7 +62,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   } = useToggleState(false);
 
   // @ts-ignore
-  useHotkeys("esc", () => navigate("/a/orders"));
+  useHotkeys("esc", () => navigate("/a/quotations"));
 
   const { register, handleSubmit, setValue, watch } = useForm<
     IQuotationDetailForm
@@ -74,6 +78,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       appendixA: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixA,
       appendixB: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixB,
       updateAt: moment(Date.now()).format("DD MMM YYYY HH:ss"),
+      customer: order?.customer,
     },
   });
 
@@ -85,7 +90,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   );
 
   const handleClickReviseButton = useCallback(() => {
-    navigate(`/a/orders/${SUB_TAB.REVISE_QUOTATION}/${id}`);
+    navigate(`/a/quotations/${SUB_TAB.REVISE_QUOTATION}/${id}`);
   }, [id]);
 
   const subTabName = useMemo(() => {
@@ -225,17 +230,17 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   ]);
 
   return (
-    <div>
+    <React.Fragment>
       <div className="flex flex-row justify-between items-center mb-4">
         <Breadcrumb
           currentPage={subTabName}
           previousBreadcrumb={"Quotation"}
-          previousRoute="/a/orders"
+          previousRoute="/a/quotations"
           className="!m-0"
         />
         {renderTopButton()}
       </div>
-      {isLoading || !order ? (
+      {isLoading ? (
         <BodyCard className="w-full pt-2xlarge flex items-center justify-center">
           <Spinner size={"large"} variant={"secondary"} />
         </BodyCard>
@@ -247,7 +252,12 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
               date={watch("updateAt")}
               onDateChange={(date) => setValue("updateAt", date)}
             />
-            <CustomerPanel order={order} />
+            <CustomerPanel
+              customer={watch("customer") as Customer}
+              handleSelectCustomer={(customer) =>
+                setValue("customer", customer)
+              }
+            />
             <BodyCard
               title="Quotation Heading"
               className="min-h-fit h-auto mb-4"
@@ -268,7 +278,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           {renderModal()}
         </form>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

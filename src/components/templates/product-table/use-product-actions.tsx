@@ -3,7 +3,7 @@ import { navigate } from "gatsby";
 import * as React from "react";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import ViewListIcon from "src/components/fundamentals/icons/view-list-icon";
-import { useAdminDeleteProduct } from "../../../../medusa-react";
+import { CartContext, useAdminDeleteProduct } from "../../../../medusa-react";
 import useImperativeDialog from "../../../hooks/use-imperative-dialog";
 import TrashIcon from "../../fundamentals/icons/trash-icon";
 import { ActionType } from "../../molecules/actionables";
@@ -11,6 +11,7 @@ import { ActionType } from "../../molecules/actionables";
 const useProductActions = (product: Product) => {
   const dialog = useImperativeDialog();
   const deleteProduct = useAdminDeleteProduct(product?.id);
+  const { handleAddToCart } = React.useContext(CartContext);
 
   const handleDelete = React.useCallback(async () => {
     const shouldDelete = await dialog({
@@ -30,7 +31,7 @@ const useProductActions = (product: Product) => {
     },
     {
       label: "Add To Cart",
-      onClick: () => {},
+      onClick: () => handleAddToCart && handleAddToCart(product),
       icon: <CartPlusIcon size={20} />,
     },
     {

@@ -32,7 +32,7 @@ const Sidebar: React.FC = () => {
 
         <div className="border-b pb-3.5 border-grey-20">
           <SidebarMenuItem
-            pageLink={"/a/orders"}
+            pageLink={"/a/quotations"}
             icon={<DollarSignIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
             text={"Quotation"}

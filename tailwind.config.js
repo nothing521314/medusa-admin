@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+const plugin = require("tailwindcss/plugin");
+
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
@@ -354,5 +357,27 @@ module.exports = {
       strategy: "class",
     }),
     require("tailwindcss-radix")(),
+    plugin(({ addComponents, addUtilities }) => {
+      addUtilities({
+
+        ".scrollbar-none": {
+          "scrollbar-width": "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        },
+        ".scrollbar-thin": {
+          "scrollbar-width": "thin",
+          "&::-webkit-scrollbar": {
+            width: "5px",
+            height: "8px",
+            background: "rgba(255,255,255,0.02)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "rgba(0,0,0,0.3)",
+          },
+        },
+      });
+    })
   ],
 };

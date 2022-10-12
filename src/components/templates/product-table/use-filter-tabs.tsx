@@ -1,6 +1,6 @@
 import { omit } from "lodash";
 import qs from "qs";
-import { useMemo, useReducer, useState } from "react";
+import { useCallback, useMemo, useReducer, useState } from "react";
 
 type ProductDateFilter = null | {
   gt?: string;
@@ -13,7 +13,9 @@ type ProductFilterAction =
   | { type: "setDefaults"; payload: ProductDefaultFilters | null }
   | { type: "setFulfillment"; payload: null | string[] | string }
   | { type: "setPayment"; payload: null | string[] | string }
-  | { type: "setLimit"; payload: number };
+  | { type: "setLimit"; payload: number }
+  | { type: "setDate"; payload: ProductDateFilter | null }
+  | { type: "setStatus"; payload: string[] | string | null };
 
 interface ProductFilterState {
   status: {
@@ -33,6 +35,10 @@ interface ProductFilterState {
     filter: ProductDateFilter;
   };
   additionalFilters: ProductDefaultFilters | null;
+  payment?: {
+    open: boolean;
+    filter: null | string[] | string;
+  };
 }
 
 const allowedFilters = [
@@ -177,7 +183,7 @@ export const useProductFilters = (
     dispatch({ type: "setFilters", payload: filters });
   };
 
-  const getQueryObject = () => {
+  const getQueryObject = useCallback(() => {
     const toQuery: any = { ...state.additionalFilters };
     for (const [key, value] of Object.entries(state)) {
       if (value?.open) {
@@ -186,38 +192,38 @@ export const useProductFilters = (
     }
 
     return toQuery;
-  };
+  }, [state]);
+  const getRepresentationObject = useCallback(
+    (fromObject?: ProductFilterState) => {
+      const objToUse = fromObject ?? state;
 
-  const getRepresentationObject = (fromObject?: ProductFilterState) => {
-    const objToUse = fromObject ?? state;
-
-    const toQuery: any = {};
-    for (const [key, value] of Object.entries(objToUse)) {
-      if (key === "query") {
-        if (value && typeof value === "string") {
-          toQuery["q"] = value;
+      const toQuery: any = {};
+      for (const [key, value] of Object.entries(objToUse)) {
+        if (key === "query") {
+          if (value && typeof value === "string") {
+            toQuery["q"] = value;
+          }
+        } else if (key === "offset" || key === "limit") {
+          toQuery[key] = value;
+        } else if (value?.open) {
+          toQuery[stateFilterMap[key]] = value.filter;
         }
-      } else if (key === "offset" || key === "limit") {
-        toQuery[key] = value;
-      } else if (value?.open) {
-        toQuery[stateFilterMap[key]] = value.filter;
       }
-    }
 
-    return toQuery;
-  };
-
-  const getRepresentationString = () => {
+      return toQuery;
+    },
+    [state]
+  );
+  const getRepresentationString = useCallback(() => {
     const obj = getRepresentationObject();
     return qs.stringify(obj, { skipNulls: true });
-  };
-
-  const queryObject = useMemo(() => getQueryObject(), [state]);
+  }, [getRepresentationObject]);
+  const queryObject = useMemo(() => getQueryObject(), [getQueryObject]);
   const representationObject = useMemo(() => getRepresentationObject(), [
-    state,
+    getRepresentationObject,
   ]);
   const representationString = useMemo(() => getRepresentationString(), [
-    state,
+    getRepresentationString,
   ]);
 
   const activeFilterTab = useMemo(() => {
@@ -281,7 +287,7 @@ export const useProductFilters = (
     } else {
       const tabFound = tabs.find((t) => t.value === tabName);
       if (tabFound) {
-        tabToUse = qs.parse(tabFound.representationString);
+        tabToUse = qs.parse(tabFound.representationString as string);
       }
     }
 
@@ -438,6 +444,10 @@ const parseQueryString = (
       filter: null,
     },
     additionalFilters: additionals,
+    payment: {
+      open: false,
+      filter: null,
+    },
   };
 
   if (queryString) {
@@ -449,7 +459,7 @@ const parseQueryString = (
             if (typeof value === "string" || Array.isArray(value)) {
               defaultVal.status = {
                 open: true,
-                filter: value,
+                filter: value as string,
               };
             }
             break;
@@ -458,7 +468,7 @@ const parseQueryString = (
             if (typeof value === "string" || Array.isArray(value)) {
               defaultVal.collection = {
                 open: true,
-                filter: value,
+                filter: value as string,
               };
             }
             break;
@@ -467,7 +477,7 @@ const parseQueryString = (
             if (typeof value === "string" || Array.isArray(value)) {
               defaultVal.payment = {
                 open: true,
-                filter: value,
+                filter: value as string,
               };
             }
             break;
@@ -475,7 +485,7 @@ const parseQueryString = (
           case "created_at": {
             defaultVal.date = {
               open: true,
-              filter: value,
+              filter: value as ProductDateFilter,
             };
             break;
           }

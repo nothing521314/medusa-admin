@@ -144,7 +144,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
 
   const updateUrlFromFilter = useCallback((obj = {}) => {
     const stringified = qs.stringify(obj);
-    window.history.replaceState("/a/orders", "", `${`?${stringified}`}`);
+    window.history.replaceState("/a/quotations", "", `${`?${stringified}`}`);
   }, []);
 
   const refreshWithFilters = useCallback(() => {
@@ -179,24 +179,24 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
           return (
             <Table.Row
               color={"inherit"}
-              linkTo={`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`}
+              linkTo={`${SUB_TAB.QUOTATION_DETAILS}/${row.original.cart_id}`}
               actions={[
                 {
                   label: "Revise",
                   onClick: () =>
-                    navigate(`${SUB_TAB.REVISE_QUOTATION}/${row.original.id}`),
+                    navigate(`${SUB_TAB.REVISE_QUOTATION}/${row.original.cart_id}`),
                   icon: <EditIcon size={20} />,
                 },
                 {
                   label: "Download",
                   onClick: () =>
-                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`),
+                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.cart_id}`),
                   icon: <DownloadIcon size={20} />,
                 },
                 {
                   label: "Email",
                   onClick: () =>
-                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`),
+                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.cart_id}`),
                   icon: <MailIcon size={20} />,
                 },
                 {

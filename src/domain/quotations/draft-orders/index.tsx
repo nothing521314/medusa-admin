@@ -35,7 +35,7 @@ const DraftOrderIndex: React.FC<RouteComponentProps> = () => {
               views={VIEWS}
               setActiveView={(v) => {
                 if (v === "orders") {
-                  navigate(`/a/orders`);
+                  navigate(`/a/quotations`);
                 }
               }}
               activeView={view}

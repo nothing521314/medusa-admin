@@ -1,7 +1,7 @@
-import { useCart } from "@medusa-react";
+import { CartContext } from "@medusa-react";
 import { RouteComponentProps, Router } from "@reach/router";
 import { navigate } from "gatsby";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useContext, useMemo } from "react";
 import Button from "../../components/fundamentals/button";
 import BodyCard from "../../components/organisms/body-card";
 import QuotationTable from "../../components/templates/quotation-table";
@@ -22,14 +22,14 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
     state: canNotMakeQuoteModalOpen,
   } = useToggleState(false);
 
-  const { cart } = useCart();
+  const { totalItems } = useContext(CartContext);
 
   const handleClickMakeQuotationButton = useCallback(() => {
-    if (!cart?.items?.length) {
+    if (!totalItems) {
       return openCanNotMakeQuoteModal();
     }
-    return navigate(SUB_TAB.MAKE_QUOTATION);
-  }, [cart?.items?.length, openCanNotMakeQuoteModal]);
+    return navigate(`${SUB_TAB.MAKE_QUOTATION}/new-quotation`);
+  }, [openCanNotMakeQuoteModal, totalItems]);
 
   const actions = useMemo(() => {
     return [

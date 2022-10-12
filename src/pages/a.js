@@ -21,7 +21,7 @@ import Settings from "../domain/settings";
 import Quotation from "src/domain/quotations";
 
 const IndexPage = () => {
-  useHotkeys("g + o", () => navigate("/a/orders"));
+  useHotkeys("g + o", () => navigate("/a/quotations"));
   useHotkeys("g + p", () => navigate("/a/products"));
   return (
     <DndProvider backend={HTML5Backend}>
@@ -32,7 +32,7 @@ const IndexPage = () => {
           <PrivateRoute path="products/*" component={ProductsRoute} />
           <PrivateRoute path="collections/*" component={Collections} />
           <PrivateRoute path="gift-cards/*" component={GiftCards} />
-          <PrivateRoute path="orders/*" component={Quotation} />
+          <PrivateRoute path="quotations/*" component={Quotation} />
           <PrivateRoute path="draft-orders/*" component={DraftOrders} />
           <PrivateRoute path="discounts/*" component={Discounts} />
           <PrivateRoute path="customers/*" component={Customers} />

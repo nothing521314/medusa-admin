@@ -3,22 +3,22 @@ import { CustomerGroup } from "./customer-group";
 import { Order } from "./order";
 import { SoftDeletableEntity } from "./interfaces";
 export declare class Customer extends SoftDeletableEntity {
-  email: string;
-  name: string;
-
-  phone: string;
-  address: string;
-  person_in_charge: string;
-
-  // billing_address_id: string | null;
-  // billing_address: Address;
-  // shipping_addresses: Address[];
-  // password_hash: string;
-  // has_account: boolean;
-  // orders: Order[];
-  // groups: CustomerGroup[];
-  // metadata: Record<string, unknown>;
-  // private beforeInsert;
+    email: string;
+    first_name: string;
+    last_name: string;
+    billing_address_id: string | null;
+    billing_address: Address;
+    shipping_addresses: Address[];
+    password_hash: string;
+    phone: string;
+    has_account: boolean;
+    orders: Order[];
+    groups: CustomerGroup[];
+    metadata: Record<string, unknown>;
+    person_in_charge?: string;
+    name?: string;
+    address?: string;
+    private beforeInsert;
 }
 /**
  * @schema customer

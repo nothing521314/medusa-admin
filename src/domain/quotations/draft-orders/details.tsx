@@ -145,7 +145,7 @@ const DraftOrderDetails = ({ id = "" }: DraftOrderDetailsProps) => {
                     variant="secondary"
                     size="small"
                     onClick={() =>
-                      navigate(`/a/orders/${draft_order.order_id}`)
+                      navigate(`/a/quotations/${draft_order.order_id}`)
                     }
                   >
                     Go to Order
