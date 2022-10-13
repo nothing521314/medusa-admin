@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import CashIcon from "../../fundamentals/icons/cash-icon";
 import CustomerIcon from "../../fundamentals/icons/customer-icon";
 import DollarSignIcon from "../../fundamentals/icons/dollar-sign-icon";
-import GearIcon from "../../fundamentals/icons/gear-icon";
-import GiftIcon from "../../fundamentals/icons/gift-icon";
-import SaleIcon from "../../fundamentals/icons/sale-icon";
 import TagIcon from "../../fundamentals/icons/tag-icon";
 import SidebarCompanyLogo from "../../molecules/sidebar-company-logo";
 import SidebarMenuItem from "../../molecules/sidebar-menu-item";
@@ -55,12 +51,12 @@ const Sidebar: React.FC = () => {
             triggerHandler={triggerHandler}
             text={"Salesman"}
           />
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             pageLink={"/a/discounts"}
             icon={<SaleIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
             text={"Discounts"}
-          />
+          /> */}
           {/* <SidebarMenuItem
             pageLink={"/a/gift-cards"}
             icon={<GiftIcon size={ICON_SIZE} />}
