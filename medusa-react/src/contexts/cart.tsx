@@ -5,12 +5,12 @@ import { Cart } from "../types";
 interface CartState {
   cart?: Cart;
 }
-interface IProductAdded extends Omit<Product, "beforeInsert"> {
+export interface IProductAdded extends Omit<Product, "beforeInsert"> {
   quantity: number;
 }
 
 interface ICartContext extends CartState {
-  handleAddToCart?: (product: Product) => void;
+  handleAddToCart?: (product: IProductAdded | Product) => void;
   productList: IProductAdded[];
   handleDeleteFromCart?: (product: IProductAdded) => void;
   totalItems: number;
@@ -58,10 +58,7 @@ export const CartProvider = ({ children }: CartProps) => {
 
   const handleAddToCart = useCallback(
     (product?: Product) => {
-      if (!product) {
-        return;
-      }
-
+      if (!product) return;
       const cloneCart = [...state.productList];
       const indexOfProduct = cloneCart.findIndex(
         (item) => item.id === product.id
@@ -70,7 +67,7 @@ export const CartProvider = ({ children }: CartProps) => {
       if (indexOfProduct !== -1) {
         cloneCart[indexOfProduct] = {
           ...cloneCart[indexOfProduct],
-          quantity: cloneCart[indexOfProduct].quantity++,
+          quantity: cloneCart[indexOfProduct].quantity + 1,
         };
       } else {
         const productAdding: IProductAdded = {
@@ -87,9 +84,7 @@ export const CartProvider = ({ children }: CartProps) => {
 
   const handleDeleteFromCart = useCallback(
     (product?: IProductAdded) => {
-      if (!product) {
-        return;
-      }
+      if (!product) return;
 
       const cloneCart = [...state.productList];
       const indexOfProduct = cloneCart.findIndex(
@@ -99,7 +94,7 @@ export const CartProvider = ({ children }: CartProps) => {
       if (product.quantity > 1) {
         cloneCart[indexOfProduct] = {
           ...product,
-          quantity: product.quantity--,
+          quantity: product.quantity - 1,
         };
       } else {
         cloneCart.splice(indexOfProduct, 1);

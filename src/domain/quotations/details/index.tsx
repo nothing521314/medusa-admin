@@ -2,13 +2,23 @@ import { Customer } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import moment from "moment";
-import React, { ReactNode, useCallback, useContext, useMemo } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react";
 import { useForm } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import Button from "src/components/fundamentals/button";
 import useToggleState from "src/hooks/use-toggle-state";
 import { SUB_TAB } from "..";
-import { CartContext, useAdminOrder } from "../../../../medusa-react";
+import {
+  CartContext,
+  IProductAdded,
+  useAdminOrder,
+} from "../../../../medusa-react";
 import Spinner from "../../../components/atoms/spinner";
 import Breadcrumb from "../../../components/molecules/breadcrumb";
 import BodyCard from "../../../components/organisms/body-card";
@@ -26,7 +36,6 @@ type OrderDetailProps = RouteComponentProps<{ id: string; tab: string }>;
 export interface IQuotationDetailForm {
   updateAt: string;
   quotationHeading: string;
-  summary: unknown;
   quotationConditions: string;
   paymentTerms: string;
   deliveryLeadTime: string;
@@ -35,13 +44,12 @@ export interface IQuotationDetailForm {
   appendixA: string;
   appendixB: string;
   customer?: unknown;
+  summary?: unknown;
 }
 
 const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   const { order, isLoading } = useAdminOrder(id!);
   const { productList } = useContext(CartContext);
-
-  console.log(productList);
 
   const {
     open: handleOpenDeleteQuotationModal,
@@ -79,6 +87,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       appendixB: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixB,
       updateAt: moment(Date.now()).format("DD MMM YYYY HH:ss"),
       customer: order?.customer,
+      summary: order?.cart || productList,
     },
   });
 
@@ -88,6 +97,10 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     },
     []
   );
+
+  useEffect(() => {
+    setValue("summary", productList);
+  }, [productList, setValue]);
 
   const handleClickReviseButton = useCallback(() => {
     navigate(`/a/quotations/${SUB_TAB.REVISE_QUOTATION}/${id}`);
@@ -274,7 +287,10 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
                 {...register("quotationHeading")}
               />
             </BodyCard>
-            <SummaryPanel order={order} />
+            <SummaryPanel
+              summary={watch("summary") as IProductAdded[]}
+              readOnly={tab === SUB_TAB.QUOTATION_DETAILS}
+            />
             <TextAreaFormPanel
               register={register}
               readOnly={tab === SUB_TAB.QUOTATION_DETAILS}
