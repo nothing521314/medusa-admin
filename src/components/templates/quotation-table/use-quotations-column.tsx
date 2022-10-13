@@ -12,11 +12,7 @@ const useOrderTableColumns = (): Column<Order>[] => {
   return useMemo(
     () => [
       {
-        Header: (
-          <Table.HeadCell className="pl-2 flex items-center">
-            No #
-          </Table.HeadCell>
-        ),
+        Header: <span className="pl-2 flex items-center">No #</span>,
         accessor: "display_id",
         disableSortBy: true,
         Cell: ({ cell: { value }, index }) => (
@@ -57,14 +53,7 @@ const useOrderTableColumns = (): Column<Order>[] => {
           <Table.Cell key={index}>
             <CustomerAvatarItem
               customer={{
-                first_name:
-                  value?.first_name ||
-                  row.original.shipping_address?.first_name ||
-                  "",
-                last_name:
-                  value?.last_name ||
-                  row.original.shipping_address?.last_name ||
-                  "",
+                name: value?.name || "",
                 email: row.original.email,
               }}
               color={getColor(row.index)}

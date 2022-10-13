@@ -164,11 +164,13 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
   const renderTableBody = useCallback(() => {
     if (isLoading || !orders) {
       return (
-        <div className="flex w-full h-full absolute items-center justify-center mt-10">
-          <div className="">
-            <Spinner size={"large"} variant={"secondary"} />
-          </div>
-        </div>
+        <Table.Body className="flex w-full h-full absolute items-center justify-center mt-10">
+          <Table.Row className="border-none">
+            <Table.HeadCell>
+              <Spinner size={"large"} variant={"secondary"} />
+            </Table.HeadCell>
+          </Table.Row>
+        </Table.Body>
       );
     }
 
@@ -184,19 +186,25 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
                 {
                   label: "Revise",
                   onClick: () =>
-                    navigate(`${SUB_TAB.REVISE_QUOTATION}/${row.original.cart_id}`),
+                    navigate(
+                      `${SUB_TAB.REVISE_QUOTATION}/${row.original.cart_id}`
+                    ),
                   icon: <EditIcon size={20} />,
                 },
                 {
                   label: "Download",
                   onClick: () =>
-                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.cart_id}`),
+                    navigate(
+                      `${SUB_TAB.QUOTATION_DETAILS}/${row.original.cart_id}`
+                    ),
                   icon: <DownloadIcon size={20} />,
                 },
                 {
                   label: "Email",
                   onClick: () =>
-                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.cart_id}`),
+                    navigate(
+                      `${SUB_TAB.QUOTATION_DETAILS}/${row.original.cart_id}`
+                    ),
                   icon: <MailIcon size={20} />,
                 },
                 {
@@ -262,7 +270,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
                     )
                   }
                 >
-                  <div className="flex items-center">
+                  <span className="flex items-center">
                     {col.render("Header")}
                     {col.isSorted && (
                       <SortingIcon
@@ -272,7 +280,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
                         ascendingColor={!col.isSortedDesc ? "#111827" : ""}
                       />
                     )}
-                  </div>
+                  </span>
                 </Table.HeadCell>
               ))}
             </Table.HeadRow>

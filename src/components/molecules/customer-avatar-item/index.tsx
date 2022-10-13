@@ -1,11 +1,13 @@
-import { User } from "@medusa-types";
 import clsx from "clsx";
 import React from "react";
 import Avatar from "../../atoms/avatar";
 
 type CustomerAvatarItemProps = {
   color?: string;
-  customer: User;
+  customer: {
+    name: string;
+    email: string;
+  };
   className?: string;
 };
 

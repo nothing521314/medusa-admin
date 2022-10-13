@@ -37,6 +37,7 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
         variant="secondary"
         size="small"
         onClick={handleClickMakeQuotationButton}
+        key="make-quotation"
       >
         Make quotation
       </Button>,

@@ -93,6 +93,11 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     navigate(`/a/quotations/${SUB_TAB.REVISE_QUOTATION}/${id}`);
   }, [id]);
 
+  const handleClickCancelMakeQuotationButton = useCallback(() => {
+    handleOpenCancelMakingQuotationModal();
+    navigate("/a/quotations");
+  }, [handleOpenCancelMakingQuotationModal]);
+
   const subTabName = useMemo(() => {
     switch (tab) {
       case SUB_TAB.MAKE_QUOTATION:
@@ -198,7 +203,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       return (
         <CancelMakingQuotationModal
           handleClickCancelButton={handleCloseCancelMakingQuotationModal}
-          handleClickConfirmButton={handleCloseCancelMakingQuotationModal}
+          handleClickConfirmButton={handleClickCancelMakeQuotationButton}
         />
       );
     }
@@ -221,6 +226,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       );
     }
   }, [
+    handleClickCancelMakeQuotationButton,
     handleCloseCancelMakingQuotationModal,
     handleCloseCancelReviseModal,
     handleCloseDeleteQuotationModal,

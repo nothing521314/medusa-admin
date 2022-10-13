@@ -55,11 +55,11 @@ const CustomerLine = ({ customer, className, onClick }: Props) => {
       </div>
       <div className="flex flex-col pl-6 ">
         <div className="inter-small-regular mb-1 flex space-x-1">
-          <div className="text-grey-50 w-1/4 shrink-0">Contact</div>
+          <div className="text-grey-50 min-w-[25%] shrink-0">Contact</div>
           <div className="text-grey-90 text-ellipsis overflow-hidden whitespace-nowrap">{customer.email}</div>
         </div>
         <div className="inter-small-regular mb-1 flex space-x-1">
-          <div className="text-grey-50 w-1/4 shrink-0">Phone</div>
+          <div className="text-grey-50 min-w-[25%] shrink-0">Phone</div>
           <div className="text-grey-90">{customer.phone || ""}</div>
         </div>
       </div>
