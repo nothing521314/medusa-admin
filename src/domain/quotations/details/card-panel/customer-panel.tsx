@@ -1,5 +1,5 @@
 import { Customer } from "@medusa-types";
-import React from "react";
+import React, { useCallback } from "react";
 import BodyCard from "src/components/organisms/body-card";
 import useToggleState from "src/hooks/use-toggle-state";
 import CustomerDialog from "../../modal/customer-dialog";
@@ -17,7 +17,11 @@ const CustomerPanel = ({ customer, handleSelectCustomer }: Props) => {
     state: isOpenCustomerDialog,
   } = useToggleState(false);
 
-  console.log(isOpenCustomerDialog);
+  const handleClickChangeButton = useCallback(() => {
+    if (isOpenCustomerDialog) return;
+    handleOpenCustomerDialog();
+  }, [handleOpenCustomerDialog, isOpenCustomerDialog]);
+
   return (
     <BodyCard
       className={"w-full mb-4 min-h-0 h-auto relative"}
@@ -25,7 +29,7 @@ const CustomerPanel = ({ customer, handleSelectCustomer }: Props) => {
       actionables={[
         {
           label: "Change",
-          onClick: () => handleOpenCustomerDialog(),
+          onClick: handleClickChangeButton,
         },
       ]}
     >

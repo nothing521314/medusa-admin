@@ -16,9 +16,14 @@ import SearchBar from "../../molecules/search-bar";
 import MailDialog from "../help-dialog";
 
 const Topbar: React.FC = () => {
-  const { first_name, last_name, email, handleLogout } = useContext(
-    AccountContext
-  );
+  const {
+    name,
+    email,
+    handleLogout,
+    regions,
+    selectedRegion,
+    handleSelectRegion,
+  } = useContext(AccountContext);
 
   const { totalItems } = useContext(CartContext);
 
@@ -39,9 +44,84 @@ const Topbar: React.FC = () => {
   }, [openCanNotMakeQuoteModal, totalItems]);
 
   const logOut = useCallback(() => {
+    if (!handleLogout) return;
     handleLogout();
     navigate("/login");
   }, [handleLogout]);
+
+  const renderRegionMenu = useCallback(() => {
+    return (
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild>
+          <div className="flex space-x-2 mr-3 items-center">
+            Market Region:
+            <Button variant="ghost" size="small" className="">
+              {selectedRegion?.name || "Select"}
+            </Button>
+          </div>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content
+          sideOffset={5}
+          className="border bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown p-xsmall min-w-[200px] z-30"
+        >
+          <DropdownMenu.Item className="mb-1 last:mb-0">
+            {regions.map((item) => {
+              return (
+                <Button
+                  variant="ghost"
+                  className="w-full !justify-start"
+                  onClick={() => {
+                    if (!handleSelectRegion) return;
+                    if (selectedRegion?.name === item.name) return;
+                    handleSelectRegion(item);
+                  }}
+                >
+                  {`${item.name}/${item.currency_code.toUpperCase()}`}
+                </Button>
+              );
+            })}
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    );
+  }, [handleSelectRegion, regions, selectedRegion?.name]);
+
+  const renderAccountDetailMenu = useCallback(() => {
+    return (
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild>
+          <div className="cursor-pointer w-full h-full">
+            <Avatar user={{ name, email }} color="bg-fuschia-40" />
+          </div>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content
+          sideOffset={5}
+          className="border bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown p-xsmall min-w-[200px] z-30"
+        >
+          <DropdownMenu.Item className="mb-1 last:mb-0">
+            <Button
+              variant="ghost"
+              size="small"
+              className={"w-full justify-start"}
+              onClick={() => navigate("/a/settings")}
+            >
+              <GearIcon />
+              Settings
+            </Button>
+            <Button
+              variant="ghost"
+              size="small"
+              className={"w-full justify-start text-rose-50"}
+              onClick={() => logOut()}
+            >
+              <SignOutIcon size={20} />
+              Sign out
+            </Button>
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    );
+  }, [email, logOut, name]);
 
   return (
     <div className="w-full min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-b border-grey-20 sticky top-0 flex items-center justify-between z-40">
@@ -56,6 +136,8 @@ const Topbar: React.FC = () => {
           <HelpCircleIcon size={24} />
         </Button>
 
+        {renderRegionMenu()}
+
         <Button
           size="small"
           variant="ghost"
@@ -63,46 +145,10 @@ const Topbar: React.FC = () => {
           onClick={handleClickCartIcon}
         >
           <CartIcon size={24} />
-          <span>{totalItems ? totalItems : ""}</span>
+          <div>{totalItems ? totalItems : ""}</div>
         </Button>
 
-        <div className="ml-large w-large h-large">
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild>
-              <div className="cursor-pointer w-full h-full">
-                <Avatar
-                  user={{ first_name, last_name, email }}
-                  color="bg-fuschia-40"
-                />
-              </div>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content
-              sideOffset={5}
-              className="border bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown p-xsmall min-w-[200px] z-30"
-            >
-              <DropdownMenu.Item className="mb-1 last:mb-0">
-                <Button
-                  variant="ghost"
-                  size="small"
-                  className={"w-full justify-start"}
-                  onClick={() => navigate("/a/settings")}
-                >
-                  <GearIcon />
-                  Settings
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="small"
-                  className={"w-full justify-start text-rose-50"}
-                  onClick={() => logOut()}
-                >
-                  <SignOutIcon size={20} />
-                  Sign out
-                </Button>
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
-        </div>
+        <div className="w-large h-large">{renderAccountDetailMenu()}</div>
       </div>
       {showSupportForm && (
         <MailDialog

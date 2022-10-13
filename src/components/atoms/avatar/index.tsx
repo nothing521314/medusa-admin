@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import * as RadixAvatar from "@radix-ui/react-avatar";
 import clsx from "clsx";
 
@@ -7,26 +7,30 @@ type AvatarProps = {
     img?: string;
     first_name?: string;
     last_name?: string;
+    name?: string;
     email: string;
   };
   font?: string;
   color?: string;
 };
 
-const Avatar: React.FC<AvatarProps> = ({
+const Avatar = ({
   user,
   font = "inter-small-semibold",
   color = "bg-violet-60",
-}) => {
-  let username: string;
+}: AvatarProps) => {
+  const username = useMemo(() => {
+    if (user?.first_name && user?.last_name) {
+      return user.first_name + " " + user.last_name;
+    }
+    if (user?.name) return user.name;
 
-  if (user?.first_name && user?.last_name) {
-    username = user.first_name + " " + user.last_name;
-  } else if (user?.email) {
-    username = user.email;
-  } else {
-    username = "Medusa user";
-  }
+    if (user?.email) {
+      return user.email;
+    } else {
+      return "Medusa user";
+    }
+  }, [user?.email, user?.first_name, user?.last_name, user?.name]);
 
   return (
     <RadixAvatar.Root

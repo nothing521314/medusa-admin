@@ -1,6 +1,6 @@
 import { useAdminCustomers } from "@medusa-react";
 import { Customer } from "@medusa-types";
-import * as Dialog from "@radix-ui/react-dialog";
+import * as RadixPopover from "@radix-ui/react-popover";
 import clsx from "clsx";
 import React, { useCallback, useEffect, useState } from "react";
 import TableSearch from "src/components/molecules/table/table-search";
@@ -38,38 +38,41 @@ const CustomerDialog = ({ open, onClose, handleSelectCustomer }: Props) => {
     if (customers) {
       setCustomerList(customers);
     }
-  }, []);
+  }, [customers]);
 
   return (
-    <Dialog.Root open={open} onOpenChange={onClose}>
-      <Dialog.Overlay className="z-50 block w-full">
-        <Dialog.Content className="bg-grey-0 shadow-dropdown rounded-rounded p-8">
-          <Dialog.Title className="inter-xlarge-semibold mb-1">
-            <TableSearch
-              placeholder="Search customer... "
-              searchValue={query}
-              onSearch={setQuery}
-              className="w-full !border-violet-60 focus-within:!w-full"
+    <RadixPopover.Root open={open} onOpenChange={onClose}>
+      <RadixPopover.Trigger className="w-full visible"></RadixPopover.Trigger>
+      <RadixPopover.Content
+        side="bottom"
+        align="center"
+        alignOffset={-8}
+        sideOffset={20}
+        className="w-full bg-grey-0 shadow-dropdown rounded-rounded p-8"
+      >
+        <TableSearch
+          placeholder="Search customer... "
+          searchValue={query}
+          onSearch={setQuery}
+          className="w-full !border-violet-60 focus-within:!w-full"
+        />
+        <div
+          className={clsx(
+            "inter-small-regular text-grey-50 mt-6 w-max",
+            "max-h-[300px] overflow-y-auto scroll-smooth scrollbar-thin overflow-x-hidden"
+          )}
+        >
+          {customerList.map((item) => (
+            <CustomerLine
+              customer={item}
+              className="cursor-pointer"
+              onClick={() => handleClickCustomerLine(item)}
             />
-          </Dialog.Title>
-          <Dialog.Description
-            className={clsx(
-              "inter-small-regular text-grey-50 mt-6",
-              "max-h-[300px] overflow-y-auto scroll-smooth scrollbar-thin"
-            )}
-          >
-            {customerList.map((item) => (
-              <CustomerLine
-                customer={item}
-                className="cursor-pointer"
-                onClick={() => handleClickCustomerLine(item)}
-              />
-            ))}
-          </Dialog.Description>
-          <div className="flex flex-col items-center gap-y-base"></div>
-        </Dialog.Content>
-      </Dialog.Overlay>
-    </Dialog.Root>
+          ))}
+        </div>
+        <div className="flex flex-col items-center gap-y-base"></div>
+      </RadixPopover.Content>
+    </RadixPopover.Root>
   );
 };
 

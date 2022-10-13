@@ -17,7 +17,7 @@
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "curly": [2, "all"],
+    "curly": "off",
     "new-cap": "off",
     "require-jsdoc": "off",
     "semi": ["warn", "always"],
@@ -27,7 +27,6 @@
     "camelcase": "off",
     "no-invalid-this": "off",
     "no-unused-vars": "off",
-    "curly": "off",
     "react/prop-types": "off", // Disable prop-types as we use TypeScript for type checking
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
