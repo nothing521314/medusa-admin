@@ -83,7 +83,7 @@ export declare class AdminUpdateUserRequest {
   name: string;
   email: string;
   phone: string | null;
-  password: string;
+  password?: string;
   role?: Roles;
   regions: Region[];
 }

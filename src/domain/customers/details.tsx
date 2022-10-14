@@ -3,11 +3,11 @@ import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import
-  {
-    useAdminCustomer,
-    useAdminUpdateCustomer
-  } from "../../../medusa-react";
+import { KEY } from "src/constants/misc";
+import {
+  useAdminCustomer,
+  useAdminUpdateCustomer,
+} from "../../../medusa-react";
 import Button from "../../components/fundamentals/button";
 import Breadcrumb from "../../components/molecules/breadcrumb";
 import InputField from "../../components/molecules/input";
@@ -21,7 +21,6 @@ type CustomerDetailProps = {
 } & RouteComponentProps;
 
 const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
-  const [customer, setCustomer] = useState<Customer>();
   const {
     register,
     reset,
@@ -31,38 +30,35 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
   const notification = useNotification();
   const updateCustomer = useAdminUpdateCustomer(id);
   // Fetch info
-  useAdminCustomer(id, {
+  const { isSuccess } = useAdminCustomer(id, {
     onSuccess(data) {
       const { email, name, phone, address, person_in_charge } = data.customer;
-      setCustomer({
+      reset({
         email,
         name,
         phone,
         address,
-        person_in_charge,
+        person_in_charge: person_in_charge.replace(KEY.MR_MRS + " ", ""),
       });
     },
     cacheTime: 0,
   });
 
   const onSubmit = handleSubmit((data) => {
-    updateCustomer.mutate(data, {
-      onSuccess: () => {
-        notification("Success", "Successfully updated customer", "success");
-      },
-      onError: (err) => {
-        notification("Error", getErrorMessage(err), "error");
-      },
-    });
+    updateCustomer.mutate(
+      { ...data, person_in_charge: KEY.MR_MRS + " " + data.person_in_charge },
+      {
+        onSuccess: () => {
+          notification("Success", "Successfully updated customer", "success");
+        },
+        onError: (err) => {
+          notification("Error", getErrorMessage(err), "error");
+        },
+      }
+    );
   });
 
-  useEffect(() => {
-    if (customer) reset(customer);
-  }, [customer, reset]);
-
-  if (!customer) {
-    return null;
-  }
+  if (!isSuccess) return null;
 
   return (
     <div>

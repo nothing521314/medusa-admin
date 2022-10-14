@@ -68,7 +68,7 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
     const dataPost: any = {
       name,
       phone,
-      regions: regions.map(v => v.id),
+      regions: regions.map((v) => v.id),
       password,
     };
     if (!password) {

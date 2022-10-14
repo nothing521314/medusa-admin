@@ -2,6 +2,7 @@ import { useAdminCreateCustomer } from "@medusa-react";
 import { AdminPostCustomersReq } from "@medusa-types";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { KEY } from "src/constants/misc";
 import Button from "../../components/fundamentals/button";
 import InputField from "../../components/molecules/input";
 import Modal from "../../components/molecules/modal";
@@ -29,7 +30,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
 
   const onSubmit = handleSubmit((data) => {
     createCustomer.mutate(
-      { ...data, person_in_charge: "Mr" },
+      { ...data, person_in_charge: KEY.MR_MRS + " " + data.person_in_charge },
       {
         onSuccess: () => {
           handleClose();
