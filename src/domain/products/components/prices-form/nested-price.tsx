@@ -1,13 +1,7 @@
-import clsx from "clsx";
 import React from "react";
 import { Controller } from "react-hook-form";
 import { NestedPriceObject, PricesFormType } from ".";
-import IncludesTaxTooltip from "../../../../components/atoms/includes-tax-tooltip";
-import CoinsIcon from "../../../../components/fundamentals/icons/coins-icon";
 import MapPinIcon from "../../../../components/fundamentals/icons/map-pin-icon";
-import TriangleRightIcon from "../../../../components/fundamentals/icons/triangle-right-icon";
-import useToggleState from "../../../../hooks/use-toggle-state";
-import { currencies } from "../../../../utils/currencies";
 import { NestedForm } from "../../../../utils/nested-form";
 import PriceFormInput from "./price-form-input";
 
@@ -17,7 +11,6 @@ type Props = {
 };
 
 const NestedPrice = ({ form, nestedPrice }: Props) => {
-  const { state, toggle } = useToggleState();
 
   const { control, path } = form;
   const { regionPrices } = nestedPrice;
@@ -36,7 +29,7 @@ const NestedPrice = ({ form, nestedPrice }: Props) => {
             <span className="inter-base-regular text-grey-50">
               {rp.regionName}
             </span>
-            <IncludesTaxTooltip includesTax={rp.includes_tax} />
+            {/* <IncludesTaxTooltip includesTax={rp.includes_tax} /> */}
           </div>
         </div>
         <Controller

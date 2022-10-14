@@ -1,8 +1,9 @@
+import React from "react";
+import { Controller, FieldArrayWithId, useFieldArray } from "react-hook-form";
+import MapPinIcon from "src/components/fundamentals/icons/map-pin-icon";
 import { useAdminRegions, useAdminStore } from "../../../../../medusa-react";
-import React, { useEffect, useMemo } from "react";
-import { FieldArrayWithId, useFieldArray } from "react-hook-form";
 import { NestedForm } from "../../../../utils/nested-form";
-import NestedPrice from "./nested-price";
+import PriceFormInput from "./price-form-input";
 
 type PricePayload = {
   id: string | null;
@@ -52,110 +53,39 @@ const PricesForm = ({ form }: Props) => {
     name: path("prices"),
   });
 
-  console.log('regions', regions)
-  
-
-  useEffect(() => {
-    if (!regions) {
-      return;
-    }
-
-    regions.forEach((reg) => {
-      if (!fields.some((field) => field.region_id === reg.id)) {
-        append({
-          id: null,
-          region_id: reg.id,
-          amount: null,
-          currency_code: reg.currency_code,
-          includes_tax: reg.includes_tax,
-        });
-      }
-
-      const regionPrice = fields.findIndex(
-        (field) => field.region_id === reg.id
-      );
-
-      if (
-        regionPrice !== -1 &&
-        fields[regionPrice].includes_tax !== reg.includes_tax
-      ) {
-        update(regionPrice, {
-          ...fields[regionPrice],
-          includes_tax: reg.includes_tax,
-        });
-      }
-    });
-  }, [regions, fields]);
-
-  useEffect(() => {
-    if (!store) {
-      return;
-    }
-
-    store.currencies.forEach((cur) => {
-      if (!fields.some((field) => field.currency_code === cur.code)) {
-        append({
-          id: null,
-          currency_code: cur.code,
-          amount: null,
-          region_id: null,
-          includes_tax: cur.includes_tax,
-        });
-      }
-
-      const currencyPrice = fields.findIndex(
-        (field) => field.currency_code === cur.code
-      );
-
-      if (
-        currencyPrice !== -1 &&
-        fields[currencyPrice].includes_tax !== cur.includes_tax
-      ) {
-        update(currencyPrice, {
-          ...fields[currencyPrice],
-          includes_tax: cur.includes_tax,
-        });
-      }
-    });
-  }, [store, fields]);
-
-  const priceObj = useMemo(() => {
-    const obj: Record<string, NestedPriceObject> = {};
-
-    const currencyPrices = fields.filter((field) => field.region_id === null);
-    const regionPrices = fields.filter((field) => field.region_id !== null);
-
-    currencyPrices.forEach((price) => {
-      obj[price.currency_code!] = {
-        currencyPrice: {
-          ...price,
-          index: fields.indexOf(price),
-        },
-        regionPrices: regionPrices
-          .filter(
-            (regionPrice) => regionPrice.currency_code === price.currency_code
-          )
-          .map((rp) => ({
-            ...rp,
-            regionName: regions?.find((r) => r.id === rp.region_id)?.name || "",
-            index: fields.indexOf(rp),
-          })),
-      };
-    });
-
-    return obj;
-  }, [fields]);
-
   return (
-    Object.values(priceObj).map((po) => {
+    regions?.map((rp, index) => {
       return (
-        <NestedPrice
-          form={form}
-          nestedPrice={po}
-          key={po.currencyPrice.id}
-        />
+        <div
+          className="grid grid-cols-[1fr_303px] p-2xsmall  hover:bg-grey-5 focus-within:bg-grey-5 transition-colors rounded-rounded justify-between"
+          key={rp.id}
+        >
+          <div className="flex items-center gap-x-small">
+            <div className="w-10 h-10 bg-grey-10 rounded-rounded text-grey-50 flex items-center justify-center">
+              <MapPinIcon size={20} />
+            </div>
+            <div className="flex items-center gap-x-xsmall">
+              <span className="inter-base-regular text-grey-50">{rp.name}</span>
+              {/* <IncludesTaxTooltip includesTax={rp.includes_tax} /> */}
+            </div>
+          </div>
+          <Controller
+            name={path(`prices.${index}.amount`)}
+            control={control}
+            render={({ field: { value, onChange }, formState: { errors } }) => {
+              return (
+                <PriceFormInput
+                  onChange={onChange}
+                  amount={value || undefined}
+                  currencyCode={rp.currency_code.toUpperCase()}
+                  errors={errors}
+                />
+              );
+            }}
+          />
+        </div>
       );
-    })
+    }) ?? <></>
   );
 };
 

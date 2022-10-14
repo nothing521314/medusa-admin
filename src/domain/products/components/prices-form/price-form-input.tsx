@@ -19,9 +19,7 @@ const PriceFormInput = ({
   amount,
   onChange,
 }: Props) => {
-  const { symbol_native, decimal_digits } = currencies[
-    currencyCode.toUpperCase()
-  ];
+  const { code, decimal_digits } = currencies[currencyCode.toUpperCase()];
 
   const [rawValue, setRawValue] = useState<string | undefined>(
     amount ? `${amount}` : undefined
@@ -58,8 +56,6 @@ const PriceFormInput = ({
           }
         )}
       >
-        <span className="inter-base-regular text-grey-40">{symbol_native}</span>
-
         <AmountField
           step={step}
           value={rawValue}
@@ -69,6 +65,7 @@ const PriceFormInput = ({
           decimalScale={decimal_digits}
           className="bg-transparent outline-none outline-0 w-full remove-number-spinner leading-base text-grey-90 font-normal caret-violet-60 placeholder-grey-40 text-right"
         />
+        <span className="pl-2 inter-base-regular text-grey-40">{code}</span>
       </div>
       <InputError name={name} errors={errors} />
     </div>
