@@ -31,7 +31,7 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
       priceItem: priceRegion.price,
     };
   }, [item?.prices, region]);
-
+  
   const { handleAddToCart, handleDeleteFromCart } = useContext(CartContext);
 
   const renderNumberOfProduct = useCallback(() => {

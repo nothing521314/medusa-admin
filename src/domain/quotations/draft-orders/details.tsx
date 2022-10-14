@@ -32,9 +32,9 @@ import { getErrorMessage } from "../../../utils/error-messages";
 import extractCustomerName from "../../../utils/extract-customer-name";
 import { formatAmountWithSymbol } from "../../../utils/prices";
 import { IQuotationDetailForm } from "../details";
-import AddressModal from "../details/address-modal";
 import { DEFAULT_QUOTATION_DETAIL_FORM_VALUE } from "../details/default-value-form";
 import { DisplayTotal, FormattedAddress } from "../details/templates";
+import AddressModal from "../modal/address-modal";
 
 type DraftOrderDetailsProps = RouteComponentProps<{ id: string }>;
 

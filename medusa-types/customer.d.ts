@@ -1,24 +1,21 @@
-import { Address } from "./address";
 import { CustomerGroup } from "./customer-group";
-import { Order } from "./order";
 import { SoftDeletableEntity } from "./interfaces";
+import { Order } from "./order";
 export declare class Customer extends SoftDeletableEntity {
-    email: string;
-    first_name: string;
-    last_name: string;
-    billing_address_id: string | null;
-    billing_address: Address;
-    shipping_addresses: Address[];
-    password_hash: string;
-    phone: string;
-    has_account: boolean;
-    orders: Order[];
-    groups: CustomerGroup[];
-    metadata: Record<string, unknown>;
-    person_in_charge?: string;
-    name?: string;
-    address?: string;
-    private beforeInsert;
+  id: string;
+  email: string;
+  billing_address_id: string | null;
+  password_hash: string;
+  phone: string;
+  has_account: boolean;
+  metadata: never;
+  person_in_charge: string;
+  name: string;
+  address: string;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date | null;
+  private beforeInsert;
 }
 /**
  * @schema customer

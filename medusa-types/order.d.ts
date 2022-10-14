@@ -2,7 +2,6 @@ import { Address } from "./address";
 import { Cart } from "./cart";
 import { ClaimOrder } from "./claim-order";
 import { Currency } from "./currency";
-import { Customer } from "./customer";
 import { Discount } from "./discount";
 import { DraftOrder } from "./draft-order";
 import { Fulfillment } from "./fulfillment";
@@ -18,6 +17,7 @@ import { ShippingMethod } from "./shipping-method";
 import { Swap } from "./swap";
 import { OrderEdit } from "./order-edit";
 import { BaseEntity } from "./interfaces";
+import { Customer } from "@medusa-types";
 export declare enum OrderStatus {
     PENDING = "pending",
     COMPLETED = "completed",

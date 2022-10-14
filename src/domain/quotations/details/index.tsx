@@ -25,6 +25,7 @@ import BodyCard from "../../../components/organisms/body-card";
 import CancelMakingQuotationModal from "../modal/cancel-making-quotation-modal";
 import CancelTheQuotationReviseModal from "../modal/cancel-the-quotation-revision-modal";
 import DeleteTheQuotationModal from "../modal/delete-the-quotation-modal";
+import PrintQuotationFrom from "../modal/print-quotation-form";
 import CustomerPanel from "./card-panel/customer-panel";
 import SaleMalePanel from "./card-panel/sale-man-panel";
 import SummaryPanel from "./card-panel/summary-panel";
@@ -34,7 +35,7 @@ import { DEFAULT_QUOTATION_DETAIL_FORM_VALUE } from "./default-value-form";
 type OrderDetailProps = RouteComponentProps<{ id: string; tab: string }>;
 
 export interface IQuotationDetailForm {
-  updateAt: string;
+  createdAt: string;
   quotationHeading: string;
   quotationConditions: string;
   paymentTerms: string;
@@ -43,7 +44,7 @@ export interface IQuotationDetailForm {
   installationSupport: string;
   appendixA: string;
   appendixB: string;
-  customer?: unknown;
+  customer?: Customer;
   summary?: unknown;
 }
 
@@ -69,6 +70,12 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     state: isVisibleCancelReviseModal,
   } = useToggleState(false);
 
+  const {
+    open: handleOpenPreviewModal,
+    close: handleClosePreviewModal,
+    state: isVisiblePreviewModal,
+  } = useToggleState(false);
+
   // @ts-ignore
   useHotkeys("esc", () => navigate("/a/quotations"));
 
@@ -85,9 +92,9 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         DEFAULT_QUOTATION_DETAIL_FORM_VALUE.installationSupport,
       appendixA: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixA,
       appendixB: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixB,
-      updateAt: moment(Date.now()).format("DD MMM YYYY HH:ss"),
-      customer: order?.customer,
+      createdAt: moment(Date.now()).format("DD MMM YYYY HH:ss"),
       summary: order?.cart || productList,
+      customer: order?.customer,
     },
   });
 
@@ -198,7 +205,10 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   const renderFooterDetails = useCallback(() => {
     return (
       <div className="flex flex-col items-center py-6">
-        <div className="text italic text-blue-50 cursor-pointer">
+        <div
+          className="text italic text-blue-50 cursor-pointer"
+          onClick={handleOpenPreviewModal}
+        >
           Show preview
         </div>
         <div className="text italic mt-4">Or</div>
@@ -209,7 +219,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         {renderBottomButton()}
       </div>
     );
-  }, [renderBottomButton]);
+  }, [handleOpenPreviewModal, renderBottomButton]);
 
   const renderModal = useCallback(() => {
     if (isVisibleCancelMakingQuotationModal) {
@@ -238,14 +248,26 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         />
       );
     }
+
+    if (isVisiblePreviewModal) {
+      return (
+        <PrintQuotationFrom
+          formData={watch()}
+          handleClose={handleClosePreviewModal}
+        />
+      );
+    }
   }, [
     handleClickCancelMakeQuotationButton,
     handleCloseCancelMakingQuotationModal,
     handleCloseCancelReviseModal,
     handleCloseDeleteQuotationModal,
+    handleClosePreviewModal,
     isVisibleCancelMakingQuotationModal,
     isVisibleCancelReviseModal,
     isVisibleDeleteQuotationModal,
+    isVisiblePreviewModal,
+    watch,
   ]);
 
   return (
@@ -268,8 +290,8 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           <div className="flex flex-col h-full">
             <SaleMalePanel
               order={order}
-              date={watch("updateAt")}
-              onDateChange={(date) => setValue("updateAt", date)}
+              date={watch("createdAt")}
+              onDateChange={(date) => setValue("createdAt", date)}
             />
             <CustomerPanel
               customer={watch("customer") as Customer}

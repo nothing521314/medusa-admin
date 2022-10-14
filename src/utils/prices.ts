@@ -67,7 +67,7 @@ export function persistedPrice(currency: string, amount: number): number {
 
 export const stringDisplayPrice = ({ amount, currencyCode }) => {
   if (!amount || !currencyCode) {
-    return `N/A`;
+    return "N/A";
   }
 
   const display = displayAmount(currencyCode, amount);
