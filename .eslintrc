@@ -25,6 +25,7 @@
     "valid-jsdoc": "off",
     "no-unused-expressions": "off",
     "camelcase": "off",
+    "no-debugger": "off",
     "no-invalid-this": "off",
     "no-unused-vars": "off",
     "react/prop-types": "off", // Disable prop-types as we use TypeScript for type checking

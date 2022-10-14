@@ -1,10 +1,10 @@
-import { useAdminDeleteCustomer } from "@medusa-react";
+import { useAdminDeleteUser } from "@medusa-react";
 import { getErrorMessage } from "../utils/error-messages";
 import useImperativeDialog from "./use-imperative-dialog";
 import useNotification from "./use-notification";
 
-export const useSalesmanActions = () => {
-  const deleteProduct = useAdminDeleteCustomer();
+export const useSalesmanActions = (id?: string) => {
+  const deleteUser = useAdminDeleteUser(id);
   const notification = useNotification();
   const dialog = useImperativeDialog();
 
@@ -16,7 +16,7 @@ export const useSalesmanActions = () => {
       });
 
       if (shouldDelete) {
-        deleteProduct.mutate(id, {
+        deleteUser.mutate(id, {
           onSuccess: () => {
             notification("Deleted", "Successfully deleted salesman", "success");
           },

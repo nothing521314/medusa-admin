@@ -1,16 +1,16 @@
 import {
+  AdminCreateUserPayload,
+  AdminUpdateUserPayload,
+  Response,
+} from "@medusa-js";
+import {
   AdminDeleteUserRes,
   AdminResetPasswordRequest,
   AdminResetPasswordTokenRequest,
   AdminUserRes,
 } from "@medusa-types";
-import {
-  AdminCreateUserPayload,
-  AdminUpdateUserPayload,
-  Response,
-} from "@medusa-js";
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
-import { adminCustomerKeys } from "..";
+import { adminUserKeys } from "..";
 import { useMedusa } from "../../../contexts/medusa";
 import { buildOptions } from "../../utils/buildOptions";
 
@@ -26,7 +26,7 @@ export const useAdminCreateUser = (
 
   return useMutation(
     (payload: AdminCreateUserPayload) => client.admin.users.create(payload),
-    buildOptions(queryClient, adminCustomerKeys.lists(), options)
+    buildOptions(queryClient, adminUserKeys.lists(), options)
   );
 };
 
@@ -45,24 +45,26 @@ export const useAdminUpdateUser = (
     (payload: AdminUpdateUserPayload) => client.admin.users.update(id, payload),
     buildOptions(
       queryClient,
-      [adminCustomerKeys.lists(), adminCustomerKeys.detail(id)],
+      [adminUserKeys.lists(), adminUserKeys.detail(id)],
       options
     )
   );
 };
 
 export const useAdminDeleteUser = (
-  id: string,
-  options?: UseMutationOptions<Response<AdminDeleteUserRes>, Error, void>
+  id?: string,
+  options?: UseMutationOptions<Response<AdminDeleteUserRes>, Error, string>
 ) => {
   const { client } = useMedusa();
   const queryClient = useQueryClient();
 
   return useMutation(
-    () => client.admin.users.delete(id),
+    (id: string) => client.admin.users.delete(id),
     buildOptions(
       queryClient,
-      [adminCustomerKeys.detail(id), adminCustomerKeys.lists()],
+      id
+        ? [adminUserKeys.detail(id), adminUserKeys.lists()]
+        : [adminUserKeys.lists()],
       options
     )
   );

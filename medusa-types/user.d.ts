@@ -11,12 +11,12 @@ export declare class User extends SoftDeletableEntity {
   email: string;
   name: string;
   phone: string;
-  password: string;
-  regions: string[];
-  // regions: Region[];
+  password?: string;
+  regions: Region[];
+  // regions: [];
 
-  password_hash: string;
-  api_token: string;
+  password_hash?: string;
+  api_token?: string;
   // metadata: Record<string, unknown>;
   // private beforeInsert;
 }

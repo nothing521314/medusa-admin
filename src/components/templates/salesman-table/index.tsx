@@ -5,7 +5,7 @@ import { isEmpty } from "lodash";
 import qs from "qs";
 import React, { useEffect, useState } from "react";
 import { usePagination, useTable } from "react-table";
-import { useCustomerActions } from "src/hooks/use-customer-actions";
+import { useSalesmanActions } from "src/hooks/use-salesman-actions";
 import Spinner from "../../atoms/spinner";
 import EditIcon from "../../fundamentals/icons/edit-icon";
 import TrashIcon from "../../fundamentals/icons/trash-icon";
@@ -76,7 +76,7 @@ const SalesmanTable: React.FC<RouteComponentProps> = () => {
     },
     usePagination
   );
-  const { handleDelete } = useCustomerActions();
+  const { handleDelete } = useSalesmanActions();
   // Debounced search
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {

@@ -1,10 +1,12 @@
 import {
   AdminDeleteUserRes,
+  AdminGetUserParams,
   AdminResetPasswordRequest,
   AdminResetPasswordTokenRequest,
   AdminUserRes,
   AdminUsersListRes,
 } from "@medusa-types";
+import QueryString from "qs";
 import {
   ResponsePromise,
   AdminCreateUserPayload,
@@ -104,9 +106,15 @@ class AdminUsersResource extends BaseResource {
    * @returns a list of all users
    */
   list(
+    query?: AdminGetUserParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUsersListRes> {
-    const path = `/admin/users`;
+    let path = `/admin/users`;
+    if (query) {
+      const queryString = QueryString.stringify(query);
+      path = `/admin/users?${queryString}`;
+    }
+
     return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 }

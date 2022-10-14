@@ -1,47 +1,42 @@
-import { User } from "@medusa-types";
+import
+  {
+    useAdminRegions,
+    useAdminUpdateUser,
+    useAdminUser
+  } from "@medusa-react";
+import { AdminUpdateUserRequest } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import React, { useEffect, useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useSalesmanActions } from "src/hooks/use-salesman-actions";
-import
-  {
-    useAdminUpdateUser,
-    useAdminUser
-  } from "../../../medusa-react";
+import { getErrorMessage } from "src/utils/error-messages";
 import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select";
 import Button from "../../components/fundamentals/button";
 import Breadcrumb from "../../components/molecules/breadcrumb";
 import InputField from "../../components/molecules/input";
 import BodyCard from "../../components/organisms/body-card";
 import useNotification from "../../hooks/use-notification";
-import { countries } from "../../utils/countries";
 import Validator from "../../utils/validator";
 
 type CustomerDetailProps = {
   id: string;
 } & RouteComponentProps;
 
-const countryOptions = countries.map((c) => ({
-  label: c.name,
-  value: c.alpha2,
-}));
-
 const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<AdminUpdateUserRequest>();
   const {
     register,
     reset,
     handleSubmit,
     control,
     formState: { isDirty, isValid },
-  } = useForm<User>();
-  const watch = useWatch({
-    control,
-  });
+  } = useForm<AdminUpdateUserRequest>();
+
   const notification = useNotification();
+  const { regions, isLoading: isLoadingRegions } = useAdminRegions();
   const { handleDelete } = useSalesmanActions();
-  const updateCustomer = useAdminUpdateUser(id);
+  const updateUser = useAdminUpdateUser(id);
   // Fetch info
   useAdminUser(id, {
     onSuccess(data) {
@@ -50,28 +45,44 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
     cacheTime: 0,
   });
 
-  const onSubmit = handleSubmit((data) => {
-    // updateCustomer.mutate(data, {
-    //   onSuccess: () => {
-    //     notification("Success", "Successfully updated salesman", "success");
-    //   },
-    //   onError: (err) => {
-    //     notification("Error", getErrorMessage(err), "error");
-    //   },
-    // });
-  });
-
   useEffect(() => {
-    if (user) reset(user);
-  }, [user]);
+    if (user)
+      reset({
+        ...user,
+        regions: user.regions.map((v) => ({
+          ...v,
+          value: v.id!,
+          label: v.name,
+        })) as any,
+      });
+  }, [reset, user]);
 
-  console.log(
-    "!isDirty || !isValid || updateCustomer.isLoading",
-    !isDirty,
-    !isValid,
-    updateCustomer.isLoading
-  );
-  console.log("user", user);
+  const regionsData = regions?.map((v) => ({
+    ...v,
+    value: v.id!,
+    label: v.name,
+  }));
+
+  const onSubmit = handleSubmit((data) => {
+    const { name, password, phone, regions } = data;
+    const dataPost: any = {
+      name,
+      phone,
+      regions: regions.map(v => v.id),
+      password,
+    };
+    if (!password) {
+      delete dataPost.password;
+    }
+    updateUser.mutate(dataPost, {
+      onSuccess: () => {
+        notification("Success", "Successfully updated salesman", "success");
+      },
+      onError: (err) => {
+        notification("Error", getErrorMessage(err), "error");
+      },
+    });
+  });
 
   if (!user) return null;
 
@@ -82,7 +93,7 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
         previousBreadcrumb={"Salesman"}
         previousRoute="/a/salesman"
       />
-      <div className="flex justify-end m-3">
+      {/* <div className="flex justify-end m-3">
         <Button
           variant="nuclear"
           className="min-w-[100px]"
@@ -90,12 +101,13 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
         >
           Delete Salesman
         </Button>
-      </div>
+      </div> */}
       <BodyCard title="Salesman">
         <div className="w-full flex mb-4 space-x-2">
           <InputField label="Name" {...register("name")} />
           <InputField
             label="Email"
+            readOnly
             {...register("email", {
               validate: (value) => Validator.email(value),
             })}
@@ -103,29 +115,20 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
         </div>
         <div className="w-full flex mb-4 space-x-2">
           <InputField
-            label="Password"
-            {...register("password", {
-              required: true,
-              validate: (value) => !!Validator.phone(value),
-            })}
-          />
-          <InputField
             label="Phone number"
             {...register("phone", {
               validate: Validator.phone,
             })}
-            placeholder="+45 42 42 42 42"
           />
-        </div>
-        <div className="flex space-x-2">
           <Controller
             control={control}
             name="regions"
             render={({ field: { value, onChange } }) => {
               return (
                 <ExperimentalSelect
-                  label={`Regions`}
-                  options={countryOptions}
+                  value={value!}
+                  label={`Market region`}
+                  options={regionsData as any}
                   onChange={onChange}
                   isMulti
                   selectAll
@@ -143,8 +146,8 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
             Cancel
           </Button>
           <Button
-            loading={updateCustomer.isLoading}
-            disabled={!isDirty || updateCustomer.isLoading}
+            loading={updateUser.isLoading}
+            disabled={!isDirty || updateUser.isLoading}
             variant="primary"
             className="min-w-[100px]"
             onClick={onSubmit}

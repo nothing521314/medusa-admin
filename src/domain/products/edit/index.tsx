@@ -11,7 +11,7 @@ import { getErrorStatus } from "../../../utils/get-error-status";
 import AdditionalHardwares from "./sections/additionalHw";
 import GeneralSection from "./sections/general";
 import MediaSection from "./sections/media";
-import VariantsSection from "./sections/price";
+import PricesSection from "./sections/price";
 
 interface EditProps extends RouteComponentProps {
   id?: string;
@@ -72,7 +72,7 @@ const Edit = ({ id }: EditProps) => {
         <div className="col-span-12 flex flex-col gap-y-xsmall">
           <MediaSection product={product} />
           <GeneralSection product={product} />
-          <VariantsSection product={product} />
+          <PricesSection product={product} />
           <AdditionalHardwares />
 
           {/* <AttributesSection product={product} /> */}

@@ -2,6 +2,7 @@ import {
   AdminCreateUserRequest,
   AdminPostInvitesReq,
   AdminUpdateUserRequest,
+  Roles,
 } from "@medusa-types"
 
 export interface HTTPResponse {
@@ -22,7 +23,7 @@ export type ResponsePromise<T = any> = Promise<Response<T>>
 
 type NoUndefined<T> = T extends undefined ? never : T
 
-type CreateUserRolesEnum = NoUndefined<AdminCreateUserRequest["role"]>
+type CreateUserRolesEnum = Roles
 
 // convert Enum type to union of string literals
 export type CreateUserRoles = `${CreateUserRolesEnum}`

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import MapPinIcon from "src/components/fundamentals/icons/map-pin-icon";
+import { AccountContext } from "src/context/account";
 import CustomerIcon from "../../fundamentals/icons/customer-icon";
 import DollarSignIcon from "../../fundamentals/icons/dollar-sign-icon";
 import TagIcon from "../../fundamentals/icons/tag-icon";
@@ -9,6 +11,7 @@ const ICON_SIZE = 18;
 
 const Sidebar: React.FC = () => {
   const [currentlyOpen, setCurrentlyOpen] = useState(-1);
+  const { isAdmin } = useContext(AccountContext);
 
   const triggerHandler = () => {
     const id = triggerHandler.id++;
@@ -45,12 +48,22 @@ const Sidebar: React.FC = () => {
             triggerHandler={triggerHandler}
             text={"Customers"}
           />
-          <SidebarMenuItem
-            pageLink={"/a/salesman"}
-            icon={<CustomerIcon size={ICON_SIZE} />}
-            triggerHandler={triggerHandler}
-            text={"Salesman"}
-          />
+          {isAdmin && (
+            <>
+              <SidebarMenuItem
+                pageLink={"/a/salesman"}
+                icon={<CustomerIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={"Salesman"}
+              />
+              <SidebarMenuItem
+                pageLink={"/a/settings/regions"}
+                icon={<MapPinIcon size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={"Markets region"}
+              />
+            </>
+          )}
           {/* <SidebarMenuItem
             pageLink={"/a/discounts"}
             icon={<SaleIcon size={ICON_SIZE} />}

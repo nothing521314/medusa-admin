@@ -103,7 +103,7 @@ const EditCustomerModal = ({
             <InputField
               label="Phone number"
               {...register("phone")}
-              placeholder="+45 42 42 42 42"
+              
             />
           </div>
         </Modal.Content>

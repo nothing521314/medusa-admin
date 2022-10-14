@@ -90,8 +90,5 @@ export declare class AdminCreateUserRequest {
   email: string;
   phone: string | null;
   password: string;
-  regions: {
-    label: string;
-    value: string;
-  }[];
+  regions: string[];
 }

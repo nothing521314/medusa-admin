@@ -3,12 +3,12 @@ import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  useAdminCustomer,
-  useAdminUpdateCustomer,
-} from "../../../medusa-react";
+import
+  {
+    useAdminCustomer,
+    useAdminUpdateCustomer
+  } from "../../../medusa-react";
 import Button from "../../components/fundamentals/button";
-import LockIcon from "../../components/fundamentals/icons/lock-icon";
 import Breadcrumb from "../../components/molecules/breadcrumb";
 import InputField from "../../components/molecules/input";
 import BodyCard from "../../components/organisms/body-card";

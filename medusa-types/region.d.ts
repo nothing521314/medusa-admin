@@ -14,7 +14,7 @@ export declare class Region extends SoftDeletableEntity {
     tax_code: string;
     gift_cards_taxable: boolean;
     automatic_taxes: boolean;
-    countries: Country[];
+    // countries: Country[];
     tax_provider_id: string | null;
     tax_provider: TaxProvider;
     payment_providers: PaymentProvider[];

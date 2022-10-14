@@ -30,7 +30,7 @@ export const useAdminRegions = (
     () => client.admin.regions.list(query),
     options
   );
-  return { ...data, ...rest } as const;
+  return { ...data, ...rest } ;
 };
 
 export const useAdminRegion = (

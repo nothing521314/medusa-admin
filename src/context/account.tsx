@@ -1,16 +1,16 @@
-import { adminUserKeys } from "../../medusa-react";
+import { Region, User } from "@medusa-types";
 import React, { useReducer } from "react";
+import { setCookieRegion } from "src/utils/setCookieResion";
+import { adminUserKeys } from "../../medusa-react";
 import Medusa from "../services/api";
 import { queryClient } from "../services/config";
-import { Region } from "@medusa-types";
 
-interface IAccountState {
+interface IAccountState extends User {
   isLoggedIn: boolean;
   id: string;
-  name: string;
-  email: string;
   regions: Region[];
   selectedRegion?: Region;
+  isAdmin: boolean;
   session?: () => void;
   handleUpdateUser?: (id?: string, user?: string) => void;
   handleLogout?: (details?: unknown) => void;
@@ -22,6 +22,9 @@ export const defaultAccountContext: IAccountState = {
   isLoggedIn: false,
   id: "",
   name: "",
+  role: "sale_man",
+  isAdmin: false,
+  phone: "",
   email: "",
   regions: [],
   selectedRegion: undefined,
@@ -32,16 +35,25 @@ export const AccountContext = React.createContext<IAccountState>(
 );
 
 const reducer = (state: IAccountState, action): IAccountState => {
+  const res = action.payload as User;
+  const isAdmin = res?.role === "admin";
+
   switch (action.type) {
     case "userAuthenticated":
       console.log(action.payload);
+
+      if (!isAdmin) {
+        setCookieRegion(res.regions?.[0]?.id);
+      }
       return {
         ...state,
         isLoggedIn: true,
-        id: action.payload.id,
-        email: action.payload.email,
-        name: action.payload?.name,
-        regions: action.payload?.regions,
+        id: res.id!,
+        email: res.email,
+        name: res?.name,
+        role: res?.role,
+        isAdmin,
+        regions: res?.regions,
       };
     case "updateUser":
       return {
@@ -49,6 +61,8 @@ const reducer = (state: IAccountState, action): IAccountState => {
         ...action.payload,
       };
     case "userLoggedOut":
+      setCookieRegion("");
+
       return defaultAccountContext;
     case "userLoggedIn":
       return {
@@ -59,6 +73,8 @@ const reducer = (state: IAccountState, action): IAccountState => {
         name: action.payload?.name,
       };
     case "selectRegion":
+      setCookieRegion(action.payload);
+
       return {
         ...state,
         selectedRegion: action.payload,

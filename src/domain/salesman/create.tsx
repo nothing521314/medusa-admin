@@ -1,25 +1,15 @@
+import { useAdminCreateUser, useAdminRegions } from "@medusa-react";
 import { AdminCreateUserRequest } from "@medusa-types";
 import React from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
-import {
-  useAdminCreateCustomer,
-  useAdminCreateUser,
-} from "../../../medusa-react";
+import { Controller, useForm } from "react-hook-form";
 import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select";
 import Button from "../../components/fundamentals/button";
-import LockIcon from "../../components/fundamentals/icons/lock-icon";
 import InputField from "../../components/molecules/input";
 
 import Modal from "../../components/molecules/modal";
 import useNotification from "../../hooks/use-notification";
-import { countries } from "../../utils/countries";
 import { getErrorMessage } from "../../utils/error-messages";
 import Validator from "../../utils/validator";
-
-const countryOptions = countries.map((c) => ({
-  label: c.name,
-  value: c.alpha2,
-}));
 
 type CreateCustomerModalProps = {
   handleClose: () => void;
@@ -31,30 +21,29 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
     reset,
     handleSubmit,
     control,
-
     formState: { isDirty },
-  } = useForm<AdminCreateUserRequest>({
-    mode: "onChange",
-  });
-  const watch = useWatch({
-    control,
-  });
-
+  } = useForm<AdminCreateUserRequest>();
+  const { regions, isLoading: isLoadingRegions } = useAdminRegions();
+  const createCustomer = useAdminCreateUser({});
   const notification = useNotification();
 
-  const createCustomer = useAdminCreateUser({});
-
   const onSubmit = handleSubmit((data) => {
-    createCustomer.mutate(data, {
-      onSuccess: () => {
-        handleClose();
-        notification("Success", "Successfully created customer", "success");
+    createCustomer.mutate(
+      {
+        ...data,
+        role: "sale_man",
       },
-      onError: (err) => {
-        handleClose();
-        notification("Error", getErrorMessage(err), "error");
-      },
-    });
+      {
+        onSuccess: () => {
+          handleClose();
+          notification("Success", "Successfully created customer", "success");
+        },
+        onError: (err) => {
+          handleClose();
+          notification("Error", getErrorMessage(err), "error");
+        },
+      }
+    );
   });
 
   return (
@@ -65,7 +54,12 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
         </Modal.Header>
         <Modal.Content>
           <div className="w-full flex mb-4 space-x-2">
-            <InputField label="Name" {...register("name")} />
+            <InputField
+              label="Name"
+              {...register("name", {
+                required: true,
+              })}
+            />
             <InputField
               label="Email"
               {...register("email", {
@@ -76,42 +70,46 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
           <div className="w-full flex mb-4 space-x-2">
             <InputField
               label="Password"
+              type={"password"}
               {...register("password", {
                 required: true,
-                validate: (value) => !!Validator.phone(value),
+                validate: (value) => Validator.pass(value),
               })}
+              // prefix={<LockIcon size={16} className="text-grey-50" />}
             />
             <InputField
               label="Phone number"
               {...register("phone", {
                 validate: Validator.phone,
               })}
-              placeholder="+45 42 42 42 42"
             />
           </div>
           <div className="flex space-x-2">
-            <InputField
-              label="Password"
-              {...register("password", {
-                validate: (value) => !!Validator.pass(value),
-              })}
-              prefix={<LockIcon size={16} className="text-grey-50" />}
-            />
             <Controller
               control={control}
               name="regions"
+              rules={{
+                required: true,
+              }}
               render={({ field: { value, onChange } }) => {
                 return (
                   <ExperimentalSelect
-                    label={`Regions`}
-                    options={countryOptions}
-                    onChange={onChange}
+                    isLoading={isLoadingRegions}
+                    label={"Market Region"}
+                    options={regions?.map((v) => ({
+                      value: v.id!,
+                      label: v.name,
+                    }))}
+                    onChange={(v) => {
+                      onChange(v.map((e) => e.value));
+                    }}
                     isMulti
                     selectAll
                   />
                 );
               }}
             />
+            <InputField className="invisible" />
           </div>
         </Modal.Content>
         <Modal.Footer>

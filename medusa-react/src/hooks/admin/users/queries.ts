@@ -1,4 +1,8 @@
-import { AdminUsersListRes, AdminUserRes } from "@medusa-types";
+import {
+  AdminUsersListRes,
+  AdminUserRes,
+  AdminGetUserParams,
+} from "@medusa-types";
 import { Response } from "../../../../../medusa-js";
 import { useQuery } from "react-query";
 import { useMedusa } from "../../../contexts";
@@ -12,16 +16,17 @@ export const adminUserKeys = queryKeysFactory(ADMIN_USERS_QUERY_KEY);
 type UserQueryKeys = typeof adminUserKeys;
 
 export const useAdminUsers = (
+  query?: AdminGetUserParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminUsersListRes>,
     Error,
-    ReturnType<UserQueryKeys["lists"]>
+    ReturnType<UserQueryKeys["list"]>
   >
 ) => {
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
-    adminUserKeys.lists(),
-    () => client.admin.users.list(),
+    adminUserKeys.list(query),
+    () => client.admin.users.list(query),
     options
   );
   return { ...data, ...rest };
