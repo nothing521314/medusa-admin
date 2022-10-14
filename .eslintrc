@@ -23,6 +23,7 @@
     "semi": ["warn", "always"],
     "quotes": ["warn", "double"],
     "valid-jsdoc": "off",
+    "no-case-declarations": "off",
     "no-unused-expressions": "off",
     "camelcase": "off",
     "no-debugger": "off",

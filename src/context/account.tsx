@@ -1,5 +1,7 @@
 import { Region, User } from "@medusa-types";
 import React, { useReducer } from "react";
+import { KEY } from "src/constants/misc";
+import { getCookie } from "src/utils/getCookie";
 import { setCookieRegion } from "src/utils/setCookieResion";
 import { adminUserKeys } from "../../medusa-react";
 import Medusa from "../services/api";
@@ -40,10 +42,11 @@ const reducer = (state: IAccountState, action): IAccountState => {
 
   switch (action.type) {
     case "userAuthenticated":
-      console.log(action.payload);
-
       if (!isAdmin) {
-        setCookieRegion(res.regions?.[0]?.id);
+        const regionOld = getCookie(KEY.ACTIVE_REGION);
+        setCookieRegion(regionOld || res.regions?.[0]?.id);
+      } else {
+        setCookieRegion("");
       }
       return {
         ...state,
@@ -61,8 +64,6 @@ const reducer = (state: IAccountState, action): IAccountState => {
         ...action.payload,
       };
     case "userLoggedOut":
-      setCookieRegion("");
-
       return defaultAccountContext;
     case "userLoggedIn":
       return {
@@ -73,7 +74,7 @@ const reducer = (state: IAccountState, action): IAccountState => {
         name: action.payload?.name,
       };
     case "selectRegion":
-      setCookieRegion(action.payload);
+      setCookieRegion(action.payload.id);
 
       return {
         ...state,
