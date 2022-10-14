@@ -6,7 +6,7 @@ import { PollingProvider } from "../../context/polling";
 
 const Layout: React.FC = ({ children }) => {
   return (
-    <div className="flex w-full h-screen inter-base-regular text-grey-90">
+    <div className="flex w-full h-screen print:h-auto inter-base-regular text-grey-90">
       <Toaster
         containerStyle={{
           top: 74,

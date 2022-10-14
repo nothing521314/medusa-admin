@@ -62,7 +62,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
       <BodyCard className="w-full mb-4 min-h-0 h-auto" title="Appendix A">
         <textarea
           className="scrollbar-thin py-5 px-8 border rounded-2xl text-justify resize-none outline-none focus:outline-none"
-          rows={78}
+          rows={80}
           readOnly={readOnly}
           {...register("appendixA")}
         />

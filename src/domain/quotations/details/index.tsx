@@ -70,12 +70,6 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     state: isVisibleCancelReviseModal,
   } = useToggleState(false);
 
-  const {
-    open: handleOpenPreviewModal,
-    close: handleClosePreviewModal,
-    state: isVisiblePreviewModal,
-  } = useToggleState(false);
-
   // @ts-ignore
   useHotkeys("esc", () => navigate("/a/quotations"));
 
@@ -207,7 +201,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       <div className="flex flex-col items-center py-6">
         <div
           className="text italic text-blue-50 cursor-pointer"
-          onClick={handleOpenPreviewModal}
+          onClick={() => window.print()}
         >
           Show preview
         </div>
@@ -219,7 +213,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         {renderBottomButton()}
       </div>
     );
-  }, [handleOpenPreviewModal, renderBottomButton]);
+  }, [renderBottomButton]);
 
   const renderModal = useCallback(() => {
     if (isVisibleCancelMakingQuotationModal) {
@@ -248,31 +242,19 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         />
       );
     }
-
-    if (isVisiblePreviewModal) {
-      return (
-        <PrintQuotationFrom
-          formData={watch()}
-          handleClose={handleClosePreviewModal}
-        />
-      );
-    }
   }, [
     handleClickCancelMakeQuotationButton,
     handleCloseCancelMakingQuotationModal,
     handleCloseCancelReviseModal,
     handleCloseDeleteQuotationModal,
-    handleClosePreviewModal,
     isVisibleCancelMakingQuotationModal,
     isVisibleCancelReviseModal,
     isVisibleDeleteQuotationModal,
-    isVisiblePreviewModal,
-    watch,
   ]);
 
   return (
     <React.Fragment>
-      <div className="flex flex-row justify-between items-center mb-4">
+      <div className="flex flex-row justify-between items-center mb-4 print:hidden">
         <Breadcrumb
           currentPage={subTabName}
           previousBreadcrumb={"Quotation"}
@@ -286,7 +268,10 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           <Spinner size={"large"} variant={"secondary"} />
         </BodyCard>
       ) : (
-        <form onSubmit={handleSubmit(handleSubmitMakeQuotationForm)}>
+        <form
+          onSubmit={handleSubmit(handleSubmitMakeQuotationForm)}
+          className="print:hidden"
+        >
           <div className="flex flex-col h-full">
             <SaleMalePanel
               order={order}
@@ -322,6 +307,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           {renderModal()}
         </form>
       )}
+      <PrintQuotationFrom className="hidden print:block" />
     </React.Fragment>
   );
 };
