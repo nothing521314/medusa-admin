@@ -3,10 +3,8 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { navigate } from "gatsby";
 import React, { useCallback, useContext } from "react";
 import CartIcon from "src/components/fundamentals/icons/cart-icon";
-import { KEY } from "src/constants/misc";
 import { SUB_TAB } from "src/domain/quotations";
 import useToggleState from "src/hooks/use-toggle-state";
-import { getCookie } from "src/utils/getCookie";
 import { AccountContext } from "../../../context/account";
 import CanNotMakeQuotationModal from "../../../domain/quotations/modal/can-not-make-quotation-modal";
 import Avatar from "../../atoms/avatar";
@@ -47,10 +45,6 @@ const Topbar: React.FC = () => {
     navigate("/login");
   }, [handleLogout]);
 
-  const regionSelected = regions.filter(
-    (v) => v.id === getCookie(KEY.ACTIVE_REGION)
-  )?.[0];
-
   const renderRegionMenu = useCallback(() => {
     return (
       <DropdownMenu.Root>
@@ -58,7 +52,7 @@ const Topbar: React.FC = () => {
           <div className="flex space-x-2 mr-3 items-center">
             Market Region:
             <Button variant="ghost" size="small" className="">
-              {regionSelected?.name || "Select"}
+              {selectedRegion?.name || "Select"}
             </Button>
           </div>
         </DropdownMenu.Trigger>

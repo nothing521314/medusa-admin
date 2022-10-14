@@ -1,4 +1,4 @@
-import { useAdminOrders } from "@medusa-react";
+import { useAdminOrders, useAdminQuotationGetList } from "@medusa-react";
 import { RouteComponentProps, useLocation } from "@reach/router";
 import clsx from "clsx";
 import { navigate } from "gatsby";
@@ -22,7 +22,7 @@ import {
   removeEmptyProperties,
   TQuotationFilters,
 } from "./quotation-filters";
-import useOrderTableColumns from "./use-quotations-column";
+import useQuotationTableColumns from "./use-quotations-column";
 
 const DEFAULT_PAGE_SIZE = 15;
 
@@ -48,17 +48,17 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
   );
 
   const filtersDebounce = useDebounce(filters, 400);
-
-  const { orders, isLoading, count } = useAdminOrders(filtersDebounce, {
-    cacheTime: Infinity,
-  });
+  const { orders, isLoading, count } = useAdminOrders(filtersDebounce);
+  const res = useAdminQuotationGetList();
+  // filtersDebounce
+  console.log(res);
 
   const numPages = useMemo(() => {
     const controlledPageCount = Math.ceil(count! / filters.limit);
     return controlledPageCount;
   }, [count, filters.limit]);
 
-  const columns = useOrderTableColumns();
+  const columns = useQuotationTableColumns();
 
   const {
     getTableProps,

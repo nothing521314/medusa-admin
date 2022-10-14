@@ -1,7 +1,7 @@
 import { Customer } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
-import moment from "moment";
+import { AdminCreateQuotationParams } from "medusa-types/api/routes/admin/quotations/type";
 import React, {
   ReactNode,
   useCallback,
@@ -12,12 +12,14 @@ import React, {
 import { useForm } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import Button from "src/components/fundamentals/button";
+import { AccountContext } from "src/context/account";
 import useToggleState from "src/hooks/use-toggle-state";
 import { SUB_TAB } from "..";
 import {
   CartContext,
   IProductAdded,
-  useAdminOrder,
+  useAdminCreateQuotation,
+  useAdminQuotationGetOne,
 } from "../../../../medusa-react";
 import Spinner from "../../../components/atoms/spinner";
 import Breadcrumb from "../../../components/molecules/breadcrumb";
@@ -49,7 +51,10 @@ export interface IQuotationDetailForm {
 }
 
 const OrderDetails = ({ id, tab }: OrderDetailProps) => {
-  const { order, isLoading } = useAdminOrder(id!);
+  const { quotation, isLoading } = useAdminQuotationGetOne(id!);
+  const { mutateAsync } = useAdminCreateQuotation();
+
+  const { selectedRegion, id: saleManId } = useContext(AccountContext);
   const { productList } = useContext(CartContext);
 
   const {
@@ -86,17 +91,49 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         DEFAULT_QUOTATION_DETAIL_FORM_VALUE.installationSupport,
       appendixA: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixA,
       appendixB: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixB,
-      createdAt: moment(Date.now()).format("DD MMM YYYY HH:ss"),
-      summary: order?.cart || productList,
-      customer: order?.customer,
+      createdAt: undefined,
+      summary: productList,
+      customer: undefined,
     },
   });
 
   const handleSubmitMakeQuotationForm = useCallback(
-    (data: IQuotationDetailForm) => {
-      console.log(data);
+    async (data: IQuotationDetailForm) => {
+      const quotation_lines: Array<{
+        product_id: string;
+        volume: number;
+      }> = (data.summary as Array<{ id: string; quantity: number }>).map(
+        (item) => {
+          return { product_id: item.id, volume: item.quantity };
+        }
+      );
+      const params: AdminCreateQuotationParams = {
+        appendix_a: data.appendixA,
+        appendix_b: data.appendixB,
+        code: "Quotation One QM-111",
+        condition: data.quotationConditions,
+        customer_id: data.customer?.id!,
+        date: data.createdAt || new Date().toUTCString(),
+        delivery_lead_time: "2022-10-18",
+        heading: data.quotationHeading,
+        install_support: data.installationSupport,
+        metadata: {},
+        payment_term: data.paymentTerms,
+        quotation_lines,
+        region_id: selectedRegion?.id!,
+        sale_persion_id: saleManId,
+        title: "Quotation One",
+        warranty: data.warranty,
+      };
+      console.log(params.date, new Date().toUTCString());
+      try {
+        const res = await mutateAsync(params);
+        console.log(res);
+      } catch (error) {
+        console.log({ error });
+      }
     },
-    []
+    [mutateAsync, saleManId, selectedRegion?.id]
   );
 
   useEffect(() => {
@@ -274,8 +311,9 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         >
           <div className="flex flex-col h-full">
             <SaleMalePanel
-              order={order}
-              date={watch("createdAt")}
+              quotation={quotation}
+              saleMan={{}}
+              date={watch("createdAt") || new Date().toDateString()}
               onDateChange={(date) => setValue("createdAt", date)}
             />
             <CustomerPanel
@@ -307,7 +345,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           {renderModal()}
         </form>
       )}
-      <PrintQuotationFrom className="hidden print:block" />
+      <PrintQuotationFrom className="hidden print:block" formData={watch()} />
     </React.Fragment>
   );
 };

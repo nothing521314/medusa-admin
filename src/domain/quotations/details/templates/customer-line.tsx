@@ -1,6 +1,6 @@
 import { Customer } from "@medusa-types";
 import clsx from "clsx";
-import React, { useMemo } from "react";
+import React from "react";
 import Avatar from "src/components/atoms/avatar";
 
 type Props = {
@@ -10,16 +10,6 @@ type Props = {
 };
 
 const CustomerLine = ({ customer, className, onClick }: Props) => {
-  const customerFullname = useMemo(() => {
-    if (customer.first_name || customer.last_name) {
-      return `${customer.first_name || ""} ${customer.last_name || ""}`;
-    }
-    if (customer.name) {
-      return customer.name;
-    }
-    return "N/A";
-  }, [customer.first_name, customer.last_name, customer.name]);
-
   return (
     <div
       className={clsx(
@@ -37,9 +27,7 @@ const CustomerLine = ({ customer, className, onClick }: Props) => {
           />
         </div>
         <div>
-          <h1 className="inter-large-semibold text-grey-90">
-            {customerFullname}
-          </h1>
+          <h1 className="inter-large-semibold text-grey-90">{customer.name}</h1>
           <span className="inter-small-regular text-grey-50">
             {customer.address}
           </span>
@@ -56,7 +44,9 @@ const CustomerLine = ({ customer, className, onClick }: Props) => {
       <div className="flex flex-col pl-6 ">
         <div className="inter-small-regular mb-1 flex space-x-1">
           <div className="text-grey-50 min-w-[25%] shrink-0">Contact</div>
-          <div className="text-grey-90 text-ellipsis overflow-hidden whitespace-nowrap">{customer.email}</div>
+          <div className="text-grey-90 text-ellipsis overflow-hidden whitespace-nowrap">
+            {customer.email}
+          </div>
         </div>
         <div className="inter-small-regular mb-1 flex space-x-1">
           <div className="text-grey-50 min-w-[25%] shrink-0">Phone</div>

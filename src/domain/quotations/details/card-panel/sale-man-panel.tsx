@@ -1,6 +1,6 @@
 import { useAdminGetSession } from "@medusa-react";
-import { Order } from "@medusa-types";
 import * as RadixPopover from "@radix-ui/react-popover";
+import { TQuotationReturn } from "medusa-types/api/routes/admin/quotations/type";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -12,7 +12,8 @@ import useClipboard from "src/hooks/use-clipboard";
 import useNotification from "src/hooks/use-notification";
 
 type Props = {
-  order?: Order;
+  quotation?: TQuotationReturn;
+  saleMan: any;
   date: string | null;
   onDateChange: (date: string) => void;
 };
@@ -29,7 +30,7 @@ type TSaleManPanelData = {
   };
 };
 
-const SaleMalePanel = ({ order, date, onDateChange }: Props) => {
+const SaleMalePanel = ({ quotation, saleMan, date, onDateChange }: Props) => {
   const notification = useNotification();
 
   const { user } = useAdminGetSession();
@@ -45,12 +46,12 @@ const SaleMalePanel = ({ order, date, onDateChange }: Props) => {
     },
   });
 
-  const [, handleCopy] = useClipboard(`${order?.display_id!}`, {
+  const [, handleCopy] = useClipboard(`${quotation?.code!}`, {
     successDuration: 5500,
     onCopied: () => notification("Success", "Order ID copied", "success"),
   });
 
-  const [, handleCopyEmail] = useClipboard(order?.email!, {
+  const [, handleCopyEmail] = useClipboard(saleMan.email!, {
     successDuration: 5500,
     onCopied: () => notification("Success", "Email copied", "success"),
   });
@@ -58,16 +59,16 @@ const SaleMalePanel = ({ order, date, onDateChange }: Props) => {
   useHotkeys("command+i", handleCopy);
 
   useEffect(() => {
-    if (order) {
+    if (quotation) {
       return setSaleManData({
         quotation: {
-          id: order.cart_id,
-          title: String(order.display_id),
+          id: quotation.code,
+          title: quotation.title,
         },
         sale_man: {
-          fullname: `${order.shipping_address?.first_name} ${order.shipping_address?.last_name}`,
-          company: order.shipping_address.company || "N/A",
-          email: order.email,
+          fullname: saleMan.name,
+          company: "N/A",
+          email: saleMan.email,
         },
       });
     }
@@ -84,7 +85,7 @@ const SaleMalePanel = ({ order, date, onDateChange }: Props) => {
         },
       });
     }
-  }, [order, user]);
+  }, [quotation, saleMan.email, saleMan.name, user]);
 
   return (
     <BodyCard

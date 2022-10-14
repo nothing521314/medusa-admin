@@ -8,7 +8,7 @@ import Tooltip from "../../atoms/tooltip";
 import CustomerAvatarItem from "../../molecules/customer-avatar-item";
 import Table from "../../molecules/table";
 
-const useOrderTableColumns = (): Column<Order>[] => {
+const useQuotationTableColumns = (): Column<Order>[] => {
   return useMemo(
     () => [
       {
@@ -105,4 +105,4 @@ const useOrderTableColumns = (): Column<Order>[] => {
   );
 };
 
-export default useOrderTableColumns;
+export default useQuotationTableColumns;

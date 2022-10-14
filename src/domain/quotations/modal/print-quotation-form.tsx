@@ -14,7 +14,6 @@ const PrintQuotationFrom = ({
   formData,
   className,
 }: TPrintQuotationFromModal) => {
-  formData = formData || JSON.parse(localStorage.getItem("form-data") || "");
 
   const renderText = useCallback((text?: string): string => {
     if (!text) return "";

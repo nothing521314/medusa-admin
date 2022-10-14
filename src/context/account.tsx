@@ -1,5 +1,5 @@
 import { Region, User } from "@medusa-types";
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { KEY } from "src/constants/misc";
 import { getCookie } from "src/utils/getCookie";
 import { setCookieRegion } from "src/utils/setCookieResion";
@@ -88,6 +88,15 @@ const reducer = (state: IAccountState, action): IAccountState => {
 export const AccountProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultAccountContext);
 
+  useEffect(() => {
+    const regionSelected = state.regions.filter(
+      (v) => v.id === getCookie(KEY.ACTIVE_REGION)
+    )?.[0];
+    if (regionSelected) {
+      dispatch({ type: "selectRegion", payload: regionSelected });
+    }
+  }, [state.regions]);
+
   return (
     <AccountContext.Provider
       value={{
@@ -121,6 +130,9 @@ export const AccountProvider = ({ children }) => {
         },
 
         handleSelectRegion: (region: Region) => {
+          console.log("====================================");
+          console.log(1212);
+          console.log("====================================");
           return dispatch({ type: "selectRegion", payload: region });
         },
       }}
