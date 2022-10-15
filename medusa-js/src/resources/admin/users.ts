@@ -25,7 +25,7 @@ class AdminUsersResource extends BaseResource {
     payload: AdminResetPasswordTokenRequest,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<void> {
-    const path = `/admin/users/password-token`;
+    const path = "/admin/users/password-token";
     return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
@@ -39,7 +39,7 @@ class AdminUsersResource extends BaseResource {
     payload: AdminResetPasswordRequest,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUserRes> {
-    const path = `admin/users/reset-password`;
+    const path = "admin/users/reset-password";
     return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
@@ -67,7 +67,7 @@ class AdminUsersResource extends BaseResource {
     payload: AdminCreateUserPayload,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUserRes> {
-    const path = `/admin/users`;
+    const path = "/admin/users";
     return this.client.request("POST", path, payload, {}, customHeaders);
   }
 
@@ -109,7 +109,7 @@ class AdminUsersResource extends BaseResource {
     query?: AdminGetUserParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUsersListRes> {
-    let path = `/admin/users`;
+    let path = "/admin/users";
     if (query) {
       const queryString = QueryString.stringify(query);
       path = `/admin/users?${queryString}`;

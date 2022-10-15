@@ -48,13 +48,15 @@ export interface IQuotationDetailForm {
   appendixB: string;
   customer?: Customer;
   summary?: unknown;
+  code: string;
 }
 
 const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   const { quotation, isLoading } = useAdminQuotationGetOne(id!);
   const { mutateAsync } = useAdminCreateQuotation();
+  const readOnlyPage = useMemo(() => tab === SUB_TAB.QUOTATION_DETAILS, [tab]);
 
-  const { selectedRegion, id: saleManId } = useContext(AccountContext);
+  const { selectedRegion, sale_man_state } = useContext(AccountContext);
   const { productList } = useContext(CartContext);
 
   const {
@@ -62,6 +64,13 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     close: handleCloseDeleteQuotationModal,
     state: isVisibleDeleteQuotationModal,
   } = useToggleState(false);
+
+  const sale_man = useMemo(() => {
+    if (quotation) {
+      return quotation.sale_persion;
+    }
+    return sale_man_state;
+  }, [quotation, sale_man_state]);
 
   const {
     open: handleOpenCancelMakingQuotationModal,
@@ -78,7 +87,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   // @ts-ignore
   useHotkeys("esc", () => navigate("/a/quotations"));
 
-  const { register, handleSubmit, setValue, watch } = useForm<
+  const { register, handleSubmit, setValue, watch, reset } = useForm<
     IQuotationDetailForm
   >({
     defaultValues: {
@@ -91,9 +100,10 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         DEFAULT_QUOTATION_DETAIL_FORM_VALUE.installationSupport,
       appendixA: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixA,
       appendixB: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixB,
-      createdAt: undefined,
+      createdAt: quotation?.date,
       summary: productList,
       customer: undefined,
+      code: "",
     },
   });
 
@@ -121,11 +131,11 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         payment_term: data.paymentTerms,
         quotation_lines,
         region_id: selectedRegion?.id!,
-        sale_persion_id: saleManId,
+        sale_persion_id: sale_man_state?.id!,
         title: "Quotation One",
         warranty: data.warranty,
       };
-      console.log(params.date, new Date().toUTCString());
+      console.log(params.condition);
       try {
         const res = await mutateAsync(params);
         console.log(res);
@@ -133,21 +143,44 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         console.log({ error });
       }
     },
-    [mutateAsync, saleManId, selectedRegion?.id]
+    [mutateAsync, sale_man_state?.id, selectedRegion?.id]
   );
-
-  useEffect(() => {
-    setValue("summary", productList);
-  }, [productList, setValue]);
 
   const handleClickReviseButton = useCallback(() => {
     navigate(`/a/quotations/${SUB_TAB.REVISE_QUOTATION}/${id}`);
   }, [id]);
 
+  const handleSetValueFromApi = useCallback(() => {
+    if (!quotation) return;
+    setValue("appendixA", quotation.appendix_a);
+    setValue("appendixB", quotation.appendix_b);
+    setValue("createdAt", quotation.date);
+    setValue("customer", quotation.customer);
+    setValue("deliveryLeadTime", quotation.delivery_lead_time);
+    setValue("installationSupport", quotation.install_support);
+    setValue("paymentTerms", quotation.payment_term);
+    setValue("quotationConditions", quotation.condition);
+    setValue("quotationHeading", quotation.heading);
+    setValue("summary", quotation.quotation_lines);
+    setValue("warranty", quotation.warranty);
+    setValue(
+      "code",
+      tab === SUB_TAB.QUOTATION_DETAILS
+        ? quotation.code
+        : `${quotation.code}_REV1`
+    );
+  }, [quotation, setValue, tab]);
+
   const handleClickCancelMakeQuotationButton = useCallback(() => {
     handleOpenCancelMakingQuotationModal();
     navigate("/a/quotations");
   }, [handleOpenCancelMakingQuotationModal]);
+
+  const handleConfirmCancelReviseQuotation = useCallback(() => {
+    navigate(`/a/quotations/${SUB_TAB.QUOTATION_DETAILS}/${id}`);
+    handleSetValueFromApi();
+    handleCloseCancelReviseModal();
+  }, [handleCloseCancelReviseModal, handleSetValueFromApi, id]);
 
   const subTabName = useMemo(() => {
     switch (tab) {
@@ -266,7 +299,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       return (
         <CancelTheQuotationReviseModal
           handleClickCancelButton={handleCloseCancelReviseModal}
-          handleClickConfirmButton={handleCloseCancelReviseModal}
+          handleClickConfirmButton={handleConfirmCancelReviseQuotation}
         />
       );
     }
@@ -284,9 +317,29 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     handleCloseCancelMakingQuotationModal,
     handleCloseCancelReviseModal,
     handleCloseDeleteQuotationModal,
+    handleConfirmCancelReviseQuotation,
     isVisibleCancelMakingQuotationModal,
     isVisibleCancelReviseModal,
     isVisibleDeleteQuotationModal,
+  ]);
+
+  useEffect(() => {
+    if (tab === SUB_TAB.MAKE_QUOTATION) {
+      setValue("summary", productList);
+      setValue("code", `${sale_man?.name}_${Date.now()} Quotation Code`);
+    } else {
+      handleSetValueFromApi();
+    }
+    return () => {
+      reset();
+    };
+  }, [
+    handleSetValueFromApi,
+    productList,
+    reset,
+    sale_man?.name,
+    setValue,
+    tab,
   ]);
 
   return (
@@ -311,34 +364,28 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         >
           <div className="flex flex-col h-full">
             <SaleMalePanel
-              quotation={quotation}
-              saleMan={{}}
+              register={register}
+              readOnly={readOnlyPage}
+              state={watch()}
+              saleMan={sale_man}
               date={watch("createdAt") || new Date().toDateString()}
               onDateChange={(date) => setValue("createdAt", date)}
             />
             <CustomerPanel
-              customer={watch("customer") as Customer}
+              customer={watch("customer")}
+              readOnly={readOnlyPage}
               handleSelectCustomer={(customer) =>
                 setValue("customer", customer)
               }
             />
-            <BodyCard
-              title="Quotation Heading"
-              className="min-h-fit h-auto mb-4"
-            >
-              <textarea
-                className="py-5 px-8 border rounded-2xl text-justify resize-none outline-none focus:outline-none"
-                readOnly={tab === SUB_TAB.QUOTATION_DETAILS}
-                {...register("quotationHeading")}
-              />
-            </BodyCard>
-            <SummaryPanel
+            {/* <SummaryPanel
               summary={watch("summary") as IProductAdded[]}
-              readOnly={tab === SUB_TAB.QUOTATION_DETAILS}
-            />
+              readOnly={readOnlyPage}
+            /> */}
             <TextAreaFormPanel
               register={register}
-              readOnly={tab === SUB_TAB.QUOTATION_DETAILS}
+              readOnly={readOnlyPage}
+              watch={watch}
             />
           </div>
           {renderFooterDetails()}

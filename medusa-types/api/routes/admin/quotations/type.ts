@@ -1,3 +1,9 @@
+import { Customer } from "medusa-types/customer";
+import { Product } from "medusa-types/product";
+import { Region } from "medusa-types/region";
+import { PaginatedResponse } from "medusa-types/types/common";
+import { User } from "medusa-types/user";
+
 export declare class AdminGetQuotationsParams {
   offset: number;
   limit: number;
@@ -32,7 +38,7 @@ export type TQuotationReturn = {
   updated_at: Date;
   deleted_at: Date | null;
   sale_persion_id: string;
-  title: string;
+  tital: string;
   code: string;
   date: string;
   customer_id: string;
@@ -45,12 +51,16 @@ export type TQuotationReturn = {
   install_support: string;
   appendix_a: string;
   appendix_b: string;
+  customer: Customer;
+  sale_persion: User;
+  region: Region;
+  quotation_lines: Product[];
 };
 
 export declare type TOneQuotationReturn = {
   quotation: TQuotationReturn;
 };
 
-export declare type AdminQuotationsRes = {
+export declare type AdminQuotationsRes = PaginatedResponse & {
   quotations: TQuotationReturn[];
 };

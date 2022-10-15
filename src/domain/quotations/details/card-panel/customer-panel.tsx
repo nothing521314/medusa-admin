@@ -8,9 +8,10 @@ import CustomerLine from "../templates/customer-line";
 type Props = {
   customer?: Customer;
   handleSelectCustomer: ((customer: Customer) => void) | undefined;
+  readOnly: boolean;
 };
 
-const CustomerPanel = ({ customer, handleSelectCustomer }: Props) => {
+const CustomerPanel = ({ customer, handleSelectCustomer, readOnly }: Props) => {
   const {
     open: handleOpenCustomerDialog,
     close: handleCloseCustomerDialog,
@@ -26,12 +27,16 @@ const CustomerPanel = ({ customer, handleSelectCustomer }: Props) => {
     <BodyCard
       className={"w-full mb-4 min-h-0 h-auto relative"}
       title="Customer"
-      actionables={[
-        {
-          label: "Change",
-          onClick: handleClickChangeButton,
-        },
-      ]}
+      actionables={
+        !readOnly
+          ? [
+              {
+                label: "Change",
+                onClick: handleClickChangeButton,
+              },
+            ]
+          : undefined
+      }
     >
       {customer && <CustomerLine customer={customer} />}
       <div className="relative w-full">

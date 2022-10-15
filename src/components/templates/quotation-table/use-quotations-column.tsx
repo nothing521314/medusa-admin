@@ -1,4 +1,4 @@
-import { Order } from "@medusa-types";
+import { TQuotationReturn } from "medusa-types/api/routes/admin/quotations/type";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { Column } from "react-table";
@@ -8,23 +8,12 @@ import Tooltip from "../../atoms/tooltip";
 import CustomerAvatarItem from "../../molecules/customer-avatar-item";
 import Table from "../../molecules/table";
 
-const useQuotationTableColumns = (): Column<Order>[] => {
+const useQuotationTableColumns = (): Column<TQuotationReturn>[] => {
   return useMemo(
     () => [
       {
-        Header: <span className="pl-2 flex items-center">No #</span>,
-        accessor: "display_id",
-        disableSortBy: true,
-        Cell: ({ cell: { value }, index }) => (
-          <Table.Cell
-            key={index}
-            className="text-grey-90 group-hover:text-violet-60 min-w-[100px] pl-2"
-          >{`#${value}`}</Table.Cell>
-        ),
-      },
-      {
         Header: "Quotation code",
-        accessor: "cart_id",
+        accessor: "code",
         disableSortBy: true,
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell
@@ -54,7 +43,7 @@ const useQuotationTableColumns = (): Column<Order>[] => {
             <CustomerAvatarItem
               customer={{
                 name: value?.name || "",
-                email: row.original.email,
+                email: row.original.customer.email,
               }}
               color={getColor(row.index)}
               className="!px-0"
@@ -64,14 +53,14 @@ const useQuotationTableColumns = (): Column<Order>[] => {
       },
       {
         Header: "Total",
-        accessor: "total",
+        accessor: "date",
         Cell: ({ row, cell: { value }, index }) => (
           <Table.Cell key={index}>
-            {formatAmountWithSymbol({
+            {/* {formatAmountWithSymbol({
               amount: value,
               currency: row.original.currency_code,
               digits: 2,
-            })}
+            })} */}
           </Table.Cell>
         ),
       },

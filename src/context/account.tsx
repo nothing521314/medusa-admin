@@ -8,6 +8,7 @@ import Medusa from "../services/api";
 import { queryClient } from "../services/config";
 
 interface IAccountState extends User {
+  sale_man_state?: User;
   isLoggedIn: boolean;
   id: string;
   regions: Region[];
@@ -21,6 +22,7 @@ interface IAccountState extends User {
 }
 
 export const defaultAccountContext: IAccountState = {
+  sale_man_state: undefined,
   isLoggedIn: false,
   id: "",
   name: "",
@@ -57,6 +59,7 @@ const reducer = (state: IAccountState, action): IAccountState => {
         role: res?.role,
         isAdmin,
         regions: res?.regions,
+        sale_man_state: res,
       };
     case "updateUser":
       return {
@@ -130,9 +133,6 @@ export const AccountProvider = ({ children }) => {
         },
 
         handleSelectRegion: (region: Region) => {
-          console.log("====================================");
-          console.log(1212);
-          console.log("====================================");
           return dispatch({ type: "selectRegion", payload: region });
         },
       }}

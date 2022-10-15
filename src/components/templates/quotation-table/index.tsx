@@ -1,4 +1,4 @@
-import { useAdminOrders, useAdminQuotationGetList } from "@medusa-react";
+import { useAdminQuotationGetList } from "@medusa-react";
 import { RouteComponentProps, useLocation } from "@reach/router";
 import clsx from "clsx";
 import { navigate } from "gatsby";
@@ -48,10 +48,9 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
   );
 
   const filtersDebounce = useDebounce(filters, 400);
-  const { orders, isLoading, count } = useAdminOrders(filtersDebounce);
-  const res = useAdminQuotationGetList();
-  // filtersDebounce
-  console.log(res);
+  const { quotations, isLoading, count } = useAdminQuotationGetList(
+    filtersDebounce
+  );
 
   const numPages = useMemo(() => {
     const controlledPageCount = Math.ceil(count! / filters.limit);
@@ -78,7 +77,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
   } = useTable(
     {
       columns,
-      data: (orders as any) || [],
+      data: (quotations as any) || [],
       manualPagination: true,
       manualSortBy: true,
       initialState: {
@@ -162,7 +161,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
   }, [refreshWithFilters]);
 
   const renderTableBody = useCallback(() => {
-    if (isLoading || !orders) {
+    if (isLoading || !quotations) {
       return (
         <Table.Body className="flex w-full h-full absolute items-center justify-center mt-10">
           <Table.Row className="border-none">
@@ -181,30 +180,24 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
           return (
             <Table.Row
               color={"inherit"}
-              linkTo={`${SUB_TAB.QUOTATION_DETAILS}/${row.original.cart_id}`}
+              linkTo={`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`}
               actions={[
                 {
                   label: "Revise",
                   onClick: () =>
-                    navigate(
-                      `${SUB_TAB.REVISE_QUOTATION}/${row.original.cart_id}`
-                    ),
+                    navigate(`${SUB_TAB.REVISE_QUOTATION}/${row.original.id}`),
                   icon: <EditIcon size={20} />,
                 },
                 {
                   label: "Download",
                   onClick: () =>
-                    navigate(
-                      `${SUB_TAB.QUOTATION_DETAILS}/${row.original.cart_id}`
-                    ),
+                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`),
                   icon: <DownloadIcon size={20} />,
                 },
                 {
                   label: "Email",
                   onClick: () =>
-                    navigate(
-                      `${SUB_TAB.QUOTATION_DETAILS}/${row.original.cart_id}`
-                    ),
+                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`),
                   icon: <MailIcon size={20} />,
                 },
                 {
@@ -228,7 +221,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
     getTableBodyProps,
     handleOpenDeleteQuotationModal,
     isLoading,
-    orders,
+    quotations,
     prepareRow,
     rows,
   ]);

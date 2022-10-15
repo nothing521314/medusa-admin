@@ -13,7 +13,6 @@ import Salesman from "../domain/salesman";
 import Discounts from "../domain/discounts";
 import GiftCards from "../domain/gift-cards";
 import Oauth from "../domain/oauth";
-import DraftOrders from "../domain/quotations/draft-orders";
 import Pricing from "../domain/pricing";
 import ProductsRoute from "../domain/products";
 import SalesChannels from "../domain/sales-channels";
@@ -33,7 +32,6 @@ const IndexPage = () => {
           <PrivateRoute path="collections/*" component={Collections} />
           <PrivateRoute path="gift-cards/*" component={GiftCards} />
           <PrivateRoute path="quotations/*" component={Quotation} />
-          <PrivateRoute path="draft-orders/*" component={DraftOrders} />
           <PrivateRoute path="discounts/*" component={Discounts} />
           <PrivateRoute path="customers/*" component={Customers} />
           <PrivateRoute path="salesman/*" component={Salesman} />

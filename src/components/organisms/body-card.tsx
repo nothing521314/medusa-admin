@@ -6,7 +6,7 @@ import Actionables, { ActionType } from "../molecules/actionables";
 
 type BodyCardProps = {
   title?: string | React.ReactNode;
-  subtitle?: string;
+  subtitle?: React.ReactNode | string;
   events?: {
     label: string;
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
