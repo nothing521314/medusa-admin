@@ -47,6 +47,11 @@ class AdminQuotationsResource extends BaseResource {
     const path = "/admin/quotations/";
     return this.client.request("POST", path, payload, {}, customHeaders);
   }
+
+  delete(id: string): ResponsePromise<AdminQuotationsRes> {
+    const path = `/admin/quotations/${id}`;
+    return this.client.request("DELETE", path, {}, {}, {});
+  }
 }
 
 export default AdminQuotationsResource;

@@ -19,6 +19,7 @@ import {
   CartContext,
   IProductAdded,
   useAdminCreateQuotation,
+  useAdminDeleteQuotation,
   useAdminQuotationGetOne,
 } from "../../../../medusa-react";
 import Spinner from "../../../components/atoms/spinner";
@@ -54,6 +55,7 @@ export interface IQuotationDetailForm {
 const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   const { quotation, isLoading } = useAdminQuotationGetOne(id!);
   const { mutateAsync } = useAdminCreateQuotation();
+  const { mutateAsync: handleDeteleQuotation } = useAdminDeleteQuotation();
   const readOnlyPage = useMemo(() => tab === SUB_TAB.QUOTATION_DETAILS, [tab]);
 
   const { selectedRegion, sale_man_state } = useContext(AccountContext);
@@ -63,6 +65,12 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     open: handleOpenDeleteQuotationModal,
     close: handleCloseDeleteQuotationModal,
     state: isVisibleDeleteQuotationModal,
+  } = useToggleState(false);
+
+  const {
+    open: handleOpenCancelReviseModal,
+    close: handleCloseCancelReviseModal,
+    state: isVisibleCancelReviseModal,
   } = useToggleState(false);
 
   const sale_man = useMemo(() => {
@@ -76,12 +84,6 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     open: handleOpenCancelMakingQuotationModal,
     close: handleCloseCancelMakingQuotationModal,
     state: isVisibleCancelMakingQuotationModal,
-  } = useToggleState(false);
-
-  const {
-    open: handleOpenCancelReviseModal,
-    close: handleCloseCancelReviseModal,
-    state: isVisibleCancelReviseModal,
   } = useToggleState(false);
 
   // @ts-ignore
@@ -181,6 +183,18 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     handleSetValueFromApi();
     handleCloseCancelReviseModal();
   }, [handleCloseCancelReviseModal, handleSetValueFromApi, id]);
+
+  const handleConfirmDeleteQuotation = useCallback(async () => {
+    try {
+      const res = await handleDeteleQuotation(id!);
+      console.log(res);
+      if (res.response.status === 200) {
+        navigate("/a/quotations");
+      }
+    } catch (error) {
+      return;
+    }
+  }, [handleDeteleQuotation, id]);
 
   const subTabName = useMemo(() => {
     switch (tab) {
@@ -308,7 +322,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       return (
         <DeleteTheQuotationModal
           handleClickCancelButton={handleCloseDeleteQuotationModal}
-          handleClickConfirmButton={handleCloseDeleteQuotationModal}
+          handleClickConfirmButton={handleConfirmDeleteQuotation}
         />
       );
     }
@@ -318,6 +332,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     handleCloseCancelReviseModal,
     handleCloseDeleteQuotationModal,
     handleConfirmCancelReviseQuotation,
+    handleConfirmDeleteQuotation,
     isVisibleCancelMakingQuotationModal,
     isVisibleCancelReviseModal,
     isVisibleDeleteQuotationModal,

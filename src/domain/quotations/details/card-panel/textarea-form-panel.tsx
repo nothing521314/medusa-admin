@@ -57,15 +57,6 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
       document.getElementById("appendixA")?.scrollHeight || null;
     const appendixBHeight =
       document.getElementById("appendixB")?.scrollHeight || null;
-    console.log(
-      quotationConditionsHeight,
-      paymentTermsHeight,
-      deliveryLeadTimeHeight,
-      warrantyHeight,
-      installationSupportHeight,
-      appendixAHeight,
-      appendixBHeight
-    );
 
     setHeightState({
       quotationConditionsHeight,
