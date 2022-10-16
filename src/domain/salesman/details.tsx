@@ -1,9 +1,8 @@
-import
-  {
-    useAdminRegions,
-    useAdminUpdateUser,
-    useAdminUser
-  } from "@medusa-react";
+import {
+  useAdminRegions,
+  useAdminUpdateUser,
+  useAdminUser,
+} from "@medusa-react";
 import { AdminUpdateUserRequest } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
@@ -11,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSalesmanActions } from "src/hooks/use-salesman-actions";
 import { getErrorMessage } from "src/utils/error-messages";
+import FormValidator from "src/utils/form-validator";
 import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select";
 import Button from "../../components/fundamentals/button";
 import Breadcrumb from "../../components/molecules/breadcrumb";
@@ -30,7 +30,7 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
     reset,
     handleSubmit,
     control,
-    formState: { isDirty, isValid },
+    formState: { isDirty, errors },
   } = useForm<AdminUpdateUserRequest>();
 
   const notification = useNotification();
@@ -104,13 +104,20 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
       </div> */}
       <BodyCard title="Salesman">
         <div className="w-full flex mb-4 space-x-2">
-          <InputField label="Name" {...register("name")} />
+          <InputField
+            label="Name"
+            {...register("name", {
+              required: FormValidator.required("Name"),
+            })}
+            errors={errors}
+          />
           <InputField
             label="Email"
             readOnly
             {...register("email", {
               validate: (value) => Validator.email(value),
             })}
+            errors={errors}
           />
         </div>
         <div className="w-full flex mb-4 space-x-2">
@@ -119,18 +126,30 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
             {...register("phone", {
               validate: Validator.phone,
             })}
+            errors={errors}
           />
           <Controller
             control={control}
             name="regions"
-            render={({ field: { value, onChange } }) => {
+            rules={{
+              validate: (v) => {
+                const hasRegion = v?.length > 0;
+                return hasRegion || "Market Region is required.";
+              },
+            }}
+            render={({
+              field: { value, onChange, name },
+              formState: { errors },
+            }) => {
               return (
                 <ExperimentalSelect
                   value={value!}
-                  label={`Market region`}
+                  name={name}
+                  label={`Market Region`}
                   options={regionsData as any}
                   onChange={onChange}
                   isMulti
+                  errors={errors}
                   selectAll
                 />
               );

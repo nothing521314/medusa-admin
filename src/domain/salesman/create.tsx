@@ -2,6 +2,7 @@ import { useAdminCreateUser, useAdminRegions } from "@medusa-react";
 import { AdminCreateUserRequest } from "@medusa-types";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import FormValidator from "src/utils/form-validator";
 import ExperimentalSelect from "../../../src/components/molecules/select/next-select/select";
 import Button from "../../components/fundamentals/button";
 import InputField from "../../components/molecules/input";
@@ -21,7 +22,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
     reset,
     handleSubmit,
     control,
-    formState: { isDirty },
+    formState: { isDirty, errors },
   } = useForm<AdminCreateUserRequest>();
   const { regions, isLoading: isLoadingRegions } = useAdminRegions();
   const createCustomer = useAdminCreateUser({});
@@ -57,14 +58,16 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
             <InputField
               label="Name"
               {...register("name", {
-                required: true,
+                required: FormValidator.required("Name"),
               })}
+              errors={errors}
             />
             <InputField
               label="Email"
               {...register("email", {
-                validate: (value) => Validator.email(value),
+                validate: Validator.email,
               })}
+              errors={errors}
             />
           </div>
           <div className="w-full flex mb-4 space-x-2">
@@ -72,9 +75,9 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
               label="Password"
               type={"password"}
               {...register("password", {
-                required: true,
-                validate: (value) => Validator.pass(value),
+                validate: Validator.pass,
               })}
+              errors={errors}
               // prefix={<LockIcon size={16} className="text-grey-50" />}
             />
             <InputField
@@ -82,6 +85,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
               {...register("phone", {
                 validate: Validator.phone,
               })}
+              errors={errors}
             />
           </div>
           <div className="flex space-x-2">
@@ -89,13 +93,20 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
               control={control}
               name="regions"
               rules={{
-                required: true,
+                validate: (v) => {
+                  const hasRegion = v?.length > 0;
+                  return hasRegion || "Market Region is required.";
+                },
               }}
-              render={({ field: { value, onChange } }) => {
+              render={({
+                field: { onChange, name },
+                formState: { errors },
+              }) => {
                 return (
                   <ExperimentalSelect
                     isLoading={isLoadingRegions}
                     label={"Market Region"}
+                    name={name}
                     options={regions?.map((v) => ({
                       value: v.id!,
                       label: v.name,
@@ -104,6 +115,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
                       onChange(v.map((e) => e.value));
                     }}
                     isMulti
+                    errors={errors}
                     selectAll
                   />
                 );

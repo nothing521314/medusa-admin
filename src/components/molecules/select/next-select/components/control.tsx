@@ -15,18 +15,23 @@ const Control = <
   Option,
   IsMulti extends boolean,
   Group extends GroupBase<Option>
->({
-  className,
-  cx,
-  children,
-  innerRef,
-  innerProps,
-  isDisabled,
-  isFocused,
-  menuIsOpen,
-  selectProps: { size },
-  clearValue,
-}: ControlProps<Option, IsMulti, Group>) => {
+>(
+  props: ControlProps<Option, IsMulti, Group>
+) => {
+  const {
+    className,
+    cx,
+    children,
+    innerRef,
+    innerProps,
+    isDisabled,
+    isFocused,
+    menuIsOpen,
+    selectProps,
+  } = props;
+  const { size, styles } = selectProps;
+  const s = styles.control?.({}, props);
+
   return (
     <div
       ref={innerRef}
@@ -47,6 +52,7 @@ const Control = <
           className
         )
       )}
+      style={s as any}
     >
       {children}
     </div>

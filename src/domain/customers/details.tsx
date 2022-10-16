@@ -1,13 +1,15 @@
 import { Customer } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { KEY } from "src/constants/misc";
-import {
-  useAdminCustomer,
-  useAdminUpdateCustomer,
-} from "../../../medusa-react";
+import FormValidator from "src/utils/form-validator";
+import
+  {
+    useAdminCustomer,
+    useAdminUpdateCustomer
+  } from "../../../medusa-react";
 import Button from "../../components/fundamentals/button";
 import Breadcrumb from "../../components/molecules/breadcrumb";
 import InputField from "../../components/molecules/input";
@@ -25,7 +27,7 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
     register,
     reset,
     handleSubmit,
-    formState: { isDirty, isValid },
+    formState: { isDirty, errors },
   } = useForm<Customer>();
   const notification = useNotification();
   const updateCustomer = useAdminUpdateCustomer(id);
@@ -78,14 +80,21 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
       </div> */}
       <BodyCard title="Customer">
         <div className="w-full flex mb-4 space-x-2">
-          <InputField label="Name" {...register("name")} />
+          <InputField
+            label="Name"
+            {...register("name", {
+              required: FormValidator.required("Name"),
+            })}
+            errors={errors}
+          />
           <InputField
             label="Person in charge"
             {...register("person_in_charge", {
-              required: true,
+              required: FormValidator.required("Person in charge"),
             })}
             placeholder=""
             prefix={"Mr/Mrs"}
+            errors={errors}
           />
         </div>
         <div className="flex mb-4 space-x-2">
@@ -94,21 +103,23 @@ const CustomerDetail: React.FC<CustomerDetailProps> = ({ id }) => {
             {...register("email", {
               validate: (value) => Validator.email(value),
             })}
+            errors={errors}
           />
           <InputField
             label="Phone number"
             {...register("phone", {
-              required: true,
-              validate: (value) => !!Validator.phone(value),
+              validate: (value) => Validator.phone(value),
             })}
+            errors={errors}
           />
         </div>
         <div className="flex space-x-2">
           <InputField
             label="Address"
             {...register("address", {
-              required: true,
+              required: FormValidator.required("Address"),
             })}
+            errors={errors}
           />
         </div>
         <div className="mt-6 w-full flex justify-center">

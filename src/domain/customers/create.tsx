@@ -3,6 +3,7 @@ import { AdminPostCustomersReq } from "@medusa-types";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { KEY } from "src/constants/misc";
+import FormValidator from "src/utils/form-validator";
 import Button from "../../components/fundamentals/button";
 import InputField from "../../components/molecules/input";
 import Modal from "../../components/molecules/modal";
@@ -19,7 +20,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
     register,
     reset,
     handleSubmit,
-    formState: { isDirty },
+    formState: { isDirty, errors },
   } = useForm<AdminPostCustomersReq>({
     defaultValues: {},
   });
@@ -52,14 +53,21 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
         </Modal.Header>
         <Modal.Content>
           <div className="w-full flex mb-4 space-x-2">
-            <InputField label="Name" {...register("name")} />
+            <InputField
+              label="Name"
+              {...register("name", {
+                required: FormValidator.required("Name"),
+              })}
+              errors={errors}
+            />
             <InputField
               label="Person in charge"
               {...register("person_in_charge", {
-                required: true,
+                required: FormValidator.required("Person in charge"),
               })}
               placeholder=""
               prefix={"Mr/Mrs"}
+              errors={errors}
             />
           </div>
           <div className="flex mb-4 space-x-2">
@@ -68,21 +76,23 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
               {...register("email", {
                 validate: (value) => Validator.email(value),
               })}
+              errors={errors}
             />
             <InputField
               label="Phone number"
               {...register("phone", {
-                required: true,
-                validate: (value) => !!Validator.phone(value),
+                validate: (value) => Validator.phone(value),
               })}
+              errors={errors}
             />
           </div>
           <div className="flex space-x-2">
             <InputField
               label="Address"
               {...register("address", {
-                required: true,
+                required: FormValidator.required("Address"),
               })}
+              errors={errors}
             />
           </div>
         </Modal.Content>

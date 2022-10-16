@@ -9,7 +9,8 @@ const ERRORS = {
 
 const Validator = {
   phone: (phone) => {
-    return !Number.isNaN(Number(phone)) && phone?.length > 8;
+    const isPhone = !Number.isNaN(Number(phone)) && phone?.length > 8;
+    return isPhone ? true : "Phone number format is incorrect.";
   },
   pass: validatePass,
   email: validateEmail,

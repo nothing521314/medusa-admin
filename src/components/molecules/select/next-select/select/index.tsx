@@ -31,10 +31,12 @@ const Select = forwardRef(
   ) => {
     const selectProps = useSelectProps(props);
 
-    const { label, required, helperText, name, errors } = selectProps;
+    const { label, required, helperText, name, errors, styles } = selectProps;
     const containerRef = useRef<HTMLDivElement>(null);
 
     const { portalRef } = useContext(ModalContext);
+
+    const hasError = errors?.[name ?? ""];
 
     return (
       <AdjacentContainer
@@ -49,6 +51,15 @@ const Select = forwardRef(
           ref={ref}
           name={name}
           {...selectProps}
+          styles={{
+            ...styles,
+            control: (base) =>
+              hasError
+                ? {
+                    borderColor: "red",
+                  }
+                : {},
+          }}
           menuPortalTarget={portalRef?.current?.lastChild || null}
           menuShouldBlockScroll={true}
         />
