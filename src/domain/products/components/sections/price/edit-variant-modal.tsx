@@ -6,8 +6,8 @@ import Modal from "../../../../../components/molecules/modal";
 import { countries } from "../../../../../utils/countries";
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
-} from "../../../components/variant-form/edit-flow-variant-form";
-import useEditProductActions from "../../hooks/use-edit-product-actions";
+} from "../../variant-form/edit-flow-variant-form";
+import useEditProductActions from "../../../edit/hooks/use-edit-product-actions";
 import { createAddPayload } from ".";
 import { createUpdatePayload } from "./edit-variants-modal/edit-variant-screen";
 

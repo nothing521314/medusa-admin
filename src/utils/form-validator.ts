@@ -1,4 +1,6 @@
-import { ValidationRule } from "react-hook-form";
+import { IPrice } from "@medusa-types";
+import { Validate, ValidationRule } from "react-hook-form";
+import { FormImage } from "src/types/shared";
 import { normalizeAmount } from "./prices";
 
 /**
@@ -48,6 +50,14 @@ const FormValidator = {
       `${name} must be less than or equal to ${getNormalizedAmount(currency)}.`
     );
   },
+  requiredImage: ((value: FormImage[]) => {
+    const has = value?.some((v) => v?.url);
+    return has;
+  }) as Validate<unknown>,
+  requiredPrice: ((value: IPrice[]) => {
+    const hasPrice = value?.some((v) => v?.value);
+    return hasPrice;
+  }) as Validate<unknown>,
 };
 
 /**

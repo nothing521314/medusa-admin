@@ -30,5 +30,5 @@ export const useAdminProductTypes = (
     () => client.admin.productTypes.list(query),
     options
   );
-  return { ...data, ...rest } as const;
+  return { ...data, ...rest };
 };

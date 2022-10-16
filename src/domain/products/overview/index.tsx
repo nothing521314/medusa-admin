@@ -1,23 +1,18 @@
 import { navigate, RouteComponentProps, useLocation } from "@reach/router";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  useAdminCreateBatchJob,
-  useAdminCreateCollection,
-} from "../../../../medusa-react";
-import Fade from "../../../components/atoms/fade-wrapper";
+import
+  {
+    useAdminCreateCollection
+  } from "../../../../medusa-react";
 import Button from "../../../components/fundamentals/button";
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
 import BodyCard from "../../../components/organisms/body-card";
 import TableViewHeader from "../../../components/organisms/custom-table-header";
-import ExportModal from "../../../components/organisms/export-modal";
 import AddCollectionModal from "../../../components/templates/collection-modal";
 import CollectionsTable from "../../../components/templates/collections-table";
 import ProductTable from "../../../components/templates/product-table";
 import useNotification from "../../../hooks/use-notification";
-import useToggleState from "../../../hooks/use-toggle-state";
 import { getErrorMessage } from "../../../utils/error-messages";
-import ImportProducts from "../batch-job/import";
-import NewProduct from "../new";
 
 const VIEWS = ["products"];
 
@@ -32,17 +27,17 @@ const Overview: React.FC<RouteComponentProps> = () => {
   //   open: openProductCreate,
   // } = useToggleState();
 
-  const createBatchJob = useAdminCreateBatchJob();
+  // const createBatchJob = useAdminCreateBatchJob();
 
   const notification = useNotification();
 
   const createCollection = useAdminCreateCollection();
 
-  useEffect(() => {
-    if (location.search.includes("?view=collections")) {
-      setView("collections");
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location.search.includes("?view=collections")) {
+  //     setView("collections");
+  //   }
+  // }, [location]);
 
   useEffect(() => {
     location.search = "";
@@ -62,26 +57,16 @@ const Overview: React.FC<RouteComponentProps> = () => {
       case "products":
         return (
           <div className="flex space-x-2">
-            {/* <Button
-              variant="secondary"
-              size="small"
-              onClick={() => openImportModal()}
-            >
-              <UploadIcon size={20} />
+            {/* <Button variant="secondary" size="small">
               Import Products
             </Button>
-            <Button
-              variant="secondary"
-              size="small"
-              onClick={() => openExportModal()}
-            >
-              <ExportIcon size={20} />
+            <Button variant="secondary" size="small">
               Export Products
             </Button> */}
             <Button
               variant="secondary"
               size="small"
-              onClick={() =>  navigate("/a/products/create")}
+              onClick={() => navigate("/a/products/create")}
             >
               <PlusIcon size={20} />
               New Product
@@ -102,19 +87,7 @@ const Overview: React.FC<RouteComponentProps> = () => {
           </div>
         );
     }
-  }, [ showNewCollection, view]);
-
-  const {
-    // open: openExportModal,
-    close: closeExportModal,
-    state: exportModalOpen,
-  } = useToggleState(false);
-
-  const {
-    // open: openImportModal,
-    close: closeImportModal,
-    state: importModalOpen,
-  } = useToggleState(false);
+  }, [showNewCollection, view]);
 
   const handleCreateCollection = async (data, colMetadata) => {
     const metadata = colMetadata
@@ -137,25 +110,6 @@ const Overview: React.FC<RouteComponentProps> = () => {
         onError: (err) => notification("Error", getErrorMessage(err), "error"),
       }
     );
-  };
-
-  const handleCreateExport = () => {
-    const reqObj = {
-      type: "product-export",
-      context: {},
-      dry_run: false,
-    };
-
-    createBatchJob.mutate(reqObj, {
-      onSuccess: () => {
-        notification("Success", "Successfully initiated export", "success");
-      },
-      onError: (err) => {
-        notification("Error", getErrorMessage(err), "error");
-      },
-    });
-
-    closeExportModal();
   };
 
   return (
@@ -183,7 +137,7 @@ const Overview: React.FC<RouteComponentProps> = () => {
           onSubmit={handleCreateCollection}
         />
       )}
-      {exportModalOpen && (
+      {/* {exportModalOpen && (
         <ExportModal
           title="Export Products"
           handleClose={() => closeExportModal()}
@@ -193,8 +147,7 @@ const Overview: React.FC<RouteComponentProps> = () => {
       )}
       {importModalOpen && (
         <ImportProducts handleClose={() => closeImportModal()} />
-      )}
-     
+      )} */}
     </>
   );
 };

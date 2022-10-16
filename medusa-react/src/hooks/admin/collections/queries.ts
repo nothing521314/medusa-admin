@@ -31,7 +31,7 @@ export const useAdminCollections = (
     () => client.admin.collections.list(query),
     options
   );
-  return { ...data, ...rest } as const;
+  return { ...data, ...rest };
 };
 
 export const useAdminCollection = (

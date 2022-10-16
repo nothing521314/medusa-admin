@@ -1,9 +1,10 @@
+import { Product } from "@medusa-types";
 import clsx from "clsx";
 import React, { useMemo } from "react";
 import {
   Controller,
-  FieldArrayWithId,
   useFieldArray,
+  UseFormReturn,
   useWatch,
 } from "react-hook-form";
 import FileUploadField from "../../../../components/atoms/file-upload-field";
@@ -14,24 +15,17 @@ import Actionables, {
   ActionType,
 } from "../../../../components/molecules/actionables";
 import { FormImage } from "../../../../types/shared";
-import { NestedForm } from "../../../../utils/nested-form";
-
-type ImageType = { selected: boolean } & FormImage;
-
-export type MediaFormType = {
-  images: ImageType[];
-};
 
 type Props = {
-  form: NestedForm<MediaFormType>;
+  form: UseFormReturn<Product, any>;
 };
 
 const MediaForm = ({ form }: Props) => {
-  const { control, path, setValue } = form;
+  const { control, setValue } = form;
 
   const { fields, append, remove } = useFieldArray({
-    control: control,
-    name: path("images"),
+    control,
+    name: "images",
   });
 
   const handleFilesChosen = (files: File[]) => {
@@ -50,7 +44,7 @@ const MediaForm = ({ form }: Props) => {
 
   const images = useWatch({
     control,
-    name: path("images"),
+    name: "images",
     defaultValue: [],
   });
 
@@ -72,7 +66,7 @@ const MediaForm = ({ form }: Props) => {
 
   const handleDeselect = () => {
     selected.forEach((i) => {
-      setValue(path(`images.${i}.selected`), false);
+      setValue(`images.${i}.selected`, false);
     });
   };
 
@@ -119,14 +113,14 @@ const MediaForm = ({ form }: Props) => {
 };
 
 type ImageProps = {
-  image: FieldArrayWithId<MediaFormType, "images", "id">;
+  image: FormImage;
   index: number;
   remove: (index: number) => void;
-  form: NestedForm<MediaFormType>;
+  form: UseFormReturn<Product, any>;
 };
 
 const Image = ({ image, index, form, remove }: ImageProps) => {
-  const { control, path } = form;
+  const { control } = form;
 
   const actions: ActionType[] = [
     {
@@ -139,7 +133,7 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
 
   return (
     <Controller
-      name={path(`images.${index}.selected`)}
+      name={`images.${index}.selected`}
       control={control}
       render={({ field: { value, onChange } }) => {
         return (

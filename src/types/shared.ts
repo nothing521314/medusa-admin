@@ -37,6 +37,7 @@ export type FormImage = {
   name?: string;
   size?: number;
   nativeFile?: File;
+  selected?: boolean;
 };
 
 export interface DragItem {

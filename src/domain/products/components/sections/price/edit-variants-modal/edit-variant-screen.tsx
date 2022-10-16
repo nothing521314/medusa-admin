@@ -10,8 +10,8 @@ import Modal from "../../../../../../components/molecules/modal";
 import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal";
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
-} from "../../../../components/variant-form/edit-flow-variant-form";
-import useEditProductActions from "../../../hooks/use-edit-product-actions";
+} from "../../../variant-form/edit-flow-variant-form";
+import useEditProductActions from "../../../../edit/hooks/use-edit-product-actions";
 import { getEditVariantDefaultValues } from "../edit-variant-modal";
 import { useEditVariantsModal } from "./use-edit-variants-modal";
 

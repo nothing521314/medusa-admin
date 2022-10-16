@@ -7,10 +7,13 @@ import { CartContext, useAdminDeleteProduct } from "@medusa-react";
 import useImperativeDialog from "../../../hooks/use-imperative-dialog";
 import TrashIcon from "../../fundamentals/icons/trash-icon";
 import { ActionType } from "../../molecules/actionables";
+import useNotification from "src/hooks/use-notification";
+import { getErrorMessage } from "src/utils/error-messages";
 
 const useProductActions = (product: Product) => {
   const dialog = useImperativeDialog();
-  const deleteProduct = useAdminDeleteProduct(product?.id);
+  const notification = useNotification();
+  const deleteProduct = useAdminDeleteProduct(product?.id!);
   const { handleAddToCart } = React.useContext(CartContext);
 
   const handleDelete = React.useCallback(async () => {
@@ -19,9 +22,16 @@ const useProductActions = (product: Product) => {
       text: "Are you sure you want to delete this product?",
     });
     if (shouldDelete) {
-      deleteProduct.mutate();
+      deleteProduct.mutate(undefined, {
+        onSuccess: () => {
+          notification("Deleted", "Successfully deleted product", "success");
+        },
+        onError: (error) => {
+          notification("Error", getErrorMessage(error), "error");
+        },
+      });
     }
-  }, [deleteProduct, dialog]);
+  }, [deleteProduct, dialog, notification]);
 
   const getActions = (): ActionType[] => [
     {

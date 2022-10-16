@@ -1,60 +1,23 @@
+import { IPrice, Product, Region } from "@medusa-types";
 import React from "react";
-import { Controller, FieldArrayWithId, useFieldArray } from "react-hook-form";
+import { Controller, useFieldArray, UseFormReturn } from "react-hook-form";
 import MapPinIcon from "src/components/fundamentals/icons/map-pin-icon";
-import { useAdminRegions, useAdminStore } from "../../../../../medusa-react";
-import { NestedForm } from "../../../../utils/nested-form";
+import { useAdminRegions } from "../../../../../medusa-react";
 import PriceFormInput from "./price-form-input";
 
-type PricePayload = {
-  id: string | null;
-  amount: number | null;
-  currency_code: string;
-  region_id: string | null;
-  includes_tax?: boolean;
-};
-
-type PriceObject = FieldArrayWithId<
-  {
-    __nested__: PricesFormType;
-  },
-  "__nested__.prices",
-  "id"
-> & { index: number };
-
-export type PricesFormType = {
-  prices: PricePayload[];
-};
-
-export type NestedPriceObject = {
-  currencyPrice: PriceObject;
-  regionPrices: (PriceObject & { regionName: string })[];
-};
-
 type Props = {
-  form: NestedForm<PricesFormType>;
-  required?: boolean;
+  form: UseFormReturn<Product, any>;
 };
 
-/**
- * Re-usable nested form used to submit pricing information for products and their variants.
- * Fetches store currencies and regions from the backend, and allows the user to specifcy both
- * currency and region specific prices.
- * @example
- * <Pricing form={nestedForm(form, "prices")} />
- */
-const PricesForm = ({ form }: Props) => {
-  const { store } = useAdminStore();
+const PricesForm = ({ form: { control } }: Props) => {
   const { regions } = useAdminRegions();
-
-  const { control, path } = form;
-
-  const { append, update, fields } = useFieldArray({
+  useFieldArray({
     control,
-    name: path("prices"),
+    name: "prices",
   });
 
   return (
-    regions?.map((rp, index) => {
+    (regions as Region[])?.map((rp, index) => {
       return (
         <div
           className="grid grid-cols-[1fr_303px] p-2xsmall  hover:bg-grey-5 focus-within:bg-grey-5 transition-colors rounded-rounded justify-between"
@@ -70,13 +33,16 @@ const PricesForm = ({ form }: Props) => {
             </div>
           </div>
           <Controller
-            name={path(`prices.${index}.amount`)}
+            name={`prices.${index}`}
             control={control}
             render={({ field: { value, onChange }, formState: { errors } }) => {
+              const { value: price } = value ?? {};
               return (
                 <PriceFormInput
-                  onChange={onChange}
-                  amount={value || undefined}
+                  onChange={(v) =>
+                    onChange({ value: v, region: rp.id } as IPrice)
+                  }
+                  amount={price || undefined}
                   currencyCode={rp.currency_code.toUpperCase()}
                   errors={errors}
                 />

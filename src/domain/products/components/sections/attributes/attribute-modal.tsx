@@ -5,11 +5,11 @@ import Button from "../../../../../components/fundamentals/button";
 import Modal from "../../../../../components/molecules/modal";
 import { countries } from "../../../../../utils/countries";
 import { nestedForm } from "../../../../../utils/nested-form";
-import CustomsForm, { CustomsFormType } from "../../../components/customs-form";
+import CustomsForm, { CustomsFormType } from "../../customs-form";
 import DimensionsForm, {
   DimensionsFormType,
-} from "../../../components/dimensions-form";
-import useEditProductActions from "../../hooks/use-edit-product-actions";
+} from "../../dimensions-form";
+import useEditProductActions from "../../../edit/hooks/use-edit-product-actions";
 
 type Props = {
   product: Product;

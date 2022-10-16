@@ -21,13 +21,17 @@ const splitImages = (
 export const prepareImages = async (images: FormImage[]) => {
   const { uploadImages, existingImages } = splitImages(images);
 
-  let uploadedImgs: FormImage[] = [];
+  let uploadedImgs: string[] = [];
+  let imgNew: FormImage[] = [];
   if (uploadImages.length > 0) {
     const files = uploadImages.map((i) => i.nativeFile);
     uploadedImgs = await Medusa.uploads
       .create(files)
       .then(({ data }) => data.uploads);
+    imgNew = uploadedImgs.map((v) => ({
+      url: process.env.GATSBY_MEDUSA_BACKEND_URL + v,
+    }));
   }
 
-  return [...existingImages, ...uploadedImgs];
+  return [...existingImages, ...imgNew];
 };

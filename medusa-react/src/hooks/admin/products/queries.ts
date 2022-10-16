@@ -30,7 +30,7 @@ export const useAdminProducts = (
     () => client.admin.products.list(query),
     options
   );
-  return { ...data, ...rest } as const;
+  return { ...data, ...rest };
 };
 
 export const useAdminProduct = (

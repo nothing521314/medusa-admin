@@ -1,37 +1,19 @@
+import { Product } from "@medusa-types";
 import React from "react";
-import { Controller } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { NextSelect } from "src/components/molecules/select/next-select";
-import { Option } from "src/types/shared";
 import InputField from "../../../../components/molecules/input";
 import TextArea from "../../../../components/molecules/textarea";
 import FormValidator from "../../../../utils/form-validator";
-import { NestedForm } from "../../../../utils/nested-form";
 import useOrganizeData from "../organize-form/use-organize-data";
 
-export type GeneralFormType = {
-  title: string;
-  collection: Option | null;
-  brand: string;
-  description: string | null;
-  width: number | null;
-  height: number | null;
-  weight: number | null;
-  deliveryTime: string;
-  warranty: string;
-
-  handle: string;
-  material: string | null;
-};
-
 type Props = {
-  form: NestedForm<GeneralFormType>;
-  requireHandle?: boolean;
+  form: UseFormReturn<Product, any>;
 };
 
-const GeneralForm = ({ form, requireHandle = true }: Props) => {
+const GeneralForm = ({ form }: Props) => {
   const {
     register,
-    path,
     formState: { errors },
     control,
   } = form;
@@ -44,8 +26,8 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
           className="col-span-2"
           label="Name"
           // required
-          {...register(path("title"), {
-            required: "Title is required",
+          {...register("title", {
+            required: FormValidator.required("Title"),
             minLength: {
               value: 1,
               message: "Title must be at least 1 character",
@@ -55,9 +37,12 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
           errors={errors}
         />
         <Controller
-          name={path("collection")}
+          name={"collection"}
           control={control}
-          render={({ field: { value, onChange } }) => {
+          rules={{
+            required: FormValidator.required("Category"),
+          }}
+          render={({ field: { value, onChange, ...rest } }) => {
             return (
               <NextSelect
                 label="Category"
@@ -65,16 +50,17 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
                 options={collectionOptions}
                 value={value}
                 placeholder="Choose a category"
-                isClearable
+                // isClearable
+                errors={errors}
+                {...rest}
               />
             );
           }}
         />
         <InputField
           label="Brand"
-          // required
-          {...register(path("brand"), {
-            required: "Brand is required",
+          {...register("brand", {
+            required: FormValidator.required("Brand"),
             minLength: {
               value: 1,
               message: "Brand must be at least 1 character",
@@ -89,34 +75,24 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
           label="Description"
           placeholder="A warm and cozy jacket..."
           rows={4}
-          {...register(path("description"))}
+          {...register("description", {
+            required: FormValidator.required("Description"),
+          })}
           errors={errors}
         />
-        <div>
-          <div className="grid grid-cols-2 gap-x-large mb-5">
-            <InputField
-              label="Height (cm)"
-              type="number"
-              {...register(path("height"), {
-                min: FormValidator.nonNegativeNumberRule("Height"),
-                valueAsNumber: true,
-              })}
-              errors={errors}
-            />
-            <InputField
-              label="Width (cm)"
-              type="number"
-              {...register(path("width"), {
-                min: FormValidator.nonNegativeNumberRule("Width"),
-                valueAsNumber: true,
-              })}
-              errors={errors}
-            />
-          </div>
+        <div className="grid grid-rows-2 gap-x-large ">
+          <InputField
+            label="Dimension"
+            {...register("dimension", {
+              required: FormValidator.required("Dimension"),
+            })}
+            errors={errors}
+          />
           <InputField
             label="Weight (Kilograms)"
             type="number"
-            {...register(path("weight"), {
+            {...register("weight", {
+              required: FormValidator.required("Weight (Kilograms)"),
               min: FormValidator.nonNegativeNumberRule("Weight"),
               valueAsNumber: true,
             })}
@@ -127,12 +103,16 @@ const GeneralForm = ({ form, requireHandle = true }: Props) => {
       <div className="grid grid-cols-2 gap-x-large">
         <InputField
           label="Delivery Lead Time"
-          {...register(path("deliveryTime"), {})}
+          {...register("delivery_lead_time", {
+            required: FormValidator.required("Delivery Lead Time"),
+          })}
           errors={errors}
         />
         <InputField
           label="Warranty"
-          {...register(path("warranty"), {})}
+          {...register("warranty", {
+            required: FormValidator.required("Warranty"),
+          })}
           errors={errors}
         />
       </div>

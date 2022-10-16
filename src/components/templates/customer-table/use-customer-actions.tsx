@@ -9,7 +9,7 @@ import { ActionType } from "../../molecules/actionables";
 
 const useCustomerActions = (cus: Customer) => {
   const dialog = useImperativeDialog();
-  const deleteProduct = useAdminDeleteCustomer();
+  const deleteCustomer = useAdminDeleteCustomer();
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
@@ -18,7 +18,7 @@ const useCustomerActions = (cus: Customer) => {
     });
 
     if (shouldDelete) {
-      deleteProduct.mutate(cus.id);
+      deleteCustomer.mutate(cus.id!);
     }
   };
 

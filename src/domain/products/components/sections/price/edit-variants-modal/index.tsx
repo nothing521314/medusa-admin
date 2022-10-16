@@ -11,7 +11,7 @@ import Modal from "../../../../../../components/molecules/modal";
 import LayeredModal, {
   LayeredModalContext,
 } from "../../../../../../components/molecules/modal/layered-modal";
-import useEditProductActions from "../../../hooks/use-edit-product-actions";
+import useEditProductActions from "../../../../edit/hooks/use-edit-product-actions";
 import { EditVariantsModalContext } from "./use-edit-variants-modal";
 import { VariantCard } from "./variant-card";
 

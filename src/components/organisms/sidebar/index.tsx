@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import MapPinIcon from "src/components/fundamentals/icons/map-pin-icon";
+import UsersIcon from "src/components/fundamentals/icons/users-icon";
 import { AccountContext } from "src/context/account";
 import CustomerIcon from "../../fundamentals/icons/customer-icon";
 import DollarSignIcon from "../../fundamentals/icons/dollar-sign-icon";
@@ -52,7 +53,7 @@ const Sidebar: React.FC = () => {
             <>
               <SidebarMenuItem
                 pageLink={"/a/salesman"}
-                icon={<CustomerIcon size={ICON_SIZE} />}
+                icon={<UsersIcon size={ICON_SIZE} />}
                 triggerHandler={triggerHandler}
                 text={"Salesman"}
               />
