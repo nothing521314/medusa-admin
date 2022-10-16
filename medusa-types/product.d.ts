@@ -7,6 +7,7 @@ import { ProductVariant } from "./product-variant";
 import { SalesChannel } from "./sales-channel";
 import { ShippingProfile } from "./shipping-profile";
 import { SoftDeletableEntity } from "./interfaces";
+import { FormImage } from "src/types/shared";
 export declare enum ProductStatus {
   DRAFT = "draft",
   PROPOSED = "proposed",
@@ -15,49 +16,55 @@ export declare enum ProductStatus {
 }
 
 export interface IPrice {
-  id: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string;
-  product_id: string;
-  region_id: string;
-  price: number;
+  region: string;
+  value: number;
 }
 
 export declare class Product extends SoftDeletableEntity {
   title: string;
-  subtitle: string | null;
-  description: string | null;
+  subtitle?: string;
+  description?: string;
   prices: IPrice[];
 
-  handle: string | null;
+  handle?: string;
   is_giftcard: boolean;
-  status: ProductStatus;
-  images: Image[];
-  thumbnail: string | null;
-  options: ProductOption[];
-  variants: ProductVariant[];
+  // status: ProductStatus;
+  // images: Image[];
+  images: FormImage[];
+  thumbnail?: string;
+  // options: ProductOption[];
+  // variants?: ProductVariant[];
   profile_id: string;
-  profile: ShippingProfile;
-  weight: number | null;
-  length: number | null;
-  height: number | null;
-  width: number | null;
-  hs_code: string | null;
-  origin_country: string | null;
-  mid_code: string | null;
-  material: string | null;
-  collection_id: string | null;
-  collection: ProductCollection;
+  // profile: ShippingProfile;
+  weight?: number;
+  length?: number;
+  dimension?: string;
+  hs_code?: string;
+  origin_country?: string;
+  mid_code?: string;
+  material?: string;
+  // collection: ProductCollection;
+  collection: { value: string; label: string };
+  brand: string;
+  delivery_lead_time?: string;
+  warranty: string;
+  additional_hardwares?: Hardware[];
+
   type_id: string | null;
   type: ProductType;
   tags: ProductTag[];
   discountable: boolean;
   external_id: string | null;
-  metadata: Record<string, unknown> | null;
-  sales_channels: SalesChannel[];
-  private beforeInsert;
+  metadata?: Record<string, unknown>;
+  sales_channels?: SalesChannel[];
 }
+
+export interface Hardware
+  extends Pick<
+    Product,
+    "title" | "prices" | "description" | "id" | "thumbnail" | "images"
+  > {}
+
 /**
  * @schema product
  * title: "Product"

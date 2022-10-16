@@ -1,6 +1,11 @@
-import { ProductSalesChannelReq, ProductTagReq, ProductTypeReq } from "../../../../types/product";
+import {
+  ProductSalesChannelReq,
+  ProductTagReq,
+  ProductTypeReq,
+} from "../../../../types/product";
 import { ProductStatus } from "../../../../models";
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant";
+import { AdminPostProductsReq } from "./create-product";
 /**
  * @oas [post] /products/{id}
  * operationId: "PostProductsProduct"
@@ -255,52 +260,29 @@ import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant
 declare const _default: (req: any, res: any) => Promise<void>;
 export default _default;
 declare class ProductVariantOptionReq {
-    value: string;
-    option_id: string;
+  value: string;
+  option_id: string;
 }
 declare class ProductVariantReq {
-    id?: string;
-    title?: string;
-    sku?: string;
-    ean?: string;
-    upc?: string;
-    barcode?: string;
-    hs_code?: string;
-    inventory_quantity?: number;
-    allow_backorder?: boolean;
-    manage_inventory?: boolean;
-    weight?: number;
-    length?: number;
-    height?: number;
-    width?: number;
-    origin_country?: string;
-    mid_code?: string;
-    material?: string;
-    metadata?: Record<string, unknown>;
-    prices: ProductVariantPricesUpdateReq[];
-    options?: ProductVariantOptionReq[];
+  id?: string;
+  title?: string;
+  sku?: string;
+  ean?: string;
+  upc?: string;
+  barcode?: string;
+  hs_code?: string;
+  inventory_quantity?: number;
+  allow_backorder?: boolean;
+  manage_inventory?: boolean;
+  weight?: number;
+  length?: number;
+  height?: number;
+  width?: number;
+  origin_country?: string;
+  mid_code?: string;
+  material?: string;
+  metadata?: Record<string, unknown>;
+  prices: ProductVariantPricesUpdateReq[];
+  options?: ProductVariantOptionReq[];
 }
-export declare class AdminPostProductsProductReq {
-    title?: string;
-    subtitle?: string;
-    description?: string;
-    discountable?: boolean;
-    images: string[];
-    thumbnail?: string;
-    handle?: string;
-    status?: ProductStatus;
-    type?: ProductTypeReq;
-    collection_id?: string;
-    tags?: ProductTagReq[];
-    sales_channels: ProductSalesChannelReq[] | null;
-    variants?: ProductVariantReq[];
-    weight?: number;
-    length?: number;
-    height?: number;
-    width?: number;
-    hs_code?: string;
-    origin_country?: string;
-    mid_code?: string;
-    material?: string;
-    metadata?: Record<string, unknown>;
-}
+export interface AdminPostProductsProductReq extends AdminPostProductsReq {}

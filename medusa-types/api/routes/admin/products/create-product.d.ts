@@ -1,6 +1,4 @@
-import { ProductVariantPricesCreateReq } from "../../../../types/product-variant";
-import { ProductSalesChannelReq, ProductTagReq, ProductTypeReq } from "../../../../types/product";
-import { ProductStatus } from "../../../../models";
+import { Product } from "@medusa-types";
 /**
  * @oas [post] /products
  * operationId: "PostProducts"
@@ -268,55 +266,12 @@ import { ProductStatus } from "../../../../models";
 declare const _default: (req: any, res: any) => Promise<void>;
 export default _default;
 declare class ProductVariantOptionReq {
-    value: string;
+  value: string;
 }
-declare class ProductOptionReq {
-    title: string;
-}
-declare class ProductVariantReq {
-    title: string;
-    sku?: string;
-    ean?: string;
-    upc?: string;
-    barcode?: string;
-    hs_code?: string;
-    inventory_quantity: number;
-    allow_backorder?: boolean;
-    manage_inventory?: boolean;
-    weight?: number;
-    length?: number;
-    height?: number;
-    width?: number;
-    origin_country?: string;
-    mid_code?: string;
-    material?: string;
-    metadata?: Record<string, unknown>;
-    prices: ProductVariantPricesCreateReq[];
-    options?: ProductVariantOptionReq[];
-}
-export declare class AdminPostProductsReq {
-    title: string;
-    subtitle?: string;
-    description?: string;
-    is_giftcard: boolean;
-    discountable: boolean;
-    images?: string[];
-    thumbnail?: string;
-    handle?: string;
-    status?: ProductStatus;
-    type?: ProductTypeReq;
-    collection_id?: string;
-    tags?: ProductTagReq[];
-    sales_channels?: ProductSalesChannelReq[];
-    options?: ProductOptionReq[];
-    variants?: ProductVariantReq[];
-    weight?: number;
-    length?: number;
-    height?: number;
-    width?: number;
-    hs_code?: string;
-    origin_country?: string;
-    mid_code?: string;
-    material?: string;
-    metadata?: Record<string, unknown>;
+
+export interface AdminPostProductsReq
+  extends Omit<Product, "images" | "collection" | "additional_hardwares"> {
+  images: string[];
+  collection_id: string;
+  additional_hardwares?: { id: string }[];
 }
