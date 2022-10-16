@@ -22,7 +22,7 @@ export const useCustomerColumns = () => {
         ),
       },
       {
-        Header: "Contract",
+        Header: "Contact",
         Cell: ({
           cell: {
             row: { original },

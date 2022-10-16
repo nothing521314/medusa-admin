@@ -22,7 +22,7 @@ export const useSalesmanColumns = () => {
         ),
       },
       // {
-      //   Header: "Contract",
+      //   Header: "Contact",
       //   Cell: ({
       //     cell: {
       //       row: { original },

@@ -49,7 +49,7 @@ const CreateCustomerModal = ({ handleClose }: CreateCustomerModalProps) => {
     <Modal handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <span className="inter-xlarge-semibold">Customer Create</span>
+          <span className="inter-xlarge-semibold">Create customer</span>
         </Modal.Header>
         <Modal.Content>
           <div className="w-full flex mb-4 space-x-2">
