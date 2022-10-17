@@ -8,13 +8,11 @@ import { DisplayTotal } from "../templates";
 type Props = {
   summary?: IProductAdded[];
   readOnly?: boolean;
+  tab?: string;
 };
 
-const SummaryPanel = ({ summary, readOnly = true }: Props) => {
-  const {
-    hasMovements,
-    swapAmount,
-  } = useMemo(() => {
+const SummaryPanel = ({ summary, readOnly = true, tab }: Props) => {
+  const { hasMovements, swapAmount } = useMemo(() => {
     const manualRefund = 0;
     const swapRefund = 0;
     const returnRefund = 0;
@@ -58,6 +56,7 @@ const SummaryPanel = ({ summary, readOnly = true }: Props) => {
             region={selectedRegion}
             item={item}
             readOnly={readOnly}
+            tab={tab}
           />
         ))}
         <DisplayTotal

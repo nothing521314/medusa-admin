@@ -34,7 +34,7 @@ const QuotationHeaderPanel = ({
         <DropdownMenu.Trigger asChild>
           <Button
             variant="secondary"
-            className="flex justify-between w-1/4 items-center"
+            className="flex justify-between w-1/4 items-center min-w-[300px]"
           >
             {headerSelected.title || "Select"}
             <ChevronDownIcon

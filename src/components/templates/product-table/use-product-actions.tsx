@@ -1,4 +1,4 @@
-import { useAdminDeleteProduct } from "@medusa-react";
+import { CartContext, useAdminDeleteProduct } from "@medusa-react";
 import { Product } from "@medusa-types";
 import { navigate } from "gatsby";
 import * as React from "react";
@@ -15,6 +15,7 @@ const useProductActions = (product?: Product) => {
   const dialog = useImperativeDialog();
   const notification = useNotification();
   const deleteProduct = useAdminDeleteProduct(product?.id!);
+  const { handleAddToCart } = React.useContext(CartContext);
 
   const {
     open: handleOpenHardwareModal,
@@ -47,7 +48,14 @@ const useProductActions = (product?: Product) => {
     },
     {
       label: "Add To Cart",
-      onClick: () => handleOpenHardwareModal(),
+      onClick: () => {
+        if (product?.additional_hardwares?.length) {
+          handleOpenHardwareModal();
+        } else {
+          if (!product || !handleAddToCart) return;
+          handleAddToCart(product);
+        }
+      },
       icon: <CartPlusIcon size={20} />,
     },
     {

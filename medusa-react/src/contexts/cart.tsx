@@ -1,4 +1,4 @@
-import { Product } from "@medusa-types";
+import { Hardware, Product } from "@medusa-types";
 import React, { useCallback, useEffect, useReducer } from "react";
 import { Cart } from "../types";
 
@@ -7,6 +7,7 @@ interface CartState {
 }
 export interface IProductAdded extends Omit<Product, "beforeInsert"> {
   quantity: number;
+  quotation_lines?: Hardware[];
 }
 
 interface ICartContext extends CartState {
@@ -14,6 +15,7 @@ interface ICartContext extends CartState {
   productList: IProductAdded[];
   handleDeleteFromCart?: (product: IProductAdded) => void;
   totalItems: number;
+  handleAddHarwareToCart?: (productId: string, hardware: Hardware[]) => void;
 }
 
 const initialState = {
@@ -63,19 +65,56 @@ export const CartProvider = ({ children }: CartProps) => {
       const indexOfProduct = cloneCart.findIndex(
         (item) => item.id === product.id
       );
-
+      
       if (indexOfProduct !== -1) {
         cloneCart[indexOfProduct] = {
           ...cloneCart[indexOfProduct],
           quantity: cloneCart[indexOfProduct].quantity + 1,
+          quotation_lines: cloneCart[indexOfProduct]?.quotation_lines ? cloneCart[indexOfProduct]?.quotation_lines : [],
         };
       } else {
         const productAdding: IProductAdded = {
           ...product,
           quantity: 1,
+          quotation_lines: [],
         };
         cloneCart.push(productAdding);
       }
+
+      handleSaveCard(cloneCart);
+    },
+    [handleSaveCard, state.productList]
+  );
+
+  const handleAddHarwareToCart = useCallback(
+    (product_id: string, hardwares: Hardware[]) => {
+      const cloneCart = [...state.productList];
+      const indexOfProduct = cloneCart.findIndex(
+        (item) => item.id === product_id
+      );
+
+      hardwares.map((hardware) => {
+        const indexOfHw = cloneCart[indexOfProduct].quotation_lines.findIndex(
+          (item) => item.id === hardware.id
+        );
+
+        if (indexOfHw === -1) {
+          const i = cloneCart[indexOfProduct].additional_hardwares.findIndex(
+            (item) => item.id === hardware.id
+          );
+
+          cloneCart[indexOfProduct].quotation_lines.push({
+            ...cloneCart[indexOfProduct].additional_hardwares[i],
+            quantity: 1,
+          });
+        } else {
+          cloneCart[indexOfProduct].quotation_lines[indexOfHw] = {
+            ...cloneCart[indexOfProduct].quotation_lines[indexOfHw],
+            quantity:
+              cloneCart[indexOfProduct].quotation_lines[indexOfHw].quantity + 1,
+          };
+        }
+      });
 
       handleSaveCard(cloneCart);
     },
@@ -127,6 +166,7 @@ export const CartProvider = ({ children }: CartProps) => {
         ...state,
         handleAddToCart,
         handleDeleteFromCart,
+        handleAddHarwareToCart,
       }}
     >
       {children}

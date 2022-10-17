@@ -268,7 +268,20 @@ const ProductRow = ({ row, ...rest }) => {
     isOpenHardwareModal,
     handleCloseHardwareModal,
   } = useProductActions(product);
-  const { handleAddToCart } = React.useContext(CartContext);
+  const { handleAddToCart, handleAddHarwareToCart } = React.useContext(
+    CartContext
+  );
+
+  const handleSubmitAdd = useCallback(
+    (hw) => {
+      new Promise((resolve) => {
+        return resolve(handleAddToCart && handleAddToCart(product));
+      }).then(() => {
+        return handleAddHarwareToCart && handleAddHarwareToCart(product.id, hw);
+      }).catch(err => console.log(err));
+    },
+    [handleAddHarwareToCart, handleAddToCart, product]
+  );
 
   return (
     <Table.Row
@@ -289,13 +302,7 @@ const ProductRow = ({ row, ...rest }) => {
           id={product.id}
           isOpen={isOpenHardwareModal}
           handleClose={handleCloseHardwareModal}
-          handleSubmit={(hw) => {
-            if (!handleAddToCart) return;
-            handleAddToCart({
-              ...product,
-              additional_hardwares: hw,
-            });
-          }}
+          handleSubmit={handleSubmitAdd}
         />
       )}
     </Table.Row>

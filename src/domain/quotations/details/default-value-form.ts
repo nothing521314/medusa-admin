@@ -1,3 +1,4 @@
+// import rgbHeader from "../../../images/"
 export const DEFAULT_QUOTATION_DETAIL_FORM_VALUE = {
   quotationConditions: `  All prices quoted are in US Dollars, Ex Works Australia.
   Prices quoted are valid for 30 days. 
@@ -74,25 +75,42 @@ export const DEFAULT_QUOTATION_DETAIL_FORM_VALUE = {
   `,
 };
 
-export const quotationHeaderOptions = [
+export type THeaderPrint = {
+  title: string;
+  company: string;
+  header: string;
+  footer: string;
+};
+
+export const quotationHeaderOptions: THeaderPrint[] = [
   {
     title: "RGB Macao Limited",
-    company: "RGB"
+    company: "RGB",
+    header: "src/images/rgb-macao-limited-header.png",
+    footer: "src/images/rgb-macao-limited-footer.png",
   },
   {
     title: "RGB Sdn. Bhd.",
-    company: "RGB"
+    company: "RGB",
+    header: "src/images/rgb-sdn-header.png",
+    footer: "src/images/rgb-sdn-footer.png",
   },
   {
     title: "RGB Pte. Ltd.",
-    company: "RGB"
+    company: "RGB",
+    header: "src/images/rgb-pte-header.png",
+    footer: "src/images/rgb-pte-footer.png",
   },
   {
     title: "PETRO SOLUTIONS PTE LTD.",
-    company: "PETRO SOLUTIONS"
+    company: "PETRO SOLUTIONS",
+    header: "src/images/petro-pte-header.png",
+    footer: "src/images/petro-pte-footer.png",
   },
   {
     title: "PETRO SOLUTIONS SDN BHD.",
-    company: "PETRO SOLUTIONS"
+    company: "PETRO SOLUTIONS",
+    header: "src/images/petro-sdn-header.png",
+    footer: "src/images/petro-sdn-footer.png",
   },
 ];

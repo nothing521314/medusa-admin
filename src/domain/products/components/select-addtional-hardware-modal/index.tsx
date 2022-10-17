@@ -23,7 +23,6 @@ interface IHardware extends Hardware {
 
 const SelectAdditionalHardwareModal = ({
   id,
-  hw,
   isOpen,
   handleClose,
   handleSubmit,
@@ -81,7 +80,7 @@ const SelectAdditionalHardwareModal = ({
             {additionalHardwaresList?.map((h, index) => {
               const hw = h.product_addition;
               if (!hw) return null;
-              
+
               const item = {
                 ...h,
                 id: h.product_additions_id,
@@ -105,7 +104,7 @@ const SelectAdditionalHardwareModal = ({
                 <div
                   key={index}
                   className="p-base group cursor-pointer relative rounded-rounded flex-col border border-grey-30"
-                  onClick={(e) => {
+                  onClick={() => {
                     handleSelectHardware(h.id);
                   }}
                 >
@@ -140,7 +139,7 @@ const SelectAdditionalHardwareModal = ({
                       <Checkbox
                         label=""
                         checked={item.isChecked}
-                        onChange={(e) => {
+                        onChange={() => {
                           handleSelectHardware(h.id);
                         }}
                       />

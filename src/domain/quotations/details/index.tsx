@@ -409,6 +409,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
             <SummaryPanel
               summary={watch("summary") as IProductAdded[]}
               readOnly={readOnlyPage}
+              tab={tab}
             />
             <TextAreaFormPanel
               register={register}
@@ -420,7 +421,11 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           {renderModal()}
         </form>
       )}
-      <PrintQuotationFrom className="hidden print:block" formData={watch()} />
+      <PrintQuotationFrom
+        className="hidden print:block"
+        formData={watch()}
+        headerSelected={headerSelected}
+      />
     </React.Fragment>
   );
 };

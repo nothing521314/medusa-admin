@@ -17,7 +17,9 @@ type Props = {
 
 const MediaSection = ({ mode = "new", form }: Props) => {
   // const { onUpdate, updating } = useEditProductActions(product.id!);
-  const { handleAddToCart } = React.useContext(CartContext);
+  const { handleAddToCart, handleAddHarwareToCart } = React.useContext(
+    CartContext
+  );
   const isModeEdit = mode === "edit";
   const { getValues } = form;
   const {
@@ -48,7 +50,13 @@ const MediaSection = ({ mode = "new", form }: Props) => {
             <Button
               variant="secondary"
               size="small"
-              onClick={handleOpenHardwareModal}
+              onClick={() => {
+                if (getValues("additional_hardwares")?.length) {
+                  handleOpenHardwareModal();
+                } else {
+                  handleAddToCart && handleAddToCart(getValues());
+                }
+              }}
             >
               <CartPlusIcon size={20} />
               Add To Cart
@@ -63,10 +71,9 @@ const MediaSection = ({ mode = "new", form }: Props) => {
           handleClose={handleCloseHardwareModal}
           handleSubmit={(hw) => {
             if (!handleAddToCart) return;
-            handleAddToCart({
-              ...getValues(),
-              additional_hardwares: hw,
-            });
+            handleAddToCart(getValues());
+            if (!handleAddHarwareToCart) return;
+            handleAddHarwareToCart("id", hw);
           }}
         />
       )}

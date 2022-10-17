@@ -3,16 +3,20 @@ import clsx from "clsx";
 import moment from "moment";
 import React, { useCallback } from "react";
 import { IQuotationDetailForm } from "../details";
+import { THeaderPrint } from "../details/default-value-form";
+// import aa from "../../../images/rgb-macao-limited-header.png";
 
 interface TPrintQuotationFromModal
   extends RouteComponentProps<{ id: string; tab: string }> {
   formData?: IQuotationDetailForm;
   className?: string;
+  headerSelected: THeaderPrint;
 }
 
 const PrintQuotationFrom = ({
   formData,
   className,
+  headerSelected,
 }: TPrintQuotationFromModal) => {
   const renderText = useCallback((text?: string): string => {
     if (!text) return "";
@@ -21,9 +25,11 @@ const PrintQuotationFrom = ({
 
   return (
     <div className={clsx("w-full h-max p-16", className)}>
-      <div className="h-10 w-full text-3xl">
-        Hello Header
-      </div>
+      {/* <div
+        className="h-10 w-full bg-no-repeat bg-center"
+        style={{ backgroundImage: `url(${headerSelected.header})` }}
+      ></div> */}
+      <img src="./rgb-macao-limited-header.png" alt="" />
       <div className="w-full h-full ">
         <div className="flex justify-between items-center">
           <div>Our Ref: QM-5542-2022</div>
@@ -105,9 +111,11 @@ const PrintQuotationFrom = ({
           }}
         />
       </div>
-      <div className="w-full bg-blue-500 text-3xl print:break-inside-avoid py-3">
-        Footer hear
-      </div>
+      {/* <div
+        className="h-10 w-full bg-no-repeat bg-center"
+        style={{ backgroundImage: `url(${headerSelected.footer})` }}
+      ></div> */}
+      <img src={headerSelected.footer} alt="" />
     </div>
   );
 };
