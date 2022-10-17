@@ -87,7 +87,7 @@ const ProductTile = ({ product }: { product: Product }) => {
               "min-h-[230px] flex items-center justify-center bg-grey-5 rounded-rounded relative",
               "bg-cover bg-no-repeat bg-center"
             )}
-            style={{ backgroundImage: `url(${product.thumbnail})` }}
+            style={{ backgroundImage: `url(${product.images?.[0]?.url})` }}
           >
             {/* {product.thumbnail ? (
               <div
@@ -103,7 +103,7 @@ const ProductTile = ({ product }: { product: Product }) => {
             ) : (
               <ImagePlaceholder />
             )} */}
-            {!product.thumbnail && <ImagePlaceholderIcon size={12} />}
+            {!product.images?.[0]?.url && <ImagePlaceholderIcon size={12} />}
           </div>
 
           <div>

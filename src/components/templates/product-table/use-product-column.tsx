@@ -70,9 +70,9 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
           return (
             <div className="flex items-center">
               <div className="h-[40px] w-[30px] my-1.5 flex items-center mr-4">
-                {original.thumbnail ? (
+                {original.images?.[0]?.url ? (
                   <img
-                    src={original.thumbnail}
+                    src={original.images?.[0]?.url}
                     className="h-full object-cover rounded-soft"
                   />
                 ) : (
