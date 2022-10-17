@@ -24,9 +24,14 @@ export const DisplayTotal = ({
         <div className="inter-small-regular text-grey-50 mt-1">{subtitle}</div>
       )}
     </div>
-    <div className="grid grid-cols-2 small:space-x-2 medium:space-x-4 large:space-x-5 justify-end">
+    <div
+      className={clsx(
+        "grid grid-cols-2 small:space-x-2 medium:space-x-4 large:space-x-5",
+        "items-center justify-items-end w-1/6"
+      )}
+    >
       <div
-        className={clsx("text-right inter-small-regular shrink-0", totalColor, {
+        className={clsx("text-right inter-small-regular", totalColor, {
           "!font-normal": variant === "regular",
           "!font-bold": variant === "bold" || variant === "large",
         })}
@@ -34,6 +39,7 @@ export const DisplayTotal = ({
         {formatAmountWithSymbol({
           amount: totalAmount,
           currency,
+          digits: 2,
         })}
       </div>
       <div

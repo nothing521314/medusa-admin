@@ -20,6 +20,7 @@ type Props = {
   date: string | null;
   readOnly: boolean;
   onDateChange: (date: string) => void;
+  company: string;
 };
 
 const SaleMalePanel = ({
@@ -29,6 +30,7 @@ const SaleMalePanel = ({
   saleMan,
   register,
   readOnly,
+  company,
 }: Props) => {
   const notification = useNotification();
 
@@ -43,7 +45,7 @@ const SaleMalePanel = ({
   });
 
   useHotkeys("command+i", handleCopy);
-
+  
   return (
     <BodyCard
       className={"w-full mb-4 min-h-[200px]"}
@@ -119,7 +121,7 @@ const SaleMalePanel = ({
         </div>
         <div className="flex flex-col pl-6">
           <div className="inter-smaller-regular text-grey-50 mb-1">Company</div>
-          <div>{saleMan?.phone}</div>
+          <div>{company || "N/A"}</div>
         </div>
       </div>
     </BodyCard>

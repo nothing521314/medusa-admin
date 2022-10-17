@@ -1,13 +1,8 @@
-import { Image } from "./image";
-import { ProductCollection } from "./product-collection";
-import { ProductOption } from "./product-option";
+import { FormImage } from "src/types/shared";
+import { SoftDeletableEntity } from "./interfaces";
 import { ProductTag } from "./product-tag";
 import { ProductType } from "./product-type";
-import { ProductVariant } from "./product-variant";
 import { SalesChannel } from "./sales-channel";
-import { ShippingProfile } from "./shipping-profile";
-import { SoftDeletableEntity } from "./interfaces";
-import { FormImage } from "src/types/shared";
 export declare enum ProductStatus {
   DRAFT = "draft",
   PROPOSED = "proposed",
@@ -18,6 +13,8 @@ export declare enum ProductStatus {
 export interface IPrice {
   region: string;
   value: number;
+  region_id?: string;
+  price?: number;
 }
 
 export declare class Product extends SoftDeletableEntity {

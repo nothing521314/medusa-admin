@@ -73,3 +73,26 @@ export const DEFAULT_QUOTATION_DETAIL_FORM_VALUE = {
   In addition to the above, neither Party shall be in default hereunder by reason of its delay in the performance or failure to perform any of its obligations hereunder due to a Force Majeure Occurrence. A "Force Majeure Occurrence" is an event or effect that cannot be reasonably anticipated or controlled, for example: acts of war; civil unrest; terrorism; disease, global health emergencies, epidemics; fire, earthquake; flood; governmental interference; rationing; or any other cause which is beyond the control of the party affected and which, by the exercise of reasonable diligence, the affected Party is unable to prevent. The Party affected by a Force Majeure Occurrence shall promptly notify the other Party.
   `,
 };
+
+export const quotationHeaderOptions = [
+  {
+    title: "RGB Macao Limited",
+    company: "RGB"
+  },
+  {
+    title: "RGB Sdn. Bhd.",
+    company: "RGB"
+  },
+  {
+    title: "RGB Pte. Ltd.",
+    company: "RGB"
+  },
+  {
+    title: "PETRO SOLUTIONS PTE LTD.",
+    company: "PETRO SOLUTIONS"
+  },
+  {
+    title: "PETRO SOLUTIONS SDN BHD.",
+    company: "PETRO SOLUTIONS"
+  },
+];

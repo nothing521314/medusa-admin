@@ -8,6 +8,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import { useForm } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -30,10 +31,14 @@ import CancelTheQuotationReviseModal from "../modal/cancel-the-quotation-revisio
 import DeleteTheQuotationModal from "../modal/delete-the-quotation-modal";
 import PrintQuotationFrom from "../modal/print-quotation-form";
 import CustomerPanel from "./card-panel/customer-panel";
+import QuotationHeaderPanel from "./card-panel/quotation-header-panel";
 import SaleMalePanel from "./card-panel/sale-man-panel";
 import SummaryPanel from "./card-panel/summary-panel";
 import TextAreaFormPanel from "./card-panel/textarea-form-panel";
-import { DEFAULT_QUOTATION_DETAIL_FORM_VALUE } from "./default-value-form";
+import {
+  DEFAULT_QUOTATION_DETAIL_FORM_VALUE,
+  quotationHeaderOptions,
+} from "./default-value-form";
 
 type OrderDetailProps = RouteComponentProps<{ id: string; tab: string }>;
 
@@ -60,6 +65,9 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
   const { selectedRegion, sale_man_state } = useContext(AccountContext);
   const { productList } = useContext(CartContext);
+  const [headerSelected, setHeaderSelected] = useState(
+    quotationHeaderOptions[0]
+  );
 
   const {
     open: handleOpenDeleteQuotationModal,
@@ -385,6 +393,11 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
               saleMan={sale_man}
               date={watch("createdAt") || new Date().toDateString()}
               onDateChange={(date) => setValue("createdAt", date)}
+              company={headerSelected.company}
+            />
+            <QuotationHeaderPanel
+              onChange={setHeaderSelected}
+              headerSelected={headerSelected}
             />
             <CustomerPanel
               customer={watch("customer")}
@@ -393,10 +406,10 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
                 setValue("customer", customer)
               }
             />
-            {/* <SummaryPanel
+            <SummaryPanel
               summary={watch("summary") as IProductAdded[]}
               readOnly={readOnlyPage}
-            /> */}
+            />
             <TextAreaFormPanel
               register={register}
               readOnly={readOnlyPage}
