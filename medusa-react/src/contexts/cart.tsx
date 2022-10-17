@@ -16,6 +16,7 @@ interface ICartContext extends CartState {
   handleDeleteFromCart?: (product: IProductAdded) => void;
   totalItems: number;
   handleAddHarwareToCart?: (productId: string, hardware: Hardware[]) => void;
+  handleDeleteHarwareToCart?: (productId: string, hardware: Hardware[]) => void;
 }
 
 const initialState = {
@@ -65,18 +66,16 @@ export const CartProvider = ({ children }: CartProps) => {
       const indexOfProduct = cloneCart.findIndex(
         (item) => item.id === product.id
       );
-      
+
       if (indexOfProduct !== -1) {
         cloneCart[indexOfProduct] = {
           ...cloneCart[indexOfProduct],
           quantity: cloneCart[indexOfProduct].quantity + 1,
-          quotation_lines: cloneCart[indexOfProduct]?.quotation_lines ? cloneCart[indexOfProduct]?.quotation_lines : [],
         };
       } else {
         const productAdding: IProductAdded = {
           ...product,
           quantity: 1,
-          quotation_lines: [],
         };
         cloneCart.push(productAdding);
       }
@@ -92,27 +91,52 @@ export const CartProvider = ({ children }: CartProps) => {
       const indexOfProduct = cloneCart.findIndex(
         (item) => item.id === product_id
       );
+      console.log(cloneCart);
+      
+      hardwares.map((hardware) => {
+        const i = cloneCart[indexOfProduct].additional_hardwares.findIndex(
+          (item) => item.id === hardware.id
+        );
+        if (i !== -1) {
+          cloneCart[indexOfProduct].additional_hardwares[i] = {
+            ...cloneCart[indexOfProduct].additional_hardwares[i],
+            quantity:
+              (cloneCart[indexOfProduct].additional_hardwares[i]?.quantity ||
+                0) + 1,
+          };
+        } else {
+          cloneCart[indexOfProduct].additional_hardwares.push({
+            ...hardware,
+            quantity: 1,
+          });
+        }
+      });
+
+      handleSaveCard(cloneCart);
+    },
+    [handleSaveCard, state.productList]
+  );
+
+  const handleDeleteHarwareToCart = useCallback(
+    (product_id: string, hardwares: Hardware[]) => {
+      const cloneCart = [...state.productList];
+      const indexOfProduct = cloneCart.findIndex(
+        (item) => item.id === product_id
+      );
 
       hardwares.map((hardware) => {
-        const indexOfHw = cloneCart[indexOfProduct].quotation_lines.findIndex(
+        const i = cloneCart[indexOfProduct].additional_hardwares.findIndex(
           (item) => item.id === hardware.id
         );
 
-        if (indexOfHw === -1) {
-          const i = cloneCart[indexOfProduct].additional_hardwares.findIndex(
-            (item) => item.id === hardware.id
-          );
-
-          cloneCart[indexOfProduct].quotation_lines.push({
+        if (cloneCart[indexOfProduct].additional_hardwares[i].quantity > 1) {
+          cloneCart[indexOfProduct].additional_hardwares[i] = {
             ...cloneCart[indexOfProduct].additional_hardwares[i],
-            quantity: 1,
-          });
-        } else {
-          cloneCart[indexOfProduct].quotation_lines[indexOfHw] = {
-            ...cloneCart[indexOfProduct].quotation_lines[indexOfHw],
             quantity:
-              cloneCart[indexOfProduct].quotation_lines[indexOfHw].quantity + 1,
+              cloneCart[indexOfProduct].additional_hardwares[i].quantity - 1,
           };
+        } else {
+          cloneCart[indexOfProduct].additional_hardwares.splice(i, 1);
         }
       });
 
@@ -132,7 +156,7 @@ export const CartProvider = ({ children }: CartProps) => {
 
       if (product.quantity > 1) {
         cloneCart[indexOfProduct] = {
-          ...product,
+          ...cloneCart[indexOfProduct],
           quantity: product.quantity - 1,
         };
       } else {
@@ -167,6 +191,7 @@ export const CartProvider = ({ children }: CartProps) => {
         handleAddToCart,
         handleDeleteFromCart,
         handleAddHarwareToCart,
+        handleDeleteHarwareToCart,
       }}
     >
       {children}

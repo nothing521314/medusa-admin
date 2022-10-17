@@ -51,7 +51,6 @@ const SelectAdditionalHardwareModal = ({
     const selectedList = additionalHardwaresList.filter(
       (item) => item.isChecked
     );
-
     const formatListItem = selectedList?.map((item) => {
       return {
         ...item.product_addition,

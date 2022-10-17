@@ -16,76 +16,45 @@ type OrderLineProps = {
 };
 
 const OrderLine = ({ item, readOnly, region, tab }: OrderLineProps) => {
-  // const { priceItem, quantity } = useMemo(() => {
-  //   if ((item as any).unit_price) {
-  //     return {
-  //       priceItem: (item as any).unit_price,
-  //       quantity: (item as any).volume,
-  //     };
-  //   }
-  //   if (!region) {
-  //     return {
-  //       priceItem: 0,
-  //       quantity: 0,
-  //     };
-  //   }
-
-  //   const priceRegion = item?.prices.find(
-  //     (item) => item.region_id === region?.id
-  //   );
-  //   if (!priceRegion) {
-  //     return {
-  //       priceItem: 0,
-  //       quantity: 0,
-  //     };
-  //   }
-
-  //   return {
-  //     priceItem: priceRegion.price,
-  //   };
-  // }, [item, region]);
 
   const lineData = useMemo(() => {
-    console.log(item);
     if (tab === SUB_TAB.MAKE_QUOTATION) {
       return {
-        // priceItem:
-        //   item?.prices.find((item) => item.region_id === region?.id)?.price ||
-        //   0,
-        priceItem: 0,
-        quantity: item.quantity,
-        thumbnail: item.thumbnail,
-        id: item.id,
-        quotation_lines: item.quotation_lines,
-        title: item.title,
+        ...item,
+        priceItem:
+          item?.prices.find((item) => item.region_id === region?.id)?.price ||
+          0,
+        quotation_lines: item.additional_hardwares,
       };
     }
     return {
+      ...item,
       priceItem: item.quantity,
-      quantity: item.quantity,
-      thumbnail: item.thumbnail,
-      id: item.id,
       quotation_lines: item.quotation_lines,
-      title: item.title,
     };
-  }, [item, tab]);
+  }, [item, region?.id, tab]);
 
   const {
     handleAddToCart,
     handleDeleteFromCart,
     handleAddHarwareToCart,
+    handleDeleteHarwareToCart,
   } = useContext(CartContext);
 
   const renderNumberOfProduct = useCallback(
-    (data) => {
+    (data, isChild = false) => {
       if (!readOnly) {
         return (
           <div className="flex flex-row items-center">
             <div
               className="border border-grey-50 rounded-full w-4 h-4 flex items-center justify-center cursor-pointer"
               onClick={() => {
-                if (!handleDeleteFromCart) return;
-                handleDeleteFromCart(data);
+                if (!isChild) {
+                  handleDeleteFromCart && handleDeleteFromCart({...data});
+                } else {
+                  handleDeleteHarwareToCart &&
+                    handleDeleteHarwareToCart(item.id!, [data]);
+                }
               }}
             >
               <MinusIcon size={10} />
@@ -96,7 +65,7 @@ const OrderLine = ({ item, readOnly, region, tab }: OrderLineProps) => {
             <div
               className="border border-grey-50 rounded-full w-4 h-4 flex items-center justify-center cursor-pointer"
               onClick={() => {
-                if (data.quotation_lines) {
+                if (!isChild) {
                   handleAddToCart && handleAddToCart(data);
                 } else {
                   handleAddHarwareToCart &&
@@ -115,66 +84,76 @@ const OrderLine = ({ item, readOnly, region, tab }: OrderLineProps) => {
         </div>
       );
     },
-    [handleAddHarwareToCart, handleAddToCart, handleDeleteFromCart, item.id, readOnly]
+    [
+      handleAddHarwareToCart,
+      handleAddToCart,
+      handleDeleteFromCart,
+      handleDeleteHarwareToCart,
+      item.id,
+      readOnly,
+    ]
   );
 
-  const renderChildrenProduct = useCallback(() => {
-    if (!lineData.quotation_lines?.length) return;
+  const renderChildrenProduct = useCallback(
+    () => {
+      if (!lineData.quotation_lines?.length) return;
 
-    return lineData.quotation_lines?.map((child, index) => {
-      return (
-        <div
-          className="flex items-center justify-between mb-1 h-[64px] rounded-lg"
-          key={index}
-        >
-          <div className="flex space-x-4 justify-center ml-12">
-            <div className="flex h-12 w-9 rounded-rounded overflow-hidden">
-              {child.thumbnail ? (
-                <img src={child.thumbnail} className="object-cover" />
-              ) : (
-                <ImagePlaceholder />
-              )}
-            </div>
-            <div className="flex flex-col justify-center max-w-[185px]">
-              <span className="inter-small-regular text-grey-90 truncate"></span>
-            </div>
-          </div>
+      return lineData.quotation_lines?.map((child, index) => {
+        return (
           <div
-            className={clsx(
-              "grid grid-cols-4 small:space-x-2 medium:space-x-4 large:space-x-5",
-              "items-center justify-items-end w-1/3"
-            )}
+            className="flex items-center justify-between mb-1 h-[64px] rounded-lg"
+            key={index}
           >
-            <div className="inter-small-regular text-grey-50">
-              {formatAmountWithSymbol({
-                amount: 0,
-                currency: region?.currency_code || "",
-                digits: 2,
-                tax: region?.tax_rate,
-              })}
+            <div className="flex space-x-4 justify-center ml-12">
+              <div className="flex h-12 w-9 rounded-rounded overflow-hidden">
+                {child.thumbnail ? (
+                  <img src={child.thumbnail} className="object-cover" />
+                ) : (
+                  <ImagePlaceholder />
+                )}
+              </div>
+              <div className="flex flex-col justify-center max-w-[185px]">
+                <span className="inter-small-regular text-grey-90 truncate"></span>
+              </div>
             </div>
-            {renderNumberOfProduct(child)}
-            <div className="inter-small-regular text-grey-90 shrink-0">
-              {formatAmountWithSymbol({
-                amount: 0,
-                currency: region?.currency_code || "",
-                digits: 2,
-                tax: region?.tax_rate,
-              })}
-            </div>
-            <div className="inter-small-regular text-grey-50 text-right w-11">
-              {region?.currency_code.toUpperCase()}
+            <div
+              className={clsx(
+                "grid grid-cols-4 small:space-x-2 medium:space-x-4 large:space-x-5",
+                "items-center justify-items-end w-1/3"
+              )}
+            >
+              <div className="inter-small-regular text-grey-50">
+                {formatAmountWithSymbol({
+                  amount: 0,
+                  currency: region?.currency_code || "",
+                  digits: 2,
+                  tax: region?.tax_rate,
+                })}
+              </div>
+              {renderNumberOfProduct(child, true)}
+              <div className="inter-small-regular text-grey-90 shrink-0">
+                {formatAmountWithSymbol({
+                  amount: 0,
+                  currency: region?.currency_code || "",
+                  digits: 2,
+                  tax: region?.tax_rate,
+                })}
+              </div>
+              <div className="inter-small-regular text-grey-50 text-right w-11">
+                {region?.currency_code.toUpperCase()}
+              </div>
             </div>
           </div>
-        </div>
-      );
-    });
-  }, [
-    lineData.quotation_lines,
-    region?.currency_code,
-    region?.tax_rate,
-    renderNumberOfProduct,
-  ]);
+        );
+      });
+    },
+    [
+      lineData.quotation_lines,
+      region?.currency_code,
+      region?.tax_rate,
+      renderNumberOfProduct,
+    ]
+  );
 
   return (
     <React.Fragment>
@@ -207,7 +186,7 @@ const OrderLine = ({ item, readOnly, region, tab }: OrderLineProps) => {
               tax: region?.tax_rate,
             })}
           </div>
-          {renderNumberOfProduct(lineData)}
+          {renderNumberOfProduct(lineData, false)}
           <div className="inter-small-regular text-grey-90 shrink-0">
             {formatAmountWithSymbol({
               amount: lineData.priceItem * lineData.quantity,

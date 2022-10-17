@@ -12,7 +12,7 @@ import ProductOverview from "./overview";
 import useProductActions from "./use-product-actions";
 import useProductTableColumn from "./use-product-column";
 import { useProductFilters } from "./use-product-filters";
-import { Product } from "@medusa-types";
+import { Hardware, Product } from "@medusa-types";
 import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
 
 const DEFAULT_PAGE_SIZE = 15;
@@ -268,20 +268,31 @@ const ProductRow = ({ row, ...rest }) => {
     isOpenHardwareModal,
     handleCloseHardwareModal,
   } = useProductActions(product);
-  const { handleAddToCart, handleAddHarwareToCart } = React.useContext(
-    CartContext
-  );
+  const {
+    handleAddToCart,
+    handleAddHarwareToCart,
+    productList,
+  } = React.useContext(CartContext);
+
+  const [hardwares, setHardWares] = useState<Hardware[]>([]);
 
   const handleSubmitAdd = useCallback(
     (hw) => {
-      new Promise((resolve) => {
-        return resolve(handleAddToCart && handleAddToCart(product));
-      }).then(() => {
-        return handleAddHarwareToCart && handleAddHarwareToCart(product.id, hw);
-      }).catch(err => console.log(err));
+      handleAddToCart && handleAddToCart(product);
+      setHardWares(hw);
     },
-    [handleAddHarwareToCart, handleAddToCart, product]
+    [handleAddToCart, product]
   );
+
+  useEffect(() => {
+    if (!hardwares.length) return;
+    try {
+      handleAddHarwareToCart && handleAddHarwareToCart(product.id, hardwares);
+      setHardWares([]);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [handleAddHarwareToCart, hardwares, product.id, productList.length]);
 
   return (
     <Table.Row

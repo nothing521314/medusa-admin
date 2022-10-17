@@ -4,7 +4,6 @@ import moment from "moment";
 import React, { useCallback } from "react";
 import { IQuotationDetailForm } from "../details";
 import { THeaderPrint } from "../details/default-value-form";
-// import aa from "../../../images/rgb-macao-limited-header.png";
 
 interface TPrintQuotationFromModal
   extends RouteComponentProps<{ id: string; tab: string }> {
@@ -24,13 +23,9 @@ const PrintQuotationFrom = ({
   }, []);
 
   return (
-    <div className={clsx("w-full h-max p-16", className)}>
-      {/* <div
-        className="h-10 w-full bg-no-repeat bg-center"
-        style={{ backgroundImage: `url(${headerSelected.header})` }}
-      ></div> */}
-      <img src="./rgb-macao-limited-header.png" alt="" />
-      <div className="w-full h-full ">
+    <div className={clsx("w-full h-max", className)}>
+      <img src={headerSelected.header} alt="" />
+      <div className="w-full h-full px-16">
         <div className="flex justify-between items-center">
           <div>Our Ref: QM-5542-2022</div>
           <div>{moment(formData?.createdAt).format("DD MMMM YYYY")}</div>

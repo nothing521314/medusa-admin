@@ -53,7 +53,7 @@ const useProductActions = (product?: Product) => {
           handleOpenHardwareModal();
         } else {
           if (!product || !handleAddToCart) return;
-          handleAddToCart(product);
+          handleAddToCart({...product});
         }
       },
       icon: <CartPlusIcon size={20} />,
