@@ -23,7 +23,7 @@ type ProductTableProps = {};
 const defaultQueryProps = {
   fields: "id,title,type,thumbnail,status,handle,description,updated_at",
   expand:
-    "variants,options,variants.prices,variants.options,collection,tags,prices",
+    "variants,options,variants.prices,variants.options,collection,tags,prices,additional_hardwares",
   is_giftcard: false,
   // order: "created_at"
 };
