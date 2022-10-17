@@ -1,8 +1,5 @@
 import { useAdminProduct, useAdminUpdateProduct } from "@medusa-react";
-import
-  {
-    Product
-  } from "@medusa-types";
+import { Product } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import React, { useEffect } from "react";
@@ -49,17 +46,20 @@ const Edit = ({ id }: EditProps) => {
       const prices = product.prices;
       const hw = product.additional_hardwares?.map((v: any) => {
         const h = v.product_addition;
-        return {
-          ...v,
-          id: v.product_additions_id,
-          title: h.title,
-          images: [h.thumbnail],
-          thumbnail: h.thumbnail,
-          prices: h.prices?.map((v) => ({
-            label: v.region_id,
-            value: v.price,
-          })),
-        };
+
+        return h
+          ? {
+              ...v,
+              id: v.product_additions_id,
+              title: h.title,
+              images: [h.thumbnail],
+              thumbnail: h.thumbnail,
+              prices: h.prices?.map((v) => ({
+                label: v.region_id,
+                value: v.price,
+              })),
+            }
+          : null;
       });
 
       reset({

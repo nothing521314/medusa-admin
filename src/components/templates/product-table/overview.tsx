@@ -111,7 +111,7 @@ const ProductTile = ({ product }: { product: Product }) => {
               <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1 mr-3">
                 {product.title}
               </p>
-              <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1 mr-3">
+              <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1">
                 {price ? `$${price}` : "-"}
               </p>
               {/* <StatusIndicator

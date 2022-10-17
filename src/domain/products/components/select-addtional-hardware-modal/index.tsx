@@ -2,14 +2,16 @@ import { useAdminProduct } from "@medusa-react";
 import { Hardware } from "@medusa-types";
 import clsx from "clsx";
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import Checkbox from "src/components/atoms/checkbox";
 import Button from "src/components/fundamentals/button";
-import CheckIcon from "src/components/fundamentals/icons/check-icon";
+import ImagePlaceholderIcon from "src/components/fundamentals/icons/image-placeholder-icon";
 import Modal from "src/components/molecules/modal";
 import { AccountContext } from "src/context/account";
 import { formatAmountWithSymbol } from "src/utils/prices";
 
 type Props = {
   id: string;
+  hw?: Hardware;
   isOpen: boolean;
   handleClose: () => void;
   handleSubmit: (formatListItem: Hardware[]) => void;
@@ -21,6 +23,7 @@ interface IHardware extends Hardware {
 
 const SelectAdditionalHardwareModal = ({
   id,
+  hw,
   isOpen,
   handleClose,
   handleSubmit,
@@ -58,7 +61,8 @@ const SelectAdditionalHardwareModal = ({
     });
 
     handleSubmit((formatListItem as unknown) as Hardware[]);
-  }, [additionalHardwaresList, handleSubmit]);
+    handleClose();
+  }, [additionalHardwaresList, handleClose, handleSubmit]);
 
   useEffect(() => {
     if (!isLoading && product?.additional_hardwares?.length) {
@@ -73,57 +77,74 @@ const SelectAdditionalHardwareModal = ({
           <h2 className="inter-xlarge-semibold">Select Additional Hardware</h2>
         </Modal.Header>
         <Modal.Content>
-          <div className="overflow-y-auto scrollbar-thin min-h-fit max-h-[60vh]">
-            {additionalHardwaresList?.map((item, index) => {
+          <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(210px,5fr))] gap-4">
+            {additionalHardwaresList?.map((h, index) => {
+              const hw = h.product_addition;
+              if (!hw) return null;
+              
+              const item = {
+                ...h,
+                id: h.product_additions_id,
+                title: hw.title,
+                images: [hw.thumbnail],
+                prices: hw.prices?.map((v) => ({
+                  ...v,
+                  label: v.region_id,
+                  value: v.price,
+                })),
+              };
+
+              const price = formatAmountWithSymbol({
+                amount:
+                  hw.prices.find((reg) => reg.region_id === selectedRegion?.id)
+                    ?.price || 0,
+                currency: "usd",
+              });
+
               return (
                 <div
                   key={index}
-                  className={clsx(
-                    "w-32 flex flex-col items-center cursor-pointer",
-                    "grid grid-cols-[repeat(auto-fill,minmax(128px,5fr) gap-4"
-                  )}
-                  onClick={() => handleSelectHardware(item.id)}
+                  className="p-base group cursor-pointer relative rounded-rounded flex-col border border-grey-30"
+                  onClick={(e) => {
+                    handleSelectHardware(h.id);
+                  }}
                 >
-                  <div
-                    className={clsx(
-                      "h-44 w-full bg-red-500 rounded-lg border",
-                      "bg-cover bg-center bg-no-repeat"
-                    )}
-                    style={{
-                      backgroundImage: `url(${item?.product_addition?.thumbnail})`,
-                    }}
-                  ></div>
-                  <div className="mt-2 flex flex-row justify-between w-full">
-                    <div>{item?.product_addition.title}</div>
-                    <div>
-                      {
-                        item?.product_addition?.prices.find(
-                          (reg) => reg.region_id === selectedRegion?.id
-                        )?.price
-                      }
-                      {formatAmountWithSymbol({
-                        amount:
-                          item?.product_addition?.prices.find(
-                            (reg) => reg.region_id === selectedRegion?.id
-                          )?.price || 0,
-                        currency: "usd",
-                        digits: 2,
-                      })}
+                  <div className="relative  ">
+                    <div
+                      className={clsx(
+                        "rounded-base inline-block absolute top-2 right-2 z-10 hover:bg-grey-5"
+                      )}
+                    ></div>
+                    <div
+                      className={clsx(
+                        "min-h-[230px] flex items-center justify-center bg-grey-5 rounded-rounded relative",
+                        "bg-cover bg-no-repeat bg-center"
+                      )}
+                      style={{
+                        backgroundImage: `url(${item?.images?.[0]})`,
+                      }}
+                    >
+                      {!item?.images && <ImagePlaceholderIcon size={12} />}
                     </div>
-                  </div>
-                  <div
-                    className={clsx(
-                      "w-5 h-5 m-auto border-[2px] rounded-base transition-colors duration-100",
-                      "flex items-center justify-center box-border",
-                      item.isChecked ? "border-violet-60" : "border-grey-30",
-                      {
-                        "bg-violet-60": item.isChecked,
-                      }
-                    )}
-                  >
-                    {item.isChecked && (
-                      <CheckIcon size="14" color="white" strokeWidth="2" />
-                    )}
+                    <div>
+                      <div className="mt-base flex items-center justify-between">
+                        <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1 mr-3">
+                          {item?.title}
+                        </p>
+                        <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1 ">
+                          {price ? price : "-"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex justify-center mt-4">
+                      <Checkbox
+                        label=""
+                        checked={item.isChecked}
+                        onChange={(e) => {
+                          handleSelectHardware(h.id);
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               );
