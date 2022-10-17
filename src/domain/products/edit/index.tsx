@@ -195,9 +195,7 @@ const Edit = ({ id }: EditProps) => {
           <MediaSection mode="edit" form={form} />
           <GeneralSection form={form} />
           <PricesSection form={form} />
-          {getValues("collection.value") !== KEY.ID_CATEGORY_HW && (
-            <AdditionalHardwares form={form} />
-          )}
+          <AdditionalHardwares form={form} />
           {/* <AttributesSection product={product} /> */}
           {/* <RawSection product={watch()} /> */}
         </div>

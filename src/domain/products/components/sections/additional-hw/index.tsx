@@ -2,11 +2,12 @@ import { useAdminRegions } from "@medusa-react";
 import { Hardware, Product, Region } from "@medusa-types";
 import clsx from "clsx";
 import React from "react";
-import { useFieldArray, UseFormReturn } from "react-hook-form";
+import { useFieldArray, UseFormReturn, useWatch } from "react-hook-form";
 import Button from "src/components/fundamentals/button";
 import CrossIcon from "src/components/fundamentals/icons/cross-icon";
 import ImagePlaceholderIcon from "src/components/fundamentals/icons/image-placeholder-icon";
 import Section from "src/components/organisms/section";
+import { KEY } from "src/constants/misc";
 import useToggleState from "src/hooks/use-toggle-state";
 import ModalHardwares from "../../modal-hardware";
 
@@ -16,6 +17,9 @@ type Props = {
 
 function AdditionalHardwares({ form: { control } }: Props) {
   const { regions } = useAdminRegions();
+  const { collection } = useWatch({
+    control,
+  });
   const { fields, append, remove } = useFieldArray({
     control,
     name: "additional_hardwares",
@@ -26,6 +30,8 @@ function AdditionalHardwares({ form: { control } }: Props) {
   const handleAddHardware = (hw: Hardware) => {
     append(hw);
   };
+
+  if (collection?.value === KEY.ID_CATEGORY_HW) return null;
 
   return (
     <>
