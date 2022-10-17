@@ -1,6 +1,6 @@
 import { useLocation } from "@reach/router";
 import { isEmpty } from "lodash";
-import { useAdminProducts } from "../../../../medusa-react";
+import { CartContext, useAdminProducts } from "../../../../medusa-react";
 import qs from "qs";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePagination, useTable } from "react-table";
@@ -13,6 +13,7 @@ import useProductActions from "./use-product-actions";
 import useProductTableColumn from "./use-product-column";
 import { useProductFilters } from "./use-product-filters";
 import { Product } from "@medusa-types";
+import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
 
 const DEFAULT_PAGE_SIZE = 15;
 const DEFAULT_PAGE_SIZE_TILE_VIEW = 18;
@@ -21,7 +22,8 @@ type ProductTableProps = {};
 
 const defaultQueryProps = {
   fields: "id,title,type,thumbnail,status,handle,description,updated_at",
-  expand: "variants,options,variants.prices,variants.options,collection,tags,prices",
+  expand:
+    "variants,options,variants.prices,variants.options,collection,tags,prices",
   is_giftcard: false,
   // order: "created_at"
 };
@@ -141,7 +143,7 @@ const ProductTable: React.FC<ProductTableProps> = () => {
 
     return () => clearTimeout(delayDebounceFn);
   }, [gotoPage, query, reset, setFreeText]);
-  
+
   const handleNext = useCallback(() => {
     if (canNextPage) {
       paginate(1);
@@ -261,7 +263,12 @@ const LoadingContainer = ({ isLoading, children }) => {
 
 const ProductRow = ({ row, ...rest }) => {
   const product = row.original;
-  const { getActions } = useProductActions(product);
+  const {
+    getActions,
+    isOpenHardwareModal,
+    handleCloseHardwareModal,
+  } = useProductActions(product);
+  const { handleAddToCart } = React.useContext(CartContext);
 
   return (
     <Table.Row
@@ -277,6 +284,20 @@ const ProductRow = ({ row, ...rest }) => {
           </Table.Cell>
         );
       })}
+      {isOpenHardwareModal && (
+        <SelectAdditionalHardwareModal
+          id={product.id}
+          isOpen={isOpenHardwareModal}
+          handleClose={handleCloseHardwareModal}
+          handleSubmit={(hw) => {
+            if (!handleAddToCart) return;
+            handleAddToCart({
+              ...product,
+              additional_hardwares: hw,
+            });
+          }}
+        />
+      )}
     </Table.Row>
   );
 };

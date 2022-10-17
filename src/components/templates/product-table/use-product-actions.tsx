@@ -1,20 +1,26 @@
+import { useAdminDeleteProduct } from "@medusa-react";
 import { Product } from "@medusa-types";
 import { navigate } from "gatsby";
 import * as React from "react";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import ViewListIcon from "src/components/fundamentals/icons/view-list-icon";
-import { CartContext, useAdminDeleteProduct } from "@medusa-react";
+import useNotification from "src/hooks/use-notification";
+import useToggleState from "src/hooks/use-toggle-state";
+import { getErrorMessage } from "src/utils/error-messages";
 import useImperativeDialog from "../../../hooks/use-imperative-dialog";
 import TrashIcon from "../../fundamentals/icons/trash-icon";
 import { ActionType } from "../../molecules/actionables";
-import useNotification from "src/hooks/use-notification";
-import { getErrorMessage } from "src/utils/error-messages";
 
-const useProductActions = (product: Product) => {
+const useProductActions = (product?: Product) => {
   const dialog = useImperativeDialog();
   const notification = useNotification();
   const deleteProduct = useAdminDeleteProduct(product?.id!);
-  const { handleAddToCart } = React.useContext(CartContext);
+
+  const {
+    open: handleOpenHardwareModal,
+    close: handleCloseHardwareModal,
+    state: isOpenHardwareModal,
+  } = useToggleState(false);
 
   const handleDelete = React.useCallback(async () => {
     const shouldDelete = await dialog({
@@ -36,12 +42,12 @@ const useProductActions = (product: Product) => {
   const getActions = (): ActionType[] => [
     {
       label: "Details",
-      onClick: () => navigate(`/a/products/${product.id}`),
+      onClick: () => navigate(`/a/products/${product?.id}`),
       icon: <ViewListIcon size={20} />,
     },
     {
       label: "Add To Cart",
-      onClick: () => handleAddToCart && handleAddToCart(product),
+      onClick: () => handleOpenHardwareModal(),
       icon: <CartPlusIcon size={20} />,
     },
     {
@@ -54,6 +60,8 @@ const useProductActions = (product: Product) => {
 
   return {
     getActions,
+    isOpenHardwareModal,
+    handleCloseHardwareModal,
   };
 };
 

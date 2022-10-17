@@ -60,7 +60,15 @@ export interface Hardware
   extends Pick<
     Product,
     "title" | "prices" | "description" | "id" | "thumbnail" | "images"
-  > {}
+  > {
+  id: string;
+  product_additions_id: string;
+  product_parent_id: string;
+  product_addition: Pick<
+    Product,
+    "title" | "prices" | "description" | "id" | "thumbnail" | "images"
+  >;
+}
 
 /**
  * @schema product

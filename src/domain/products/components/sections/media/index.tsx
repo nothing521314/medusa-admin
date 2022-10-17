@@ -1,17 +1,14 @@
+import { CartContext } from "@medusa-react";
 import { Product } from "@medusa-types";
-import React, { useEffect } from "react";
-import { useForm, UseFormRegister, UseFormReturn } from "react-hook-form";
+import clsx from "clsx";
+import React from "react";
+import { UseFormReturn } from "react-hook-form";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import Section from "src/components/organisms/section";
+import useToggleState from "src/hooks/use-toggle-state";
 import Button from "../../../../../components/fundamentals/button";
-import useNotification from "../../../../../hooks/use-notification";
-import { FormImage } from "../../../../../types/shared";
-import { prepareImages } from "../../../../../utils/images";
-import { nestedForm } from "../../../../../utils/nested-form";
 import MediaForm from "../../media-form";
-import useEditProductActions from "../../../edit/hooks/use-edit-product-actions";
-import { CartContext, useAdminDeleteProduct } from "@medusa-react";
-import clsx from "clsx";
+import SelectAdditionalHardwareModal from "../../select-addtional-hardware-modal";
 
 type Props = {
   mode?: "new" | "edit";
@@ -23,8 +20,11 @@ const MediaSection = ({ mode = "new", form }: Props) => {
   const { handleAddToCart } = React.useContext(CartContext);
   const isModeEdit = mode === "edit";
   const { getValues } = form;
-
-  const notification = useNotification();
+  const {
+    open: handleOpenHardwareModal,
+    close: handleCloseHardwareModal,
+    state: isOpenHardwareModal,
+  } = useToggleState(false);
 
   const price = getValues("prices")?.[0]?.value;
 
@@ -48,7 +48,7 @@ const MediaSection = ({ mode = "new", form }: Props) => {
             <Button
               variant="secondary"
               size="small"
-              onClick={() => handleAddToCart?.(getValues())}
+              onClick={handleOpenHardwareModal}
             >
               <CartPlusIcon size={20} />
               Add To Cart
@@ -56,6 +56,20 @@ const MediaSection = ({ mode = "new", form }: Props) => {
           </div>
         )}
       </div>
+      {isOpenHardwareModal && (
+        <SelectAdditionalHardwareModal
+          id={getValues("id") || ""}
+          isOpen={isOpenHardwareModal}
+          handleClose={handleCloseHardwareModal}
+          handleSubmit={(hw) => {
+            if (!handleAddToCart) return;
+            handleAddToCart({
+              ...getValues(),
+              additional_hardwares: hw,
+            });
+          }}
+        />
+      )}
     </Section>
   );
 };
