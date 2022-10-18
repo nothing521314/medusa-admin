@@ -2,22 +2,32 @@ import { Product } from "@medusa-types";
 import React from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { NextSelect } from "src/components/molecules/select/next-select";
+import { KEY } from "src/constants/misc";
 import InputField from "../../../../components/molecules/input";
 import TextArea from "../../../../components/molecules/textarea";
 import FormValidator from "../../../../utils/form-validator";
 import useOrganizeData from "../organize-form/use-organize-data";
 
 type Props = {
+  mode?: "new" | "edit";
   form: UseFormReturn<Product, any>;
 };
 
-const GeneralForm = ({ form }: Props) => {
+const GeneralForm = ({ mode = "new", form }: Props) => {
   const {
     register,
     formState: { errors },
     control,
   } = form;
-  const { collectionOptions } = useOrganizeData();
+  const isModeEdit = mode === "edit";
+  let { collectionOptions } = useOrganizeData();
+
+  // Mode edit : Remove option hw
+  if (isModeEdit) {
+    collectionOptions = collectionOptions.filter(
+      (v) => v?.value !== KEY.ID_CATEGORY_HW
+    );
+  }
 
   return (
     <>
@@ -46,6 +56,7 @@ const GeneralForm = ({ form }: Props) => {
             return (
               <NextSelect
                 label="Category"
+                isDisabled={isModeEdit && value?.value === KEY.ID_CATEGORY_HW}
                 onChange={onChange}
                 options={collectionOptions}
                 value={value}

@@ -11,10 +11,6 @@ type Props = {
 
 const PricesForm = ({ form: { control } }: Props) => {
   const { regions } = useAdminRegions();
-  useFieldArray({
-    control,
-    name: "prices",
-  });
 
   return (
     (regions as Region[])?.map((rp, index) => {

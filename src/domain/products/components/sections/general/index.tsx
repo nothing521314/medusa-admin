@@ -6,13 +6,14 @@ import GeneralForm from "../../general-form";
 
 type Props = {
   form: UseFormReturn<Product, any>;
+  mode?: "new" | "edit";
 };
 
-const GeneralSection = ({ form }: Props) => {
+const GeneralSection = ({ form, mode = "new" }: Props) => {
   return (
     <Section title="General">
       <div className="my-large">
-        <GeneralForm form={form} />
+        <GeneralForm mode={mode} form={form} />
       </div>
       {/* <div className="my-large">
           <h2 className="inter-base-semibold mb-base">Organize Product</h2>

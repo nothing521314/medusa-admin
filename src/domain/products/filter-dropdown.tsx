@@ -145,7 +145,7 @@ const ProductsFilter = ({
           open={tempState.collection.open}
           setFilter={(v) => setSingleFilter("collection", v)}
         />
-        <FilterDropdownItem
+        {/* <FilterDropdownItem
           filterTitle="Status"
           options={statusFilters}
           filters={tempState.status.filter}
@@ -156,7 +156,7 @@ const ProductsFilter = ({
           hasPrev={undefined}
           onShowNext={undefined}
           onShowPrev={undefined}
-        />
+        /> */}
         {/* <div className="flex flex-col w-full pb-2">
           <div
             className="flex w-full items-center px-3 mb-1 py-1.5 hover:bg-grey-5 rounded cursor-pointer"

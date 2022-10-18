@@ -1,8 +1,12 @@
-import { useAdminProduct, useAdminUpdateProduct } from "@medusa-react";
+import {
+  useAdminProduct,
+  useAdminRegions,
+  useAdminUpdateProduct,
+} from "@medusa-react";
 import { Product } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { useForm } from "react-hook-form";
 import ReactJson from "react-json-view";
 import Button from "src/components/fundamentals/button";
@@ -27,6 +31,7 @@ interface EditProps extends RouteComponentProps {
 const Edit = ({ id }: EditProps) => {
   const { product, status, error, isLoading } = useAdminProduct(id);
   const { mutate, isLoading: isLoadingUpdate } = useAdminUpdateProduct(id);
+  const { regions: regionsMaster } = useAdminRegions();
   const notification = useNotification();
 
   const form = useForm<Product>({});
@@ -46,13 +51,12 @@ const Edit = ({ id }: EditProps) => {
       const prices = product.prices;
       const hw = product.additional_hardwares?.map((v: any) => {
         const h = v.product_addition;
-
         return h
           ? {
               ...v,
               id: v.product_additions_id,
               title: h.title,
-              images: [h.thumbnail],
+              images: [{ url: h.thumbnail }],
               thumbnail: h.thumbnail,
               prices: h.prices?.map((v) => ({
                 label: v.region_id,
@@ -62,6 +66,14 @@ const Edit = ({ id }: EditProps) => {
           : null;
       });
 
+      const pricesProduct = regionsMaster?.map((v) => {
+        const p = prices?.find((p) => p?.region_id === v.id)?.price ?? 0;
+        return {
+          region: v.id,
+          value: p,
+        };
+      });
+
       reset({
         ...product,
         additional_hardwares: hw,
@@ -69,13 +81,10 @@ const Edit = ({ id }: EditProps) => {
           value: col?.id,
           label: col?.title,
         },
-        prices: prices.map((v: any) => ({
-          region: v.region_id,
-          value: v.price,
-        })),
+        prices: pricesProduct as any,
       });
     }
-  }, [product, reset]);
+  }, [product, regionsMaster, reset]);
 
   const onSubmit = () =>
     handleSubmit(
@@ -98,9 +107,12 @@ const Edit = ({ id }: EditProps) => {
           brand: data.brand,
           delivery_lead_time: data.delivery_lead_time,
           warranty: data.warranty,
-          additional_hardwares: additional_hardwares?.map((v) => ({
-            id: v.id!,
-          })),
+          additional_hardwares:
+            collection.value === KEY.ID_CATEGORY_HW
+              ? []
+              : additional_hardwares?.map((v) => ({
+                  id: v.id!,
+                })),
           prices: data.prices.filter(Boolean),
           collection_id: collection.value,
           images: images.map((v) => v.url),
@@ -193,7 +205,7 @@ const Edit = ({ id }: EditProps) => {
       <div className="grid grid-cols-12 gap-x-base">
         <div className="col-span-12 flex flex-col gap-y-xsmall">
           <MediaSection mode="edit" form={form} />
-          <GeneralSection form={form} />
+          <GeneralSection mode="edit" form={form} />
           <PricesSection form={form} />
           <AdditionalHardwares form={form} />
           {/* <AttributesSection product={product} /> */}

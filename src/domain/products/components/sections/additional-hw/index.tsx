@@ -90,9 +90,9 @@ const HardwareItem = ({
             "min-h-[230px] flex items-center justify-center bg-grey-5 rounded-rounded relative",
             "bg-cover bg-no-repeat bg-center"
           )}
-          style={{ backgroundImage: `url(${product?.thumbnail})` }}
+          style={{ backgroundImage: `url(${product?.images?.[0].url})` }}
         >
-          {!product?.thumbnail && <ImagePlaceholderIcon size={12} />}
+          {!product?.images?.[0].url && <ImagePlaceholderIcon size={12} />}
         </div>
         <div>
           <div className="mt-base flex items-center justify-between">
