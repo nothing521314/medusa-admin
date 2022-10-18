@@ -8,7 +8,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useState
 } from "react";
 import { useForm } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -22,7 +22,7 @@ import {
   IProductAdded,
   useAdminCreateQuotation,
   useAdminDeleteQuotation,
-  useAdminQuotationGetOne,
+  useAdminQuotationGetOne
 } from "../../../../medusa-react";
 import Spinner from "../../../components/atoms/spinner";
 import Breadcrumb from "../../../components/molecules/breadcrumb";
@@ -38,7 +38,7 @@ import SummaryPanel from "./card-panel/summary-panel";
 import TextAreaFormPanel from "./card-panel/textarea-form-panel";
 import {
   DEFAULT_QUOTATION_DETAIL_FORM_VALUE,
-  quotationHeaderOptions,
+  quotationHeaderOptions
 } from "./default-value-form";
 
 type OrderDetailProps = RouteComponentProps<{ id: string; tab: string }>;
@@ -59,6 +59,7 @@ export interface IQuotationDetailForm {
   gameOptions: {
     [key: string]: string[];
   };
+  region?: any;
 }
 
 const OrderDetails = ({ id, tab }: OrderDetailProps) => {
@@ -117,9 +118,10 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       summary: [],
       customer: undefined,
       code: "",
+      region: {}
     },
   });
-
+  
   const handleSubmitMakeQuotationForm = useCallback(
     async (data: IQuotationDetailForm) => {
       if (!data.customer) {
@@ -159,7 +161,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         metadata: {},
         payment_term: data.paymentTerms,
         quotation_lines,
-        region_id: selectedRegion?.id!,
+        region_id: data.region.id,
         sale_persion_id: sale_man_state?.id!,
         warranty: data.warranty,
         header: "company",
@@ -176,13 +178,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         console.log({ error });
       }
     },
-    [
-      handleSetListProduct,
-      mutateAsync,
-      notification,
-      sale_man_state?.id,
-      selectedRegion?.id,
-    ]
+    [handleSetListProduct, mutateAsync, notification, sale_man_state?.id]
   );
 
   const handleClickReviseButton = useCallback(() => {
@@ -201,6 +197,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     setValue("quotationConditions", quotation.condition);
     setValue("quotationHeading", quotation.heading);
     setValue("warranty", quotation.warranty);
+    setValue("region", quotation.region);
     setValue(
       "code",
       tab === SUB_TAB.QUOTATION_DETAILS
@@ -421,6 +418,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         DEFAULT_QUOTATION_DETAIL_FORM_VALUE.quotationConditions
       );
       setValue("warranty", DEFAULT_QUOTATION_DETAIL_FORM_VALUE.warranty);
+      setValue("region", selectedRegion);
     } else {
       handleSetValueFromApi();
     }
@@ -432,7 +430,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           priceItem:
             product?.priceItem ||
             product?.prices.find(
-              (region) => region?.region_id === selectedRegion?.id
+              (region) => region?.region_id === watch("region")
             )?.price ||
             0,
           child_product: product.additional_hardwares?.map((child: any) => {
@@ -440,9 +438,8 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
               ...child,
               priceItem:
                 child.priceItem ||
-                child?.prices?.find(
-                  (reg) => reg?.region_id === selectedRegion?.id
-                )?.price ||
+                child?.prices?.find((reg) => reg?.region_id === watch("region"))
+                  ?.price ||
                 0,
             };
           }),
@@ -469,7 +466,8 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     quotation?.quotation_lines,
     reset,
     sale_man?.name,
-    selectedRegion?.id,
+    selectedRegion,
+    watch,
     setValue,
     tab,
   ]);

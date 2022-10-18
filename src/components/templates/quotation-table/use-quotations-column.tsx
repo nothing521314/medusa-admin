@@ -25,7 +25,7 @@ const useQuotationTableColumns = (): Column<TQuotationReturn>[] => {
       {
         Header: "Date created",
         accessor: "created_at",
-        defaultCanSort: true,
+        disableSortBy: true,
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell key={index}>
             <Tooltip content={moment(value).format("DD MMM YYYY hh:mm a")}>
@@ -53,16 +53,35 @@ const useQuotationTableColumns = (): Column<TQuotationReturn>[] => {
       },
       {
         Header: "Total",
-        accessor: "date",
-        Cell: ({ row, cell: { value }, index }) => (
-          <Table.Cell key={index}>
-            {/* {formatAmountWithSymbol({
-              amount: value,
-              currency: row.original.currency_code,
-              digits: 2,
-            })} */}
-          </Table.Cell>
-        ),
+        disableSortBy: true,
+        Cell: ({ row, index }) => {
+          const list = row.original.quotation_lines.map((item) => {
+            const child_product = item.child_product.map((child) => {
+              return {
+                ...child,
+                total: child.volume * child.unit_price,
+              };
+            });
+            return {
+              ...item,
+              total: item.volume * item.unit_price,
+              subTotal:
+                item.volume * item.unit_price +
+                child_product.reduce((pre, cur) => pre + cur.total, 0),
+              child_product,
+            };
+          });
+          const total = list?.reduce((pre, cur) => pre + cur.subTotal, 0) || 0;
+          return (
+            <Table.Cell key={index}>
+              {formatAmountWithSymbol({
+                amount: total,
+                currency: row.original.region.currency_code,
+                digits: 2,
+              })}
+            </Table.Cell>
+          );
+        },
       },
       // {
       //   Header: "",

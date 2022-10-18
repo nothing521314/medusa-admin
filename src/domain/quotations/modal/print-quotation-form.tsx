@@ -3,6 +3,7 @@ import clsx from "clsx";
 import moment from "moment";
 import React, { useCallback, useMemo } from "react";
 import Table from "src/components/molecules/table";
+import { formatAmountWithSymbol } from "src/utils/prices";
 import { IQuotationDetailForm } from "../details";
 import { THeaderPrint } from "../details/default-value-form";
 
@@ -80,14 +81,20 @@ const PrintQuotationFrom = ({
               <Table.HeadCell className="border-l-[2px] pl-4 border border-black">
                 Product Description
               </Table.HeadCell>
-              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">Qty</Table.HeadCell>
               <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">
-                List Price
+                Qty
               </Table.HeadCell>
               <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">
-                Unit Price
+                List Price (
+                {(formData?.region?.currency_code || "").toUpperCase()})
               </Table.HeadCell>
-              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">Total</Table.HeadCell>
+              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">
+                Unit Price (
+                {(formData?.region?.currency_code || "").toUpperCase()})
+              </Table.HeadCell>
+              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">
+                Total ({(formData?.region?.currency_code || "").toUpperCase()})
+              </Table.HeadCell>
             </Table.HeadRow>
           </Table.Head>
           <Table.Body>
@@ -95,7 +102,9 @@ const PrintQuotationFrom = ({
               return (
                 <>
                   <Table.Row className="!border-b-0 !border-[2px] border-black">
-                    <Table.Cell className="pl-4 border-l-[2px] border-black">{index + 1}</Table.Cell>
+                    <Table.Cell className="pl-4 border-l-[2px] border-black">
+                      {index + 1}
+                    </Table.Cell>
                     <Table.Cell className="font-semibold border-l-[2px] pl-4 border-black">
                       {item.title}
                     </Table.Cell>
@@ -103,13 +112,28 @@ const PrintQuotationFrom = ({
                       {item.quantity}
                     </Table.Cell>
                     <Table.Cell className="border-l-[2px] pl-4 border-black">
-                      {item.priceItem}
+                      {formatAmountWithSymbol({
+                        amount: item.priceItem,
+                        currency: formData?.region?.currency_code || "usd",
+                        digits: 2,
+                        tax: formData?.region?.tax_rate || 0,
+                      })}
                     </Table.Cell>
                     <Table.Cell className="border-l-[2px] pl-4 border-black">
-                      {item.priceItem}
+                      {formatAmountWithSymbol({
+                        amount: item.priceItem,
+                        currency: formData?.region?.currency_code || "usd",
+                        digits: 2,
+                        tax: formData?.region?.tax_rate || 0,
+                      })}
                     </Table.Cell>
                     <Table.Cell className="border-l-[2px] pl-4 border-black">
-                      {item.total}
+                      {formatAmountWithSymbol({
+                        amount: item.total,
+                        currency: formData?.region?.currency_code || "usd",
+                        digits: 2,
+                        tax: formData?.region?.tax_rate || 0,
+                      })}
                     </Table.Cell>
                   </Table.Row>
                   {item.child_product.map((child) => {
@@ -127,7 +151,12 @@ const PrintQuotationFrom = ({
                           {child.priceItem}
                         </Table.Cell>
                         <Table.Cell className="border-l-[2px] pl-4 border-black">
-                          {child.total}
+                          {formatAmountWithSymbol({
+                            amount: child.total,
+                            currency: formData?.region?.currency_code || "usd",
+                            digits: 2,
+                            tax: formData?.region?.tax_rate || 0,
+                          })}
                         </Table.Cell>
                       </Table.Row>
                     );
@@ -163,7 +192,12 @@ const PrintQuotationFrom = ({
                     <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
                     <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
                     <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
-                      {item.subTotal}
+                      {formatAmountWithSymbol({
+                        amount: item.subTotal,
+                        currency: formData?.region?.currency_code || "usd",
+                        digits: 2,
+                        tax: formData?.region?.tax_rate || 0,
+                      })}
                     </Table.Cell>
                   </Table.Row>
                 </>
@@ -178,7 +212,12 @@ const PrintQuotationFrom = ({
               <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
               <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
               <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
-                {total}
+                {formatAmountWithSymbol({
+                  amount: total,
+                  currency: formData?.region?.currency_code || "usd",
+                  digits: 2,
+                  tax: formData?.region?.tax_rate || 0,
+                })}
               </Table.Cell>
             </Table.Row>
           </Table.Body>
@@ -240,10 +279,6 @@ const PrintQuotationFrom = ({
           }}
         />
       </div>
-      {/* <div
-        className="h-10 w-full bg-no-repeat bg-center"
-        style={{ backgroundImage: `url(${headerSelected.footer})` }}
-      ></div> */}
       <img src={headerSelected.footer} alt="" />
     </div>
   );

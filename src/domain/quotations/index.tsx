@@ -50,7 +50,7 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
 
   return (
     <>
-      <div className="flex flex-col grow h-full">
+      <div className="flex flex-col grow h-full print:hidden">
         <div className="w-full flex flex-col grow">
           <BodyCard
             customHeader={<div className="inter-large-semibold">Quotation</div>}

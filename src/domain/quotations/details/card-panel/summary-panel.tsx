@@ -1,7 +1,18 @@
-import { IProductAdded } from "@medusa-react";
-import React, { useContext, useMemo } from "react";
+import { CartContext, IProductAdded } from "@medusa-react";
+import { Hardware, Product } from "@medusa-types";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import BodyCard from "src/components/organisms/body-card";
 import { AccountContext } from "src/context/account";
+import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
+import useToggleState from "src/hooks/use-toggle-state";
+import { SUB_TAB } from "../..";
+import AddProductDialog from "../../modal/add-product-dialog";
 import OrderLine from "../order-line";
 import { DisplayTotal } from "../templates";
 
@@ -13,6 +24,15 @@ type Props = {
 
 const SummaryPanel = ({ summary, readOnly = true, tab }: Props) => {
   const { selectedRegion } = useContext(AccountContext);
+  const [productSelected, setProductSelected] = useState<Product>();
+  const [hardwares, setHardWares] = useState<Hardware[]>([]);
+  const { handleAddToCart, handleAddHarwareToCart } = useContext(CartContext);
+
+  const {
+    open: handleOpenHardwareModal,
+    close: handleCloseHardwareModal,
+    state: isOpenHardwareModal,
+  } = useToggleState(false);
 
   const list = useMemo(() => {
     return summary?.map((item) => {
@@ -44,13 +64,56 @@ const SummaryPanel = ({ summary, readOnly = true, tab }: Props) => {
       originalTotal: subtotal + shipping + tax,
     };
   }, [list, selectedRegion?.tax_rate]);
+  const {
+    open: handleOpenCustomerDialog,
+    close: handleCloseProductDialog,
+    state: isOpenProductDialog,
+  } = useToggleState(false);
+
+  const handleClickChangeButton = useCallback(() => {
+    if (isOpenProductDialog) return;
+    handleOpenCustomerDialog();
+  }, [handleOpenCustomerDialog, isOpenProductDialog]);
+
+  const handleSubmitAdd = useCallback(
+    (hw) => {
+      if (!productSelected) return;
+      handleAddToCart && handleAddToCart(productSelected);
+      setHardWares(hw);
+    },
+    [handleAddToCart, productSelected]
+  );
+
+  useEffect(() => {
+    if (!hardwares.length) return;
+    try {
+      handleAddHarwareToCart &&
+        handleAddHarwareToCart(productSelected?.id!, hardwares);
+      setHardWares([]);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [handleAddHarwareToCart, hardwares, productSelected?.id]);
 
   if (!summary || !selectedRegion) {
     return null;
   }
 
   return (
-    <BodyCard className={"w-full mb-4 min-h-0 h-auto"} title="Summary">
+    <BodyCard
+      className={"w-full mb-4 min-h-0 h-auto"}
+      title="Summary"
+      actionables={
+        tab === SUB_TAB.REVISE_QUOTATION
+          ? [
+              {
+                label: "Add Product",
+                onClick: handleClickChangeButton,
+              },
+            ]
+          : undefined
+      }
+    >
       <div className="mt-6">
         {summary?.map((item, i) => (
           <OrderLine
@@ -82,6 +145,30 @@ const SummaryPanel = ({ summary, readOnly = true, tab }: Props) => {
           totalAmount={originalTotal}
           totalTitle={"Total"}
         />
+      </div>
+      <div className="relative w-full">
+        {isOpenProductDialog && (
+          <AddProductDialog
+            open={isOpenProductDialog}
+            onClose={handleCloseProductDialog}
+            handleSetProduct={(product) => {
+              if (!product.additional_hardwares?.length) {
+                handleAddToCart && handleAddToCart(product);
+              } else {
+                setProductSelected(product);
+                handleOpenHardwareModal();
+              }
+            }}
+          />
+        )}
+        {isOpenHardwareModal && (
+          <SelectAdditionalHardwareModal
+            id={productSelected?.id!}
+            isOpen={isOpenHardwareModal}
+            handleClose={handleCloseHardwareModal}
+            handleSubmit={handleSubmitAdd}
+          />
+        )}
       </div>
     </BodyCard>
   );

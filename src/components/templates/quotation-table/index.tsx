@@ -8,11 +8,10 @@ import { navigate } from "gatsby";
 import { isEmpty } from "lodash";
 import qs from "qs";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { usePagination, useSortBy, useTable } from "react-table";
+import { usePagination, useTable } from "react-table";
 import DownloadIcon from "src/components/fundamentals/icons/download-icon";
 import EditIcon from "src/components/fundamentals/icons/edit-icon";
 import MailIcon from "src/components/fundamentals/icons/mail-icon";
-import SortingIcon from "src/components/fundamentals/icons/sorting-icon";
 import TrashIcon from "src/components/fundamentals/icons/trash-icon";
 import { SUB_TAB } from "src/domain/quotations";
 import DeleteTheQuotationModal from "src/domain/quotations/modal/delete-the-quotation-modal";
@@ -76,7 +75,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
     gotoPage,
     nextPage,
     previousPage,
-    toggleSortBy,
+    // toggleSortBy,
     // Get the state from the instance
     state: { pageIndex },
   } = useTable(
@@ -84,19 +83,14 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
       columns,
       data: (quotations as any) || [],
       manualPagination: true,
-      manualSortBy: true,
+      // manualSortBy: true,
       initialState: {
         pageSize: filtersDebounce.limit,
         pageIndex: filtersDebounce.offset / filtersDebounce.limit,
-        sortBy: [
-          { id: "created_at", desc: true },
-          { id: "total", desc: true },
-        ],
       },
       pageCount: numPages,
       autoResetPage: false,
     },
-    useSortBy,
     usePagination
   );
 
@@ -120,20 +114,20 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
     }
   }, [canPreviousPage, previousPage]);
 
-  const handleSorting = useCallback(
-    (
-      columnId: string,
-      disableSortBy?: boolean,
-      descending?: boolean | undefined,
-      isMulti?: boolean | undefined
-    ) => {
-      if (disableSortBy) {
-        return;
-      }
-      toggleSortBy(columnId, !descending, isMulti);
-    },
-    [toggleSortBy]
-  );
+  // const handleSorting = useCallback(
+  //   (
+  //     columnId: string,
+  //     disableSortBy?: boolean,
+  //     descending?: boolean | undefined,
+  //     isMulti?: boolean | undefined
+  //   ) => {
+  //     if (disableSortBy) {
+  //       return;
+  //     }
+  //     toggleSortBy(columnId, !descending, isMulti);
+  //   },
+  //   [toggleSortBy]
+  // );
 
   const handleSetQuery = useCallback(
     (value: string) => {
@@ -299,26 +293,26 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
             <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((col) => (
                 <Table.HeadCell
-                  {...col.getHeaderProps(col.getSortByToggleProps())}
-                  onClick={() =>
-                    handleSorting(
-                      col.id,
-                      col.disableSortBy,
-                      col.isSortedDesc,
-                      true
-                    )
-                  }
+                  {...col.getHeaderProps()}
+                  // onClick={() =>
+                  //   handleSorting(
+                  //     col.id,
+                  //     col.disableSortBy,
+                  //     col.isSortedDesc,
+                  //     true
+                  //   )
+                  // }
                 >
                   <span className="flex items-center">
                     {col.render("Header")}
-                    {col.isSorted && (
+                    {/* {col.isSorted && (
                       <SortingIcon
                         color="#a0a0a0"
                         size="20"
                         descendingColor={col.isSortedDesc ? "#111827" : ""}
                         ascendingColor={!col.isSortedDesc ? "#111827" : ""}
                       />
-                    )}
+                    )} */}
                   </span>
                 </Table.HeadCell>
               ))}
