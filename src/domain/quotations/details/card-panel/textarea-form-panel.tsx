@@ -99,7 +99,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
           }}
           id="quotationConditions"
           readOnly={readOnly}
-          {...register("quotationConditions")}
+          {...register("quotationConditions", { required: true })}
         />
       </BodyCard>
       <BodyCard className="w-full mb-4 min-h-0 h-auto" title="Payment Terms">
@@ -117,7 +117,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
           }}
           id="paymentTerms"
           readOnly={readOnly}
-          {...register("paymentTerms")}
+          {...register("paymentTerms", { required: true })}
         />
       </BodyCard>
       <BodyCard
@@ -138,7 +138,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
           }}
           id="deliveryLeadTime"
           readOnly={readOnly}
-          {...register("deliveryLeadTime")}
+          {...register("deliveryLeadTime", { required: true })}
         />
       </BodyCard>
       <BodyCard className="w-full mb-4 min-h-0 h-auto" title="Warranty">
@@ -156,7 +156,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
           }}
           readOnly={readOnly}
           id="warranty"
-          {...register("warranty")}
+          {...register("warranty", { required: true })}
         />
       </BodyCard>
       <BodyCard
@@ -177,7 +177,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
           }}
           readOnly={readOnly}
           id="installationSupport"
-          {...register("installationSupport")}
+          {...register("installationSupport", { required: true })}
         />
       </BodyCard>
       <BodyCard className="w-full mb-4 min-h-0 h-auto" title="Appendix A">
@@ -195,7 +195,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
           }}
           id="appendixA"
           readOnly={readOnly}
-          {...register("appendixA")}
+          {...register("appendixA", { required: true })}
         />
       </BodyCard>
       <BodyCard className="w-full mb-4 min-h-0 h-auto" title="Appendix B">
@@ -213,7 +213,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
           }}
           readOnly={readOnly}
           id="appendixB"
-          {...register("appendixB")}
+          {...register("appendixB", { required: true })}
         />
       </BodyCard>
     </React.Fragment>

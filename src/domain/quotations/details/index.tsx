@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import Button from "src/components/fundamentals/button";
 import { AccountContext } from "src/context/account";
+import useNotification from "src/hooks/use-notification";
 import useToggleState from "src/hooks/use-toggle-state";
 import { SUB_TAB } from "..";
 import {
@@ -55,19 +56,23 @@ export interface IQuotationDetailForm {
   customer?: Customer;
   summary?: unknown;
   code: string;
+  gameOptions: {
+    [key: string]: string[];
+  };
 }
 
 const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   const { quotation, isLoading } = useAdminQuotationGetOne(id!);
   const { mutateAsync } = useAdminCreateQuotation();
-  const { mutateAsync: handleDeteleQuotation } = useAdminDeleteQuotation();
+  const { mutateAsync: handleDeleteQuotation } = useAdminDeleteQuotation();
   const readOnlyPage = useMemo(() => tab === SUB_TAB.QUOTATION_DETAILS, [tab]);
 
   const { selectedRegion, sale_man_state } = useContext(AccountContext);
-  const { productList } = useContext(CartContext);
+  const { productList, handleSetListProduct } = useContext(CartContext);
   const [headerSelected, setHeaderSelected] = useState(
     quotationHeaderOptions[0]
   );
+  const notification = useNotification();
 
   const {
     open: handleOpenDeleteQuotationModal,
@@ -101,17 +106,15 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     IQuotationDetailForm
   >({
     defaultValues: {
-      quotationConditions:
-        DEFAULT_QUOTATION_DETAIL_FORM_VALUE.quotationConditions,
-      paymentTerms: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.paymentTerms,
-      deliveryLeadTime: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.deliveryLeadTime,
-      warranty: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.warranty,
-      installationSupport:
-        DEFAULT_QUOTATION_DETAIL_FORM_VALUE.installationSupport,
-      appendixA: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixA,
-      appendixB: DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixB,
+      quotationConditions: "",
+      paymentTerms: "",
+      deliveryLeadTime: "",
+      warranty: "",
+      installationSupport: "",
+      appendixA: "",
+      appendixB: "",
       createdAt: quotation?.date,
-      summary: productList,
+      summary: [],
       customer: undefined,
       code: "",
     },
@@ -119,22 +122,38 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
   const handleSubmitMakeQuotationForm = useCallback(
     async (data: IQuotationDetailForm) => {
+      if (!data.customer) {
+        return notification("Error", "Please select customer", "error");
+      }
+
       const quotation_lines: Array<{
         product_id: string;
         volume: number;
-      }> = (data.summary as Array<{ id: string; quantity: number }>).map(
-        (item) => {
-          return { product_id: item.id, volume: item.quantity };
-        }
-      );
+        child_product: any;
+      }> = (data.summary as Array<{
+        id: string;
+        quantity: number;
+        child_product: any;
+        product_id?: string;
+      }>).map((item) => {
+        return {
+          product_id: item?.product_id || item.id,
+          volume: item.quantity,
+          child_product: item.child_product.map((i) => ({
+            product_id: i.product_additions_id,
+            volume: i.quantity,
+          })),
+        };
+      });
+
       const params: AdminCreateQuotationParams = {
         appendix_a: data.appendixA,
         appendix_b: data.appendixB,
-        code: "Quotation One QM-111",
+        code: data.code,
         condition: data.quotationConditions,
         customer_id: data.customer?.id!,
         date: data.createdAt || new Date().toUTCString(),
-        delivery_lead_time: "2022-10-18",
+        delivery_lead_time: data.deliveryLeadTime,
         heading: data.quotationHeading,
         install_support: data.installationSupport,
         metadata: {},
@@ -142,18 +161,28 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         quotation_lines,
         region_id: selectedRegion?.id!,
         sale_persion_id: sale_man_state?.id!,
-        title: "Quotation One",
         warranty: data.warranty,
+        header: "company",
+        title: "11",
       };
-      console.log(params.condition);
+
       try {
-        const res = await mutateAsync(params);
-        console.log(res);
+        const res = await mutateAsync({ ...params });
+        if (res.response.status === 200) {
+          navigate("/a/quotations");
+          handleSetListProduct && handleSetListProduct([]);
+        }
       } catch (error) {
         console.log({ error });
       }
     },
-    [mutateAsync, sale_man_state?.id, selectedRegion?.id]
+    [
+      handleSetListProduct,
+      mutateAsync,
+      notification,
+      sale_man_state?.id,
+      selectedRegion?.id,
+    ]
   );
 
   const handleClickReviseButton = useCallback(() => {
@@ -171,7 +200,6 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     setValue("paymentTerms", quotation.payment_term);
     setValue("quotationConditions", quotation.condition);
     setValue("quotationHeading", quotation.heading);
-    setValue("summary", quotation.quotation_lines);
     setValue("warranty", quotation.warranty);
     setValue(
       "code",
@@ -194,15 +222,25 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
   const handleConfirmDeleteQuotation = useCallback(async () => {
     try {
-      const res = await handleDeteleQuotation(id!);
-      console.log(res);
+      const res = await handleDeleteQuotation(id!);
       if (res.response.status === 200) {
         navigate("/a/quotations");
       }
     } catch (error) {
       return;
     }
-  }, [handleDeteleQuotation, id]);
+  }, [handleDeleteQuotation, id]);
+
+  const handleSendMail = useCallback(
+    (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      e?.preventDefault();
+      if (!watch("customer")?.email) {
+        return notification("Error", "Please select customer", "error");
+      }
+      window.location.href = `mailto:${watch("customer")?.email}`;
+    },
+    [notification, watch]
+  );
 
   const subTabName = useMemo(() => {
     switch (tab) {
@@ -295,17 +333,18 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           className="text italic text-blue-50 cursor-pointer"
           onClick={() => window.print()}
         >
-          Show preview
+          Preview/ Download
         </div>
-        <div className="text italic mt-4">Or</div>
-        <div className="text italic text-blue-50 flex mt-4">
-          <div className="mr-1 cursor-pointer">Download/</div>
-          <div className="cursor-pointer">Email</div>
+        <div className="text italic mt-2">Or</div>
+        <div className="text italic text-blue-50 flex mt-2">
+          <div className="cursor-pointer" onClick={handleSendMail}>
+            Email
+          </div>
         </div>
         {renderBottomButton()}
       </div>
     );
-  }, [renderBottomButton]);
+  }, [handleSendMail, renderBottomButton]);
 
   const renderModal = useCallback(() => {
     if (isVisibleCancelMakingQuotationModal) {
@@ -347,11 +386,79 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   ]);
 
   useEffect(() => {
+    if (quotation?.quotation_lines.length && tab === SUB_TAB.REVISE_QUOTATION) {
+      const arr = quotation?.quotation_lines.map((item: any) => {
+        return {
+          ...item,
+          additional_hardwares: item?.child_product,
+          priceItem: item.unit_price,
+          quantity: item.volume,
+        };
+      });
+      handleSetListProduct && handleSetListProduct(arr);
+    }
+  }, [handleSetListProduct, quotation?.quotation_lines, tab]);
+
+  useEffect(() => {
     if (tab === SUB_TAB.MAKE_QUOTATION) {
-      setValue("summary", productList);
       setValue("code", `${sale_man?.name}_${Date.now()} Quotation Code`);
+      setValue("appendixA", DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixA);
+      setValue("appendixB", DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixB);
+      setValue(
+        "deliveryLeadTime",
+        DEFAULT_QUOTATION_DETAIL_FORM_VALUE.deliveryLeadTime
+      );
+      setValue(
+        "installationSupport",
+        DEFAULT_QUOTATION_DETAIL_FORM_VALUE.installationSupport
+      );
+      setValue(
+        "paymentTerms",
+        DEFAULT_QUOTATION_DETAIL_FORM_VALUE.paymentTerms
+      );
+      setValue(
+        "quotationConditions",
+        DEFAULT_QUOTATION_DETAIL_FORM_VALUE.quotationConditions
+      );
+      setValue("warranty", DEFAULT_QUOTATION_DETAIL_FORM_VALUE.warranty);
     } else {
       handleSetValueFromApi();
+    }
+
+    if (tab !== SUB_TAB.QUOTATION_DETAILS) {
+      const summary = productList?.map((product) => {
+        return {
+          ...product,
+          priceItem:
+            product?.priceItem ||
+            product?.prices.find(
+              (region) => region?.region_id === selectedRegion?.id
+            )?.price ||
+            0,
+          child_product: product.additional_hardwares?.map((child: any) => {
+            return {
+              ...child,
+              priceItem:
+                child.priceItem ||
+                child?.prices?.find(
+                  (reg) => reg?.region_id === selectedRegion?.id
+                )?.price ||
+                0,
+            };
+          }),
+        };
+      });
+      setValue("summary", summary);
+    } else {
+      const summary = quotation?.quotation_lines.map((item: any) => {
+        return {
+          ...item,
+          additional_hardwares: item?.child_product,
+          priceItem: item.unit_price,
+          quantity: item.volume,
+        };
+      });
+      setValue("summary", summary);
     }
     return () => {
       reset();
@@ -359,8 +466,10 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   }, [
     handleSetValueFromApi,
     productList,
+    quotation?.quotation_lines,
     reset,
     sale_man?.name,
+    selectedRegion?.id,
     setValue,
     tab,
   ]);
@@ -402,9 +511,9 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
             <CustomerPanel
               customer={watch("customer")}
               readOnly={readOnlyPage}
-              handleSelectCustomer={(customer) =>
-                setValue("customer", customer)
-              }
+              handleSelectCustomer={(customer) => {
+                setValue("customer", customer);
+              }}
             />
             <SummaryPanel
               summary={watch("summary") as IProductAdded[]}

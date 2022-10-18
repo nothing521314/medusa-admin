@@ -30,6 +30,7 @@ export declare class AdminCreateQuotationParams {
     volume: number;
   }>;
   metadata: any;
+  header: string;
 }
 
 export type TQuotationReturn = {

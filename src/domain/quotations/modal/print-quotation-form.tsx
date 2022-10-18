@@ -1,7 +1,8 @@
 import { RouteComponentProps } from "@reach/router";
 import clsx from "clsx";
 import moment from "moment";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
+import Table from "src/components/molecules/table";
 import { IQuotationDetailForm } from "../details";
 import { THeaderPrint } from "../details/default-value-form";
 
@@ -22,8 +23,31 @@ const PrintQuotationFrom = ({
     return text.replace(/\r?\n/g, "<br />");
   }, []);
 
+  const summary = useMemo(() => {
+    return (formData?.summary as any[])?.map((item) => {
+      const child_product = item.child_product.map((child) => {
+        return {
+          ...child,
+          total: child.priceItem * child.quantity,
+        };
+      });
+      return {
+        ...item,
+        total: item.priceItem * item.quantity,
+        subTotal:
+          item.priceItem * item.quantity +
+          child_product.reduce((pre, cur) => pre + cur.total, 0),
+        child_product,
+      };
+    });
+  }, [formData?.summary]);
+
+  const total = useMemo(() => {
+    return summary?.reduce((pre, cur) => pre + cur.subTotal, 0) || 0;
+  }, [summary]);
+
   return (
-    <div className={clsx("w-full h-max", className)}>
+    <div className={clsx("w-full h-max bg-white", className)}>
       <img src={headerSelected.header} alt="" />
       <div className="w-full h-full px-16">
         <div className="flex justify-between items-center">
@@ -49,6 +73,116 @@ const PrintQuotationFrom = ({
           see details of the proposal as below:
         </div>
         {/* Table Price */}
+        <Table className="!border-[2px] border-black">
+          <Table.Head className="!border-[2px] border-black">
+            <Table.HeadRow className="!border-[2px] border-black">
+              <Table.HeadCell className="pl-4 border-black">No.</Table.HeadCell>
+              <Table.HeadCell className="border-l-[2px] pl-4 border border-black">
+                Product Description
+              </Table.HeadCell>
+              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">Qty</Table.HeadCell>
+              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">
+                List Price
+              </Table.HeadCell>
+              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">
+                Unit Price
+              </Table.HeadCell>
+              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">Total</Table.HeadCell>
+            </Table.HeadRow>
+          </Table.Head>
+          <Table.Body>
+            {(summary as any[])?.map((item, index) => {
+              return (
+                <>
+                  <Table.Row className="!border-b-0 !border-[2px] border-black">
+                    <Table.Cell className="pl-4 border-l-[2px] border-black">{index + 1}</Table.Cell>
+                    <Table.Cell className="font-semibold border-l-[2px] pl-4 border-black">
+                      {item.title}
+                    </Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black">
+                      {item.quantity}
+                    </Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black">
+                      {item.priceItem}
+                    </Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black">
+                      {item.priceItem}
+                    </Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black">
+                      {item.total}
+                    </Table.Cell>
+                  </Table.Row>
+                  {item.child_product.map((child) => {
+                    return (
+                      <Table.Row className="!border-none mt-4">
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell className="border-l-[2px] pl-4 border-black">{`- ${child.title}`}</Table.Cell>
+                        <Table.Cell className="border-l-[2px] pl-4 border-black">
+                          {child.quantity}
+                        </Table.Cell>
+                        <Table.Cell className="border-l-[2px] pl-4 border-black">
+                          {child.priceItem}
+                        </Table.Cell>
+                        <Table.Cell className="border-l-[2px] pl-4 border-black">
+                          {child.priceItem}
+                        </Table.Cell>
+                        <Table.Cell className="border-l-[2px] pl-4 border-black">
+                          {child.total}
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  })}
+                  <Table.Row className="!border-none mt-4">
+                    <Table.Cell></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black italic font-semibold">
+                      Game Selected:
+                    </Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                  </Table.Row>
+                  {item.child_product.map((child) => (
+                    <Table.Row className="!border-none mt-2">
+                      <Table.Cell></Table.Cell>
+                      <Table.Cell className="border-l-[2px] border-black pl-4 italic">
+                        <span className="italic">- {child?.game}</span>
+                      </Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                    </Table.Row>
+                  ))}
+                  <Table.Row className="!border-[2px] border-black">
+                    <Table.Cell></Table.Cell>
+                    <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                      Subtotal
+                    </Table.Cell>
+                    <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+                    <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+                    <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+                    <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                      {item.subTotal}
+                    </Table.Cell>
+                  </Table.Row>
+                </>
+              );
+            })}
+            <Table.Row className="!border-[2px] border-black">
+              <Table.Cell></Table.Cell>
+              <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                Total
+              </Table.Cell>
+              <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+              <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+              <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+              <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                {total}
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
 
         <div className="font-semibold mt-4 underline">Quotation Conditions</div>
         <div

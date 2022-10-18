@@ -1,4 +1,7 @@
-import { useAdminQuotationGetList } from "@medusa-react";
+import {
+  useAdminDeleteQuotation,
+  useAdminQuotationGetList,
+} from "@medusa-react";
 import { RouteComponentProps, useLocation } from "@reach/router";
 import clsx from "clsx";
 import { navigate } from "gatsby";
@@ -28,6 +31,8 @@ const DEFAULT_PAGE_SIZE = 15;
 
 const QuotationTable: React.FC<RouteComponentProps> = () => {
   const location = useLocation();
+  const { mutateAsync: handleDeleteQuotation } = useAdminDeleteQuotation();
+  const [idDelete, setIdDelete] = useState<string>("");
 
   const {
     open: handleOpenDeleteQuotationModal,
@@ -160,6 +165,49 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
     refreshWithFilters();
   }, [refreshWithFilters]);
 
+  const handleSendMail = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, mail: string) => {
+      e.preventDefault();
+      window.location.href = `mailto:${mail}`;
+    },
+    []
+  );
+
+  const handleConfirmDeleteQuotation = useCallback(async () => {
+    try {
+      const res = await handleDeleteQuotation(idDelete);
+      if (res.response.status === 200) {
+        setIdDelete("");
+        handleCloseDeleteQuotationModal();
+        location.reload();
+      }
+    } catch (error) {
+      return;
+    }
+  }, [
+    handleCloseDeleteQuotationModal,
+    handleDeleteQuotation,
+    idDelete,
+    location,
+  ]);
+
+  const renderModal = useCallback(() => {
+    if (isVisibleDeleteQuotationModal) {
+      return (
+        <DeleteTheQuotationModal
+          handleClickCancelButton={handleCloseDeleteQuotationModal}
+          handleClickConfirmButton={() => handleConfirmDeleteQuotation()}
+        />
+      );
+    }
+
+    return null;
+  }, [
+    handleCloseDeleteQuotationModal,
+    handleConfirmDeleteQuotation,
+    isVisibleDeleteQuotationModal,
+  ]);
+
   const renderTableBody = useCallback(() => {
     if (isLoading || !quotations) {
       return (
@@ -178,66 +226,64 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <Table.Row
-              color={"inherit"}
-              linkTo={`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`}
-              actions={[
-                {
-                  label: "Revise",
-                  onClick: () =>
-                    navigate(`${SUB_TAB.REVISE_QUOTATION}/${row.original.id}`),
-                  icon: <EditIcon size={20} />,
-                },
-                {
-                  label: "Download",
-                  onClick: () =>
-                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`),
-                  icon: <DownloadIcon size={20} />,
-                },
-                {
-                  label: "Email",
-                  onClick: () =>
-                    navigate(`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`),
-                  icon: <MailIcon size={20} />,
-                },
-                {
-                  label: "Delete Quotation",
-                  variant: "danger",
-                  onClick: () => handleOpenDeleteQuotationModal(),
-                  icon: <TrashIcon size={20} />,
-                },
-              ]}
-              {...row.getRowProps()}
-            >
-              {row.cells.map((cell, index) => {
-                return cell.render("Cell", { index });
-              })}
-            </Table.Row>
+            <>
+              <Table.Row
+                color={"inherit"}
+                linkTo={`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`}
+                actions={[
+                  {
+                    label: "Revise",
+                    onClick: () =>
+                      navigate(
+                        `${SUB_TAB.REVISE_QUOTATION}/${row.original.id}`
+                      ),
+                    icon: <EditIcon size={20} />,
+                  },
+                  {
+                    label: "Download",
+                    onClick: () =>
+                      navigate(
+                        `${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`
+                      ),
+                    icon: <DownloadIcon size={20} />,
+                  },
+                  {
+                    label: "Email",
+                    onClick: (
+                      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                    ) => handleSendMail(e, row.original.customer.email),
+                    icon: <MailIcon size={20} />,
+                  },
+                  {
+                    label: "Delete Quotation",
+                    variant: "danger",
+                    onClick: () => {
+                      setIdDelete(row.original.id);
+                      handleOpenDeleteQuotationModal();
+                    },
+                    icon: <TrashIcon size={20} />,
+                  },
+                ]}
+                {...row.getRowProps()}
+              >
+                {row.cells.map((cell, index) => {
+                  return cell.render("Cell", { index });
+                })}
+              </Table.Row>
+            </>
           );
         })}
       </Table.Body>
     );
   }, [
-    getTableBodyProps,
-    handleOpenDeleteQuotationModal,
     isLoading,
     quotations,
-    prepareRow,
+    getTableBodyProps,
     rows,
+    prepareRow,
+    handleSendMail,
+    handleOpenDeleteQuotationModal,
   ]);
-
-  const renderModal = useCallback(() => {
-    if (isVisibleDeleteQuotationModal) {
-      return (
-        <DeleteTheQuotationModal
-          handleClickCancelButton={handleCloseDeleteQuotationModal}
-          handleClickConfirmButton={handleCloseDeleteQuotationModal}
-        />
-      );
-    }
-
-    return null;
-  }, [handleCloseDeleteQuotationModal, isVisibleDeleteQuotationModal]);
 
   return (
     <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full">

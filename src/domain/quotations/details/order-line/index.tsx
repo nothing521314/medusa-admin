@@ -1,10 +1,9 @@
 import { CartContext, IProductAdded } from "@medusa-react";
 import { Region } from "@medusa-types";
 import clsx from "clsx";
-import React, { useCallback, useContext, useMemo } from "react";
+import React, { useCallback, useContext } from "react";
 import MinusIcon from "src/components/fundamentals/icons/minus-icon";
 import PlusIcon from "src/components/fundamentals/icons/plus-icon";
-import { SUB_TAB } from "../..";
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder";
 import { formatAmountWithSymbol } from "../../../../utils/prices";
 
@@ -15,30 +14,14 @@ type OrderLineProps = {
   tab?: string;
 };
 
-const OrderLine = ({ item, readOnly, region, tab }: OrderLineProps) => {
-
-  const lineData = useMemo(() => {
-    if (tab === SUB_TAB.MAKE_QUOTATION) {
-      return {
-        ...item,
-        priceItem:
-          item?.prices.find((item) => item.region_id === region?.id)?.price ||
-          0,
-        quotation_lines: item.additional_hardwares,
-      };
-    }
-    return {
-      ...item,
-      priceItem: item.quantity,
-      quotation_lines: item.quotation_lines,
-    };
-  }, [item, region?.id, tab]);
+const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
 
   const {
     handleAddToCart,
     handleDeleteFromCart,
     handleAddHarwareToCart,
     handleDeleteHarwareToCart,
+    handleAddGameOption,
   } = useContext(CartContext);
 
   const renderNumberOfProduct = useCallback(
@@ -50,7 +33,7 @@ const OrderLine = ({ item, readOnly, region, tab }: OrderLineProps) => {
               className="border border-grey-50 rounded-full w-4 h-4 flex items-center justify-center cursor-pointer"
               onClick={() => {
                 if (!isChild) {
-                  handleDeleteFromCart && handleDeleteFromCart({...data});
+                  handleDeleteFromCart && handleDeleteFromCart({ ...data });
                 } else {
                   handleDeleteHarwareToCart &&
                     handleDeleteHarwareToCart(item.id!, [data]);
@@ -94,66 +77,110 @@ const OrderLine = ({ item, readOnly, region, tab }: OrderLineProps) => {
     ]
   );
 
-  const renderChildrenProduct = useCallback(
-    () => {
-      if (!lineData.quotation_lines?.length) return;
+  const getNumberTimes = useCallback((num): string => {
+    if (num === 1) return "1st";
+    if (num === 2) return "2nd";
+    if (num === 3) return "3rd";
+    return `${num}th`;
+  }, []);
+  
+  const handleOnChange = useCallback(
+    (product: string, hardware: string, value: string) => {
+      if (!handleAddGameOption) return;
+      handleAddGameOption(product, hardware, value);
+    },
+    [handleAddGameOption]
+  );
 
-      return lineData.quotation_lines?.map((child, index) => {
-        return (
-          <div
-            className="flex items-center justify-between mb-1 h-[64px] rounded-lg"
-            key={index}
-          >
-            <div className="flex space-x-4 justify-center ml-12">
-              <div className="flex h-12 w-9 rounded-rounded overflow-hidden">
-                {child.thumbnail ? (
-                  <img src={child.thumbnail} className="object-cover" />
-                ) : (
-                  <ImagePlaceholder />
-                )}
-              </div>
-              <div className="flex flex-col justify-center max-w-[185px]">
-                <span className="inter-small-regular text-grey-90 truncate"></span>
-              </div>
-            </div>
-            <div
+  const renderGameOptions = useCallback(() => {
+    if (!item.child_product?.length) return;
+    return (
+      <div className="flex justify-between mb-1 rounded-lg">
+        <div className="flex space-x-4 justify-center ml-12 inter-small-regular text-grey-90 truncate">
+          Game attached (optional):
+        </div>
+        <div className="flex flex-col gap-y-4">
+          {item.child_product.map((child, index) => (
+            <input
+              key={index}
+              readOnly={readOnly}
+              placeholder={`Enter the game for ${getNumberTimes(
+                index + 1
+              )} machine`}
               className={clsx(
-                "grid grid-cols-4 small:space-x-2 medium:space-x-4 large:space-x-5",
-                "items-center justify-items-end w-1/3"
+                "outline-none focus-within:outline-none border px-2 py-1 rounded-lg w-full",
+                "focus-within:shadow-input focus-within:border-violet-60 focus-within:bg-grey-5"
               )}
-            >
-              <div className="inter-small-regular text-grey-50">
-                {formatAmountWithSymbol({
-                  amount: 0,
-                  currency: region?.currency_code || "",
-                  digits: 2,
-                  tax: region?.tax_rate,
-                })}
-              </div>
-              {renderNumberOfProduct(child, true)}
-              <div className="inter-small-regular text-grey-90 shrink-0">
-                {formatAmountWithSymbol({
-                  amount: 0,
-                  currency: region?.currency_code || "",
-                  digits: 2,
-                  tax: region?.tax_rate,
-                })}
-              </div>
-              <div className="inter-small-regular text-grey-50 text-right w-11">
-                {region?.currency_code.toUpperCase()}
-              </div>
+              maxLength={100}
+              value={child?.game || ""}
+              onChange={(e) =>
+                handleOnChange(item.id!, child.id, e.target.value)
+              }
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }, [getNumberTimes, handleOnChange, item.child_product, item.id, readOnly]);
+
+  const renderChildrenProduct = useCallback(() => {
+    if (!item.child_product?.length) return;
+    return item.child_product?.map((child, index) => {
+      return (
+        <div
+          className="flex items-center justify-between mb-1 h-[64px] rounded-lg"
+          key={index}
+        >
+          <div className="flex space-x-4 justify-center ml-12">
+            <div className="flex h-12 w-9 rounded-rounded overflow-hidden">
+              {child.thumbnail ? (
+                <img src={child.thumbnail} className="object-cover" />
+              ) : (
+                <ImagePlaceholder />
+              )}
+            </div>
+            <div className="flex flex-col justify-center max-w-[185px]">
+              <span className="inter-small-regular text-grey-90 truncate">
+                {child.title}
+              </span>
             </div>
           </div>
-        );
-      });
-    },
-    [
-      lineData.quotation_lines,
-      region?.currency_code,
-      region?.tax_rate,
-      renderNumberOfProduct,
-    ]
-  );
+          <div
+            className={clsx(
+              "grid grid-cols-4 small:space-x-2 medium:space-x-4 large:space-x-5",
+              "items-center justify-items-end w-1/3"
+            )}
+          >
+            <div className="inter-small-regular text-grey-50">
+              {formatAmountWithSymbol({
+                amount: child.priceItem || 0,
+                currency: region?.currency_code || "",
+                digits: 2,
+                tax: region?.tax_rate,
+              })}
+            </div>
+            {renderNumberOfProduct(child, true)}
+            <div className="inter-small-regular text-grey-90 shrink-0">
+              {formatAmountWithSymbol({
+                amount: (child.priceItem || 0) * (child?.quantity || 0),
+                currency: region?.currency_code || "",
+                digits: 2,
+                tax: region?.tax_rate,
+              })}
+            </div>
+            <div className="inter-small-regular text-grey-50 text-right w-11">
+              {region?.currency_code.toUpperCase()}
+            </div>
+          </div>
+        </div>
+      );
+    });
+  }, [
+    item.child_product,
+    region?.currency_code,
+    region?.tax_rate,
+    renderNumberOfProduct,
+  ]);
 
   return (
     <React.Fragment>
@@ -180,16 +207,16 @@ const OrderLine = ({ item, readOnly, region, tab }: OrderLineProps) => {
         >
           <div className="inter-small-regular text-grey-50">
             {formatAmountWithSymbol({
-              amount: lineData.priceItem,
+              amount: item?.priceItem || 0,
               currency: region?.currency_code || "",
               digits: 2,
               tax: region?.tax_rate,
             })}
           </div>
-          {renderNumberOfProduct(lineData, false)}
+          {renderNumberOfProduct(item, false)}
           <div className="inter-small-regular text-grey-90 shrink-0">
             {formatAmountWithSymbol({
-              amount: lineData.priceItem * lineData.quantity,
+              amount: (item?.priceItem || 0) * item.quantity,
               currency: region?.currency_code || "",
               digits: 2,
               tax: region?.tax_rate,
@@ -200,6 +227,7 @@ const OrderLine = ({ item, readOnly, region, tab }: OrderLineProps) => {
           </div>
         </div>
       </div>
+      {renderGameOptions()}
       {renderChildrenProduct()}
     </React.Fragment>
   );

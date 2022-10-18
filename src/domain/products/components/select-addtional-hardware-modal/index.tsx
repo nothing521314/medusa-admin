@@ -55,6 +55,7 @@ const SelectAdditionalHardwareModal = ({
       return {
         ...item.product_addition,
         id: item.id,
+        product_additions_id: item.product_additions_id,
       };
     });
 

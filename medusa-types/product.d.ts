@@ -61,6 +61,9 @@ export interface Hardware
     Product,
     "title" | "prices" | "description" | "id" | "thumbnail" | "images"
   > {
+  game?: string;
+  priceItem?: number;
+  quantity?: number;
   id: string;
   product_additions_id: string;
   product_parent_id: string;

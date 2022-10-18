@@ -63,13 +63,13 @@ const SaleMalePanel = ({
       subtitle={
         <input
           readOnly={readOnly}
-          placeholder="Quotation heading"
+          placeholder="Please input quotation heading"
           className={clsx(
             "mt-2 outline-none focus-within:outline-none border px-2 py-1 rounded-lg w-full",
             "focus-within:shadow-input focus-within:border-violet-60 focus-within:bg-grey-5"
           )}
           maxLength={100}
-          {...register("quotationHeading")}
+          {...register("quotationHeading", { required: true })}
         />
       }
       status={

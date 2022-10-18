@@ -6,8 +6,9 @@ interface CartState {
   cart?: Cart;
 }
 export interface IProductAdded extends Omit<Product, "beforeInsert"> {
+  child_product?: Hardware[];
+  priceItem?: number;
   quantity: number;
-  quotation_lines?: Hardware[];
 }
 
 interface ICartContext extends CartState {
@@ -17,6 +18,12 @@ interface ICartContext extends CartState {
   totalItems: number;
   handleAddHarwareToCart?: (productId: string, hardware: Hardware[]) => void;
   handleDeleteHarwareToCart?: (productId: string, hardware: Hardware[]) => void;
+  handleSetListProduct?: (product: IProductAdded[]) => void;
+  handleAddGameOption?: (
+    product_id: string,
+    hardwareId: string,
+    game: string
+  ) => void;
 }
 
 const initialState = {
@@ -91,15 +98,14 @@ export const CartProvider = ({ children }: CartProps) => {
       const indexOfProduct = cloneCart.findIndex(
         (item) => item.id === product_id
       );
-      console.log(cloneCart);
-      
+
       hardwares.map((hardware) => {
         const i = cloneCart[indexOfProduct].additional_hardwares.findIndex(
           (item) => item.id === hardware.id
         );
         if (i !== -1) {
           cloneCart[indexOfProduct].additional_hardwares[i] = {
-            ...cloneCart[indexOfProduct].additional_hardwares[i],
+            ...hardware,
             quantity:
               (cloneCart[indexOfProduct].additional_hardwares[i]?.quantity ||
                 0) + 1,
@@ -168,6 +174,31 @@ export const CartProvider = ({ children }: CartProps) => {
     [handleSaveCard, state.productList]
   );
 
+  const handleSetListProduct = useCallback((data) => {
+    dispatch({ type: "productionList", payload: [...data] });
+  }, []);
+
+  const handleAddGameOption = useCallback(
+    (product_id: string, hardwareId: string, game: string) => {
+      const cloneCart = [...state.productList];
+      const indexOfProduct = cloneCart.findIndex(
+        (item) => item.id === product_id
+      );
+      console.log(game);
+      
+      const indexOfHw = cloneCart[
+        indexOfProduct
+      ].additional_hardwares.findIndex((hw) => hw.id === hardwareId);
+      cloneCart[indexOfProduct].additional_hardwares[indexOfHw] = {
+        ...cloneCart[indexOfProduct].additional_hardwares[indexOfHw],
+        game,
+      };
+
+      handleSaveCard(cloneCart);
+    },
+    [handleSaveCard, state.productList]
+  );
+
   useEffect(() => {
     let total = 0;
     if (state.productList) {
@@ -192,6 +223,8 @@ export const CartProvider = ({ children }: CartProps) => {
         handleDeleteFromCart,
         handleAddHarwareToCart,
         handleDeleteHarwareToCart,
+        handleSetListProduct,
+        handleAddGameOption,
       }}
     >
       {children}

@@ -1,7 +1,7 @@
 import { CartContext } from "@medusa-react";
-import { Product } from "@medusa-types";
+import { Hardware, Product } from "@medusa-types";
 import clsx from "clsx";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import Section from "src/components/organisms/section";
@@ -29,6 +29,26 @@ const MediaSection = ({ mode = "new", form }: Props) => {
   } = useToggleState(false);
 
   const price = getValues("prices")?.[0]?.value;
+  const [hardwares, setHardWares] = useState<Hardware[]>([]);
+
+  const handleSubmitAdd = useCallback(
+    (hw) => {
+      handleAddToCart && handleAddToCart(getValues());
+      setHardWares(hw);
+    },
+    [getValues, handleAddToCart]
+  );
+
+  useEffect(() => {
+    if (!hardwares.length) return;
+    try {
+      handleAddHarwareToCart &&
+        handleAddHarwareToCart(getValues("id")!, hardwares);
+      setHardWares([]);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [getValues, handleAddHarwareToCart, hardwares]);
 
   return (
     <Section title="Media">
@@ -69,12 +89,7 @@ const MediaSection = ({ mode = "new", form }: Props) => {
           id={getValues("id") || ""}
           isOpen={isOpenHardwareModal}
           handleClose={handleCloseHardwareModal}
-          handleSubmit={(hw) => {
-            if (!handleAddToCart) return;
-            handleAddToCart(getValues());
-            if (!handleAddHarwareToCart) return;
-            handleAddHarwareToCart("id", hw);
-          }}
+          handleSubmit={handleSubmitAdd}
         />
       )}
     </Section>
