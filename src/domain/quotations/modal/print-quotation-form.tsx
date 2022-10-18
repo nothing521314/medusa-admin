@@ -29,14 +29,14 @@ const PrintQuotationFrom = ({
       const child_product = item.child_product.map((child) => {
         return {
           ...child,
-          total: child.priceItem * child.quantity,
+          total: (child.priceItem || 0) * (child.quantity || 0),
         };
       });
       return {
         ...item,
-        total: item.priceItem * item.quantity,
+        total: (item.priceItem || 0) * (item.quantity || 0),
         subTotal:
-          item.priceItem * item.quantity +
+          (item.priceItem || 0) * (item.quantity || 0) +
           child_product.reduce((pre, cur) => pre + cur.total, 0),
         child_product,
       };
@@ -145,10 +145,20 @@ const PrintQuotationFrom = ({
                           {child.quantity}
                         </Table.Cell>
                         <Table.Cell className="border-l-[2px] pl-4 border-black">
-                          {child.priceItem}
+                          {formatAmountWithSymbol({
+                            amount: child.priceItem,
+                            currency: formData?.region?.currency_code || "usd",
+                            digits: 2,
+                            tax: formData?.region?.tax_rate || 0,
+                          })}
                         </Table.Cell>
                         <Table.Cell className="border-l-[2px] pl-4 border-black">
-                          {child.priceItem}
+                          {formatAmountWithSymbol({
+                            amount: child.priceItem,
+                            currency: formData?.region?.currency_code || "usd",
+                            digits: 2,
+                            tax: formData?.region?.tax_rate || 0,
+                          })}
                         </Table.Cell>
                         <Table.Cell className="border-l-[2px] pl-4 border-black">
                           {formatAmountWithSymbol({
@@ -161,28 +171,32 @@ const PrintQuotationFrom = ({
                       </Table.Row>
                     );
                   })}
-                  <Table.Row className="!border-none mt-4">
-                    <Table.Cell></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black italic font-semibold">
-                      Game Selected:
-                    </Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                  </Table.Row>
-                  {item.child_product.map((child) => (
-                    <Table.Row className="!border-none mt-2">
+                  {item.child_product.filter((child) => child?.game)?.length ? (
+                    <Table.Row className="!border-none mt-4">
                       <Table.Cell></Table.Cell>
-                      <Table.Cell className="border-l-[2px] border-black pl-4 italic">
-                        <span className="italic">- {child?.game}</span>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black italic font-semibold">
+                        Games Selected:
                       </Table.Cell>
                       <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
                       <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
                       <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
                       <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
                     </Table.Row>
-                  ))}
+                  ) : null}
+                  {item.child_product
+                    .filter((child) => child?.game)
+                    ?.map((child) => (
+                      <Table.Row className="!border-none mt-2">
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell className="border-l-[2px] border-black pl-4 italic">
+                          <span className="italic">- {child?.game}</span>
+                        </Table.Cell>
+                        <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                        <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                        <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                        <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                      </Table.Row>
+                    ))}
                   <Table.Row className="!border-[2px] border-black">
                     <Table.Cell></Table.Cell>
                     <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
