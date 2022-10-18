@@ -25,7 +25,7 @@ const IndexPage = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <Layout>
-        <SEO title="Medusa" />
+        <SEO title="RGB" />
         <Router basepath="a" className="h-full">
           <PrivateRoute path="oauth/:app_name" component={Oauth} />
           <PrivateRoute path="products/*" component={ProductsRoute} />

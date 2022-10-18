@@ -9,10 +9,10 @@ const SidebarCompanyLogo: React.FC<SidebarCompanyLogoProps> = () => {
   return (
     <div className="flex items-center bg-grey-0 px-2.5 pb-6 w-full mb-4">
       <div className="w-[32px] h-[32px] flex items-center justify-center bg-grey-90 text-grey-0 rounded">
-        <div>{name?.slice(0, 1) || "A"}</div>
+        <div>{name?.slice(0, 1) || "R"}</div>
       </div>
       <span className="font-semibold ml-2.5">
-        {(name.length > 13 ? `${name.slice(0, 13)}...` : name) ?? "admin"}
+        {(name?.length > 13 ? `${name.slice(0, 13)}...` : name) ?? "RGB"}
       </span>
     </div>
   );

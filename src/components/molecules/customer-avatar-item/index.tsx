@@ -16,7 +16,7 @@ const CustomerAvatarItem: React.FC<CustomerAvatarItemProps> = ({
   customer,
   className = "",
 }: CustomerAvatarItemProps) => {
-  const identifier = customer.name ?? customer.email;
+  const identifier = customer.name;
 
   return (
     <div className={clsx("flex items-center px-2.5 py-1.5 w-full", className)}>
