@@ -67,6 +67,7 @@ const AddProductDialog = ({ open, onClose, handleSetProduct }: Props) => {
             <div
               className={clsx(
                 "px-base  py-xsmall group hover:bg-grey-5 rounded-rounded flex items-center justify-between border border-gray-30 mt-4",
+                "min-w-[500px]",
                 {
                   // "bg-grey-5": value,
                 }
