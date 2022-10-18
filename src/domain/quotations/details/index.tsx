@@ -8,7 +8,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useState
+  useState,
 } from "react";
 import { useForm } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -22,7 +22,7 @@ import {
   IProductAdded,
   useAdminCreateQuotation,
   useAdminDeleteQuotation,
-  useAdminQuotationGetOne
+  useAdminQuotationGetOne,
 } from "../../../../medusa-react";
 import Spinner from "../../../components/atoms/spinner";
 import Breadcrumb from "../../../components/molecules/breadcrumb";
@@ -38,7 +38,7 @@ import SummaryPanel from "./card-panel/summary-panel";
 import TextAreaFormPanel from "./card-panel/textarea-form-panel";
 import {
   DEFAULT_QUOTATION_DETAIL_FORM_VALUE,
-  quotationHeaderOptions
+  quotationHeaderOptions,
 } from "./default-value-form";
 
 type OrderDetailProps = RouteComponentProps<{ id: string; tab: string }>;
@@ -118,10 +118,10 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       summary: [],
       customer: undefined,
       code: "",
-      region: {}
+      region: {},
     },
   });
-  
+
   const handleSubmitMakeQuotationForm = useCallback(
     async (data: IQuotationDetailForm) => {
       if (!data.customer) {
@@ -208,14 +208,21 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
   const handleClickCancelMakeQuotationButton = useCallback(() => {
     handleOpenCancelMakingQuotationModal();
+    handleSetListProduct && handleSetListProduct([]);
     navigate("/a/quotations");
-  }, [handleOpenCancelMakingQuotationModal]);
+  }, [handleOpenCancelMakingQuotationModal, handleSetListProduct]);
 
   const handleConfirmCancelReviseQuotation = useCallback(() => {
     navigate(`/a/quotations/${SUB_TAB.QUOTATION_DETAILS}/${id}`);
     handleSetValueFromApi();
     handleCloseCancelReviseModal();
-  }, [handleCloseCancelReviseModal, handleSetValueFromApi, id]);
+    handleSetListProduct && handleSetListProduct([]);
+  }, [
+    handleCloseCancelReviseModal,
+    handleSetListProduct,
+    handleSetValueFromApi,
+    id,
+  ]);
 
   const handleConfirmDeleteQuotation = useCallback(async () => {
     try {
