@@ -19,7 +19,6 @@ import useToggleState from "src/hooks/use-toggle-state";
 import { SUB_TAB } from "..";
 import {
   CartContext,
-  IProductAdded,
   useAdminCreateQuotation,
   useAdminDeleteQuotation,
   useAdminQuotationGetOne,
@@ -69,7 +68,9 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   const readOnlyPage = useMemo(() => tab === SUB_TAB.QUOTATION_DETAILS, [tab]);
 
   const { selectedRegion, sale_man_state } = useContext(AccountContext);
-  const { productList, handleSetListProduct } = useContext(CartContext);
+  const { productList, handleSetListProduct, handleSetAction } = useContext(
+    CartContext
+  );
   const [headerSelected, setHeaderSelected] = useState(
     quotationHeaderOptions[0]
   );
@@ -477,7 +478,17 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     watch,
     setValue,
     tab,
+    handleSetAction,
   ]);
+
+  useEffect(() => {
+    if (!handleSetAction) return;
+    handleSetAction(tab as SUB_TAB);
+
+    return () => {
+      handleSetAction(SUB_TAB.MAKE_QUOTATION);
+    };
+  }, [handleSetAction, tab]);
 
   return (
     <React.Fragment>
@@ -521,7 +532,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
               }}
             />
             <SummaryPanel
-              summary={watch("summary") as IProductAdded[]}
+              formData={watch()}
               readOnly={readOnlyPage}
               tab={tab}
             />

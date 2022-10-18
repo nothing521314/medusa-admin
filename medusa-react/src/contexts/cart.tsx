@@ -1,5 +1,6 @@
 import { Hardware, Product } from "@medusa-types";
 import React, { useCallback, useEffect, useReducer } from "react";
+import { SUB_TAB } from "src/domain/quotations";
 import { Cart } from "../types";
 
 interface CartState {
@@ -24,11 +25,14 @@ interface ICartContext extends CartState {
     hardwareId: string,
     game: string
   ) => void;
+  action?: SUB_TAB;
+  handleSetAction?: (action?: SUB_TAB) => void;
 }
 
 const initialState = {
   productList: [],
   totalItems: 0,
+  action: SUB_TAB.MAKE_QUOTATION,
 };
 
 export const CartContext = React.createContext<ICartContext>(initialState);
@@ -53,6 +57,11 @@ export const CartProvider = ({ children }: CartProps) => {
         return {
           ...state,
           totalItems: action.payload,
+        };
+      case "action":
+        return {
+          ...state,
+          action: action.payload,
         };
       default:
         return state;
@@ -178,6 +187,10 @@ export const CartProvider = ({ children }: CartProps) => {
     dispatch({ type: "productionList", payload: [...data] });
   }, []);
 
+  const handleSetAction = useCallback((action?: SUB_TAB) => {
+    dispatch({ type: "action", payload: action });
+  }, []);
+
   const handleAddGameOption = useCallback(
     (product_id: string, hardwareId: string, game: string) => {
       const cloneCart = [...state.productList];
@@ -185,7 +198,7 @@ export const CartProvider = ({ children }: CartProps) => {
         (item) => item.id === product_id
       );
       console.log(game);
-      
+
       const indexOfHw = cloneCart[
         indexOfProduct
       ].additional_hardwares.findIndex((hw) => hw.id === hardwareId);
@@ -225,6 +238,7 @@ export const CartProvider = ({ children }: CartProps) => {
         handleDeleteHarwareToCart,
         handleSetListProduct,
         handleAddGameOption,
+        handleSetAction,
       }}
     >
       {children}

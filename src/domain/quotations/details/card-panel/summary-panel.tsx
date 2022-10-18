@@ -8,22 +8,27 @@ import React, {
   useState,
 } from "react";
 import BodyCard from "src/components/organisms/body-card";
-import { AccountContext } from "src/context/account";
 import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
 import useToggleState from "src/hooks/use-toggle-state";
+import { IQuotationDetailForm } from "..";
 import { SUB_TAB } from "../..";
 import AddProductDialog from "../../modal/add-product-dialog";
 import OrderLine from "../order-line";
 import { DisplayTotal } from "../templates";
 
 type Props = {
-  summary?: IProductAdded[];
+  formData?: IQuotationDetailForm;
   readOnly?: boolean;
   tab?: string;
 };
 
-const SummaryPanel = ({ summary, readOnly = true, tab }: Props) => {
-  const { selectedRegion } = useContext(AccountContext);
+const SummaryPanel = ({ formData, readOnly = true, tab }: Props) => {
+  const summary = useMemo((): IProductAdded[] => {
+    if (formData?.summary) {
+      return formData.summary as IProductAdded[];
+    }
+    return [];
+  }, [formData?.summary]);
   const [productSelected, setProductSelected] = useState<Product>();
   const [hardwares, setHardWares] = useState<Hardware[]>([]);
   const { handleAddToCart, handleAddHarwareToCart } = useContext(CartContext);
@@ -56,14 +61,14 @@ const SummaryPanel = ({ summary, readOnly = true, tab }: Props) => {
     const subtotal =
       list?.reduce((pre, cur) => pre + ((cur as any)?.subTotal || 0), 0) || 0;
     const shipping = 0;
-    const tax = selectedRegion?.tax_rate || 0;
+    const tax = formData?.region?.tax_rate || 0;
     return {
       subtotal,
       shipping,
       tax,
       originalTotal: subtotal + shipping + tax,
     };
-  }, [list, selectedRegion?.tax_rate]);
+  }, [list, formData?.region?.tax_rate]);
   const {
     open: handleOpenCustomerDialog,
     close: handleCloseProductDialog,
@@ -95,7 +100,7 @@ const SummaryPanel = ({ summary, readOnly = true, tab }: Props) => {
     }
   }, [handleAddHarwareToCart, hardwares, productSelected?.id]);
 
-  if (!summary || !selectedRegion) {
+  if (!summary || !formData?.region) {
     return null;
   }
 
@@ -118,30 +123,30 @@ const SummaryPanel = ({ summary, readOnly = true, tab }: Props) => {
         {summary?.map((item, i) => (
           <OrderLine
             key={i}
-            region={selectedRegion}
+            region={formData?.region}
             item={item}
             readOnly={readOnly}
             tab={tab}
           />
         ))}
         <DisplayTotal
-          currency={selectedRegion?.currency_code}
+          currency={formData?.region?.currency_code || "usd"}
           totalAmount={subtotal}
           totalTitle={"Subtotal"}
         />
         <DisplayTotal
-          currency={selectedRegion?.currency_code}
+          currency={formData?.region?.currency_code || "usd"}
           totalAmount={shipping}
           totalTitle={"Shipping"}
         />
         <DisplayTotal
-          currency={selectedRegion?.currency_code}
+          currency={formData?.region?.currency_code || "usd"}
           totalAmount={tax}
           totalTitle={"Tax"}
         />
         <DisplayTotal
           variant={"large"}
-          currency={selectedRegion?.currency_code}
+          currency={formData?.region?.currency_code || "usd"}
           totalAmount={originalTotal}
           totalTitle={"Total"}
         />

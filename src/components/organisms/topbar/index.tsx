@@ -23,7 +23,7 @@ const Topbar: React.FC = () => {
     handleSelectRegion,
   } = useContext(AccountContext);
 
-  const { totalItems, handleSetListProduct } = useContext(CartContext);
+  const { totalItems, handleSetListProduct, action } = useContext(CartContext);
 
   const {
     open: openCanNotMakeQuoteModal,
@@ -32,12 +32,12 @@ const Topbar: React.FC = () => {
   } = useToggleState(false);
 
   const handleClickCartIcon = useCallback(() => {
-    if (totalItems) {
+    if (totalItems && action === SUB_TAB.MAKE_QUOTATION) {
       navigate(`/a/quotations/${SUB_TAB.MAKE_QUOTATION}/new-quotation`);
     } else {
       openCanNotMakeQuoteModal();
     }
-  }, [openCanNotMakeQuoteModal, totalItems]);
+  }, [action, openCanNotMakeQuoteModal, totalItems]);
 
   const logOut = useCallback(() => {
     if (!handleLogout) return;
@@ -49,7 +49,7 @@ const Topbar: React.FC = () => {
     if (!handleSetListProduct || !selectedRegion) return;
     handleSetListProduct([]);
   }, [handleSetListProduct, selectedRegion]);
-
+  
   const renderRegionMenu = useCallback(() => {
     return (
       <DropdownMenu.Root>
@@ -129,7 +129,9 @@ const Topbar: React.FC = () => {
           onClick={handleClickCartIcon}
         >
           <CartIcon size={24} />
-          <div>{totalItems ? totalItems : ""}</div>
+          <div>
+            {totalItems && action === SUB_TAB.MAKE_QUOTATION ? totalItems : ""}
+          </div>
         </Button>
 
         <div className="w-large h-large">{renderAccountDetailMenu()}</div>
