@@ -1,13 +1,16 @@
 import { CartContext } from "@medusa-react";
 import { RouteComponentProps, Router } from "@reach/router";
 import { navigate } from "gatsby";
-import React, { useCallback, useContext, useMemo } from "react";
+import { TQuotationReturn } from "medusa-types/api/routes/admin/quotations/type";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import Button from "../../components/fundamentals/button";
 import BodyCard from "../../components/organisms/body-card";
 import QuotationTable from "../../components/templates/quotation-table";
 import useToggleState from "../../hooks/use-toggle-state";
-import Details from "./details";
+import Details, { IQuotationDetailForm } from "./details";
+import { quotationHeaderOptions } from "./details/default-value-form";
 import CanNotMakeQuotationModal from "./modal/can-not-make-quotation-modal";
+import PrintQuotationFrom from "./modal/print-quotation-form";
 
 export enum SUB_TAB {
   MAKE_QUOTATION = "make-quotation",
@@ -23,6 +26,7 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
   } = useToggleState(false);
 
   const { totalItems } = useContext(CartContext);
+  const [printData, setPrintData] = useState<IQuotationDetailForm>();
 
   const handleClickMakeQuotationButton = useCallback(() => {
     if (!totalItems) {
@@ -48,6 +52,48 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
     closeCanNotMakeQuoteModal();
   }, [closeCanNotMakeQuoteModal]);
 
+  const handleSetFormData = useCallback((data: TQuotationReturn) => {
+    const form: IQuotationDetailForm = {
+      appendixA: data.appendix_a,
+      appendixB: data.appendix_b,
+      code: data.code,
+      createdAt: data.date,
+      deliveryLeadTime: data.delivery_lead_time,
+      header:
+        quotationHeaderOptions.find((item) => item.title === data.header) ||
+        quotationHeaderOptions[0],
+      installationSupport: data.install_support,
+      paymentTerms: data.payment_term,
+      quotationConditions: data.condition,
+      quotationHeading: data.heading,
+      warranty: data.warranty,
+      customer: data.customer,
+      region: data.region,
+      summary: data.quotation_lines.map((item: any) => {
+        return {
+          ...item.product,
+          ...item,
+          additional_hardwares: item?.child_product.map((child) => ({
+            ...child?.product,
+            ...child,
+          })),
+          child_product: item?.child_product.map((child) => ({
+            ...child?.product,
+            ...child,
+          })),
+          priceItem: item.unit_price,
+          quantity: item.volume,
+        };
+      }),
+    };
+
+    setPrintData({ ...form });
+
+    setTimeout(() => {
+      window.print();
+    }, 200);
+  }, []);
+
   return (
     <>
       <div className="flex flex-col grow h-full print:hidden">
@@ -56,7 +102,7 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
             customHeader={<div className="inter-large-semibold">Quotation</div>}
             customActionable={actions}
           >
-            <QuotationTable />
+            <QuotationTable handleSetFormData={handleSetFormData} />
           </BodyCard>
         </div>
       </div>
@@ -66,6 +112,12 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
           onSubmit={handleConfirmModal}
         />
       )}
+      <div className="w-full">
+        <PrintQuotationFrom
+          formData={printData}
+          className="hidden print:block"
+        />
+      </div>
     </>
   );
 };

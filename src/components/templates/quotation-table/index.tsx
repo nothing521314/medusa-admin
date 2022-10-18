@@ -28,7 +28,11 @@ import useQuotationTableColumns from "./use-quotations-column";
 
 const DEFAULT_PAGE_SIZE = 15;
 
-const QuotationTable: React.FC<RouteComponentProps> = () => {
+interface Props extends RouteComponentProps {
+  handleSetFormData: (data) => void;
+}
+
+const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
   const location = useLocation();
   const { mutateAsync: handleDeleteQuotation } = useAdminDeleteQuotation();
   const [idDelete, setIdDelete] = useState<string>("");
@@ -235,10 +239,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
                   },
                   {
                     label: "Download",
-                    onClick: () =>
-                      navigate(
-                        `${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`
-                      ),
+                    onClick: () => handleSetFormData(row.original),
                     icon: <DownloadIcon size={20} />,
                   },
                   {
@@ -275,6 +276,7 @@ const QuotationTable: React.FC<RouteComponentProps> = () => {
     getTableBodyProps,
     rows,
     prepareRow,
+    handleSetFormData,
     handleSendMail,
     handleOpenDeleteQuotationModal,
   ]);

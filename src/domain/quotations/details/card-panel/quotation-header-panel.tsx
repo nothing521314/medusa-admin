@@ -9,17 +9,20 @@ import { quotationHeaderOptions } from "../default-value-form";
 type Props = {
   headerSelected: any;
   onChange: (value: any) => void;
+  readOnly: boolean;
 };
 
 const QuotationHeaderPanel = ({
   headerSelected = quotationHeaderOptions[0],
   onChange,
+  readOnly,
 }: Props) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const handleToggleDropdown = useCallback(() => {
+    if (readOnly) return;
     setIsVisible((pre) => !pre);
-  }, []);
+  }, [readOnly]);
 
   const handleSelectQuotationHeader = useCallback(
     (item) => {

@@ -8,7 +8,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useState,
 } from "react";
 import { useForm } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -38,6 +37,7 @@ import TextAreaFormPanel from "./card-panel/textarea-form-panel";
 import {
   DEFAULT_QUOTATION_DETAIL_FORM_VALUE,
   quotationHeaderOptions,
+  THeaderPrint,
 } from "./default-value-form";
 
 type OrderDetailProps = RouteComponentProps<{ id: string; tab: string }>;
@@ -55,10 +55,8 @@ export interface IQuotationDetailForm {
   customer?: Customer;
   summary?: unknown;
   code: string;
-  gameOptions: {
-    [key: string]: string[];
-  };
   region?: any;
+  header: THeaderPrint;
 }
 
 const OrderDetails = ({ id, tab }: OrderDetailProps) => {
@@ -70,9 +68,6 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   const { selectedRegion, sale_man_state } = useContext(AccountContext);
   const { productList, handleSetListProduct, handleSetAction } = useContext(
     CartContext
-  );
-  const [headerSelected, setHeaderSelected] = useState(
-    quotationHeaderOptions[0]
   );
   const notification = useNotification();
 
@@ -119,6 +114,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       summary: [],
       customer: undefined,
       code: "",
+      header: quotationHeaderOptions[0],
       region: {},
     },
   });
@@ -145,6 +141,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           child_product: item.child_product.map((i) => ({
             product_id: i.product_additions_id,
             volume: i.quantity,
+            game: i.game,
           })),
         };
       });
@@ -165,8 +162,8 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         region_id: data.region.id,
         sale_persion_id: sale_man_state?.id!,
         warranty: data.warranty,
-        header: "company",
-        title: "11",
+        header: data.header.title,
+        title: "QUOTATIONS",
       };
 
       try {
@@ -186,6 +183,13 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     navigate(`/a/quotations/${SUB_TAB.REVISE_QUOTATION}/${id}`);
   }, [id]);
 
+  const handleSetHeader = useCallback(
+    (header: THeaderPrint) => {
+      setValue("header", header);
+    },
+    [setValue]
+  );
+
   const handleSetValueFromApi = useCallback(() => {
     if (!quotation) return;
     setValue("appendixA", quotation.appendix_a);
@@ -204,6 +208,11 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       tab === SUB_TAB.QUOTATION_DETAILS
         ? quotation.code
         : `${quotation.code}_REV1`
+    );
+    setValue(
+      "header",
+      quotationHeaderOptions.find((head) => head.title === quotation.header) ||
+        quotationHeaderOptions[0]
     );
   }, [quotation, setValue, tab]);
 
@@ -530,11 +539,12 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
               saleMan={sale_man}
               date={watch("createdAt") || new Date().toDateString()}
               onDateChange={(date) => setValue("createdAt", date)}
-              company={headerSelected.company}
+              company={watch("header").company}
             />
             <QuotationHeaderPanel
-              onChange={setHeaderSelected}
-              headerSelected={headerSelected}
+              onChange={handleSetHeader}
+              headerSelected={watch("header")}
+              readOnly={readOnlyPage}
             />
             <CustomerPanel
               customer={watch("customer")}
@@ -558,11 +568,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           {renderModal()}
         </form>
       )}
-      <PrintQuotationFrom
-        className="hidden print:block"
-        formData={watch()}
-        headerSelected={headerSelected}
-      />
+      <PrintQuotationFrom className="hidden print:block" formData={watch()} />
     </React.Fragment>
   );
 };

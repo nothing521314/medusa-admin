@@ -40,6 +40,7 @@ export const DisplayTotal = ({
           amount: totalAmount,
           currency,
           digits: 2,
+          showPrefix: false,
         })}
       </div>
       <div

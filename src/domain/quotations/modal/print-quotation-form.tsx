@@ -5,19 +5,16 @@ import React, { useCallback, useMemo } from "react";
 import Table from "src/components/molecules/table";
 import { formatAmountWithSymbol } from "src/utils/prices";
 import { IQuotationDetailForm } from "../details";
-import { THeaderPrint } from "../details/default-value-form";
 
 interface TPrintQuotationFromModal
   extends RouteComponentProps<{ id: string; tab: string }> {
   formData?: IQuotationDetailForm;
   className?: string;
-  headerSelected: THeaderPrint;
 }
 
 const PrintQuotationFrom = ({
   formData,
   className,
-  headerSelected,
 }: TPrintQuotationFromModal) => {
   const renderText = useCallback((text?: string): string => {
     if (!text) return "";
@@ -49,7 +46,7 @@ const PrintQuotationFrom = ({
 
   return (
     <div className={clsx("w-full h-max bg-white", className)}>
-      <img src={headerSelected.header} alt="" />
+      <img src={formData?.header?.header} alt="" />
       <div className="w-full h-full px-16">
         <div className="flex justify-between items-center">
           <div>Our Ref: QM-5542-2022</div>
@@ -116,6 +113,7 @@ const PrintQuotationFrom = ({
                         amount: item.priceItem,
                         currency: formData?.region?.currency_code || "usd",
                         digits: 2,
+                        showPrefix: false,
                         tax: formData?.region?.tax_rate || 0,
                       })}
                     </Table.Cell>
@@ -124,6 +122,7 @@ const PrintQuotationFrom = ({
                         amount: item.priceItem,
                         currency: formData?.region?.currency_code || "usd",
                         digits: 2,
+                        showPrefix: false,
                         tax: formData?.region?.tax_rate || 0,
                       })}
                     </Table.Cell>
@@ -132,6 +131,7 @@ const PrintQuotationFrom = ({
                         amount: item.total,
                         currency: formData?.region?.currency_code || "usd",
                         digits: 2,
+                        showPrefix: false,
                         tax: formData?.region?.tax_rate || 0,
                       })}
                     </Table.Cell>
@@ -149,6 +149,7 @@ const PrintQuotationFrom = ({
                             amount: child.priceItem,
                             currency: formData?.region?.currency_code || "usd",
                             digits: 2,
+                            showPrefix: false,
                             tax: formData?.region?.tax_rate || 0,
                           })}
                         </Table.Cell>
@@ -157,6 +158,7 @@ const PrintQuotationFrom = ({
                             amount: child.priceItem,
                             currency: formData?.region?.currency_code || "usd",
                             digits: 2,
+                            showPrefix: false,
                             tax: formData?.region?.tax_rate || 0,
                           })}
                         </Table.Cell>
@@ -165,6 +167,7 @@ const PrintQuotationFrom = ({
                             amount: child.total,
                             currency: formData?.region?.currency_code || "usd",
                             digits: 2,
+                            showPrefix: false,
                             tax: formData?.region?.tax_rate || 0,
                           })}
                         </Table.Cell>
@@ -210,6 +213,7 @@ const PrintQuotationFrom = ({
                         amount: item.subTotal,
                         currency: formData?.region?.currency_code || "usd",
                         digits: 2,
+                        showPrefix: false,
                         tax: formData?.region?.tax_rate || 0,
                       })}
                     </Table.Cell>
@@ -230,6 +234,7 @@ const PrintQuotationFrom = ({
                   amount: total,
                   currency: formData?.region?.currency_code || "usd",
                   digits: 2,
+                  showPrefix: false,
                   tax: formData?.region?.tax_rate || 0,
                 })}
               </Table.Cell>
@@ -293,7 +298,7 @@ const PrintQuotationFrom = ({
           }}
         />
       </div>
-      <img src={headerSelected.footer} alt="" />
+      <img src={formData?.header?.footer} alt="" />
     </div>
   );
 };

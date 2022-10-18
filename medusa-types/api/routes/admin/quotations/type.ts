@@ -56,6 +56,7 @@ export type TQuotationReturn = {
   sale_persion: User;
   region: Region;
   quotation_lines: Product[];
+  header: string;
 };
 
 export declare type TOneQuotationReturn = {

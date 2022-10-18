@@ -83,6 +83,7 @@ type FormatMoneyProps = {
   currency: string;
   digits?: number;
   tax?: number | LineItemTaxLine[];
+  showPrefix?: boolean,
 };
 
 export function formatAmountWithSymbol({
@@ -90,6 +91,7 @@ export function formatAmountWithSymbol({
   currency,
   digits,
   tax = 0,
+  showPrefix = true,
 }: FormatMoneyProps) {
   let locale = "en-US";
 
@@ -106,8 +108,8 @@ export function formatAmountWithSymbol({
     tax instanceof Array ? tax.reduce((acc, curr) => acc + curr.rate, 0) : tax;
 
   return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency,
+    style: showPrefix ? "currency" : undefined,
+    currency: showPrefix ? currency : undefined,
     minimumFractionDigits: digits,
   }).format(normalizedAmount * (1 + taxRate / 100));
 }

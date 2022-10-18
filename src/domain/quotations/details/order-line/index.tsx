@@ -15,7 +15,6 @@ type OrderLineProps = {
 };
 
 const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
-
   const {
     handleAddToCart,
     handleDeleteFromCart,
@@ -83,7 +82,7 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
     if (num === 3) return "3rd";
     return `${num}th`;
   }, []);
-  
+
   const handleOnChange = useCallback(
     (product: string, hardware: string, value: string) => {
       if (!handleAddGameOption) return;
@@ -156,6 +155,7 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
                 amount: child.priceItem || 0,
                 currency: region?.currency_code || "",
                 digits: 2,
+                showPrefix: false,
                 tax: region?.tax_rate,
               })}
             </div>
@@ -165,6 +165,7 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
                 amount: (child.priceItem || 0) * (child?.quantity || 0),
                 currency: region?.currency_code || "",
                 digits: 2,
+                showPrefix: false,
                 tax: region?.tax_rate,
               })}
             </div>
@@ -210,6 +211,7 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
               amount: item?.priceItem || 0,
               currency: region?.currency_code || "",
               digits: 2,
+              showPrefix: false,
               tax: region?.tax_rate,
             })}
           </div>
@@ -219,6 +221,7 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
               amount: (item?.priceItem || 0) * item.quantity,
               currency: region?.currency_code || "",
               digits: 2,
+              showPrefix: false,
               tax: region?.tax_rate,
             })}
           </div>
