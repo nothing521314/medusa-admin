@@ -1,7 +1,7 @@
 import { CartContext } from "@medusa-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { navigate } from "gatsby";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import CartIcon from "src/components/fundamentals/icons/cart-icon";
 import { SUB_TAB } from "src/domain/quotations";
 import useToggleState from "src/hooks/use-toggle-state";
@@ -23,7 +23,7 @@ const Topbar: React.FC = () => {
     handleSelectRegion,
   } = useContext(AccountContext);
 
-  const { totalItems } = useContext(CartContext);
+  const { totalItems, handleSetListProduct } = useContext(CartContext);
 
   const {
     open: openCanNotMakeQuoteModal,
@@ -44,6 +44,11 @@ const Topbar: React.FC = () => {
     handleLogout();
     navigate("/login");
   }, [handleLogout]);
+
+  useEffect(() => {
+    if (!handleSetListProduct || !selectedRegion) return;
+    handleSetListProduct([]);
+  }, [handleSetListProduct, selectedRegion]);
 
   const renderRegionMenu = useCallback(() => {
     return (

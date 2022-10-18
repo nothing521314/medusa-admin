@@ -12,36 +12,38 @@ type Props = {
 };
 
 const SummaryPanel = ({ summary, readOnly = true, tab }: Props) => {
-  const { hasMovements, swapAmount } = useMemo(() => {
-    const manualRefund = 0;
-    const swapRefund = 0;
-    const returnRefund = 0;
-
-    // const swapAmount = sum(summary.swaps.map((s) => s.difference_due) || [0]);
-
-    // if (summary.refunds?.length) {
-    //   summary.refunds.forEach((ref) => {
-    //     if (ref.reason === "other" || ref.reason === "discount") {
-    //       manualRefund += ref.amount;
-    //     }
-    //     if (ref.reason === "return") {
-    //       returnRefund += ref.amount;
-    //     }
-    //     if (ref.reason === "swap") {
-    //       swapRefund += ref.amount;
-    //     }
-    //   });
-    // }
-    return {
-      hasMovements: swapAmount + manualRefund + swapRefund + returnRefund !== 0,
-      swapAmount,
-      manualRefund,
-      swapRefund,
-      returnRefund,
-    };
-  }, []);
-
   const { selectedRegion } = useContext(AccountContext);
+
+  const list = useMemo(() => {
+    return summary?.map((item) => {
+      const child_product = item?.child_product?.map((child) => {
+        return {
+          ...child,
+          total: (child?.priceItem || 0) * (child?.quantity || 0),
+        };
+      });
+      return {
+        total: (item?.priceItem || 0) * (item?.quantity || 0),
+        subTotal:
+          (item?.priceItem || 0) * item.quantity +
+          (child_product?.reduce((pre, cur) => pre + cur.total, 0) || 0),
+        child_product,
+      };
+    });
+  }, [summary]);
+
+  const { subtotal, shipping, tax, originalTotal } = useMemo(() => {
+    const subtotal =
+      list?.reduce((pre, cur) => pre + ((cur as any)?.subTotal || 0), 0) || 0;
+    const shipping = 0;
+    const tax = selectedRegion?.tax_rate || 0;
+    return {
+      subtotal,
+      shipping,
+      tax,
+      originalTotal: subtotal + shipping + tax,
+    };
+  }, [list, selectedRegion?.tax_rate]);
 
   if (!summary || !selectedRegion) {
     return null;
@@ -61,39 +63,24 @@ const SummaryPanel = ({ summary, readOnly = true, tab }: Props) => {
         ))}
         <DisplayTotal
           currency={selectedRegion?.currency_code}
-          totalAmount={0}
+          totalAmount={subtotal}
           totalTitle={"Subtotal"}
         />
-        {/* {summary.discounts?.map((discount, index) => (
-          <DisplayTotal
-            key={index}
-            currency={summary.currency_code}
-            totalAmount={-1 * summary.discount_total}
-            totalTitle={
-              <div className="flex inter-small-regular text-grey-90 items-center">
-                Discount:{" "}
-                <Badge className="ml-3" variant="default">
-                  {discount.code}
-                </Badge>
-              </div>
-            }
-          />
-        ))} */}
         <DisplayTotal
           currency={selectedRegion?.currency_code}
-          totalAmount={0}
+          totalAmount={shipping}
           totalTitle={"Shipping"}
         />
         <DisplayTotal
           currency={selectedRegion?.currency_code}
-          totalAmount={selectedRegion?.tax_code}
+          totalAmount={tax}
           totalTitle={"Tax"}
         />
         <DisplayTotal
           variant={"large"}
           currency={selectedRegion?.currency_code}
-          totalAmount={0}
-          totalTitle={hasMovements ? "Original Total" : "Total"}
+          totalAmount={originalTotal}
+          totalTitle={"Total"}
         />
       </div>
     </BodyCard>
