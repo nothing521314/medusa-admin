@@ -394,8 +394,12 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     if (quotation?.quotation_lines.length && tab === SUB_TAB.REVISE_QUOTATION) {
       const arr = quotation?.quotation_lines.map((item: any) => {
         return {
+          ...item.product,
           ...item,
-          additional_hardwares: item?.child_product,
+          additional_hardwares: item?.child_product?.map((child) => ({
+            ...child?.product,
+            ...child,
+          })),
           priceItem: item.unit_price,
           quantity: item.volume,
         };
@@ -457,8 +461,16 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     } else {
       const summary = quotation?.quotation_lines.map((item: any) => {
         return {
+          ...item.product,
           ...item,
-          additional_hardwares: item?.child_product,
+          additional_hardwares: item?.child_product.map((child) => ({
+            ...child?.product,
+            ...child,
+          })),
+          child_product: item?.child_product.map((child) => ({
+            ...child?.product,
+            ...child,
+          })),
           priceItem: item.unit_price,
           quantity: item.volume,
         };

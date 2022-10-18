@@ -43,30 +43,32 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
   });
 
   const handleCalcHeightTextBox = useCallback(() => {
-    const quotationConditionsHeight =
-      document.getElementById("quotationConditions")?.scrollHeight || null;
-    const paymentTermsHeight =
-      document.getElementById("paymentTerms")?.scrollHeight || null;
-    const deliveryLeadTimeHeight =
-      document.getElementById("deliveryLeadTime")?.scrollHeight || null;
-    const warrantyHeight =
-      document.getElementById("warranty")?.scrollHeight || null;
-    const installationSupportHeight =
-      document.getElementById("installationSupport")?.scrollHeight || null;
-    const appendixAHeight =
-      document.getElementById("appendixA")?.scrollHeight || null;
-    const appendixBHeight =
-      document.getElementById("appendixB")?.scrollHeight || null;
+    setTimeout(() => {
+      const quotationConditionsHeight =
+        document.getElementById("quotationConditions")?.scrollHeight || null;
+      const paymentTermsHeight =
+        document.getElementById("paymentTerms")?.scrollHeight || null;
+      const deliveryLeadTimeHeight =
+        document.getElementById("deliveryLeadTime")?.scrollHeight || null;
+      const warrantyHeight =
+        document.getElementById("warranty")?.scrollHeight || null;
+      const installationSupportHeight =
+        document.getElementById("installationSupport")?.scrollHeight || null;
+      const appendixAHeight =
+        document.getElementById("appendixA")?.scrollHeight || null;
+      const appendixBHeight =
+        document.getElementById("appendixB")?.scrollHeight || null;
 
-    setHeightState({
-      quotationConditionsHeight,
-      paymentTermsHeight,
-      deliveryLeadTimeHeight,
-      warrantyHeight,
-      installationSupportHeight,
-      appendixAHeight,
-      appendixBHeight,
-    });
+      setHeightState({
+        quotationConditionsHeight,
+        paymentTermsHeight,
+        deliveryLeadTimeHeight,
+        warrantyHeight,
+        installationSupportHeight,
+        appendixAHeight,
+        appendixBHeight,
+      });
+    }, 500);
   }, []);
 
   useEffect(handleCalcHeightTextBox, [handleCalcHeightTextBox, readOnly]);
@@ -91,9 +93,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
             "resize-none outline-none focus:outline-none"
           )}
           style={{
-            height: readOnly
-              ? "fit-content"
-              : quotationConditionsHeight
+            height: quotationConditionsHeight
               ? `${quotationConditionsHeight}px`
               : "auto",
           }}
@@ -109,11 +109,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
             "resize-none outline-none focus:outline-none"
           )}
           style={{
-            height: readOnly
-              ? "fit-content"
-              : paymentTermsHeight
-              ? `${paymentTermsHeight}px`
-              : "auto",
+            height: paymentTermsHeight ? `${paymentTermsHeight}px` : "auto",
           }}
           id="paymentTerms"
           readOnly={readOnly}
@@ -130,9 +126,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
             "resize-none outline-none focus:outline-none"
           )}
           style={{
-            height: readOnly
-              ? "fit-content"
-              : deliveryLeadTimeHeight
+            height: deliveryLeadTimeHeight
               ? `${deliveryLeadTimeHeight}px`
               : "auto",
           }}
@@ -148,11 +142,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
             "resize-none outline-none focus:outline-none"
           )}
           style={{
-            height: readOnly
-              ? "fit-content"
-              : warrantyHeight
-              ? `${warrantyHeight}px`
-              : "auto",
+            height: warrantyHeight ? `${warrantyHeight}px` : "auto",
           }}
           readOnly={readOnly}
           id="warranty"
@@ -169,9 +159,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
             "resize-none outline-none focus:outline-none"
           )}
           style={{
-            height: readOnly
-              ? "fit-content"
-              : installationSupportHeight
+            height: installationSupportHeight
               ? `${installationSupportHeight}px`
               : "auto",
           }}
@@ -187,11 +175,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
             "resize-none outline-none focus:outline-none"
           )}
           style={{
-            height: readOnly
-              ? "fit-content"
-              : appendixAHeight
-              ? `${appendixAHeight}px`
-              : "auto",
+            height: appendixAHeight ? `${appendixAHeight}px` : "auto",
           }}
           id="appendixA"
           readOnly={readOnly}
@@ -205,11 +189,7 @@ const TextAreaFormPanel = ({ register, readOnly = false }: Props) => {
             "resize-none outline-none focus:outline-none"
           )}
           style={{
-            height: readOnly
-              ? "fit-content"
-              : appendixBHeight
-              ? `${appendixBHeight}px`
-              : "auto",
+            height: appendixBHeight ? `${appendixBHeight}px` : "auto",
           }}
           readOnly={readOnly}
           id="appendixB"
