@@ -139,8 +139,8 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           product_id: item?.product_id || item.id,
           volume: item.quantity,
           child_product: item.child_product.map((i) => ({
-            product_id: i.product_additions_id,
-            volume: i.quantity,
+            product_id: i.product_additions_id || i.product_id,
+            volume: i.quantity || i.volume,
             game: i.game,
           })),
         };
@@ -444,6 +444,19 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       handleSetValueFromApi();
     }
 
+    return () => {
+      reset();
+    };
+  }, [
+    handleSetValueFromApi,
+    reset,
+    sale_man?.name,
+    selectedRegion,
+    setValue,
+    tab,
+  ]);
+
+  useEffect(() => {
     if (tab !== SUB_TAB.QUOTATION_DETAILS) {
       const summary = productList?.map((product) => {
         return {
@@ -486,21 +499,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       });
       setValue("summary", summary);
     }
-    return () => {
-      reset();
-    };
-  }, [
-    handleSetValueFromApi,
-    productList,
-    quotation?.quotation_lines,
-    reset,
-    sale_man?.name,
-    selectedRegion,
-    watch,
-    setValue,
-    tab,
-    handleSetAction,
-  ]);
+  }, [productList, quotation?.quotation_lines, setValue, tab, watch]);
 
   useEffect(() => {
     if (!handleSetAction) return;

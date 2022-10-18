@@ -197,7 +197,6 @@ export const CartProvider = ({ children }: CartProps) => {
       const indexOfProduct = cloneCart.findIndex(
         (item) => item.id === product_id
       );
-      console.log(game);
 
       const indexOfHw = cloneCart[
         indexOfProduct
