@@ -18,8 +18,9 @@ type Props = {
   register: UseFormRegister<IQuotationDetailForm>;
   saleMan?: User;
   date: string | null;
+  minDate?: Date;
   readOnly: boolean;
-  onDateChange: (date: string) => void;
+  onDateChange: (date: Date) => void;
   company: string;
 };
 
@@ -31,6 +32,7 @@ const SaleMalePanel = ({
   register,
   readOnly,
   company,
+  minDate,
 }: Props) => {
   const notification = useNotification();
 
@@ -95,6 +97,9 @@ const SaleMalePanel = ({
             <CalendarComponent
               date={moment(date).toDate()}
               onChange={onDateChange}
+              minDate={minDate}
+              showTimeInput
+              timeInputLabel="Time:"
             />
           </RadixPopover.Content>
         </RadixPopover.Root>

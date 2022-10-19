@@ -2,7 +2,7 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import clsx from "clsx";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import ReactDatePicker from "react-datepicker";
+import ReactDatePicker, { ReactDatePickerProps } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Button from "../../fundamentals/button";
 import ArrowDownIcon from "../../fundamentals/icons/arrow-down-icon";
@@ -11,11 +11,11 @@ import InputHeader from "../../fundamentals/input-header";
 import CustomHeader from "./custom-header";
 import { DateTimePickerProps } from "./types";
 
-const getDateClassname = (d, tempDate) => {
+const getDateClassname = (d, tempDate, minDate) => {
   return moment(d).format("YY,MM,DD") === moment(tempDate).format("YY,MM,DD")
     ? "date chosen"
     : `date ${
-        moment(d).format("YY,MM,DD") < moment(new Date()).format("YY,MM,DD")
+        moment(d).format("YY,MM,DD") < moment(new Date()).format("YY,MM,DD") && minDate
           ? "past"
           : ""
       }`;
@@ -101,14 +101,26 @@ const DatePicker: React.FC<DateTimePickerProps> = ({
   );
 };
 
-export const CalendarComponent = ({ date, onChange }) => (
+export interface IReactDatePicker extends Omit<ReactDatePickerProps, "onChange"> {
+  date?: Date | null | undefined;
+  onChange: (date: Date) => void;
+}
+
+export const CalendarComponent = ({
+  date,
+  onChange,
+  minDate,
+  ...props
+}: IReactDatePicker) => (
   <ReactDatePicker
     selected={date}
     inline
     onChange={onChange}
     calendarClassName="date-picker"
-    dayClassName={(d) => getDateClassname(d, date)}
+    minDate={minDate}
+    dayClassName={(d) => getDateClassname(d, date, minDate)}
     renderCustomHeader={({ ...props }) => <CustomHeader {...props} />}
+    {...props}
   />
 );
 

@@ -221,51 +221,48 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
 
     return (
       <Table.Body {...getTableBodyProps()}>
-        {rows.map((row) => {
+        {rows.map((row, index) => {
           prepareRow(row);
           return (
-            <>
-              <Table.Row
-                color={"inherit"}
-                linkTo={`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`}
-                actions={[
-                  {
-                    label: "Revise",
-                    onClick: () =>
-                      navigate(
-                        `${SUB_TAB.REVISE_QUOTATION}/${row.original.id}`
-                      ),
-                    icon: <EditIcon size={20} />,
+            <Table.Row
+              color={"inherit"}
+              linkTo={`${SUB_TAB.QUOTATION_DETAILS}/${row.original.id}`}
+              actions={[
+                {
+                  label: "Revise",
+                  onClick: () =>
+                    navigate(`${SUB_TAB.REVISE_QUOTATION}/${row.original.id}`),
+                  icon: <EditIcon size={20} />,
+                },
+                {
+                  label: "Download",
+                  onClick: () => handleSetFormData(row.original),
+                  icon: <DownloadIcon size={20} />,
+                },
+                {
+                  label: "Email",
+                  onClick: (
+                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                  ) => handleSendMail(e, row.original.customer.email),
+                  icon: <MailIcon size={20} />,
+                },
+                {
+                  label: "Delete Quotation",
+                  variant: "danger",
+                  onClick: () => {
+                    setIdDelete(row.original.id);
+                    handleOpenDeleteQuotationModal();
                   },
-                  {
-                    label: "Download",
-                    onClick: () => handleSetFormData(row.original),
-                    icon: <DownloadIcon size={20} />,
-                  },
-                  {
-                    label: "Email",
-                    onClick: (
-                      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                    ) => handleSendMail(e, row.original.customer.email),
-                    icon: <MailIcon size={20} />,
-                  },
-                  {
-                    label: "Delete Quotation",
-                    variant: "danger",
-                    onClick: () => {
-                      setIdDelete(row.original.id);
-                      handleOpenDeleteQuotationModal();
-                    },
-                    icon: <TrashIcon size={20} />,
-                  },
-                ]}
-                {...row.getRowProps()}
-              >
-                {row.cells.map((cell, index) => {
-                  return cell.render("Cell", { index });
-                })}
-              </Table.Row>
-            </>
+                  icon: <TrashIcon size={20} />,
+                },
+              ]}
+              {...row.getRowProps()}
+              key={index}
+            >
+              {row.cells.map((cell, index) => {
+                return cell.render("Cell", { index });
+              })}
+            </Table.Row>
           );
         })}
       </Table.Body>

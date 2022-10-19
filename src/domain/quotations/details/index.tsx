@@ -152,7 +152,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         code: data.code,
         condition: data.quotationConditions,
         customer_id: data.customer?.id!,
-        date: data.createdAt || new Date().toUTCString(),
+        date: data.createdAt || new Date().toString(),
         delivery_lead_time: data.deliveryLeadTime,
         heading: data.quotationHeading,
         install_support: data.installationSupport,
@@ -439,6 +439,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         DEFAULT_QUOTATION_DETAIL_FORM_VALUE.quotationConditions
       );
       setValue("warranty", DEFAULT_QUOTATION_DETAIL_FORM_VALUE.warranty);
+      setValue("createdAt", new Date().toString());
       setValue("region", selectedRegion);
     } else {
       handleSetValueFromApi();
@@ -472,8 +473,9 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
               ...child,
               priceItem:
                 child.priceItem ||
-                child?.prices?.find((reg) => reg?.region_id === watch("region")?.id)
-                  ?.price ||
+                child?.prices?.find(
+                  (reg) => reg?.region_id === watch("region")?.id
+                )?.price ||
                 0,
             };
           }),
@@ -509,6 +511,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       handleSetAction(SUB_TAB.MAKE_QUOTATION);
     };
   }, [handleSetAction, tab]);
+  console.log(watch("createdAt"));
 
   return (
     <React.Fragment>
@@ -536,9 +539,12 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
               readOnly={readOnlyPage}
               state={watch()}
               saleMan={sale_man}
-              date={watch("createdAt") || new Date().toDateString()}
-              onDateChange={(date) => setValue("createdAt", date)}
+              date={watch("createdAt")}
+              onDateChange={(date) => setValue("createdAt", date.toString())}
               company={watch("header").company}
+              minDate={
+                tab !== SUB_TAB.REVISE_QUOTATION ? new Date() : undefined
+              }
             />
             <QuotationHeaderPanel
               onChange={handleSetHeader}
