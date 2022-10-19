@@ -464,7 +464,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           priceItem:
             product?.priceItem ||
             product?.prices.find(
-              (region) => region?.region_id === watch("region")
+              (region) => region?.region_id === watch("region").id
             )?.price ||
             0,
           child_product: product.additional_hardwares?.map((child: any) => {
@@ -472,7 +472,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
               ...child,
               priceItem:
                 child.priceItem ||
-                child?.prices?.find((reg) => reg?.region_id === watch("region"))
+                child?.prices?.find((reg) => reg?.region_id === watch("region").id)
                   ?.price ||
                 0,
             };
