@@ -6,19 +6,21 @@ type TableViewHeaderProps<T = string> = {
   views: T[];
   activeView?: T;
   setActiveView?: (view: T) => void;
+  append?: any;
 };
 
 const TableViewHeader: React.FC<TableViewHeaderProps> = ({
   views,
   activeView = views[0],
   setActiveView,
+  append,
 }) => {
   return (
     <div className="flex inter-large-semibold gap-x-base text-grey-40">
       {views.map((k, i) => (
         <div
           key={i}
-          className={clsx("cursor-pointer", {
+          className={clsx("cursor-pointer flex", {
             ["text-grey-90"]: k === activeView,
           })}
           onClick={() => {
@@ -28,6 +30,7 @@ const TableViewHeader: React.FC<TableViewHeaderProps> = ({
           }}
         >
           {capitalize(k)}
+          {append}
         </div>
       ))}
     </div>

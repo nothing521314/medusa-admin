@@ -56,7 +56,7 @@ const useQuotationTableColumns = (): Column<TQuotationReturn>[] => {
         disableSortBy: true,
         Cell: ({ row, index }) => {
           const list = row.original.quotation_lines.map((item) => {
-            const child_product = item.child_product.map((child) => {
+            const child_product = item?.child_product?.map((child) => {
               return {
                 ...child,
                 total: child.volume * child.unit_price,
@@ -67,7 +67,7 @@ const useQuotationTableColumns = (): Column<TQuotationReturn>[] => {
               total: item.volume * item.unit_price,
               subTotal:
                 item.volume * item.unit_price +
-                child_product.reduce((pre, cur) => pre + cur.total, 0),
+                child_product?.reduce((pre, cur) => pre + cur.total, 0),
               child_product,
             };
           });

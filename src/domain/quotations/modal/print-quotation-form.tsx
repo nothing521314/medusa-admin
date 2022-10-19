@@ -23,7 +23,7 @@ const PrintQuotationFrom = ({
 
   const summary = useMemo(() => {
     return (formData?.summary as any[])?.map((item) => {
-      const child_product = item.child_product.map((child) => {
+      const child_product = item?.child_product?.map((child) => {
         return {
           ...child,
           total: (child.priceItem || 0) * (child.quantity || 0),

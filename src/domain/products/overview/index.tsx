@@ -1,9 +1,8 @@
 import { navigate, RouteComponentProps, useLocation } from "@reach/router";
-import React, { useCallback, useEffect, useState } from "react";
-import
-  {
-    useAdminCreateCollection
-  } from "../../../../medusa-react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { AccountContext } from "src/context/account";
+import { SelectionRegion } from "src/domain/settings/regions/components/selection-region";
+import { useAdminCreateCollection } from "../../../../medusa-react";
 import Button from "../../../components/fundamentals/button";
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
 import BodyCard from "../../../components/organisms/body-card";
@@ -20,6 +19,7 @@ const Overview: React.FC<RouteComponentProps> = () => {
   const location = useLocation();
   const [view, setView] = useState("products");
   const [showNewCollection, setShowNewCollection] = useState(false);
+  const { isAdmin } = useContext(AccountContext);
 
   // const {
   //   state: createProductState,
@@ -55,7 +55,7 @@ const Overview: React.FC<RouteComponentProps> = () => {
   const CurrentAction = useCallback(() => {
     switch (view) {
       case "products":
-        return (
+        return isAdmin && (
           <div className="flex space-x-2">
             {/* <Button variant="secondary" size="small">
               Import Products
@@ -121,6 +121,7 @@ const Overview: React.FC<RouteComponentProps> = () => {
             customActionable={CurrentAction()}
             customHeader={
               <TableViewHeader
+                append={isAdmin ? <SelectionRegion /> : null}
                 views={VIEWS}
                 setActiveView={setView}
                 activeView={view}

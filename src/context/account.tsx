@@ -44,12 +44,12 @@ const reducer = (state: IAccountState, action): IAccountState => {
 
   switch (action.type) {
     case "userAuthenticated":
-      if (!isAdmin) {
-        const regionOld = getCookie(KEY.ACTIVE_REGION);
-        setCookieRegion(regionOld || res.regions?.[0]?.id);
-      } else {
-        setCookieRegion("");
-      }
+      // if (!isAdmin) {
+      const regionOld = getCookie(KEY.ACTIVE_REGION);
+      setCookieRegion(regionOld || res.regions?.[0]?.id);
+      // } else {
+      //   setCookieRegion("");
+      // }
       return {
         ...state,
         isLoggedIn: true,
