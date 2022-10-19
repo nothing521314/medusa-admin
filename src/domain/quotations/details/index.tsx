@@ -419,7 +419,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
   useEffect(() => {
     if (tab === SUB_TAB.MAKE_QUOTATION) {
-      setValue("code", `${sale_man?.name}_${Date.now()} Quotation Code`);
+      setValue("code", `${sale_man?.name || ""}_${Date.now()} Quotation Code`);
       setValue("appendixA", DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixA);
       setValue("appendixB", DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixB);
       setValue(
@@ -464,7 +464,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           priceItem:
             product?.priceItem ||
             product?.prices.find(
-              (region) => region?.region_id === watch("region").id
+              (region) => region?.region_id === watch("region")?.id
             )?.price ||
             0,
           child_product: product.additional_hardwares?.map((child: any) => {
@@ -472,7 +472,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
               ...child,
               priceItem:
                 child.priceItem ||
-                child?.prices?.find((reg) => reg?.region_id === watch("region").id)
+                child?.prices?.find((reg) => reg?.region_id === watch("region")?.id)
                   ?.price ||
                 0,
             };
