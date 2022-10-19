@@ -511,7 +511,6 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       handleSetAction(SUB_TAB.MAKE_QUOTATION);
     };
   }, [handleSetAction, tab]);
-  console.log(watch("createdAt"));
 
   return (
     <React.Fragment>
