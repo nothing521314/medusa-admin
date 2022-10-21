@@ -1,5 +1,6 @@
 import { Customer } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
+import clsx from "clsx";
 import { navigate } from "gatsby";
 import { AdminCreateQuotationParams } from "medusa-types/api/routes/admin/quotations/type";
 import React, {
@@ -12,6 +13,7 @@ import React, {
 import { useForm } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import Button from "src/components/fundamentals/button";
+import InfoIcon from "src/components/fundamentals/icons/info-icon";
 import { AccountContext } from "src/context/account";
 import useNotification from "src/hooks/use-notification";
 import useToggleState from "src/hooks/use-toggle-state";
@@ -466,30 +468,54 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     tab,
   ]);
 
+  const isDeletedProduct = useMemo(() => {
+    if (quotation?.quotation_lines) {
+      const parentDeleted = quotation.quotation_lines.every(
+        (item) => !item.product
+      );
+
+      if (parentDeleted) return true;
+      quotation?.quotation_lines.every((item) => {
+        const childDeleted = item.child_product.every((item) => !item.product);
+        if (childDeleted) return true;
+      });
+    }
+
+    return false;
+  }, [quotation?.quotation_lines]);
+
   useEffect(() => {
     if (tab !== SUB_TAB.QUOTATION_DETAILS) {
-      const summary = productList?.map((product) => {
-        return {
-          ...product,
-          priceItem:
-            product?.priceItem ||
-            product?.prices.find(
-              (region) => region?.region_id === watch("region")?.id
-            )?.price ||
-            0,
-          child_product: product.additional_hardwares?.map((child: any) => {
-            return {
-              ...child,
-              priceItem:
-                child.priceItem ||
-                child?.prices?.find(
-                  (reg) => reg?.region_id === watch("region")?.id
-                )?.price ||
-                0,
-            };
-          }),
-        };
-      });
+      const summary = productList
+        ?.map((product) => {
+          return {
+            ...product,
+            priceItem:
+              product?.priceItem ||
+              product?.prices.find(
+                (region) => region?.region_id === watch("region")?.id
+              )?.price ||
+              0,
+            child_product: product.additional_hardwares?.map((child: any) => {
+              return {
+                ...child,
+                priceItem:
+                  child.priceItem ||
+                  child?.prices?.find(
+                    (reg) => reg?.region_id === watch("region")?.id
+                  )?.price ||
+                  0,
+              };
+            }),
+          };
+        })
+        ?.map((item) => {
+          return {
+            ...item,
+            child_product: item?.child_product?.filter((child) => child?.title),
+          };
+        })
+        .filter((item) => item.title);
       setValue("summary", summary);
     } else {
       const summary = quotation?.quotation_lines.map((item: any) => {
@@ -508,6 +534,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           quantity: item.volume,
         };
       });
+
       setValue("summary", summary);
     }
   }, [productList, quotation?.quotation_lines, setValue, tab, watch]);
@@ -518,8 +545,11 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
     return () => {
       handleSetAction(SUB_TAB.MAKE_QUOTATION);
+      if (tab === SUB_TAB.REVISE_QUOTATION) {
+        handleSetListProduct && handleSetListProduct([]);
+      }
     };
-  }, [handleSetAction, tab]);
+  }, [handleSetAction, handleSetListProduct, tab]);
 
   return (
     <React.Fragment>
@@ -542,6 +572,17 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
             onSubmit={handleSubmit(handleSubmitMakeQuotationForm)}
             className="print:hidden"
           >
+            {isDeletedProduct && (
+              <div
+                className={clsx(
+                  "text-red-500 font-semibold text-center mb-5 flex items-center gap-2 justify-center",
+                  "rounded-lg border bg-grey-0 border-grey-20 py-4"
+                )}
+              >
+                <InfoIcon color="red" size={24} />
+                This quote contains products that have been deleted
+              </div>
+            )}
             <div className="flex flex-col h-full">
               <SaleMalePanel
                 register={register}

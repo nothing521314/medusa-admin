@@ -33,6 +33,17 @@ export declare class AdminCreateQuotationParams {
   header: string;
 }
 
+export type TQuotationLines = {
+  id: string;
+  product_id: string;
+  quotation_id: string;
+  volume: number;
+  unit_price: number;
+  parent_product_id: Product | null;
+  product: Product;
+  child_product: TQuotationLines[];
+};
+
 export type TQuotationReturn = {
   id: string;
   created_at: Date;
@@ -55,7 +66,7 @@ export type TQuotationReturn = {
   customer: Customer;
   sale_persion: User;
   region: Region;
-  quotation_lines: Product[];
+  quotation_lines: TQuotationLines[];
   header: string;
 };
 
