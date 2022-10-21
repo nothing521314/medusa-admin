@@ -192,6 +192,11 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     [setValue]
   );
 
+  const getCodeRevise = useCallback((code: string) => {
+    const split = code.split("REV");
+    return `${split[0]}_REV${Number(split[1] || 0) + 1}`;
+  }, []);
+
   const handleSetValueFromApi = useCallback(() => {
     if (!quotation) return;
     setValue("appendixA", quotation.appendix_a);
@@ -209,14 +214,14 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       "code",
       tab === SUB_TAB.QUOTATION_DETAILS
         ? quotation.code
-        : `${quotation.code}_REV1`
+        : getCodeRevise(quotation.code)
     );
     setValue(
       "header",
       quotationHeaderOptions.find((head) => head.title === quotation.header) ||
         quotationHeaderOptions[0]
     );
-  }, [quotation, setValue, tab]);
+  }, [getCodeRevise, quotation, setValue, tab]);
 
   const handleClickCancelMakeQuotationButton = useCallback(() => {
     handleOpenCancelMakingQuotationModal();
@@ -430,7 +435,6 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
   useEffect(() => {
     if (tab === SUB_TAB.MAKE_QUOTATION) {
-      setValue("code", `${sale_man?.name || ""}_${Date.now()} Quotation Code`);
       setValue("appendixA", DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixA);
       setValue("appendixB", DEFAULT_QUOTATION_DETAIL_FORM_VALUE.appendixB);
       setValue(
@@ -466,6 +470,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     selectedRegion,
     setValue,
     tab,
+    watch,
   ]);
 
   const isDeletedProduct = useMemo(() => {
@@ -517,6 +522,15 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         })
         .filter((item) => item.title);
       setValue("summary", summary);
+
+      if (tab === SUB_TAB.MAKE_QUOTATION) {
+        setValue(
+          "code",
+          `${sale_man?.name || ""}_${Date.now()} Quotation Code ${
+            watch("summary")?.[0]?.collection?.title?.split(" - ")?.[1] || ""
+          }`
+        );
+      }
     } else {
       const summary = quotation?.quotation_lines.map((item: any) => {
         return {
@@ -537,7 +551,14 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
       setValue("summary", summary);
     }
-  }, [productList, quotation?.quotation_lines, setValue, tab, watch]);
+  }, [
+    productList,
+    quotation?.quotation_lines,
+    sale_man?.name,
+    setValue,
+    tab,
+    watch,
+  ]);
 
   useEffect(() => {
     if (!handleSetAction) return;
