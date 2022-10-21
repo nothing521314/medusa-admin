@@ -24,7 +24,7 @@ const CanNotMakeQuotationModal = ({
         <Modal.Content className="!w-full">
           <div className="mb-4 inter-small-regular">
             You have to add products to the cart to make the quotation.
-            <a className="ml-1 text-blue-60 underline cursor-pointer">
+            <a className="ml-1 text-blue-60 underline cursor-pointer" href="/a/products">
               View product
             </a>
           </div>

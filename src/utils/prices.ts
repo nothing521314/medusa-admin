@@ -10,7 +10,9 @@ export function displayAmount(currency: string, amount: number) {
   const normalizedAmount = normalizeAmount(currency, amount);
 
   return normalizedAmount.toFixed(
-    currencies[currency.toUpperCase()].decimal_digits
+    currencies?.[currency?.toUpperCase()]
+      ? currencies?.[currency?.toUpperCase()]?.decimal_digits
+      : 0
   );
 }
 
@@ -56,7 +58,7 @@ export const extractOptionPrice = (price, region) => {
  * @return {number}
  */
 export function getDecimalDigits(currency: string) {
-  const divisionDigits = currencies[currency.toUpperCase()].decimal_digits;
+  const divisionDigits = currencies?.[currency.toUpperCase()]?.decimal_digits;
   return Math.pow(10, divisionDigits);
 }
 
@@ -83,7 +85,7 @@ type FormatMoneyProps = {
   currency: string;
   digits?: number;
   tax?: number | LineItemTaxLine[];
-  showPrefix?: boolean,
+  showPrefix?: boolean;
 };
 
 export function formatAmountWithSymbol({
@@ -100,7 +102,7 @@ export function formatAmountWithSymbol({
     locale = "da-DK";
   }
 
-  digits = digits ?? currencies[currency.toUpperCase()].decimal_digits;
+  digits = digits ?? currencies?.[currency.toUpperCase()]?.decimal_digits;
 
   const normalizedAmount = normalizeAmount(currency, amount);
 

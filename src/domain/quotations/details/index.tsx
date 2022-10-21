@@ -528,51 +528,56 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           <Spinner size={"large"} variant={"secondary"} />
         </BodyCard>
       ) : (
-        <form
-          onSubmit={handleSubmit(handleSubmitMakeQuotationForm)}
-          className="print:hidden"
-        >
-          <div className="flex flex-col h-full">
-            <SaleMalePanel
-              register={register}
-              readOnly={readOnlyPage}
-              state={watch()}
-              saleMan={sale_man}
-              date={watch("createdAt")}
-              onDateChange={(date) => setValue("createdAt", date.toString())}
-              company={watch("header").company}
-              minDate={
-                tab !== SUB_TAB.REVISE_QUOTATION ? new Date() : undefined
-              }
-            />
-            <QuotationHeaderPanel
-              onChange={handleSetHeader}
-              headerSelected={watch("header")}
-              readOnly={readOnlyPage}
-            />
-            <CustomerPanel
-              customer={watch("customer")}
-              readOnly={readOnlyPage}
-              handleSelectCustomer={(customer) => {
-                setValue("customer", customer);
-              }}
-            />
-            <SummaryPanel
-              formData={watch()}
-              readOnly={readOnlyPage}
-              tab={tab}
-            />
-            <TextAreaFormPanel
-              register={register}
-              readOnly={readOnlyPage}
-              watch={watch}
-            />
-          </div>
-          {renderFooterDetails()}
-          {renderModal()}
-        </form>
+        <React.Fragment>
+          <form
+            onSubmit={handleSubmit(handleSubmitMakeQuotationForm)}
+            className="print:hidden"
+          >
+            <div className="flex flex-col h-full">
+              <SaleMalePanel
+                register={register}
+                readOnly={readOnlyPage}
+                state={watch()}
+                saleMan={sale_man}
+                date={watch("createdAt")}
+                onDateChange={(date) => setValue("createdAt", date.toString())}
+                company={watch("header").company}
+                minDate={
+                  tab !== SUB_TAB.REVISE_QUOTATION ? new Date() : undefined
+                }
+              />
+              <QuotationHeaderPanel
+                onChange={handleSetHeader}
+                headerSelected={watch("header")}
+                readOnly={readOnlyPage}
+              />
+              <CustomerPanel
+                customer={watch("customer")}
+                readOnly={readOnlyPage}
+                handleSelectCustomer={(customer) => {
+                  setValue("customer", customer);
+                }}
+              />
+              <SummaryPanel
+                formData={watch()}
+                readOnly={readOnlyPage}
+                tab={tab}
+              />
+              <TextAreaFormPanel
+                register={register}
+                readOnly={readOnlyPage}
+                watch={watch}
+              />
+            </div>
+            {renderFooterDetails()}
+            {renderModal()}
+          </form>
+          <PrintQuotationFrom
+            className="hidden print:block"
+            formData={watch()}
+          />
+        </React.Fragment>
       )}
-      <PrintQuotationFrom className="hidden print:block" formData={watch()} />
     </React.Fragment>
   );
 };

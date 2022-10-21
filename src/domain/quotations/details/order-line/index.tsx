@@ -226,7 +226,7 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
             })}
           </div>
           <div className="inter-small-regular text-grey-50 text-right w-11">
-            {region?.currency_code.toUpperCase()}
+            {region?.currency_code?.toUpperCase()}
           </div>
         </div>
       </div>
