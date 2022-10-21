@@ -16,6 +16,7 @@ import TrashIcon from "src/components/fundamentals/icons/trash-icon";
 import { SUB_TAB } from "src/domain/quotations";
 import DeleteTheQuotationModal from "src/domain/quotations/modal/delete-the-quotation-modal";
 import { useDebounce } from "src/hooks/use-debounce";
+import useNotification from "src/hooks/use-notification";
 import useToggleState from "src/hooks/use-toggle-state";
 import Spinner from "../../atoms/spinner";
 import Table, { TablePagination } from "../../molecules/table";
@@ -35,6 +36,8 @@ interface Props extends RouteComponentProps {
 const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
   const location = useLocation();
   const { mutateAsync: handleDeleteQuotation } = useAdminDeleteQuotation();
+  const notification = useNotification();
+
   const [idDelete, setIdDelete] = useState<string>("");
 
   const {
@@ -177,6 +180,11 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
       if (res.response.status === 200) {
         setIdDelete("");
         handleCloseDeleteQuotationModal();
+        notification(
+          "Success",
+          "Deleted the quotations successfully",
+          "success"
+        );
         location.reload();
       }
     } catch (error) {
@@ -187,6 +195,7 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
     handleDeleteQuotation,
     idDelete,
     location,
+    notification,
   ]);
 
   const renderModal = useCallback(() => {

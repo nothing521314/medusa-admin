@@ -238,12 +238,17 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     try {
       const res = await handleDeleteQuotation(id!);
       if (res.response.status === 200) {
+        notification(
+          "Success",
+          "Deleted the quotations successfully",
+          "success"
+        );
         navigate("/a/quotations");
       }
     } catch (error) {
       return;
     }
-  }, [handleDeleteQuotation, id]);
+  }, [handleDeleteQuotation, id, notification]);
 
   const handleSendMail = useCallback(
     (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -343,22 +348,26 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   const renderFooterDetails = useCallback(() => {
     return (
       <div className="flex flex-col items-center py-6">
-        <div
-          className="text italic text-blue-50 cursor-pointer"
-          onClick={() => window.print()}
-        >
-          Preview/ Download
-        </div>
-        <div className="text italic mt-2">Or</div>
-        <div className="text italic text-blue-50 flex mt-2">
-          <div className="cursor-pointer" onClick={handleSendMail}>
-            Email
-          </div>
-        </div>
+        {tab !== SUB_TAB.REVISE_QUOTATION && (
+          <React.Fragment>
+            <div
+              className="text italic text-blue-50 cursor-pointer"
+              onClick={() => window.print()}
+            >
+              Preview/ Download
+            </div>
+            <div className="text italic mt-2">Or</div>
+            <div className="text italic text-blue-50 flex mt-2">
+              <div className="cursor-pointer" onClick={handleSendMail}>
+                Email
+              </div>
+            </div>
+          </React.Fragment>
+        )}
         {renderBottomButton()}
       </div>
     );
-  }, [handleSendMail, renderBottomButton]);
+  }, [handleSendMail, renderBottomButton, tab]);
 
   const renderModal = useCallback(() => {
     if (isVisibleCancelMakingQuotationModal) {
