@@ -58,7 +58,7 @@ const Sidebar: React.FC = () => {
                 text={"Salesman"}
               />
               <SidebarMenuItem
-                pageLink={"/a/settings/regions"}
+                pageLink={"/a/markets-region"}
                 icon={<MapPinIcon size={ICON_SIZE} />}
                 triggerHandler={triggerHandler}
                 text={"Markets region"}

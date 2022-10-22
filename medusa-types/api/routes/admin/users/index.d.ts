@@ -9,6 +9,10 @@ export declare type AdminUserRes = {
 export declare type AdminUsersListRes = {
     users: Omit<User, "password_hash">[];
 };
+
+export declare type AdminUsersListRes2 = {
+    user: Omit<User, "password_hash">[];
+};
 export declare type AdminDeleteUserRes = DeleteResponse;
 export * from "./reset-password";
 export * from "./reset-password-token";

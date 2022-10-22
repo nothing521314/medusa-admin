@@ -64,14 +64,16 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
   }));
 
   const onSubmit = handleSubmit((data) => {
-    const { name, password, phone, regions } = data;
+    const { name, password, phone, regions, email } = data;
     const dataPost: any = {
       name,
+      email,
       phone,
       regions: regions.map((v) => v.id),
       password,
     };
-    if (!password) {
+
+    if (password?.length === 0) {
       delete dataPost.password;
     }
     updateUser.mutate(dataPost, {
@@ -113,7 +115,6 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
           />
           <InputField
             label="Email"
-            readOnly
             {...register("email", {
               validate: (value) => Validator.email(value),
             })}
@@ -122,12 +123,22 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
         </div>
         <div className="w-full flex mb-4 space-x-2">
           <InputField
+            label="Password"
+            type={"password"}
+            {...register("password", {
+              validate: (value) => (value ? Validator.pass(value) : true),
+            })}
+            errors={errors}
+          />
+          <InputField
             label="Phone number"
             {...register("phone", {
               validate: Validator.phone,
             })}
             errors={errors}
           />
+        </div>
+        <div className="w-full flex mb-4 space-x-2">
           <Controller
             control={control}
             name="regions"
@@ -155,6 +166,7 @@ const SalesmanDetail: React.FC<CustomerDetailProps> = ({ id }) => {
               );
             }}
           />
+          <InputField className="invisible" />
         </div>
         <div className="mt-6 w-full flex justify-center">
           <Button

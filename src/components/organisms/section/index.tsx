@@ -4,7 +4,7 @@ import Actionables, { ActionType } from "../../molecules/actionables";
 
 type SectionProps = {
   children?: React.ReactNode;
-  title?: string;
+  title?: string | React.ReactNode;
   actions?: ActionType[];
   customActions?: React.ReactNode;
   forceDropdown?: boolean;
@@ -32,7 +32,9 @@ const Section = ({
     >
       {hasHeader && (
         <div className="flex items-center justify-between">
-          {title && (
+          {React.isValidElement(title) ? (
+            title
+          ) : (
             <h1 className="text-grey-90 inter-xlarge-semibold">{title}</h1>
           )}
           <div className="flex items-center gap-x-2">

@@ -1,15 +1,11 @@
-import {
-  AdminPostRegionsReq,
-  AdminRegionsRes,
-  AdminPostRegionsRegionReq,
-  AdminRegionsDeleteRes,
-  AdminRegionsListRes,
-  AdminGetRegionsParams,
-  AdminPostRegionsRegionCountriesReq,
-  AdminPostRegionsRegionFulfillmentProvidersReq,
-  AdminPostRegionsRegionPaymentProvidersReq,
-  AdminGetRegionsRegionFulfillmentOptionsRes,
-} from "@medusa-types";
+import
+  {
+    AdminGetProductsParams, AdminGetRegionsParams, AdminGetRegionsRegionFulfillmentOptionsRes,
+    AdminGetUserParams, AdminPostRegionsRegionCountriesReq,
+    AdminPostRegionsRegionFulfillmentProvidersReq,
+    AdminPostRegionsRegionPaymentProvidersReq, AdminPostRegionsRegionReq, AdminPostRegionsReq, AdminProductsListRes2, AdminRegionsDeleteRes,
+    AdminRegionsListRes, AdminRegionsRes, AdminUsersListRes2
+  } from "@medusa-types";
 import qs from "qs";
 import { ResponsePromise } from "../../typings";
 import BaseResource from "../base";
@@ -93,6 +89,33 @@ class AdminRegionsResource extends BaseResource {
     return this.client.request("GET", path, undefined, {}, customHeaders);
   }
 
+  listUser(
+    id?: string,
+    query?: AdminGetUserParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminUsersListRes2> {
+    let path = `/admin/regions/${id}/users`;
+    if (query) {
+      const queryString = qs.stringify(query);
+      path = `/admin/regions/${id}/users?${queryString}`;
+    }
+
+    return this.client.request("GET", path, undefined, {}, customHeaders);
+  }
+
+  listProduct(
+    id?: string,
+    query?: AdminGetProductsParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsListRes2> {
+    let path = `/admin/regions/${id}/products`;
+    if (query) {
+      const queryString = qs.stringify(query);
+      path = `/admin/regions/${id}/products?${queryString}`;
+    }
+
+    return this.client.request("GET", path, undefined, {}, customHeaders);
+  }
   /**
    * @description adds a country to the list of countries in a region
    * @param id region id
@@ -200,6 +223,24 @@ class AdminRegionsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
     const path = `/admin/regions/${id}/payment-providers/${provider_id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
+  }
+
+  deleteUser(
+    id: string,
+    user_id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminRegionsRes> {
+    const path = `/admin/regions/${id}/region-user/${user_id}`;
+    return this.client.request("DELETE", path, undefined, {}, customHeaders);
+  }
+
+  deleteProduct(
+    id: string,
+    product_id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminRegionsRes> {
+    const path = `/admin/regions/${id}/region-product/${product_id}`;
     return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 }

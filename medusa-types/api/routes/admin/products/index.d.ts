@@ -30,6 +30,9 @@ export declare type AdminProductsDeleteRes = {
 export declare type AdminProductsListRes = PaginatedResponse & {
     products: (PricedProduct | Product)[];
 };
+export declare type AdminProductsListRes2 = PaginatedResponse & {
+    product: (PricedProduct | Product)[];
+};
 export declare type AdminProductsListTypesRes = {
     types: ProductType[];
 };

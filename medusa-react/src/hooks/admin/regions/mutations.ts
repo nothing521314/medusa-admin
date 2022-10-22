@@ -12,6 +12,8 @@ import { Response } from "../../../../../medusa-js";
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 import { useMedusa } from "../../../contexts/medusa";
 import { buildOptions } from "../../utils/buildOptions";
+import { adminUserKeys } from "../users";
+import { adminProductKeys } from "../products";
 
 export const useAdminCreateRegion = (
   options?: UseMutationOptions<
@@ -161,5 +163,31 @@ export const useAdminRegionDeletePaymentProvider = (
     (provider_id: string) =>
       client.admin.regions.deletePaymentProvider(id, provider_id),
     buildOptions(queryClient, adminRegionKeys.detail(id), options)
+  );
+};
+
+export const useAdminRegionDeleteSalesman = (
+  id: string,
+  options?: UseMutationOptions<Response<AdminRegionsRes>, Error, string>
+) => {
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (user_id: string) => client.admin.regions.deleteUser(id, user_id),
+    buildOptions(queryClient, adminUserKeys.lists(), options)
+  );
+};
+
+export const useAdminRegionDeleteProduct = (
+  id: string,
+  options?: UseMutationOptions<Response<AdminRegionsRes>, Error, string>
+) => {
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (product_id: string) => client.admin.regions.deleteProduct(id, product_id),
+    buildOptions(queryClient, adminProductKeys.lists(), options)
   );
 };

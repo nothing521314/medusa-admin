@@ -1,11 +1,12 @@
-import {
-  AdminRegionsListRes,
-  AdminRegionsRes,
-  AdminGetRegionsParams,
-  AdminGetRegionsRegionFulfillmentOptionsRes,
-} from "@medusa-types";
-import { Response } from "../../../../../medusa-js";
+import
+  {
+    AdminGetProductsParams, AdminGetRegionsParams,
+    AdminGetRegionsRegionFulfillmentOptionsRes,
+    AdminGetUserParams, AdminProductsListRes2, AdminRegionsListRes,
+    AdminRegionsRes, AdminUsersListRes2
+  } from "@medusa-types";
 import { useQuery } from "react-query";
+import { Response } from "../../../../../medusa-js";
 import { useMedusa } from "../../../contexts";
 import { UseQueryOptionsWrapper } from "../../../types";
 import { queryKeysFactory } from "../../utils/index";
@@ -30,7 +31,44 @@ export const useAdminRegions = (
     () => client.admin.regions.list(query),
     options
   );
-  return { ...data, ...rest } ;
+  return { ...data, ...rest };
+};
+
+export const useAdminRegionsListUser = (
+  id?: string,
+  query?: AdminGetUserParams,
+  options?: UseQueryOptionsWrapper<
+    Response<AdminUsersListRes2>,
+    Error,
+    ReturnType<RegionQueryKeys["list"]>
+  >
+) => {
+  const { client } = useMedusa();
+  const { data, ...rest } = useQuery(
+    adminRegionKeys.list(id),
+    () => client.admin.regions.listUser(id, query),
+    options
+  );
+  return { ...data, ...rest };
+};
+
+export const useAdminRegionsListProduct = (
+  id?: string,
+  query?: AdminGetProductsParams,
+  options?: UseQueryOptionsWrapper<
+    Response<AdminProductsListRes2>,
+    Error,
+    ReturnType<RegionQueryKeys["listProduct"]>
+  >
+) => {
+  const { client } = useMedusa();
+  const { data, ...rest } = useQuery(
+    "listProduct" as any,
+    () => client.admin.regions.listProduct(id, query),
+    options
+  );
+  debugger;
+  return { ...data, ...rest };
 };
 
 export const useAdminRegion = (

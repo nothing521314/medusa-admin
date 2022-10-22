@@ -11,6 +11,7 @@ export const queryKeysFactory = <
     all: [globalKey],
     lists: () => [...queryKeyFactory.all, "list"],
     list: (query?: TListQueryType) => [...queryKeyFactory.lists(), { query }],
+    listProduct: (query?: TListQueryType) => [...queryKeyFactory.lists(), { query }],
     details: () => [...queryKeyFactory.all, "detail"],
     detail: (id: TDetailQueryType) => [...queryKeyFactory.details(), id],
   };

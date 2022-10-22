@@ -5,24 +5,44 @@ import { PaymentProvider } from "./payment-provider";
 import { SoftDeletableEntity } from "./interfaces";
 import { TaxProvider } from "./tax-provider";
 import { TaxRate } from "./tax-rate";
+import { User } from "./user";
+import { Product } from "./product";
+
 export declare class Region extends SoftDeletableEntity {
-    name: string;
-    currency_code: string;
-    currency: Currency;
-    tax_rate: number;
-    tax_rates: TaxRate[] | null;
-    tax_code: string;
-    gift_cards_taxable: boolean;
-    automatic_taxes: boolean;
-    // countries: Country[];
-    tax_provider_id: string | null;
-    tax_provider: TaxProvider;
-    payment_providers: PaymentProvider[];
-    fulfillment_providers: FulfillmentProvider[];
-    metadata: Record<string, unknown>;
-    includes_tax: boolean;
-    private beforeInsert;
+  name: string;
+  currency_code: string;
+  currency: Currency;
+  tax_rate: number;
+  // tax_rates: TaxRate[] | null;
+  tax_code: string;
+  gift_cards_taxable: boolean;
+  automatic_taxes: boolean;
+  // countries: Country[];
+  tax_provider_id: string | null;
+  // tax_provider: TaxProvider;
+  // payment_providers: PaymentProvider[];
+  // fulfillment_providers: FulfillmentProvider[];
+  // metadata: Record<string, unknown>;
+  includes_tax: boolean;
+
+  users?: IUser[];
+  product_prices?: IProductPrices[];
+  private beforeInsert;
 }
+
+export interface IUser extends Omit<User, "regions"> {}
+
+export interface IProductPrices {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+  product_id: string;
+  region_id: string;
+  price: number;
+  product?: Product;
+}
+
 /**
  * @schema region
  * title: "Region"

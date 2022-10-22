@@ -10,6 +10,7 @@ import Layout from "../components/templates/layout";
 import Collections from "../domain/collections";
 import Customers from "../domain/customers";
 import Salesman from "../domain/salesman";
+import MarketsRegion from "../domain/markets-region";
 import Discounts from "../domain/discounts";
 import GiftCards from "../domain/gift-cards";
 import Oauth from "../domain/oauth";
@@ -35,6 +36,7 @@ const IndexPage = () => {
           <PrivateRoute path="discounts/*" component={Discounts} />
           <PrivateRoute path="customers/*" component={Customers} />
           <PrivateRoute path="salesman/*" component={Salesman} />
+          <PrivateRoute path="markets-region/*" component={MarketsRegion} />
           <PrivateRoute path="pricing/*" component={Pricing} />
           <PrivateRoute path="settings/*" component={Settings} />
           <PrivateRoute path="sales-channels/*" component={SalesChannels} />

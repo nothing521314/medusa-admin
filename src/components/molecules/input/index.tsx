@@ -5,7 +5,10 @@ import React, {
   MouseEventHandler,
   useImperativeHandle,
   useRef,
+  useState,
 } from "react";
+import EyeIcon from "src/components/fundamentals/icons/eye-icon";
+import EyeOffIcon from "src/components/fundamentals/icons/eye-off-icon";
 import InputError from "../../atoms/input-error";
 import MinusIcon from "../../fundamentals/icons/minus-icon";
 import PlusIcon from "../../fundamentals/icons/plus-icon";
@@ -45,6 +48,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
       ref,
@@ -107,6 +111,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
             onFocus={onFocus}
             required={required}
             {...fieldProps}
+            type={showPassword ? "input" : fieldProps.type}
           />
 
           {deletable && (
@@ -116,6 +121,16 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
               type="button"
             >
               &times;
+            </button>
+          )}
+
+          {fieldProps.type === "password" && (
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-grey-40 px-0 focus:outline-none focus:text-violet-60"
+            >
+              {showPassword ? <EyeIcon /> : <EyeOffIcon />}
             </button>
           )}
 
