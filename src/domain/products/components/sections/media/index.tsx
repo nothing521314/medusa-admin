@@ -1,10 +1,17 @@
 import { CartContext } from "@medusa-react";
 import { Hardware, Product } from "@medusa-types";
 import clsx from "clsx";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { UseFormReturn } from "react-hook-form";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import Section from "src/components/organisms/section";
+import { AccountContext } from "src/context/account";
 import useToggleState from "src/hooks/use-toggle-state";
 import Button from "../../../../../components/fundamentals/button";
 import MediaForm from "../../media-form";
@@ -20,6 +27,7 @@ const MediaSection = ({ mode = "new", form }: Props) => {
   const { handleAddToCart, handleAddHarwareToCart } = React.useContext(
     CartContext
   );
+  const { selectedRegion } = useContext(AccountContext);
   const isModeEdit = mode === "edit";
   const { getValues } = form;
   const {
@@ -28,7 +36,13 @@ const MediaSection = ({ mode = "new", form }: Props) => {
     state: isOpenHardwareModal,
   } = useToggleState(false);
 
-  const price = getValues("prices")?.[0]?.value;
+  const prices = getValues("prices");
+  const price = useMemo(() => {
+    return (
+      prices?.find((reg) => reg?.region === selectedRegion?.id)?.value || 0
+    );
+  }, [prices, selectedRegion?.id]);
+
   const [hardwares, setHardWares] = useState<Hardware[]>([]);
 
   const handleSubmitAdd = useCallback(

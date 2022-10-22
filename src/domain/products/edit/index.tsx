@@ -6,7 +6,7 @@ import {
 import { Product } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ReactJson from "react-json-view";
 import Button from "src/components/fundamentals/button";
@@ -24,24 +24,18 @@ import GeneralSection from "../components/sections/general";
 import MediaSection from "../components/sections/media";
 import PricesSection from "../components/sections/price";
 
-interface EditProps extends RouteComponentProps {
-  id: string;
-}
+type EditProps = RouteComponentProps<{ id: string }>;
 
 const Edit = ({ id }: EditProps) => {
-  const { product, status, error, isLoading } = useAdminProduct(id);
-  const { mutate, isLoading: isLoadingUpdate } = useAdminUpdateProduct(id);
+  const { product, status, error, isLoading } = useAdminProduct(id!);
+  const { mutate, isLoading: isLoadingUpdate } = useAdminUpdateProduct(id!);
   const { regions: regionsMaster } = useAdminRegions();
   const notification = useNotification();
 
   const form = useForm<Product>({});
   const {
-    control,
-    formState: { errors, isDirty },
-    register,
-    getValues,
+    formState: { isDirty },
     handleSubmit,
-    watch,
     reset,
   } = form;
 
@@ -88,7 +82,7 @@ const Edit = ({ id }: EditProps) => {
 
   const onSubmit = () =>
     handleSubmit(
-      async ({ images, id, collection, additional_hardwares, ...data }) => {
+      async ({ images, collection, additional_hardwares, ...data }) => {
         if (!images.some((v) => v?.url)) {
           notification("Error", "Media is required.", "error");
           return;
@@ -145,7 +139,7 @@ const Edit = ({ id }: EditProps) => {
         }
 
         mutate(req, {
-          onSuccess: ({ product }) => {
+          onSuccess: () => {
             // navigate(`/a/products/${product.id}`);
             notification("Success", "Update product success", "success");
           },

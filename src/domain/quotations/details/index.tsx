@@ -193,7 +193,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   );
 
   const getCodeRevise = useCallback((code: string) => {
-    const split = code.split("REV");
+    const split = code.split("_REV");
     return `${split[0]}_REV${Number(split[1] || 0) + 1}`;
   }, []);
 
@@ -355,7 +355,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
   const renderFooterDetails = useCallback(() => {
     return (
       <div className="flex flex-col items-center py-6">
-        {tab !== SUB_TAB.REVISE_QUOTATION && (
+        {tab === SUB_TAB.QUOTATION_DETAILS && (
           <React.Fragment>
             <div
               className="text italic text-blue-50 cursor-pointer"
@@ -643,10 +643,12 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
             {renderFooterDetails()}
             {renderModal()}
           </form>
-          <PrintQuotationFrom
-            className="hidden print:block"
-            formData={watch()}
-          />
+          {tab === SUB_TAB.QUOTATION_DETAILS && (
+            <PrintQuotationFrom
+              className="hidden print:block"
+              formData={watch()}
+            />
+          )}
         </React.Fragment>
       )}
     </React.Fragment>

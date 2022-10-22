@@ -3,6 +3,7 @@ import { Customer } from "@medusa-types";
 import * as RadixPopover from "@radix-ui/react-popover";
 import clsx from "clsx";
 import React, { useCallback, useEffect, useState } from "react";
+import Spinner from "src/components/atoms/spinner";
 import TableSearch from "src/components/molecules/table/table-search";
 import { useDebounce } from "src/hooks/use-debounce";
 import CustomerLine from "../details/templates/customer-line";
@@ -17,7 +18,7 @@ const CustomerDialog = ({ open, onClose, handleSelectCustomer }: Props) => {
   const [customerList, setCustomerList] = useState<Customer[]>([]);
   const [query, setQuery] = useState<string>("");
   const debounceQuery = useDebounce(query, 200);
-  const { customers } = useAdminCustomers({
+  const { customers, isLoading } = useAdminCustomers({
     q: debounceQuery,
     offset: 0,
     limit: 50,
@@ -40,6 +41,29 @@ const CustomerDialog = ({ open, onClose, handleSelectCustomer }: Props) => {
     }
   }, [customers]);
 
+  const renderBody = useCallback(() => {
+    if (isLoading) {
+      return (
+        <div className="w-full h-10 flex items-center justify-center">
+          <Spinner size={"large"} variant={"secondary"} />
+        </div>
+      );
+    }
+    if (!customerList.length) {
+      return (
+        <div className="text-center w-full">Customer does not exist</div>
+      );
+    }
+
+    return customerList.map((item) => (
+      <CustomerLine
+        customer={item}
+        className="cursor-pointer"
+        onClick={() => handleClickCustomerLine(item)}
+      />
+    ));
+  }, [customerList, handleClickCustomerLine, isLoading]);
+
   return (
     <RadixPopover.Root open={open} onOpenChange={onClose}>
       <RadixPopover.Trigger className="w-full visible"></RadixPopover.Trigger>
@@ -58,17 +82,11 @@ const CustomerDialog = ({ open, onClose, handleSelectCustomer }: Props) => {
         />
         <div
           className={clsx(
-            "inter-small-regular text-grey-50 mt-6 w-max",
+            "inter-small-regular text-grey-50 mt-6 w-full",
             "max-h-[300px] overflow-y-auto scroll-smooth scrollbar-thin overflow-x-hidden"
           )}
         >
-          {customerList.map((item) => (
-            <CustomerLine
-              customer={item}
-              className="cursor-pointer"
-              onClick={() => handleClickCustomerLine(item)}
-            />
-          ))}
+          {renderBody()}
         </div>
         <div className="flex flex-col items-center gap-y-base"></div>
       </RadixPopover.Content>

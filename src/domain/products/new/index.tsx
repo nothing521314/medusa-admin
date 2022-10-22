@@ -1,22 +1,21 @@
 import { AdminPostProductsReq, Product } from "@medusa-types";
+import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import React from "react";
 import { useForm } from "react-hook-form";
 import BackButton from "src/components/atoms/back-button";
+import { FormImage } from "src/types/shared";
+import { prepareImages } from "src/utils/images";
 import { useAdminCreateProduct } from "../../../../medusa-react";
 import Button from "../../../components/fundamentals/button";
-import { useFeatureFlag } from "../../../context/feature-flag";
 import useNotification from "../../../hooks/use-notification";
 import { getErrorMessage } from "../../../utils/error-messages";
 import AdditionalHardwares from "../components/sections/additional-hw";
-import RawSection from "../components/sections/raw";
 import GeneralSection from "../components/sections/general";
 import MediaSection from "../components/sections/media";
 import PricesSection from "../components/sections/price";
-import { FormImage } from "src/types/shared";
-import { prepareImages } from "src/utils/images";
 
-const NewProduct = () => {
+const NewProduct: React.FC<RouteComponentProps> = () => {
   const form = useForm<Product>({});
   const { mutate } = useAdminCreateProduct();
   const notification = useNotification();
@@ -24,14 +23,13 @@ const NewProduct = () => {
   const {
     handleSubmit,
     formState: { isDirty, errors },
-    watch,
   } = form;
   console.log("errors", errors);
-  const { isFeatureEnabled } = useFeatureFlag();
+  // const { isFeatureEnabled } = useFeatureFlag();
 
   const onSubmit = () =>
     handleSubmit(
-      async ({ images, id, collection, additional_hardwares, ...data }) => {
+      async ({ images, collection, additional_hardwares, ...data }) => {
         if (!images.some((v) => v?.url)) {
           notification("Error", "Media is required.", "error");
           return;
@@ -78,8 +76,8 @@ const NewProduct = () => {
         }
 
         mutate(req, {
-          onSuccess: ({ product }) => {
-            navigate(`/a/products`);
+          onSuccess: () => {
+            navigate("/a/products");
             notification("Success", "Created a new product", "success");
           },
           onError: (err) => {

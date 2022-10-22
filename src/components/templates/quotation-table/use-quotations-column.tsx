@@ -67,7 +67,7 @@ const useQuotationTableColumns = (): Column<TQuotationReturn>[] => {
               total: item.volume * item.unit_price,
               subTotal:
                 item.volume * item.unit_price +
-                child_product?.reduce((pre, cur) => pre + cur.total, 0),
+                (child_product?.reduce((pre, cur) => pre + cur.total, 0) || 0),
               child_product,
             };
           });
@@ -83,31 +83,6 @@ const useQuotationTableColumns = (): Column<TQuotationReturn>[] => {
           );
         },
       },
-      // {
-      //   Header: "",
-      //   disableSortBy: true,
-      //   accessor: "currency",
-      //   Cell: ({ row, index }) => (
-      //     <Table.Cell className="w-[5%] pr-2" key={index}>
-      //       <div className="flex rounded-rounded w-full justify-end">
-      //         <Tooltip
-      //           content={
-      //             isoAlpha2Countries[
-      //               row.original.shipping_address?.country_code?.toUpperCase()
-      //             ] ||
-      //             row.original.shipping_address?.country_code?.toUpperCase()
-      //           }
-      //         >
-      //           <ReactCountryFlag
-      //             className={"rounded"}
-      //             svg
-      //             countryCode={row.original.shipping_address?.country_code}
-      //           />
-      //         </Tooltip>
-      //       </div>
-      //     </Table.Cell>
-      //   ),
-      // },
     ],
     []
   );

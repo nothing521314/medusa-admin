@@ -7,7 +7,8 @@ import { formatAmountWithSymbol } from "src/utils/prices";
 import { IQuotationDetailForm } from "../details";
 
 interface TPrintQuotationFromModal
-  extends RouteComponentProps<{ id: string; tab: string }> {
+  extends RouteComponentProps<{ id: string; tab: string }>,
+    React.HTMLAttributes<HTMLDivElement> {
   formData?: IQuotationDetailForm;
   className?: string;
 }
@@ -32,10 +33,12 @@ const PrintQuotationFrom = ({
       return {
         ...item,
         total: (item.priceItem || 0) * (item.quantity || 0),
+        subTotalChild: child_product.reduce((pre, cur) => pre + cur.total, 0),
         subTotal:
           (item.priceItem || 0) * (item.quantity || 0) +
           child_product.reduce((pre, cur) => pre + cur.total, 0),
         child_product,
+        count: child_product?.length + 1,
       };
     });
   }, [formData?.summary]);
@@ -44,8 +47,14 @@ const PrintQuotationFrom = ({
     return summary?.reduce((pre, cur) => pre + cur.subTotal, 0) || 0;
   }, [summary]);
 
+  const getNoNum = useCallback((index: number, arr: any) => {
+    return (
+      arr.slice(0, index).reduce((pre, cur) => pre + cur.count, 0) + 1 || 0
+    );
+  }, []);
+
   return (
-    <div className={clsx("w-full h-max bg-white", className)}>
+    <div className={clsx("w-full h-auto bg-white", className)} id="print-quote">
       <img src={formData?.header?.header} alt="" />
       <div className="w-full h-full px-16">
         <div className="flex justify-between items-center">
@@ -64,7 +73,7 @@ const PrintQuotationFrom = ({
           Dear {`${formData?.customer?.person_in_charge},`}
         </div>
         <div className="mt-3 border-y-4 border-black font-semibold py-2">
-          {"Quotation for SG EGMs - 26x DUALS X (Link Machines)"}
+          {`Quotation for ${summary?.[0]?.product?.title}`}
         </div>
         <div className="mt-3 text-justify">
           We are pleased to submit our quotation for your consideration. Please
@@ -97,10 +106,10 @@ const PrintQuotationFrom = ({
           <Table.Body>
             {(summary as any[])?.map((item, index) => {
               return (
-                <>
+                <React.Fragment key={index}>
                   <Table.Row className="!border-b-0 !border-[2px] border-black">
                     <Table.Cell className="pl-4 border-l-[2px] border-black">
-                      {index + 1}
+                      {getNoNum(index, summary)}
                     </Table.Cell>
                     <Table.Cell className="font-semibold border-l-[2px] pl-4 border-black">
                       {item.title}
@@ -136,44 +145,16 @@ const PrintQuotationFrom = ({
                       })}
                     </Table.Cell>
                   </Table.Row>
-                  {item.child_product.map((child) => {
-                    return (
-                      <Table.Row className="!border-none mt-4">
-                        <Table.Cell></Table.Cell>
-                        <Table.Cell className="border-l-[2px] pl-4 border-black">{`- ${child.title}`}</Table.Cell>
-                        <Table.Cell className="border-l-[2px] pl-4 border-black">
-                          {child.quantity}
-                        </Table.Cell>
-                        <Table.Cell className="border-l-[2px] pl-4 border-black">
-                          {formatAmountWithSymbol({
-                            amount: child.priceItem,
-                            currency: formData?.region?.currency_code || "usd",
-                            digits: 2,
-                            showPrefix: false,
-                            tax: formData?.region?.tax_rate || 0,
-                          })}
-                        </Table.Cell>
-                        <Table.Cell className="border-l-[2px] pl-4 border-black">
-                          {formatAmountWithSymbol({
-                            amount: child.priceItem,
-                            currency: formData?.region?.currency_code || "usd",
-                            digits: 2,
-                            showPrefix: false,
-                            tax: formData?.region?.tax_rate || 0,
-                          })}
-                        </Table.Cell>
-                        <Table.Cell className="border-l-[2px] pl-4 border-black">
-                          {formatAmountWithSymbol({
-                            amount: child.total,
-                            currency: formData?.region?.currency_code || "usd",
-                            digits: 2,
-                            showPrefix: false,
-                            tax: formData?.region?.tax_rate || 0,
-                          })}
-                        </Table.Cell>
-                      </Table.Row>
-                    );
-                  })}
+                  <Table.Row className="!border-none mt-4">
+                    <Table.Cell></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black font-normal">
+                      {item.description}
+                    </Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                  </Table.Row>
                   {item.child_product.filter((child) => child?.game)?.length ? (
                     <Table.Row className="!border-none mt-4">
                       <Table.Cell></Table.Cell>
@@ -188,8 +169,8 @@ const PrintQuotationFrom = ({
                   ) : null}
                   {item.child_product
                     .filter((child) => child?.game)
-                    ?.map((child) => (
-                      <Table.Row className="!border-none mt-2">
+                    ?.map((child, indexG) => (
+                      <Table.Row className="!border-none mt-2" key={indexG}>
                         <Table.Cell></Table.Cell>
                         <Table.Cell className="border-l-[2px] border-black pl-4 italic">
                           <span className="italic">- {child?.game}</span>
@@ -200,25 +181,91 @@ const PrintQuotationFrom = ({
                         <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
                       </Table.Row>
                     ))}
-                  <Table.Row className="!border-[2px] border-black">
-                    <Table.Cell></Table.Cell>
-                    <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
-                      Subtotal
-                    </Table.Cell>
-                    <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-                    <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-                    <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-                    <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
-                      {formatAmountWithSymbol({
-                        amount: item.subTotal,
-                        currency: formData?.region?.currency_code || "usd",
-                        digits: 2,
-                        showPrefix: false,
-                        tax: formData?.region?.tax_rate || 0,
-                      })}
-                    </Table.Cell>
-                  </Table.Row>
-                </>
+                  {item.child_product.length ? (
+                    <Table.Row className="!border-[2px] border-black">
+                      <Table.Cell></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                        Subtotal
+                      </Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                        {formatAmountWithSymbol({
+                          amount: item.subTotal,
+                          currency: formData?.region?.currency_code || "usd",
+                          digits: 2,
+                          showPrefix: false,
+                          tax: formData?.region?.tax_rate || 0,
+                        })}
+                      </Table.Cell>
+                    </Table.Row>
+                  ) : null}
+                  {item.child_product.map((child, indexChild) => {
+                    return (
+                      <React.Fragment key={indexChild}>
+                        <Table.Row className="">
+                          <Table.Cell></Table.Cell>
+                          <Table.Cell className="border-l-[2px] pl-4 border-black">{`- ${child.title}`}</Table.Cell>
+                          <Table.Cell className="border-l-[2px] pl-4 border-black">
+                            {child.quantity}
+                          </Table.Cell>
+                          <Table.Cell className="border-l-[2px] pl-4 border-black">
+                            {formatAmountWithSymbol({
+                              amount: child.priceItem,
+                              currency:
+                                formData?.region?.currency_code || "usd",
+                              digits: 2,
+                              showPrefix: false,
+                              tax: formData?.region?.tax_rate || 0,
+                            })}
+                          </Table.Cell>
+                          <Table.Cell className="border-l-[2px] pl-4 border-black">
+                            {formatAmountWithSymbol({
+                              amount: child.priceItem,
+                              currency:
+                                formData?.region?.currency_code || "usd",
+                              digits: 2,
+                              showPrefix: false,
+                              tax: formData?.region?.tax_rate || 0,
+                            })}
+                          </Table.Cell>
+                          <Table.Cell className="border-l-[2px] pl-4 border-black">
+                            {formatAmountWithSymbol({
+                              amount: child.total,
+                              currency:
+                                formData?.region?.currency_code || "usd",
+                              digits: 2,
+                              showPrefix: false,
+                              tax: formData?.region?.tax_rate || 0,
+                            })}
+                          </Table.Cell>
+                        </Table.Row>
+                        {item.child_product?.length > 1 ? (
+                          <Table.Row className="!border-[2px] border-black">
+                            <Table.Cell></Table.Cell>
+                            <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                              Subtotal
+                            </Table.Cell>
+                            <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+                            <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+                            <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
+                            <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                              {formatAmountWithSymbol({
+                                amount: item.subTotalChild,
+                                currency:
+                                  formData?.region?.currency_code || "usd",
+                                digits: 2,
+                                showPrefix: false,
+                                tax: formData?.region?.tax_rate || 0,
+                              })}
+                            </Table.Cell>
+                          </Table.Row>
+                        ) : null}
+                      </React.Fragment>
+                    );
+                  })}
+                </React.Fragment>
               );
             })}
             <Table.Row className="!border-[2px] border-black">
@@ -298,7 +345,10 @@ const PrintQuotationFrom = ({
           }}
         />
       </div>
-      <img src={formData?.header?.footer} alt="" />
+      <img
+        src={formData?.header?.footer}
+        className="object-contain object-top"
+      />
     </div>
   );
 };
