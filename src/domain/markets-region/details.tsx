@@ -66,9 +66,10 @@ const MarketRegionDetail: React.FC<CustomerDetailProps> = ({ id }) => {
         previousRoute="/a/markets-region"
       />
       <BodyCard title="Market Region Details" className="min-h-">
-        <div className="w-full flex mb-4 space-x-3">
+        <div className="w-full flex mb-4 space-x-2">
           <InputField
             label="Name"
+            readOnly
             {...register("name", {
               required: FormValidator.required("Name"),
             })}
@@ -76,31 +77,12 @@ const MarketRegionDetail: React.FC<CustomerDetailProps> = ({ id }) => {
           />
           <InputField
             label="Price currency"
+            readOnly
             {...register("currency_code", {
               required: FormValidator.required("Price currency"),
             })}
             errors={errors}
           />
-          <div className="mt-8  flex justify-center">
-            <Button
-              size="small"
-              variant="danger"
-              onClick={() => navigate(`/a/markets-region`)}
-              className="mr-2"
-            >
-              Cancel
-            </Button>
-            <Button
-              size="small"
-              loading={updateRegion.isLoading}
-              disabled={!isDirty || updateRegion.isLoading}
-              variant="primary"
-              className="min-w-[100px]"
-              onClick={onSubmit}
-            >
-              Save
-            </Button>
-          </div>
         </div>
         {/* <ListProduct form={form} /> */}
         <div className="mt-9">
