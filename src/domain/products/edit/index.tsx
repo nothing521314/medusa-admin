@@ -37,6 +37,7 @@ const Edit = ({ id }: EditProps) => {
     formState: { isDirty },
     handleSubmit,
     reset,
+    watch,
   } = form;
 
   useEffect(() => {
@@ -79,7 +80,7 @@ const Edit = ({ id }: EditProps) => {
       });
     }
   }, [product, regionsMaster, reset]);
-
+  console.log(watch("collection.label"));
   const onSubmit = () =>
     handleSubmit(
       async ({ images, collection, additional_hardwares, ...data }) => {
@@ -201,7 +202,9 @@ const Edit = ({ id }: EditProps) => {
           <MediaSection mode="edit" form={form} />
           <GeneralSection mode="edit" form={form} />
           <PricesSection form={form} />
-          <AdditionalHardwares form={form} />
+          {watch("collection.label") === KEY.ID_CATEGORY_QM && (
+            <AdditionalHardwares form={form} />
+          )}
           {/* <AttributesSection product={product} /> */}
           {/* <RawSection product={watch()} /> */}
         </div>

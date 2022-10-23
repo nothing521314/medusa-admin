@@ -1,9 +1,8 @@
+import clsx from "clsx";
 import React from "react";
 import { Toaster } from "react-hot-toast";
 import Sidebar from "../organisms/sidebar";
 import Topbar from "../organisms/topbar";
-import { PollingProvider } from "../../context/polling";
-import clsx from "clsx";
 
 const Layout: React.FC = ({ children }) => {
   return (
@@ -18,9 +17,7 @@ const Layout: React.FC = ({ children }) => {
       />
       <Sidebar />
       <div className="flex flex-col flex-1">
-        <PollingProvider>
-          <Topbar />
-        </PollingProvider>
+        <Topbar />
         <div
           className={clsx(
             "large:px-xlarge py-xlarge bg-grey-5 min-h-content overflow-y-auto",
