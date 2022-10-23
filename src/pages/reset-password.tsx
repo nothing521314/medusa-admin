@@ -1,7 +1,7 @@
 import { navigate } from "gatsby";
 import { useAdminResetPassword } from "../../medusa-react";
 import qs from "qs";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { decodeToken } from "react-jwt";
 import Button from "../components/fundamentals/button";
@@ -78,78 +78,6 @@ const ResetPasswordPage = ({ location }) => {
     }
   }, [formState]);
 
-  const renderBody = useCallback(() => {
-    if (!token) {
-      return (
-        <div className="h-full flex flex-col gap-y-2 text-center items-center justify-center">
-          <span className="inter-large-semibold text-grey-90">
-            You reset link is invalid
-          </span>
-          <span className="inter-base-regular text-grey-50 mt-2">
-            Please try resetting your password again
-          </span>
-        </div>
-      );
-    }
-    return (
-      <React.Fragment>
-        <span className="inter-2xlarge-semibold mt-4 text-grey-90">
-          Reset your password
-        </span>
-        <span className="inter-base-regular text-grey-50 mt-2 mb-xlarge">
-          Choose a new password below 👇🏼
-        </span>
-        <SigninInput
-          placeholder="Email"
-          name="first_name"
-          value={email}
-          readOnly
-        />
-        <SigninInput
-          placeholder="Password"
-          type={"password"}
-          {...register("password", { required: true })}
-          autoComplete="new-password"
-        />
-        <SigninInput
-          placeholder="Confirm password"
-          type={"password"}
-          {...register("repeat_password", { required: true })}
-          autoComplete="new-password"
-          className="mb-0"
-        />
-        {error && (
-          <span className="text-rose-50 w-full mt-xsmall inter-small-regular">
-            The two passwords are not the same
-          </span>
-        )}
-        {passwordMismatch && (
-          <span className="text-rose-50 w-full mt-xsmall inter-small-regular">
-            The two passwords are not the same
-          </span>
-        )}
-        <Button
-          variant="primary"
-          size="large"
-          type="submit"
-          className="w-full mt-base rounded-rounded"
-          loading={formState.isSubmitting}
-          disabled={!ready}
-        >
-          Reset Password
-        </Button>
-      </React.Fragment>
-    );
-  }, [
-    email,
-    error,
-    formState.isSubmitting,
-    passwordMismatch,
-    ready,
-    register,
-    token,
-  ]);
-
   return (
     <LoginLayout>
       <SEO title="Reset Password" />
@@ -160,7 +88,64 @@ const ResetPasswordPage = ({ location }) => {
             onSubmit={handleSubmit(handleAcceptInvite)}
           >
             <MedusaIcon />
-            {renderBody()}
+            {token ? (
+              <>
+                <span className="inter-2xlarge-semibold mt-4 text-grey-90">
+                  Reset your password
+                </span>
+                <span className="inter-base-regular text-grey-50 mt-2 mb-xlarge">
+                  Choose a new password below 👇🏼
+                </span>
+                <SigninInput
+                  placeholder="Email"
+                  name="first_name"
+                  value={email}
+                  readOnly
+                />
+                <SigninInput
+                  placeholder="Password"
+                  type={"password"}
+                  {...register("password", { required: true })}
+                  autoComplete="new-password"
+                />
+                <SigninInput
+                  placeholder="Confirm password"
+                  type={"password"}
+                  {...register("repeat_password", { required: true })}
+                  autoComplete="new-password"
+                  className="mb-0"
+                />
+                {error && (
+                  <span className="text-rose-50 w-full mt-xsmall inter-small-regular">
+                    The two passwords are not the same
+                  </span>
+                )}
+                {passwordMismatch && (
+                  <span className="text-rose-50 w-full mt-xsmall inter-small-regular">
+                    The two passwords are not the same
+                  </span>
+                )}
+                <Button
+                  variant="primary"
+                  size="large"
+                  type="submit"
+                  className="w-full mt-base rounded-rounded"
+                  loading={formState.isSubmitting}
+                  disabled={!ready}
+                >
+                  Reset Password
+                </Button>
+              </>
+            ) : (
+              <div className="h-full flex flex-col gap-y-2 text-center items-center justify-center">
+                <span className="inter-large-semibold text-grey-90">
+                  You reset link is invalid
+                </span>
+                <span className="inter-base-regular text-grey-50 mt-2">
+                  Please try resetting your password again
+                </span>
+              </div>
+            )}
           </form>
         </div>
       </div>
