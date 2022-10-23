@@ -475,14 +475,15 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
   const isDeletedProduct = useMemo(() => {
     if (quotation?.quotation_lines) {
-      const parentDeleted = quotation.quotation_lines.every(
+      const parentDeleted = quotation.quotation_lines.findIndex(
         (item) => !item.product
       );
-
-      if (parentDeleted) return true;
+      if (parentDeleted !== -1) return true;
       quotation?.quotation_lines.every((item) => {
-        const childDeleted = item.child_product.every((item) => !item.product);
-        if (childDeleted) return true;
+        const childDeleted = item.child_product.findIndex(
+          (item) => !item.product
+        );
+        if (childDeleted !== -1) return true;
       });
     }
 
@@ -497,6 +498,9 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
             ...product,
             priceItem:
               product?.priceItem ||
+              product?.prices.find(
+                (region) => region?.region === watch("region")?.id
+              )?.value ||
               product?.prices.find(
                 (region) => region?.region_id === watch("region")?.id
               )?.price ||
@@ -517,7 +521,9 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         ?.map((item) => {
           return {
             ...item,
-            child_product: item?.child_product?.filter((child) => child?.title),
+            child_product: item?.child_product?.filter(
+              (child) => child?.title && child?.quantity
+            ),
           };
         })
         .filter((item) => item.title);
@@ -539,10 +545,14 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           additional_hardwares: item?.child_product.map((child) => ({
             ...child?.product,
             ...child,
+            priceItem: child.unit_price,
+            quantity: child.volume,
           })),
           child_product: item?.child_product.map((child) => ({
             ...child?.product,
             ...child,
+            priceItem: child.unit_price,
+            quantity: child.volume,
           })),
           priceItem: item.unit_price,
           quantity: item.volume,

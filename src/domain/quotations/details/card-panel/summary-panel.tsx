@@ -7,6 +7,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import Button from "src/components/fundamentals/button";
 import BodyCard from "src/components/organisms/body-card";
 import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
 import useToggleState from "src/hooks/use-toggle-state";
@@ -108,15 +109,17 @@ const SummaryPanel = ({ formData, readOnly = true, tab }: Props) => {
     <BodyCard
       className={"w-full mb-4 min-h-0 h-auto"}
       title="Summary"
-      actionables={
-        tab === SUB_TAB.REVISE_QUOTATION
-          ? [
-              {
-                label: "Add Product",
-                onClick: handleClickChangeButton,
-              },
-            ]
-          : undefined
+      status={
+        tab === SUB_TAB.REVISE_QUOTATION ? (
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={handleClickChangeButton}
+            type="button"
+          >
+            Add Product
+          </Button>
+        ) : undefined
       }
     >
       <div className="mt-6">

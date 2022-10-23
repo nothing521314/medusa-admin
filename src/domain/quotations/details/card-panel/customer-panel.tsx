@@ -1,5 +1,6 @@
 import { Customer } from "@medusa-types";
 import React, { useCallback } from "react";
+import Button from "src/components/fundamentals/button";
 import BodyCard from "src/components/organisms/body-card";
 import useToggleState from "src/hooks/use-toggle-state";
 import CustomerDialog from "../../modal/customer-dialog";
@@ -27,15 +28,17 @@ const CustomerPanel = ({ customer, handleSelectCustomer, readOnly }: Props) => {
     <BodyCard
       className={"w-full mb-4 min-h-0 h-auto relative"}
       title="Customer"
-      actionables={
-        !readOnly
-          ? [
-              {
-                label: "Change",
-                onClick: handleClickChangeButton,
-              },
-            ]
-          : undefined
+      status={
+        !readOnly ? (
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={handleClickChangeButton}
+            type="button"
+          >
+            Change
+          </Button>
+        ) : undefined
       }
     >
       {customer && <CustomerLine customer={customer} />}

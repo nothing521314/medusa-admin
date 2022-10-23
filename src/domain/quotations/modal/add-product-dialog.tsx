@@ -51,13 +51,13 @@ const AddProductDialog = ({ open, onClose, handleSetProduct }: Props) => {
       );
     }
 
-    if (!productList.length) {
+    if (!productList?.length) {
       return (
         <div className="text-center w-full">Product does not exist</div>
       );
     }
 
-    return productList.map((item) => (
+    return productList?.map((item) => (
       <div
         className={clsx(
           "px-base py-xsmall group hover:bg-grey-5 rounded-rounded flex items-center justify-between border border-gray-30 mt-4",

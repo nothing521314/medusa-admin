@@ -192,7 +192,7 @@ const PrintQuotationFrom = ({
                       <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
                       <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
                         {formatAmountWithSymbol({
-                          amount: item.subTotal,
+                          amount: item.total,
                           currency: formData?.region?.currency_code || "usd",
                           digits: 2,
                           showPrefix: false,
