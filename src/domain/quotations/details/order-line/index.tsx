@@ -98,7 +98,7 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
         <div className="flex space-x-4 justify-center ml-12 inter-small-regular text-grey-90 truncate">
           Game attached (optional):
         </div>
-        <div className="flex flex-col gap-y-4">
+        <div className="flex flex-col gap-y-4 w-1/3">
           {item.child_product.map((child, index) => (
             <input
               key={index}
