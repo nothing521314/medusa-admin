@@ -1,9 +1,12 @@
+import { Customer } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
 import { isEmpty } from "lodash";
 import qs from "qs";
-import React, { useEffect, useState } from "react";
-import { usePagination, useTable } from "react-table";
+import React, { useContext, useEffect, useState } from "react";
+import { Row, usePagination, useTable } from "react-table";
+import { ActionType } from "src/components/molecules/actionables";
+import { AccountContext } from "src/context/account";
 import { useCustomerActions } from "src/hooks/use-customer-actions";
 import { useAdminCustomers } from "../../../../medusa-react";
 import Spinner from "../../atoms/spinner";
@@ -20,6 +23,8 @@ const defaultQueryProps = {
 };
 
 const CustomerTable: React.FC<RouteComponentProps> = () => {
+  const { isAdmin } = useContext(AccountContext);
+
   const {
     reset,
     paginate,
@@ -126,6 +131,25 @@ const CustomerTable: React.FC<RouteComponentProps> = () => {
     refreshWithFilters();
   }, [representationObject]);
 
+  const getAction = (row: Row<Customer>) => {
+    const list: ActionType[] = [
+      {
+        label: "Edit",
+        onClick: () => navigate(String(row.original.id)),
+        icon: <EditIcon size={20} />,
+      },
+    ];
+    if (isAdmin) {
+      list.push({
+        label: "Delete",
+        variant: "danger",
+        onClick: () => row.original.id && handleDelete(row.original.id),
+        icon: <TrashIcon size={20} />,
+      });
+    }
+    return list;
+  };
+
   return (
     <div className="w-full h-full overflow-y-auto flex flex-col justify-between">
       <Table enableSearch handleSearch={setQuery} {...getTableProps()}>
@@ -153,25 +177,7 @@ const CustomerTable: React.FC<RouteComponentProps> = () => {
               return (
                 <Table.Row
                   color={"inherit"}
-                  actions={[
-                    {
-                      label: "Edit",
-                      onClick: () => navigate(String(row.original.id)),
-                      icon: <EditIcon size={20} />,
-                    },
-                    // {
-                    //   label: "Details",
-                    //   onClick: () => navigate(row.original.id),
-                    //   icon: <DetailsIcon size={20} />,
-                    // },
-                    {
-                      label: "Delete",
-                      variant: "danger",
-                      onClick: () =>
-                        row.original.id && handleDelete(row.original.id),
-                      icon: <TrashIcon size={20} />,
-                    },
-                  ]}
+                  actions={getAction(row)}
                   linkTo={row.original.id}
                   {...row.getRowProps()}
                 >

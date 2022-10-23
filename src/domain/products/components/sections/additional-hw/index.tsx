@@ -19,7 +19,7 @@ function AdditionalHardwares({ form: { control } }: Props) {
   const { collection } = useWatch({
     control,
   });
-  const { selectedRegion } = useContext(AccountContext);
+  const { isAdmin, selectedRegion } = useContext(AccountContext);
   const { fields, append, remove } = useFieldArray({
     control,
     name: "additional_hardwares",
@@ -38,9 +38,11 @@ function AdditionalHardwares({ form: { control } }: Props) {
       <Section
         title="Additional hardwares"
         customActions={
-          <Button variant="secondary" onClick={open}>
-            Add
-          </Button>
+          isAdmin && (
+            <Button variant="secondary" onClick={open}>
+              Add
+            </Button>
+          )
         }
       >
         <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(210px,5fr))] gap-4">
@@ -49,7 +51,7 @@ function AdditionalHardwares({ form: { control } }: Props) {
               <HardwareItem
                 key={p.id}
                 product={p}
-                remove={() => remove(index)}
+                remove={isAdmin ? () => remove(index) : undefined}
                 region={selectedRegion}
               />
             );
@@ -72,7 +74,7 @@ const HardwareItem = ({
   region,
 }: {
   product: Hardware;
-  remove: () => void;
+  remove: (() => void) | undefined;
   region?: Region;
 }) => {
   const price = useMemo(() => {
@@ -114,11 +116,13 @@ const HardwareItem = ({
           
         </div> */}
       </div>
-      <div className="absolute top-[-15px] right-[-15px]">
-        <Button variant="nuclear" size="small" onClick={remove}>
-          <CrossIcon size={18} />
-        </Button>
-      </div>
+      {remove && (
+        <div className="absolute top-[-15px] right-[-15px]">
+          <Button variant="nuclear" size="small" onClick={remove}>
+            <CrossIcon size={18} />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

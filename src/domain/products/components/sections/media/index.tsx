@@ -73,7 +73,7 @@ const MediaSection = ({ mode = "new", form }: Props) => {
             isModeEdit ? "col-span-7" : "col-span-12"
           )}
         >
-          <MediaForm form={form} />
+          <MediaForm mode={mode} form={form} />
         </div>
         {isModeEdit && (
           <div className="flex flex-col col-span-5 gap-y-3 justify-center items-center">

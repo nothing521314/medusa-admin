@@ -6,6 +6,7 @@ import PricesForm from "src/domain/products/components/prices-form";
 
 type Props = {
   form: UseFormReturn<Product, any>;
+  mode?: "new" | "edit";
 };
 
 const AddVariantModal = ({ form }: Props) => {

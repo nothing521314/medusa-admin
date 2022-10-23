@@ -6,11 +6,12 @@ import {
 import { Product } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
 import { navigate } from "gatsby";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ReactJson from "react-json-view";
 import Button from "src/components/fundamentals/button";
 import { KEY } from "src/constants/misc";
+import { AccountContext } from "src/context/account";
 import useNotification from "src/hooks/use-notification";
 import { FormImage } from "src/types/shared";
 import { getErrorMessage } from "src/utils/error-messages";
@@ -27,6 +28,7 @@ import PricesSection from "../components/sections/price";
 type EditProps = RouteComponentProps<{ id: string }>;
 
 const Edit = ({ id }: EditProps) => {
+  const { isAdmin } = useContext(AccountContext);
   const { product, status, error, isLoading } = useAdminProduct(id!);
   const { mutate, isLoading: isLoadingUpdate } = useAdminUpdateProduct(id!);
   const { regions: regionsMaster } = useAdminRegions();
@@ -201,7 +203,7 @@ const Edit = ({ id }: EditProps) => {
         <div className="col-span-12 flex flex-col gap-y-xsmall">
           <MediaSection mode="edit" form={form} />
           <GeneralSection mode="edit" form={form} />
-          <PricesSection form={form} />
+          <PricesSection mode="edit" form={form} />
           {watch("collection.label") === KEY.ID_CATEGORY_QM && (
             <AdditionalHardwares form={form} />
           )}
@@ -217,17 +219,19 @@ const Edit = ({ id }: EditProps) => {
           className="w-[200px]"
           type="button"
         >
-          Cancel
+          {isAdmin ? "Cancel" : "Back"}
         </Button>
-        <Button
-          variant="primary"
-          size="medium"
-          className="w-[200px]"
-          disabled={!isDirty || isLoading || isLoadingUpdate}
-          onClick={onSubmit()}
-        >
-          Save
-        </Button>
+        {isAdmin && (
+          <Button
+            variant="primary"
+            size="medium"
+            className="w-[200px]"
+            disabled={!isDirty || isLoading || isLoadingUpdate}
+            onClick={onSubmit()}
+          >
+            Save
+          </Button>
+        )}
       </div>
     </div>
   );

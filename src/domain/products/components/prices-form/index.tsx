@@ -1,16 +1,19 @@
 import { IPrice, Product, Region } from "@medusa-types";
-import React from "react";
-import { Controller, useFieldArray, UseFormReturn } from "react-hook-form";
+import React, { useContext } from "react";
+import { Controller, UseFormReturn } from "react-hook-form";
 import MapPinIcon from "src/components/fundamentals/icons/map-pin-icon";
+import { AccountContext } from "src/context/account";
 import { useAdminRegions } from "../../../../../medusa-react";
 import PriceFormInput from "./price-form-input";
 
 type Props = {
   form: UseFormReturn<Product, any>;
+  mode?: "new" | "edit";
 };
 
 const PricesForm = ({ form: { control } }: Props) => {
   const { regions } = useAdminRegions();
+  const { isAdmin } = useContext(AccountContext);
 
   return (
     (regions as Region[])?.map((rp, index) => {
@@ -35,6 +38,7 @@ const PricesForm = ({ form: { control } }: Props) => {
               const { value: price } = value ?? {};
               return (
                 <PriceFormInput
+                  readOnly={!isAdmin}
                   onChange={(v) =>
                     onChange({ value: v, region: rp.id } as IPrice)
                   }

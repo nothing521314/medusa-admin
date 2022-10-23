@@ -1,12 +1,13 @@
 import { Product } from "@medusa-types";
 import clsx from "clsx";
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import {
   Controller,
   useFieldArray,
   UseFormReturn,
   useWatch,
 } from "react-hook-form";
+import { AccountContext } from "src/context/account";
 import FileUploadField from "../../../../components/atoms/file-upload-field";
 import Button from "../../../../components/fundamentals/button";
 import CheckCircleFillIcon from "../../../../components/fundamentals/icons/check-circle-fill-icon";
@@ -18,10 +19,13 @@ import { FormImage } from "../../../../types/shared";
 
 type Props = {
   form: UseFormReturn<Product, any>;
+  mode?: "new" | "edit";
 };
 
-const MediaForm = ({ form }: Props) => {
+const MediaForm = ({ mode, form }: Props) => {
   const { control, setValue } = form;
+  const isModeNew = mode === "new";
+  const { isAdmin } = useContext(AccountContext);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -81,7 +85,7 @@ const MediaForm = ({ form }: Props) => {
                   key={field.id}
                   image={field}
                   index={index}
-                  remove={remove}
+                  remove={isAdmin ? remove : undefined}
                   form={form}
                 />
               );
@@ -89,25 +93,34 @@ const MediaForm = ({ form }: Props) => {
           </div>
         </div>
       )}
-      <div className="mb-small flex items-center justify-between">
-        <h2 className="inter-large-semibold">Uploads</h2>
-        <ModalActions
-          number={selected.length}
-          onDeselect={handleDeselect}
-          onRemove={handleRemove}
-        />
-      </div>
-      <div>
-        <div>
-          <FileUploadField
-            onFileChosen={handleFilesChosen}
-            placeholder="1200 x 1600 (3:4) recommended, up to 10MB each"
-            multiple
-            filetypes={["image/gif", "image/jpeg", "image/png", "image/webp"]}
-            className="py-large"
-          />
-        </div>
-      </div>
+      {isAdmin && (
+        <>
+          <div className="mb-small flex items-center justify-between">
+            <h2 className="inter-large-semibold">Uploads</h2>
+            <ModalActions
+              number={selected.length}
+              onDeselect={handleDeselect}
+              onRemove={handleRemove}
+            />
+          </div>
+          <div>
+            <div>
+              <FileUploadField
+                onFileChosen={handleFilesChosen}
+                placeholder="1200 x 1600 (3:4) recommended, up to 10MB each"
+                multiple
+                filetypes={[
+                  "image/gif",
+                  "image/jpeg",
+                  "image/png",
+                  "image/webp",
+                ]}
+                className="py-large"
+              />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
@@ -115,7 +128,7 @@ const MediaForm = ({ form }: Props) => {
 type ImageProps = {
   image: FormImage;
   index: number;
-  remove: (index: number) => void;
+  remove: ((index: number) => void) | undefined;
   form: UseFormReturn<Product, any>;
 };
 
@@ -125,7 +138,7 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
   const actions: ActionType[] = [
     {
       label: "Delete",
-      onClick: () => remove(index),
+      onClick: () => remove?.(index),
       icon: <TrashIcon size={20} />,
       variant: "danger",
     },
@@ -162,16 +175,18 @@ const Image = ({ image, index, form, remove }: ImageProps) => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-x-base">
-              <span
-                className={clsx("hidden", {
-                  "!block !text-violet-60": value,
-                })}
-              >
-                <CheckCircleFillIcon size={24} />
-              </span>
-              <Actionables actions={actions} forceDropdown />
-            </div>
+            {Boolean(remove) && (
+              <div className="flex items-center gap-x-base">
+                <span
+                  className={clsx("hidden", {
+                    "!block !text-violet-60": value,
+                  })}
+                >
+                  <CheckCircleFillIcon size={24} />
+                </span>
+                <Actionables actions={actions} forceDropdown />
+              </div>
+            )}
           </button>
         );
       }}

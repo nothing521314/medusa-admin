@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
-import AmountField from "react-currency-input-field";
+import AmountField, { CurrencyInputProps } from "react-currency-input-field";
 import InputError from "../../../../components/atoms/input-error";
 import { currencies } from "../../../../utils/currencies";
 
@@ -10,7 +10,7 @@ type Props = {
   onChange: (amount?: number) => void;
   errors?: { [x: string]: unknown };
   name?: string;
-};
+} & CurrencyInputProps;
 
 const PriceFormInput = ({
   name,
@@ -18,6 +18,7 @@ const PriceFormInput = ({
   errors,
   amount,
   onChange,
+  ...props
 }: Props) => {
   const { code, decimal_digits } = currencies[currencyCode.toUpperCase()];
 
@@ -57,6 +58,7 @@ const PriceFormInput = ({
         )}
       >
         <AmountField
+          maxLength={11}
           step={step}
           value={rawValue}
           onValueChange={onAmountChange}
@@ -64,6 +66,7 @@ const PriceFormInput = ({
           placeholder="-"
           decimalScale={decimal_digits}
           className="bg-transparent outline-none outline-0 w-full remove-number-spinner leading-base text-grey-90 font-normal caret-violet-60 placeholder-grey-40 text-right"
+          {...props}
         />
         <span className="pl-2 inter-base-regular text-grey-40">{code}</span>
       </div>
