@@ -24,7 +24,6 @@ const SigninInput = React.forwardRef(
       placeholder,
       name,
       key,
-      required,
       onChange,
       onFocus,
       className,
