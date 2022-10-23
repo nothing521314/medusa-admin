@@ -1,65 +1,15 @@
+import { Product } from "@medusa-types";
 import clsx from "clsx";
-import { useAdminStore } from "../../../../medusa-react";
-import React, { useCallback, useMemo } from "react";
-import { defaultChannelsSorter } from "../../../utils/sales-channel-compare-operator";
-import Tooltip from "../../atoms/tooltip";
+import React, { useContext, useMemo } from "react";
+import { Column } from "react-table";
+import { AccountContext } from "src/context/account";
+import { formatAmountWithSymbol } from "src/utils/prices";
 import ListIcon from "../../fundamentals/icons/list-icon";
 import TileIcon from "../../fundamentals/icons/tile-icon";
 import ImagePlaceholder from "../../fundamentals/image-placeholder";
-import StatusIndicator from "../../fundamentals/status-indicator";
-import { Column } from "react-table";
-import { Product } from "@medusa-types";
 
 const useProductTableColumn = ({ setTileView, setListView, showList }) => {
-  const getProductStatus = (status) => {
-    switch (status) {
-      case "proposed":
-        return <StatusIndicator title={"Proposed"} variant={"warning"} />;
-      case "published":
-        return <StatusIndicator title={"Published"} variant={"success"} />;
-      case "rejected":
-        return <StatusIndicator title={"Rejected"} variant={"danger"} />;
-      case "draft":
-        return <StatusIndicator title={"Draft"} variant={"default"} />;
-      default:
-        return <StatusIndicator title={status} variant={"default"} />;
-    }
-  };
-
-  const { store } = useAdminStore();
-
-  const getProductSalesChannels = useCallback(
-    (salesChannels) => {
-      if (salesChannels?.length) {
-        salesChannels.sort(
-          defaultChannelsSorter(store?.default_sales_channel_id || "")
-        );
-        return (
-          <span className="inter-small-regular">
-            {salesChannels[0].name}
-            {salesChannels.length > 1 && (
-              <Tooltip
-                content={
-                  <div className="flex flex-col">
-                    {salesChannels.slice(1).map((sc) => (
-                      <span>{sc.name}</span>
-                    ))}
-                  </div>
-                }
-              >
-                <span className="text-grey-40">
-                  {" "}
-                  + {salesChannels.length - 1} more
-                </span>
-              </Tooltip>
-            )}
-          </span>
-        );
-      }
-      return <></>;
-    },
-    [store?.default_sales_channel_id]
-  );
+  const { selectedRegion } = useContext(AccountContext);
 
   const columns = useMemo(
     (): Column<Product>[] => [
@@ -95,39 +45,25 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         Header: "Prices",
         accessor: "prices", // accessor is the "key" in the data
         Cell: ({ cell: { value } }) => {
-          return <div>{value?.[0]?.price ? `$${value?.[0]?.price}` : "-"}</div>;
+          const price =
+            value?.find((reg) => reg.region_id === selectedRegion?.id)?.price ||
+            0;
+          return (
+            <div>
+              {price
+                ? formatAmountWithSymbol({
+                    amount: price,
+                    currency: selectedRegion?.currency_code || "usd",
+                    digits: 2,
+                    tax: selectedRegion?.tax_rate || 0,
+                  })
+                : "-"}
+            </div>
+          );
         },
       },
-      // {
-      //   Header: "Collection",
-      //   accessor: "collection", // accessor is the "key" in the data
-      //   Cell: ({ cell: { value } }) => {
-      //     return <div>{value?.title || "-"}</div>;
-      //   },
-      // },
-      // {
-      //   Header: "Status",
-      //   accessor: "status",
-      //   Cell: ({ cell: { value } }) => getProductStatus(value),
-      // },
-      // {
-      //   Header: "Availability",
-      //   accessor: "sales_channels",
-      //   Cell: ({ cell: { value } }) => getProductSalesChannels(value),
-      // },
-      // {
-      //   Header: "Inventory",
-      //   accessor: "variants",
-      //   Cell: ({ cell: { value } }) => (
-      //     <div>
-      //       {value.reduce((acc, next) => acc + next.inventory_quantity, 0)}
-      //       {" in stock for "}
-      //       {value.length} variant(s)
-      //     </div>
-      //   ),
-      // },
       {
-        accessor: "width",
+        accessor: "hs_code",
         Header: (
           <div className="text-right flex justify-end">
             <span
@@ -152,7 +88,14 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         ),
       },
     ],
-    [getProductSalesChannels, setListView, setTileView, showList]
+    [
+      selectedRegion?.currency_code,
+      selectedRegion?.id,
+      selectedRegion?.tax_rate,
+      setListView,
+      setTileView,
+      showList,
+    ]
   );
 
   return [columns] as const;

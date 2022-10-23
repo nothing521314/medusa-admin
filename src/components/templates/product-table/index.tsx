@@ -66,10 +66,10 @@ const ProductTable: React.FC<ProductTableProps> = () => {
   const [query, setQuery] = useState(queryObject.query);
   const [showList, setShowList] = React.useState(true);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     reset();
     setQuery("");
-  };
+  }, [reset]);
 
   const { products, isLoading, isRefetching, count } = useAdminProducts({
     ...queryObject,

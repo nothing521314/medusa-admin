@@ -1,13 +1,13 @@
-import { useAdminRegions } from "@medusa-react";
 import { Hardware, Product, Region } from "@medusa-types";
 import clsx from "clsx";
-import React from "react";
+import React, { useContext, useMemo } from "react";
 import { useFieldArray, UseFormReturn, useWatch } from "react-hook-form";
 import Button from "src/components/fundamentals/button";
 import CrossIcon from "src/components/fundamentals/icons/cross-icon";
 import ImagePlaceholderIcon from "src/components/fundamentals/icons/image-placeholder-icon";
 import Section from "src/components/organisms/section";
 import { KEY } from "src/constants/misc";
+import { AccountContext } from "src/context/account";
 import useToggleState from "src/hooks/use-toggle-state";
 import ModalHardwares from "../../modal-add-hardware";
 
@@ -16,10 +16,10 @@ type Props = {
 };
 
 function AdditionalHardwares({ form: { control } }: Props) {
-  const { regions } = useAdminRegions();
   const { collection } = useWatch({
     control,
   });
+  const { selectedRegion } = useContext(AccountContext);
   const { fields, append, remove } = useFieldArray({
     control,
     name: "additional_hardwares",
@@ -49,8 +49,8 @@ function AdditionalHardwares({ form: { control } }: Props) {
               <HardwareItem
                 key={p.id}
                 product={p}
-                regions={regions}
                 remove={() => remove(index)}
+                region={selectedRegion}
               />
             );
           })}
@@ -69,13 +69,19 @@ function AdditionalHardwares({ form: { control } }: Props) {
 const HardwareItem = ({
   product,
   remove,
-  regions,
+  region,
 }: {
   product: Hardware;
   remove: () => void;
-  regions: Region[];
+  region?: Region;
 }) => {
-  const price = product.prices?.[0]?.value;
+  const price = useMemo(() => {
+    return (
+      product.prices?.find(
+        (reg) => (reg as { label?: string })?.label === region?.id
+      )?.value || 0
+    );
+  }, [product.prices, region?.id]);
 
   return (
     <div className="p-base group relative rounded-rounded flex-col border border-grey-30">

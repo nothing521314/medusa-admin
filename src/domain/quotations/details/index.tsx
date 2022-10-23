@@ -424,6 +424,8 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
           additional_hardwares: item?.child_product?.map((child) => ({
             ...child?.product,
             ...child,
+            priceItem: item.unit_price,
+            quantity: item.volume,
           })),
           priceItem: item.unit_price,
           quantity: item.volume,
@@ -533,7 +535,9 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         setValue(
           "code",
           `${sale_man?.name || ""}_${Date.now()} Quotation Code ${
-            watch("summary")?.[0]?.collection?.title?.split(" - ")?.[1] || ""
+            watch("summary")?.[0]?.collection?.label?.split(" - ")?.[1] ||
+            watch("summary")?.[0]?.collection?.title?.split(" - ")?.[1] ||
+            ""
           }`
         );
       }
