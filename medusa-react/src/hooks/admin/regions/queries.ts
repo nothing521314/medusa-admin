@@ -1,10 +1,13 @@
-import
-  {
-    AdminGetProductsParams, AdminGetRegionsParams,
-    AdminGetRegionsRegionFulfillmentOptionsRes,
-    AdminGetUserParams, AdminProductsListRes2, AdminRegionsListRes,
-    AdminRegionsRes, AdminUsersListRes2
-  } from "@medusa-types";
+import {
+  AdminGetProductsParams,
+  AdminGetRegionsParams,
+  AdminGetRegionsRegionFulfillmentOptionsRes,
+  AdminGetUserParams,
+  AdminProductsListRes2,
+  AdminRegionsListRes,
+  AdminRegionsRes,
+  AdminUsersListRes2,
+} from "@medusa-types";
 import { useQuery } from "react-query";
 import { Response } from "../../../../../medusa-js";
 import { useMedusa } from "../../../contexts";
@@ -40,12 +43,12 @@ export const useAdminRegionsListUser = (
   options?: UseQueryOptionsWrapper<
     Response<AdminUsersListRes2>,
     Error,
-    ReturnType<RegionQueryKeys["list"]>
+    ReturnType<RegionQueryKeys["listSalesman"]>
   >
 ) => {
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
-    adminRegionKeys.list(id),
+    "listSalesman" as any,
     () => client.admin.regions.listUser(id, query),
     options
   );

@@ -1,11 +1,19 @@
-import
-  {
-    AdminGetProductsParams, AdminGetRegionsParams, AdminGetRegionsRegionFulfillmentOptionsRes,
-    AdminGetUserParams, AdminPostRegionsRegionCountriesReq,
-    AdminPostRegionsRegionFulfillmentProvidersReq,
-    AdminPostRegionsRegionPaymentProvidersReq, AdminPostRegionsRegionReq, AdminPostRegionsReq, AdminProductsListRes2, AdminRegionsDeleteRes,
-    AdminRegionsListRes, AdminRegionsRes, AdminUsersListRes2
-  } from "@medusa-types";
+import {
+  AdminGetProductsParams,
+  AdminGetRegionsParams,
+  AdminGetRegionsRegionFulfillmentOptionsRes,
+  AdminGetUserParams,
+  AdminPostRegionsRegionCountriesReq,
+  AdminPostRegionsRegionFulfillmentProvidersReq,
+  AdminPostRegionsRegionPaymentProvidersReq,
+  AdminPostRegionsRegionReq,
+  AdminPostRegionsReq,
+  AdminProductsListRes2,
+  AdminRegionsDeleteRes,
+  AdminRegionsListRes,
+  AdminRegionsRes,
+  AdminUsersListRes2,
+} from "@medusa-types";
 import qs from "qs";
 import { ResponsePromise } from "../../typings";
 import BaseResource from "../base";
@@ -226,6 +234,25 @@ class AdminRegionsResource extends BaseResource {
     return this.client.request("DELETE", path, undefined, {}, customHeaders);
   }
 
+  addUser(
+    id: string,
+    user_id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminRegionsRes> {
+    const path = `/admin/regions/${id}/region-user/${user_id}`;
+    return this.client.request("POST", path, undefined, {}, customHeaders);
+  }
+
+  addProduct(
+    id: string,
+    product_id: string,
+    payload: IAdminRegionUpdateProductReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminRegionsRes> {
+    const path = `/admin/regions/${id}/product/${product_id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
+  }
+
   deleteUser(
     id: string,
     user_id: string,
@@ -238,11 +265,16 @@ class AdminRegionsResource extends BaseResource {
   deleteProduct(
     id: string,
     product_id: string,
+    payload: IAdminRegionUpdateProductReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminRegionsRes> {
-    const path = `/admin/regions/${id}/region-product/${product_id}`;
-    return this.client.request("DELETE", path, undefined, {}, customHeaders);
+    const path = `/admin/regions/${id}/product/${product_id}`;
+    return this.client.request("POST", path, payload, {}, customHeaders);
   }
+}
+
+export interface IAdminRegionUpdateProductReq {
+  price: number;
 }
 
 export default AdminRegionsResource;

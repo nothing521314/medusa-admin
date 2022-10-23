@@ -8,6 +8,9 @@ import Spinner from "src/components/atoms/spinner";
 import Button from "src/components/fundamentals/button";
 import TrashIcon from "src/components/fundamentals/icons/trash-icon";
 import Table, { TablePagination } from "src/components/molecules/table";
+import useToggleState from "src/hooks/use-toggle-state";
+import ModalAddProduct from "../product-table/modal-add-product";
+import ModalAddSalesman from "./modal-add-salesman";
 import { useSalesmanActions } from "./use-salesman-actions";
 import { useSalesmanColumns } from "./use-salesman-columns";
 import { useCustomerFilters } from "./use-salesman-filters";
@@ -30,15 +33,23 @@ const SalesmanTable: React.FC<any> = ({ id }: CustomerDetailProps) => {
     queryObject,
     representationObject,
   } = useCustomerFilters(location.search, defaultQueryProps);
+  const {
+    open: openModalAdd,
+    close: closeModalAdd,
+    state: isOpenModalAdd,
+  } = useToggleState(false);
 
   const offs = parseInt(queryObject.offset) || 0;
   const lim = parseInt(queryObject.limit) || DEFAULT_PAGE_SIZE;
 
   const { user, isLoading, status } = useAdminRegionsListUser(
-    id
-    // {
-    //   ...queryObject,
-    // }
+    id,
+    {
+      // ...queryObject,
+    },
+    {
+      cacheTime: 0,
+    }
   );
   const count = user?.length;
 
@@ -82,7 +93,7 @@ const SalesmanTable: React.FC<any> = ({ id }: CustomerDetailProps) => {
     },
     usePagination
   );
-  const { handleDelete } = useSalesmanActions(id);
+  const { handleDelete, handleAdd } = useSalesmanActions(id);
   // Debounced search
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -142,7 +153,7 @@ const SalesmanTable: React.FC<any> = ({ id }: CustomerDetailProps) => {
           </>
         }
         tableActions={
-          <Button variant="secondary" size="small">
+          <Button variant="secondary" size="small" onClick={openModalAdd}>
             Add Saleman
           </Button>
         }
@@ -210,6 +221,17 @@ const SalesmanTable: React.FC<any> = ({ id }: CustomerDetailProps) => {
         hasNext={canNextPage}
         hasPrev={canPreviousPage}
       />
+
+      {isOpenModalAdd && (
+        <ModalAddSalesman
+          listAdded={user ?? []}
+          onClose={closeModalAdd}
+          open={isOpenModalAdd}
+          onAdd={(user) => {
+            handleAdd(user.id!);
+          }}
+        />
+      )}
     </div>
   );
 };

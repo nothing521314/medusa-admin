@@ -1,19 +1,19 @@
-import { adminRegionKeys } from "./queries";
-import {
-  AdminRegionsDeleteRes,
-  AdminRegionsRes,
-  AdminPostRegionsRegionReq,
-  AdminPostRegionsReq,
-  AdminPostRegionsRegionCountriesReq,
-  AdminPostRegionsRegionFulfillmentProvidersReq,
-  AdminPostRegionsRegionPaymentProvidersReq,
-} from "@medusa-types";
-import { Response } from "../../../../../medusa-js";
+import { Response } from "@medusa-js";
+import
+  {
+    AdminPostRegionsRegionCountriesReq,
+    AdminPostRegionsRegionFulfillmentProvidersReq,
+    AdminPostRegionsRegionPaymentProvidersReq,
+    AdminPostRegionsRegionReq,
+    AdminPostRegionsReq,
+    AdminRegionsDeleteRes,
+    AdminRegionsRes
+  } from "@medusa-types";
+import { IAdminRegionUpdateProductReq } from "medusa-js/src/resources/admin/regions";
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 import { useMedusa } from "../../../contexts/medusa";
 import { buildOptions } from "../../utils/buildOptions";
-import { adminUserKeys } from "../users";
-import { adminProductKeys } from "../products";
+import { adminRegionKeys } from "./queries";
 
 export const useAdminCreateRegion = (
   options?: UseMutationOptions<
@@ -166,6 +166,19 @@ export const useAdminRegionDeletePaymentProvider = (
   );
 };
 
+export const useAdminRegionAddSalesman = (
+  id: string,
+  options?: UseMutationOptions<Response<AdminRegionsRes>, Error, string>
+) => {
+  const { client } = useMedusa();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    (user_id: string) => client.admin.regions.addUser(id, user_id),
+    buildOptions(queryClient, ["listSalesman"], options)
+  );
+};
+
 export const useAdminRegionDeleteSalesman = (
   id: string,
   options?: UseMutationOptions<Response<AdminRegionsRes>, Error, string>
@@ -175,19 +188,29 @@ export const useAdminRegionDeleteSalesman = (
 
   return useMutation(
     (user_id: string) => client.admin.regions.deleteUser(id, user_id),
-    buildOptions(queryClient, adminUserKeys.lists(), options)
+    buildOptions(queryClient, ["listSalesman"], options)
   );
 };
 
 export const useAdminRegionDeleteProduct = (
   id: string,
-  options?: UseMutationOptions<Response<AdminRegionsRes>, Error, string>
+  options?: UseMutationOptions<
+    Response<AdminRegionsRes>,
+    Error,
+    AdminPostRegionsUpdateProductReq
+  >
 ) => {
   const { client } = useMedusa();
   const queryClient = useQueryClient();
 
   return useMutation(
-    (product_id: string) => client.admin.regions.deleteProduct(id, product_id),
-    buildOptions(queryClient, adminProductKeys.lists(), options)
+    ({ product_id, payload }: AdminPostRegionsUpdateProductReq) =>
+      client.admin.regions.deleteProduct(id, product_id, payload),
+    buildOptions(queryClient, ["listProduct"], options)
   );
+};
+
+type AdminPostRegionsUpdateProductReq = {
+  product_id: string;
+  payload: IAdminRegionUpdateProductReq;
 };

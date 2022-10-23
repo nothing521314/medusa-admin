@@ -1,7 +1,4 @@
-import
-  {
-    useAdminRegionDeleteProduct
-  } from "@medusa-react";
+import { useAdminRegionDeleteProduct } from "@medusa-react";
 import * as React from "react";
 import useNotification from "src/hooks/use-notification";
 import { getErrorMessage } from "src/utils/error-messages";
@@ -13,26 +10,56 @@ const useProductActions = (id?: string) => {
   const deleteProduct = useAdminRegionDeleteProduct(id!);
 
   const handleDelete = React.useCallback(
-    async (id_product: string) => {
+    async (id_product: string, price: number) => {
       const shouldDelete = await dialog({
         heading: "Remove Product",
         text: "Are you sure you want to remove this product?",
       });
       if (shouldDelete) {
-        deleteProduct.mutate(id_product, {
-          onSuccess: () => {
-            notification("Removed", "Successfully removed product", "success");
+        deleteProduct.mutate(
+          {
+            product_id: id_product,
+            payload: {
+              price,
+            },
           },
-          onError: (error) => {
-            notification("Error", getErrorMessage(error), "error");
-          },
-        });
+          {
+            onSuccess: () => {
+              notification(
+                "Removed",
+                "Successfully removed product",
+                "success"
+              );
+            },
+            onError: (error) => {
+              notification("Error", getErrorMessage(error), "error");
+            },
+          }
+        );
       }
     },
     [deleteProduct, dialog, notification]
   );
   return {
     handleDelete,
+    handleAdd: async (id_product: string, price: number) => {
+      deleteProduct.mutate(
+        {
+          product_id: id_product,
+          payload: {
+            price,
+          },
+        },
+        {
+          onSuccess: () => {
+            notification("Added", "Successfully added product", "success");
+          },
+          onError: (error) => {
+            notification("Error", getErrorMessage(error), "error");
+          },
+        }
+      );
+    },
   };
 };
 

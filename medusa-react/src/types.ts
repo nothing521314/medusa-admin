@@ -42,6 +42,12 @@ export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
     ...ReturnType<TQueryKey<TKey>["lists"]>,
     { query: TListQuery | undefined }
   ];
+  listSalesman: (
+    query?: TListQuery
+  ) => [
+    ...ReturnType<TQueryKey<TKey>["lists"]>,
+    { query: TListQuery | undefined }
+  ];
   listProduct: (
     query?: TListQuery
   ) => [

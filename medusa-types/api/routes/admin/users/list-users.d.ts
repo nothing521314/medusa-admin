@@ -52,8 +52,8 @@
 declare const _default: (req: any, res: any) => Promise<void>;
 export default _default;
 export declare class AdminGetUserParams {
-  limit: number;
-  offset: number;
+  limit?: number;
+  offset?: number;
   expand?: string;
   q?: string;
 }

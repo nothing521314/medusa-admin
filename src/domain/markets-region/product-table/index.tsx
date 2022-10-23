@@ -8,7 +8,9 @@ import { usePagination, useTable } from "react-table";
 import Button from "src/components/fundamentals/button";
 import TrashIcon from "src/components/fundamentals/icons/trash-icon";
 import Table, { TablePagination } from "src/components/molecules/table";
+import useToggleState from "src/hooks/use-toggle-state";
 import { useFeatureFlag } from "../../../context/feature-flag";
+import ModalAddProduct from "./modal-add-product";
 import useProductActions from "./use-product-actions";
 import useProductTableColumn from "./use-product-column";
 import { useProductFilters } from "./use-product-filters";
@@ -30,6 +32,13 @@ const defaultQueryProps = {
 
 const ProductTable: React.FC<ProductTableProps> = ({ id }) => {
   const location = useLocation();
+  const {
+    open: openModalProduct,
+    close: closeModalProduct,
+    state: isOpenModalProduct,
+  } = useToggleState(false);
+
+  const { handleAdd } = useProductActions(id);
 
   const { isFeatureEnabled } = useFeatureFlag();
 
@@ -72,11 +81,15 @@ const ProductTable: React.FC<ProductTableProps> = ({ id }) => {
     isRefetching,
     count,
     status,
-  } = useAdminRegionsListProduct(id, {
-    // ...queryObject,
-  });
-
-  console.log("products", products, status);
+  } = useAdminRegionsListProduct(
+    id,
+    {
+      // ...queryObject,
+    },
+    {
+      cacheTime: 0,
+    }
+  );
 
   const numPages = useMemo(() => {
     if (typeof count !== "undefined") {
@@ -190,7 +203,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ id }) => {
             </>
           }
           tableActions={
-            <Button variant="secondary" size="small">
+            <Button variant="secondary" size="small" onClick={openModalProduct}>
               Add Product
             </Button>
           }
@@ -239,6 +252,16 @@ const ProductTable: React.FC<ProductTableProps> = ({ id }) => {
           hasPrev={canPreviousPage}
         />
       </>
+      {isOpenModalProduct && (
+        <ModalAddProduct
+          listAdded={(products as Product[]) ?? []}
+          onClose={closeModalProduct}
+          open={isOpenModalProduct}
+          onAdd={(product) => {
+            handleAdd(product.id!, 1);
+          }}
+        />
+      )}
     </div>
   );
 };
@@ -261,27 +284,29 @@ const ProductRow = ({ id, row, ...rest }) => {
   }, [handleAddHarwareToCart, hardwares, product.id, productList.length]);
 
   return (
-    <Table.Row
-      color={"inherit"}
-      linkTo={`/a/products/${product.id}`}
-      actions={[
-        {
-          label: "Remove Product",
-          variant: "danger",
-          onClick: () => handleDelete(product.id),
-          icon: <TrashIcon size={20} />,
-        },
-      ]}
-      {...rest}
-    >
-      {row.cells.map((cell, index) => {
-        return (
-          <Table.Cell {...cell.getCellProps()}>
-            {cell.render("Cell", { index })}
-          </Table.Cell>
-        );
-      })}
-    </Table.Row>
+    <>
+      <Table.Row
+        color={"inherit"}
+        linkTo={`/a/products/${product.id}`}
+        actions={[
+          {
+            label: "Remove Product",
+            variant: "danger",
+            onClick: () => handleDelete(product.id, 0),
+            icon: <TrashIcon size={20} />,
+          },
+        ]}
+        {...rest}
+      >
+        {row.cells.map((cell, index) => {
+          return (
+            <Table.Cell {...cell.getCellProps()}>
+              {cell.render("Cell", { index })}
+            </Table.Cell>
+          );
+        })}
+      </Table.Row>
+    </>
   );
 };
 export default ProductTable;

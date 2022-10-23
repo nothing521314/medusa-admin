@@ -3,6 +3,7 @@ import {
   AdminUpdateUserPayload,
   Response,
 } from "@medusa-js";
+import { adminRegionKeys } from "..";
 import {
   AdminDeleteUserRes,
   AdminResetPasswordRequest,
@@ -26,7 +27,15 @@ export const useAdminCreateUser = (
 
   return useMutation(
     (payload: AdminCreateUserPayload) => client.admin.users.create(payload),
-    buildOptions(queryClient, adminUserKeys.lists(), options)
+    buildOptions(
+      queryClient,
+      [
+        ...adminUserKeys.lists(),
+        adminRegionKeys.list(),
+        adminRegionKeys.lists(),
+      ],
+      options
+    )
   );
 };
 
@@ -45,7 +54,12 @@ export const useAdminUpdateUser = (
     (payload: AdminUpdateUserPayload) => client.admin.users.update(id, payload),
     buildOptions(
       queryClient,
-      [adminUserKeys.lists(), adminUserKeys.detail(id)],
+      [
+        adminUserKeys.lists(),
+        adminUserKeys.detail(id),
+        adminRegionKeys.list(),
+        adminRegionKeys.lists(),
+      ],
       options
     )
   );

@@ -9,7 +9,7 @@ import ImagePlaceholderIcon from "src/components/fundamentals/icons/image-placeh
 import Section from "src/components/organisms/section";
 import { KEY } from "src/constants/misc";
 import useToggleState from "src/hooks/use-toggle-state";
-import ModalHardwares from "../../modal-hardware";
+import ModalHardwares from "../../modal-add-hardware";
 
 type Props = {
   form: UseFormReturn<Product, any>;
