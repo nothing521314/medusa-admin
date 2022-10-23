@@ -80,6 +80,7 @@ const useProductActions = (product?: Product) => {
     getActions,
     isOpenHardwareModal,
     handleCloseHardwareModal,
+    handleOpenHardwareModal,
   };
 };
 

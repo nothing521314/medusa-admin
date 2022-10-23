@@ -1,9 +1,11 @@
+import { Hardware, Product } from "@medusa-types";
 import { useLocation } from "@reach/router";
 import { isEmpty } from "lodash";
-import { CartContext, useAdminProducts } from "../../../../medusa-react";
 import qs from "qs";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { usePagination, useTable } from "react-table";
+import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
+import { CartContext, useAdminProducts } from "../../../../medusa-react";
 import { useFeatureFlag } from "../../../context/feature-flag";
 import ProductsFilter from "../../../domain/products/filter-dropdown";
 import Spinner from "../../atoms/spinner";
@@ -12,8 +14,6 @@ import ProductOverview from "./overview";
 import useProductActions from "./use-product-actions";
 import useProductTableColumn from "./use-product-column";
 import { useProductFilters } from "./use-product-filters";
-import { Hardware, Product } from "@medusa-types";
-import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
 
 const DEFAULT_PAGE_SIZE = 15;
 const DEFAULT_PAGE_SIZE_TILE_VIEW = 18;

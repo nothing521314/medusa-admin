@@ -1,15 +1,23 @@
-import { Product } from "@medusa-types";
+import { CartContext } from "@medusa-react";
+import { Hardware, Product } from "@medusa-types";
 import clsx from "clsx";
 import { Link } from "gatsby";
-import * as React from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import ImagePlaceholderIcon from "src/components/fundamentals/icons/image-placeholder-icon";
-import { getProductStatusVariant } from "../../../utils/product-status-variant";
+import { AccountContext } from "src/context/account";
+import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
+import { formatAmountWithSymbol } from "src/utils/prices";
 import Button from "../../fundamentals/button";
 import ListIcon from "../../fundamentals/icons/list-icon";
 import MoreHorizontalIcon from "../../fundamentals/icons/more-horizontal-icon";
 import TileIcon from "../../fundamentals/icons/tile-icon";
-import StatusIndicator from "../../fundamentals/status-indicator";
 import Actionables from "../../molecules/actionables";
 import useProductActions from "./use-product-actions";
 
@@ -57,8 +65,51 @@ const ProductOverview = ({
 };
 
 const ProductTile = ({ product }: { product: Product }) => {
-  const { getActions } = useProductActions(product);
-  const price = product.prices?.[0]?.price;
+  const {
+    getActions,
+    handleOpenHardwareModal,
+    isOpenHardwareModal,
+    handleCloseHardwareModal,
+  } = useProductActions(product);
+  const { selectedRegion } = useContext(AccountContext);
+  const { handleAddToCart, handleAddHarwareToCart, productList } = useContext(
+    CartContext
+  );
+  const [hardwares, setHardWares] = useState<Hardware[]>([]);
+
+  const price = useMemo(() => {
+    return (
+      product.prices?.find((reg) => reg.region_id === selectedRegion?.id)
+        ?.price || 0
+    );
+  }, [product.prices, selectedRegion?.id]);
+
+  const handleClickAddToCartBtn = useCallback(() => {
+    if (product?.additional_hardwares?.length) {
+      handleOpenHardwareModal();
+    } else {
+      if (!product || !handleAddToCart) return;
+      handleAddToCart({ ...product });
+    }
+  }, [handleAddToCart, handleOpenHardwareModal, product]);
+
+  const handleSubmitAdd = useCallback(
+    (hw) => {
+      handleAddToCart && handleAddToCart(product);
+      setHardWares(hw);
+    },
+    [handleAddToCart, product]
+  );
+
+  useEffect(() => {
+    if (!hardwares.length) return;
+    try {
+      handleAddHarwareToCart && handleAddHarwareToCart(product.id!, hardwares);
+      setHardWares([]);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [handleAddHarwareToCart, hardwares, product.id, productList.length]);
 
   return (
     <div className="p-base group rounded-rounded hover:bg-grey-5 flex-col border border-grey-30">
@@ -89,20 +140,6 @@ const ProductTile = ({ product }: { product: Product }) => {
             )}
             style={{ backgroundImage: `url(${product.images?.[0]?.url})` }}
           >
-            {/* {product.thumbnail ? (
-              <div
-                className={clsx(
-                  "bg-grey-40/80 w-full h-full absolute top-0 flex items-center justify-center rounded-rounded",
-                  "invisible group-hover:visible transition-visibility duration-75"
-                )}
-              >
-                <Button variant="secondary" className="" size="small">
-                  View Details
-                </Button>
-              </div>
-            ) : (
-              <ImagePlaceholder />
-            )} */}
             {!product.images?.[0]?.url && <ImagePlaceholderIcon size={12} />}
           </div>
 
@@ -112,12 +149,15 @@ const ProductTile = ({ product }: { product: Product }) => {
                 {product.title}
               </p>
               <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1">
-                {price ? `$${price}` : "-"}
+                {price
+                  ? formatAmountWithSymbol({
+                      amount: price,
+                      currency: selectedRegion?.currency_code || "usd",
+                      digits: 2,
+                      tax: selectedRegion?.tax_rate || 0,
+                    })
+                  : "-"}
               </p>
-              {/* <StatusIndicator
-                variant={getProductStatusVariant(product.status)}
-                className="shrink-0"
-              /> */}
             </div>
             <span
               className={clsx(
@@ -130,12 +170,24 @@ const ProductTile = ({ product }: { product: Product }) => {
           </div>
         </Link>
         <div className="flex justify-center mt-4">
-          <Button variant="secondary" size="small">
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={handleClickAddToCartBtn}
+          >
             <CartPlusIcon size={20} />
             Add To Cart
           </Button>
         </div>
       </div>
+      {isOpenHardwareModal && (
+        <SelectAdditionalHardwareModal
+          id={product.id!}
+          isOpen={isOpenHardwareModal}
+          handleClose={handleCloseHardwareModal}
+          handleSubmit={handleSubmitAdd}
+        />
+      )}
     </div>
   );
 };
