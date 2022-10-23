@@ -22,7 +22,11 @@ const InputError = ({ errors, name, className }: InputErrorProps) => {
       render={({ message, messages }) => {
         return (
           <div
-            className={clsx("text-rose-50 inter-small-regular mt-2", className)}
+            className={clsx(
+              "text-rose-50 inter-small-regular ",
+              messages !== undefined && "mt-2",
+              className
+            )}
           >
             {messages ? (
               <MultipleMessages messages={messages} />

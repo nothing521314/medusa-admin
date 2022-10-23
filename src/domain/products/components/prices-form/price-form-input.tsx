@@ -18,6 +18,7 @@ const PriceFormInput = ({
   errors,
   amount,
   onChange,
+  className,
   ...props
 }: Props) => {
   const { code, decimal_digits } = currencies[currencyCode.toUpperCase()];
@@ -65,7 +66,10 @@ const PriceFormInput = ({
           allowNegativeValue={false}
           placeholder="-"
           decimalScale={decimal_digits}
-          className="bg-transparent outline-none outline-0 w-full remove-number-spinner leading-base text-grey-90 font-normal caret-violet-60 placeholder-grey-40 text-right"
+          className={
+            "bg-transparent outline-none outline-0 w-full remove-number-spinner leading-base text-grey-90 font-normal caret-violet-60 placeholder-grey-40 text-right " +
+            className
+          }
           {...props}
         />
         <span className="pl-2 inter-base-regular text-grey-40">{code}</span>

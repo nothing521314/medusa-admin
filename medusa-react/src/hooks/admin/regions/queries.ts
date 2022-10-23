@@ -70,7 +70,6 @@ export const useAdminRegionsListProduct = (
     () => client.admin.regions.listProduct(id, query),
     options
   );
-  debugger;
   return { ...data, ...rest };
 };
 

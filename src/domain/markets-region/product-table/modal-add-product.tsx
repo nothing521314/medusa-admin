@@ -1,31 +1,44 @@
 import { useAdminProducts } from "@medusa-react";
-import { Product } from "@medusa-types";
+import { Product, Region } from "@medusa-types";
 import clsx from "clsx";
+import { AnyNode } from "postcss";
 import React, { useCallback, useEffect, useState } from "react";
 import Spinner from "src/components/atoms/spinner";
 import Button from "src/components/fundamentals/button";
 import Modal from "src/components/molecules/modal";
 import TableSearch from "src/components/molecules/table/table-search";
+import PriceFormInput from "src/domain/products/components/prices-form/price-form-input";
 import { useDebounce } from "src/hooks/use-debounce";
+import { formatAmountWithSymbol } from "src/utils/prices";
 
 type Props = {
   onClose: () => void;
   open: boolean;
+  region: Region;
   listAdded: Product[];
-  onAdd?: (customer: Product) => void;
+  onAdd?: (customer: Product, amount: number) => void;
 };
 
-const ModalAddProduct = ({ open, onClose, listAdded, onAdd }: Props) => {
+const ModalAddProduct = ({
+  open,
+  region,
+  onClose,
+  listAdded,
+  onAdd,
+}: Props) => {
   const [productList, setProductList] = useState<Product[]>([]);
   const [query, setQuery] = useState<string>("");
   const debounceQuery = useDebounce(query, 200);
-  const { products, isLoading, isSuccess } = useAdminProducts({
-    q: debounceQuery,
-    offset: 0,
-    limit: 50,
-  });
-
-  console.log("products", products);
+  const { products, isLoading, isSuccess } = useAdminProducts(
+    {
+      q: debounceQuery,
+      offset: 0,
+      limit: 50,
+    },
+    {
+      cacheTime: 0,
+    }
+  );
 
   useEffect(() => {
     if (products) {
@@ -53,20 +66,20 @@ const ModalAddProduct = ({ open, onClose, listAdded, onAdd }: Props) => {
           <ProductItem
             key={item.id}
             product={item}
-            // regions={}
+            region={region}
             listAdded={listAdded}
-            onAdd={() => onAdd?.(item)}
+            onAdd={onAdd}
           />
         ))}
       </div>
     );
-  }, [productList, isLoading, listAdded, onAdd]);
+  }, [isLoading, productList, region, listAdded, onAdd]);
 
   return (
     <Modal handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h2 className="inter-xlarge-semibold">Salesman</h2>
+          <h2 className="inter-xlarge-semibold">Product</h2>
         </Modal.Header>
         <Modal.Content>
           <TableSearch
@@ -106,17 +119,20 @@ const ProductItem = ({
   product,
   onAdd,
   listAdded,
-}: // regions,
-{
+  region,
+}: {
   product: Product;
   listAdded: Product[];
-  onAdd: (product: Product) => void;
-  // regions: Region;
+  onAdd?: (customer: Product, amount: number) => void;
+  region: Region;
 }) => {
+  const [value, setValue] = useState();
+  const [error, setError] = useState<AnyNode>();
   const isAdded = listAdded.some((v) => {
     return v.id === product.id;
   });
-  const price = product.prices?.[0]?.price;
+  const price =
+    product.prices?.find((reg) => reg?.region_id === region.id)?.price ?? 0;
 
   return (
     <div
@@ -140,11 +156,39 @@ const ProductItem = ({
         </div>
       </div>
       <div className="flex items-center gap-x-base">
-        <span> {price ? `$${price}` : "-"}</span>
+        <span>
+          {price ? (
+            formatAmountWithSymbol({
+              amount: price,
+              currency: region?.currency_code || "usd",
+              digits: 2,
+              tax: region?.tax_rate || 0,
+            })
+          ) : (
+            <PriceFormInput
+              name="amount"
+              errors={error}
+              className="w-[130px]"
+              onChange={(amount) => {
+                setValue(amount);
+              }}
+              amount={value}
+              currencyCode={region?.currency_code || "usd"}
+            />
+          )}
+        </span>
         <Button
           variant="primary"
+          className="w-[80px]"
+          size="small"
           disabled={isAdded}
-          onClick={() => onAdd(product)}
+          onClick={() => {
+            if (!value || value === 0) {
+              setError({ amount: "Error" } as any);
+            } else {
+              onAdd?.(product, value);
+            }
+          }}
         >
           {isAdded ? "Added" : "Add"}
         </Button>

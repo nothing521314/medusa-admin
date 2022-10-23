@@ -1,5 +1,5 @@
 import { CartContext, useAdminRegionsListProduct } from "@medusa-react";
-import { Hardware, Product } from "@medusa-types";
+import { Hardware, Product, Region } from "@medusa-types";
 import { useLocation } from "@reach/router";
 import { isEmpty } from "lodash";
 import qs from "qs";
@@ -20,6 +20,7 @@ const DEFAULT_PAGE_SIZE_TILE_VIEW = 18;
 
 type ProductTableProps = {
   id: string;
+  region: Region;
 };
 
 const defaultQueryProps = {
@@ -30,7 +31,7 @@ const defaultQueryProps = {
   // order: "created_at"
 };
 
-const ProductTable: React.FC<ProductTableProps> = ({ id }) => {
+const ProductTable: React.FC<ProductTableProps> = ({ id, region }) => {
   const location = useLocation();
   const {
     open: openModalProduct,
@@ -111,6 +112,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ id }) => {
     setTileView,
     setListView,
     showList,
+    region
   });
 
   const {
@@ -257,8 +259,9 @@ const ProductTable: React.FC<ProductTableProps> = ({ id }) => {
           listAdded={(products as Product[]) ?? []}
           onClose={closeModalProduct}
           open={isOpenModalProduct}
-          onAdd={(product) => {
-            handleAdd(product.id!, 1);
+          region={region}
+          onAdd={(product, amount) => {
+            handleAdd(product.id!, amount);
           }}
         />
       )}

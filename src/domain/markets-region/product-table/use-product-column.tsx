@@ -3,8 +3,14 @@ import moment from "moment";
 import React, { useMemo } from "react";
 import { Column } from "react-table";
 import ImagePlaceholder from "src/components/fundamentals/image-placeholder";
+import { formatAmountWithSymbol } from "src/utils/prices";
 
-const useProductTableColumn = ({ setTileView, setListView, showList }) => {
+const useProductTableColumn = ({
+  setTileView,
+  setListView,
+  showList,
+  region,
+}) => {
   const columns = useMemo(
     (): Column<Product>[] => [
       {
@@ -44,7 +50,19 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         Header: "Prices",
         accessor: "prices", // accessor is the "key" in the data
         Cell: ({ cell: { value } }) => {
-          return <div>{value?.[0]?.price ? `$${value?.[0]?.price}` : "-"}</div>;
+          const price = value?.[0]?.price ?? 0;
+          return (
+            <div>
+              {price
+                ? formatAmountWithSymbol({
+                    amount: price,
+                    currency: region?.currency_code || "usd",
+                    digits: 2,
+                    tax: region?.tax_rate || 0,
+                  })
+                : "-"}
+            </div>
+          );
         },
       },
     ],

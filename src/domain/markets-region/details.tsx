@@ -89,7 +89,7 @@ const MarketRegionDetail: React.FC<CustomerDetailProps> = ({ id }) => {
           <SalesmanTable id={id} />
         </div>
         <div className="mt-9">
-          <ProductTable id={id} />
+          <ProductTable id={id} region={region} />
         </div>
       </BodyCard>
     </div>

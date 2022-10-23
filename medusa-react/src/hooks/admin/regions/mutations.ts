@@ -13,6 +13,7 @@ import { IAdminRegionUpdateProductReq } from "medusa-js/src/resources/admin/regi
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query";
 import { useMedusa } from "../../../contexts/medusa";
 import { buildOptions } from "../../utils/buildOptions";
+import { adminProductKeys } from "../products";
 import { adminRegionKeys } from "./queries";
 
 export const useAdminCreateRegion = (
@@ -206,7 +207,7 @@ export const useAdminRegionDeleteProduct = (
   return useMutation(
     ({ product_id, payload }: AdminPostRegionsUpdateProductReq) =>
       client.admin.regions.deleteProduct(id, product_id, payload),
-    buildOptions(queryClient, ["listProduct"], options)
+    buildOptions(queryClient, ["listProduct", adminProductKeys.lists()], options)
   );
 };
 

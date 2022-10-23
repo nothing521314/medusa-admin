@@ -20,11 +20,16 @@ const ModalAddSalesman = ({ open, onClose, listAdded, onAdd }: Props) => {
   const [customerList, setCustomerList] = useState<User[]>([]);
   const [query, setQuery] = useState<string>("");
   const debounceQuery = useDebounce(query, 200);
-  const { users, isLoading, isSuccess } = useAdminUsers({
-    q: debounceQuery,
-    offset: 0,
-    limit: 50,
-  });
+  const { users, isLoading, isSuccess } = useAdminUsers(
+    {
+      q: debounceQuery,
+      offset: 0,
+      limit: 50,
+    },
+    {
+      cacheTime: 0,
+    }
+  );
 
   useEffect(() => {
     if (users) {
@@ -135,8 +140,14 @@ const SalesmanRow = ({
           <div className="text-grey-90">{user.phone || ""}</div>
         </div>
       </div>
-      <div className="flex flex-col pl-6 ">
-        <Button variant="primary" disabled={isAdded} onClick={onClick}>
+      <div className="flex justify-center flex-col pl-6 ">
+        <Button
+          className="w-[80px]"
+          size="small"
+          variant="primary"
+          disabled={isAdded}
+          onClick={onClick}
+        >
           {isAdded ? "Added" : "Add"}
         </Button>
       </div>
