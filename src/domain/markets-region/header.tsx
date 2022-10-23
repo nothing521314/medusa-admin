@@ -13,8 +13,8 @@ type P = {
 function SalesmanPageTableHeader(props: P) {
   return (
     <TableViewHeader
-      setActiveView={(v) => {
-        navigate(`/a/markets-region`);
+      setActiveView={() => {
+        navigate("/a/markets-region");
       }}
       views={["Markets Region"]}
       activeView={props.activeView}

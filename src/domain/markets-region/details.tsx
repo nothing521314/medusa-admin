@@ -1,38 +1,31 @@
-import { useAdminRegion, useAdminUpdateRegion } from "@medusa-react";
+import { useAdminRegion } from "@medusa-react";
 import { Region } from "@medusa-types";
 import { RouteComponentProps } from "@reach/router";
-import { navigate } from "gatsby";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { getErrorMessage } from "src/utils/error-messages";
 import FormValidator from "src/utils/form-validator";
-import Button from "../../components/fundamentals/button";
 import Breadcrumb from "../../components/molecules/breadcrumb";
 import InputField from "../../components/molecules/input";
 import BodyCard from "../../components/organisms/body-card";
-import useNotification from "../../hooks/use-notification";
 import ProductTable from "./product-table";
 import SalesmanTable from "./salesman-table";
 
-type CustomerDetailProps = {
-  id: string;
-} & RouteComponentProps;
+type CustomerDetailProps = RouteComponentProps<{ id: string }>;
 
 const MarketRegionDetail: React.FC<CustomerDetailProps> = ({ id }) => {
   const form = useForm<Region>();
   const {
     register,
     reset,
-    handleSubmit,
-    control,
-    formState: { isDirty, errors },
+    // handleSubmit,
+    formState: { errors },
   } = form;
 
-  const notification = useNotification();
-  const { region, isSuccess } = useAdminRegion(id, {
+  // const notification = useNotification();
+  const { region } = useAdminRegion(id!, {
     cacheTime: 0,
   });
-  const updateRegion = useAdminUpdateRegion(id);
+  // const updateRegion = useAdminUpdateRegion(id!);
 
   useEffect(() => {
     region &&
@@ -42,19 +35,19 @@ const MarketRegionDetail: React.FC<CustomerDetailProps> = ({ id }) => {
       } as Region);
   }, [reset, region]);
 
-  const onSubmit = handleSubmit(({ name, currency_code }) => {
-    updateRegion.mutate(
-      { name, currency_code: currency_code.toLocaleLowerCase() },
-      {
-        onSuccess: () => {
-          notification("Success", "Successfully updated region", "success");
-        },
-        onError: (err) => {
-          notification("Error", getErrorMessage(err), "error");
-        },
-      }
-    );
-  });
+  // const onSubmit = handleSubmit(({ name, currency_code }) => {
+  //   updateRegion.mutate(
+  //     { name, currency_code: currency_code.toLocaleLowerCase() },
+  //     {
+  //       onSuccess: () => {
+  //         notification("Success", "Successfully updated region", "success");
+  //       },
+  //       onError: (err) => {
+  //         notification("Error", getErrorMessage(err), "error");
+  //       },
+  //     }
+  //   );
+  // });
 
   if (!region) return null;
 
@@ -89,7 +82,7 @@ const MarketRegionDetail: React.FC<CustomerDetailProps> = ({ id }) => {
           <SalesmanTable id={id} />
         </div>
         <div className="mt-9">
-          <ProductTable id={id} region={region} />
+          <ProductTable id={id!} region={region} />
         </div>
       </BodyCard>
     </div>
