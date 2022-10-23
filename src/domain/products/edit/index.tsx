@@ -204,7 +204,7 @@ const Edit = ({ id }: EditProps) => {
           <MediaSection mode="edit" form={form} />
           <GeneralSection mode="edit" form={form} />
           <PricesSection mode="edit" form={form} />
-          {watch("collection.label") === KEY.ID_CATEGORY_QM && (
+          {watch("collection.value") === KEY.ID_CATEGORY_QM && (
             <AdditionalHardwares form={form} />
           )}
           {/* <AttributesSection product={product} /> */}
