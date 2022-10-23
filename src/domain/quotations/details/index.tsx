@@ -491,7 +491,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
     return false;
   }, [quotation?.quotation_lines]);
-
+  
   useEffect(() => {
     if (tab !== SUB_TAB.QUOTATION_DETAILS) {
       const summary = productList

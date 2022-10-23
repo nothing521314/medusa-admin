@@ -1,7 +1,8 @@
 import { CartContext } from "@medusa-react";
+import { Region } from "@medusa-types";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { navigate } from "gatsby";
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext } from "react";
 import CartIcon from "src/components/fundamentals/icons/cart-icon";
 import { SUB_TAB } from "src/domain/quotations";
 import useToggleState from "src/hooks/use-toggle-state";
@@ -41,15 +42,19 @@ const Topbar: React.FC = () => {
 
   const logOut = useCallback(() => {
     if (!handleLogout) return;
+    handleSetListProduct && handleSetListProduct([]);
     handleLogout();
     navigate("/login");
-  }, [handleLogout]);
+  }, [handleLogout, handleSetListProduct]);
 
-  useEffect(() => {
-    if (!handleSetListProduct || !selectedRegion) return;
-    handleSetListProduct([]);
-  }, [handleSetListProduct, selectedRegion]);
-  
+  const handleClickSelectRegion = useCallback(
+    (item: Region) => {
+      handleSetListProduct && handleSetListProduct([]);
+      handleSelectRegion && handleSelectRegion(item);
+    },
+    [handleSelectRegion, handleSetListProduct]
+  );
+
   const renderRegionMenu = useCallback(() => {
     return (
       <DropdownMenu.Root>
@@ -73,9 +78,8 @@ const Topbar: React.FC = () => {
                   variant="ghost"
                   className="w-full !justify-start"
                   onClick={() => {
-                    if (!handleSelectRegion) return;
                     if (selectedRegion?.name === item.name) return;
-                    handleSelectRegion(item);
+                    handleClickSelectRegion(item);
                   }}
                 >
                   {`${item.name}/${item.currency_code.toUpperCase()}`}
@@ -86,7 +90,7 @@ const Topbar: React.FC = () => {
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     );
-  }, [handleSelectRegion, regions, selectedRegion?.name]);
+  }, [handleClickSelectRegion, regions, selectedRegion?.name]);
 
   const renderAccountDetailMenu = useCallback(() => {
     return (

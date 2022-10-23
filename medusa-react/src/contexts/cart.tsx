@@ -115,9 +115,7 @@ export const CartProvider = ({ children }: CartProps) => {
         if (i !== -1) {
           cloneCart[indexOfProduct].additional_hardwares[i] = {
             ...hardware,
-            quantity:
-              (cloneCart[indexOfProduct].additional_hardwares[i]?.quantity ||
-                0) + 1,
+            quantity: (hardware?.quantity || 0) + 1,
           };
         } else {
           cloneCart[indexOfProduct].additional_hardwares.push({
@@ -214,7 +212,17 @@ export const CartProvider = ({ children }: CartProps) => {
   useEffect(() => {
     let total = 0;
     if (state.productList) {
-      total = state.productList.reduce((sum, i) => sum + i.quantity, 0);
+      const prod = state.productList.map((item) => {
+        return {
+          total:
+            item.quantity +
+            (item?.additional_hardwares?.reduce(
+              (pre, cur) => pre + cur.quantity,
+              0
+            ) || 0),
+        };
+      });
+      total = prod.reduce((sum, i) => sum + i.total, 0);
     }
     dispatch({ type: "totalItems", payload: total });
   }, [state.productList]);
@@ -222,6 +230,7 @@ export const CartProvider = ({ children }: CartProps) => {
   useEffect(() => {
     const storageData = localStorage.getItem(CART_LIST);
     const parseData = storageData ? JSON.parse(storageData) : null;
+
     if (parseData) {
       handleSaveCard(parseData);
     }
