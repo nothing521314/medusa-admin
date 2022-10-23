@@ -461,13 +461,8 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
     } else {
       handleSetValueFromApi();
     }
-
-    return () => {
-      reset();
-    };
   }, [
     handleSetValueFromApi,
-    reset,
     sale_man?.name,
     selectedRegion,
     setValue,
@@ -491,7 +486,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
     return false;
   }, [quotation?.quotation_lines]);
-  
+
   useEffect(() => {
     if (tab !== SUB_TAB.QUOTATION_DETAILS) {
       const summary = productList
@@ -585,6 +580,12 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
       }
     };
   }, [handleSetAction, handleSetListProduct, tab]);
+
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, [reset]);
 
   return (
     <React.Fragment>
