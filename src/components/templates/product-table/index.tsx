@@ -298,7 +298,7 @@ const ProductRow = ({ row, ...rest }) => {
     <Table.Row
       color={"inherit"}
       linkTo={`/a/products/${product.id}`}
-      actions={getActions()}
+      actions={getActions("table")}
       {...rest}
     >
       {row.cells.map((cell, index) => {

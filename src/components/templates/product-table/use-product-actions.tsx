@@ -4,6 +4,7 @@ import { navigate } from "gatsby";
 import * as React from "react";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import ViewListIcon from "src/components/fundamentals/icons/view-list-icon";
+import { AccountContext } from "src/context/account";
 import useNotification from "src/hooks/use-notification";
 import useToggleState from "src/hooks/use-toggle-state";
 import { getErrorMessage } from "src/utils/error-messages";
@@ -14,6 +15,7 @@ import { ActionType } from "../../molecules/actionables";
 const useProductActions = (product?: Product) => {
   const dialog = useImperativeDialog();
   const notification = useNotification();
+  const { isAdmin } = React.useContext(AccountContext);
   const deleteProduct = useAdminDeleteProduct(product?.id!);
   const { handleAddToCart } = React.useContext(CartContext);
 
@@ -40,31 +42,39 @@ const useProductActions = (product?: Product) => {
     }
   }, [deleteProduct, dialog, notification]);
 
-  const getActions = (): ActionType[] => [
-    {
-      label: "Details",
-      onClick: () => navigate(`/a/products/${product?.id}`),
-      icon: <ViewListIcon size={20} />,
-    },
-    {
-      label: "Add To Cart",
-      onClick: () => {
-        if (product?.additional_hardwares?.length) {
-          handleOpenHardwareModal();
-        } else {
-          if (!product || !handleAddToCart) return;
-          handleAddToCart({...product});
-        }
+  const getActions = (mode: "grid" | "table" = "grid"): ActionType[] => {
+    const l: ActionType[] = [
+      {
+        label: "Details",
+        onClick: () => navigate(`/a/products/${product?.id}`),
+        icon: <ViewListIcon size={20} />,
       },
-      icon: <CartPlusIcon size={20} />,
-    },
-    {
-      label: "Delete Product",
-      variant: "danger",
-      onClick: handleDelete,
-      icon: <TrashIcon size={20} />,
-    },
-  ];
+    ];
+
+    mode === "table" &&
+      l.push({
+        label: "Add To Cart",
+        onClick: () => {
+          if (product?.additional_hardwares?.length) {
+            handleOpenHardwareModal();
+          } else {
+            if (!product || !handleAddToCart) return;
+            handleAddToCart({ ...product });
+          }
+        },
+        icon: <CartPlusIcon size={20} />,
+      });
+
+    isAdmin &&
+      l.push({
+        label: "Delete Product",
+        variant: "danger",
+        onClick: handleDelete,
+        icon: <TrashIcon size={20} />,
+      });
+
+    return l;
+  };
 
   return {
     getActions,
