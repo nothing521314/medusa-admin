@@ -105,7 +105,7 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
     if (canNextPage) {
       setFilters((pre) => ({
         ...pre,
-        offset: pre.offset--,
+        offset: pre.offset + DEFAULT_PAGE_SIZE,
       }));
       nextPage();
     }
@@ -115,7 +115,7 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
     if (canPreviousPage) {
       setFilters((pre) => ({
         ...pre,
-        offset: pre.offset++,
+        offset: pre.offset - DEFAULT_PAGE_SIZE,
       }));
       previousPage();
     }
