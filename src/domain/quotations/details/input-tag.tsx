@@ -28,6 +28,7 @@ const InputTag = ({
 
   const handleSubmitAddTag = useCallback(() => {
     if (arrValue.length === maxLength) return;
+    if (!string) return;
 
     const isDuplicate = string && !!arrValue.find((str) => str === string);
     if (isDuplicate) return;
