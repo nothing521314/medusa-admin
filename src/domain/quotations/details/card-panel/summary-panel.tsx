@@ -159,6 +159,7 @@ const SummaryPanel = ({ formData, readOnly = true, tab }: Props) => {
           <AddProductDialog
             open={isOpenProductDialog}
             onClose={handleCloseProductDialog}
+            region={formData.region}
             handleSetProduct={(product) => {
               if (!product.additional_hardwares?.length) {
                 handleAddToCart && handleAddToCart(product);

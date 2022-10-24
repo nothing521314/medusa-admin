@@ -92,7 +92,7 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
     setTimeout(() => {
       window.print();
       setPrintData(undefined);
-    }, 200);
+    }, 500);
   }, []);
 
   return (

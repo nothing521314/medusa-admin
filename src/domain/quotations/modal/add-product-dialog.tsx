@@ -1,12 +1,12 @@
 import { useAdminProducts } from "@medusa-react";
 import { Product } from "@medusa-types";
+import { Region } from "@medusajs/medusa";
 import * as RadixPopover from "@radix-ui/react-popover";
 import clsx from "clsx";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Spinner from "src/components/atoms/spinner";
 import Button from "src/components/fundamentals/button";
 import TableSearch from "src/components/molecules/table/table-search";
-import { AccountContext } from "src/context/account";
 import { useDebounce } from "src/hooks/use-debounce";
 import { formatAmountWithSymbol } from "src/utils/prices";
 
@@ -14,10 +14,20 @@ type Props = {
   onClose: () => void;
   open: boolean;
   handleSetProduct: (product: Product) => void;
+  region: Region;
 };
 
-const AddProductDialog = ({ open, onClose, handleSetProduct }: Props) => {
-  const [productList, setProductList] = useState<Product[]>([]);
+interface IProduct extends Product {
+  price: number;
+}
+
+const AddProductDialog = ({
+  open,
+  onClose,
+  handleSetProduct,
+  region,
+}: Props) => {
+  const [productList, setProductList] = useState<IProduct[]>([]);
   const [query, setQuery] = useState<string>("");
   const debounceQuery = useDebounce(query, 200);
   const { products, isLoading } = useAdminProducts({
@@ -27,20 +37,31 @@ const AddProductDialog = ({ open, onClose, handleSetProduct }: Props) => {
     fields: "id,title,type,thumbnail,status,handle,description,updated_at",
   });
 
-  const { selectedRegion } = useContext(AccountContext);
-
   const handleAdd = useCallback(
     (product: Product) => {
       handleSetProduct(product);
     },
     [handleSetProduct]
   );
+  console.log({ region });
 
   useEffect(() => {
     if (products) {
-      setProductList(products as Product[]);
+      const list = [...products]
+        .map((item) => {
+          return {
+            ...item,
+            price:
+              (item as Product).prices.find(
+                (item) => item?.region_id === region?.id
+              )?.price || 0,
+          };
+        })
+        .filter((item) => item.price);
+
+      setProductList(list as IProduct[]);
     }
-  }, [products]);
+  }, [products, region?.id]);
 
   const renderBody = useCallback(() => {
     if (isLoading) {
@@ -52,9 +73,7 @@ const AddProductDialog = ({ open, onClose, handleSetProduct }: Props) => {
     }
 
     if (!productList?.length) {
-      return (
-        <div className="text-center w-full">Product does not exist</div>
-      );
+      return <div className="text-center w-full">Product does not exist</div>;
     }
 
     return productList?.map((item) => (
@@ -79,13 +98,10 @@ const AddProductDialog = ({ open, onClose, handleSetProduct }: Props) => {
         <div className="flex items-center gap-x-base">
           <span>
             {formatAmountWithSymbol({
-              amount:
-                item.prices.find(
-                  (item) => item?.region_id === selectedRegion?.id
-                )?.price || 0,
-              currency: selectedRegion?.currency_code || "",
+              amount: item.price,
+              currency: region?.currency_code || "",
               digits: 2,
-              tax: selectedRegion?.tax_rate,
+              tax: region?.tax_rate,
             })}
           </span>
           <Button variant="primary" onClick={() => handleAdd(item)}>
@@ -98,9 +114,8 @@ const AddProductDialog = ({ open, onClose, handleSetProduct }: Props) => {
     handleAdd,
     isLoading,
     productList,
-    selectedRegion?.currency_code,
-    selectedRegion?.id,
-    selectedRegion?.tax_rate,
+    region?.currency_code,
+    region?.tax_rate,
   ]);
 
   return (

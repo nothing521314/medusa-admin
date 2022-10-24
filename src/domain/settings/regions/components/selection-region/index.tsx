@@ -1,18 +1,25 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Button from "src/components/fundamentals/button";
 import { AccountContext } from "src/context/account";
+import { CartContext } from "@medusa-react";
+import { Region } from "@medusa-types";
 
 export const SelectionRegion = () => {
-  const {
-    name,
-    email,
-    handleLogout,
-    regions,
-    selectedRegion,
-    isAdmin,
-    handleSelectRegion,
-  } = useContext(AccountContext);
+  const { regions, selectedRegion, handleSelectRegion } = useContext(
+    AccountContext
+  );
+  const { handleSetListProduct } = useContext(CartContext);
+
+  const handleClickSelectRegion = useCallback(
+    (item: Region) => {
+      if (!handleSelectRegion) return;
+      if (selectedRegion?.name === item.name) return;
+      handleSelectRegion(item);
+      handleSetListProduct && handleSetListProduct([]);
+    },
+    [handleSelectRegion, handleSetListProduct, selectedRegion?.name]
+  );
 
   return (
     <div className="flex ml-5">
@@ -36,11 +43,7 @@ export const SelectionRegion = () => {
                   key={index}
                   variant="ghost"
                   className="w-full !justify-start"
-                  onClick={() => {
-                    if (!handleSelectRegion) return;
-                    if (selectedRegion?.name === item.name) return;
-                    handleSelectRegion(item);
-                  }}
+                  onClick={() => handleClickSelectRegion(item)}
                 >
                   {`${item.name}/${item.currency_code.toUpperCase()}`}
                 </Button>
