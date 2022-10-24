@@ -50,8 +50,9 @@ const InputTag = ({
   );
 
   const handleBlur = useCallback(() => {
+    if (readOnly) return;
     handleSubmitAddTag();
-  }, [handleSubmitAddTag]);
+  }, [handleSubmitAddTag, readOnly]);
 
   const handleDeleteTag = useCallback(
     (index: number) => {
@@ -92,7 +93,7 @@ const InputTag = ({
       ))}
       <input
         readOnly={readOnly}
-        placeholder={!readOnly && placeholder || ""}
+        placeholder={(!readOnly && placeholder) || ""}
         className={clsx(
           "outline-none focus-within:outline-none text-sm w-full min-w-[300px] relative right-0"
         )}

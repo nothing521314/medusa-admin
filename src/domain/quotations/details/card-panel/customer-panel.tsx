@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 import Button from "src/components/fundamentals/button";
 import BodyCard from "src/components/organisms/body-card";
 import useToggleState from "src/hooks/use-toggle-state";
+import { SUB_TAB } from "../..";
 import CustomerDialog from "../../modal/customer-dialog";
 import CustomerLine from "../templates/customer-line";
 
@@ -10,9 +11,15 @@ type Props = {
   customer?: Customer;
   handleSelectCustomer: ((customer: Customer) => void) | undefined;
   readOnly: boolean;
+  tab?: string;
 };
 
-const CustomerPanel = ({ customer, handleSelectCustomer, readOnly }: Props) => {
+const CustomerPanel = ({
+  customer,
+  handleSelectCustomer,
+  readOnly,
+  tab,
+}: Props) => {
   const {
     open: handleOpenCustomerDialog,
     close: handleCloseCustomerDialog,
@@ -36,7 +43,7 @@ const CustomerPanel = ({ customer, handleSelectCustomer, readOnly }: Props) => {
             onClick={handleClickChangeButton}
             type="button"
           >
-            Change
+            {tab === SUB_TAB.MAKE_QUOTATION ? "Add Customer" : "Change"}
           </Button>
         ) : undefined
       }

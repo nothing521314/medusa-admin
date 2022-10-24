@@ -645,6 +645,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
                 handleSelectCustomer={(customer) => {
                   setValue("customer", customer);
                 }}
+                tab={tab}
               />
               <SummaryPanel
                 formData={watch()}
