@@ -181,9 +181,12 @@ export const CartProvider = ({ children }: CartProps) => {
     [handleSaveCard, state.productList]
   );
 
-  const handleSetListProduct = useCallback((data) => {
-    dispatch({ type: "productionList", payload: [...data] });
-  }, []);
+  const handleSetListProduct = useCallback(
+    (data) => {
+      handleSaveCard([...data]);
+    },
+    [handleSaveCard]
+  );
 
   const handleSetAction = useCallback((action?: SUB_TAB) => {
     dispatch({ type: "action", payload: action });

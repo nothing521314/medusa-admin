@@ -51,11 +51,15 @@ const Topbar: React.FC = () => {
     (item: Region) => {
       handleSetListProduct && handleSetListProduct([]);
       handleSelectRegion && handleSelectRegion(item);
+      location.reload();
     },
     [handleSelectRegion, handleSetListProduct]
   );
 
   const renderRegionMenu = useCallback(() => {
+    if (isAdmin) return null;
+    if (action === SUB_TAB.REVISE_QUOTATION) return null;
+
     return (
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
@@ -90,7 +94,7 @@ const Topbar: React.FC = () => {
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     );
-  }, [handleClickSelectRegion, regions, selectedRegion?.name]);
+  }, [action, handleClickSelectRegion, isAdmin, regions, selectedRegion?.name]);
 
   const renderAccountDetailMenu = useCallback(() => {
     return (
@@ -124,7 +128,7 @@ const Topbar: React.FC = () => {
     <div className="print:hidden w-full min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-b border-grey-20 sticky top-0 flex items-center justify-between z-40">
       <SearchBar />
       <div className="flex items-center">
-        {!isAdmin && renderRegionMenu()}
+        {renderRegionMenu()}
 
         <Button
           size="small"
