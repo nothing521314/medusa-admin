@@ -15,7 +15,6 @@ const NestedPrice = ({ form, nestedPrice }: Props) => {
   const { control, path } = form;
   const { regionPrices } = nestedPrice;
   return regionPrices.map((rp) => {
-    console.log("regionPrices", rp.currency_code.toUpperCase());
     return (
       <div
         className="grid grid-cols-[1fr_223px] p-2xsmall  hover:bg-grey-5 focus-within:bg-grey-5 transition-colors rounded-rounded justify-between"

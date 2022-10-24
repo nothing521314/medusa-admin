@@ -43,7 +43,6 @@ const AddProductDialog = ({
     },
     [handleSetProduct]
   );
-  console.log({ region });
 
   useEffect(() => {
     if (products) {

@@ -82,7 +82,7 @@ const Edit = ({ id }: EditProps) => {
       });
     }
   }, [product, regionsMaster, reset]);
-  console.log(watch("collection.label"));
+
   const onSubmit = () =>
     handleSubmit(
       async ({ images, collection, additional_hardwares, ...data }) => {
