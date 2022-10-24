@@ -131,19 +131,21 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         product_id: string;
         volume: number;
         child_product: any;
+        game: string[];
       }> = (data.summary as Array<{
         id: string;
         quantity: number;
         child_product: any;
         product_id?: string;
+        game: string[];
       }>).map((item) => {
         return {
           product_id: item?.product_id || item.id,
           volume: item.quantity,
+          game: item.game,
           child_product: item.child_product.map((i) => ({
             product_id: i.product_additions_id || i.product_id,
             volume: i.quantity || i.volume,
-            game: i.game,
           })),
         };
       });

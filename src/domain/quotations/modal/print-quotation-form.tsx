@@ -47,35 +47,35 @@ const PrintQuotationFrom = ({
     return summary?.reduce((pre, cur) => pre + cur.subTotal, 0) || 0;
   }, [summary]);
 
-  const getNoNum = useCallback((index: number, arr: any) => {
+  const getNoNum = useCallback((index: number, arr: any, indexChild = 0) => {
     return (
-      arr.slice(0, index).reduce((pre, cur) => pre + cur.count, 0) + 1 || 0
+      arr.slice(0, index).reduce((pre, cur) => pre + cur.count, 0) + 1 + indexChild || 0
     );
   }, []);
 
   return (
     <div className={clsx("w-full h-auto bg-white", className)} id="print-quote">
       <img src={formData?.header?.header} alt="" />
-      <div className="w-full h-full px-16">
+      <div className="w-full h-full px-4">
         <div className="flex justify-between items-center">
-          <div>Our Ref: QM-5542-2022</div>
+          <div className="text-sm">Our Ref: QM-5542-2022</div>
           <div>{moment(formData?.createdAt).format("DD MMMM YYYY")}</div>
         </div>
-        <div className="mt-4">
-          <div className="font-semibold">
+        <div className="mt-2">
+          <div className="font-semibold text-sm">
             Customer Name: {formData?.customer?.name}
           </div>
-          <div className="">
+          <div className="text-sm">
             Customer Address: {formData?.customer?.address}
           </div>
         </div>
-        <div className="mt-4">
+        <div className="mt-2 text-sm">
           Dear {`${formData?.customer?.person_in_charge},`}
         </div>
-        <div className="mt-3 border-y-4 border-black font-semibold py-2">
+        <div className="mt-2 border-y-4 border-black font-semibold py-2 text-sm">
           {`Quotation for ${summary?.[0]?.product?.title}`}
         </div>
-        <div className="mt-3 text-justify">
+        <div className="mt-2 text-justify text-sm">
           We are pleased to submit our quotation for your consideration. Please
           see details of the proposal as below:
         </div>
@@ -145,52 +145,50 @@ const PrintQuotationFrom = ({
                       })}
                     </Table.Cell>
                   </Table.Row>
-                  <Table.Row className="!border-none mt-4">
-                    <Table.Cell></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black font-normal">
+                  <Table.Row className="!border-none">
+                    <Table.Cell className="!h-fit"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black font-normal !h-fit text-sm">
                       {item.description}
                     </Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
                   </Table.Row>
-                  {item.child_product.filter((child) => child?.game)?.length ? (
-                    <Table.Row className="!border-none mt-4">
-                      <Table.Cell></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black italic font-semibold">
+                  {item?.game?.length ? (
+                    <Table.Row className="!border-none mt-2">
+                      <Table.Cell className="!h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit italic font-semibold text-sm">
                         Games Selected:
                       </Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
                     </Table.Row>
                   ) : null}
-                  {item.child_product
-                    .filter((child) => child?.game)
-                    ?.map((child, indexG) => (
-                      <Table.Row className="!border-none mt-2" key={indexG}>
-                        <Table.Cell></Table.Cell>
-                        <Table.Cell className="border-l-[2px] border-black pl-4 italic">
-                          <span className="italic">- {child?.game}</span>
-                        </Table.Cell>
-                        <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                        <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                        <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                        <Table.Cell className="border-l-[2px] pl-4 border-black"></Table.Cell>
-                      </Table.Row>
-                    ))}
+                  {item.game?.map((name, indexG) => (
+                    <Table.Row className="!border-none mt-2" key={indexG}>
+                      <Table.Cell className="!h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] border-black !h-fit pl-4 italic">
+                        <span className="italic">- {name}</span>
+                      </Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                    </Table.Row>
+                  ))}
                   {item.child_product.length ? (
                     <Table.Row className="!border-[2px] border-black">
-                      <Table.Cell></Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                      <Table.Cell className="!h-fit"></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit pl-4">
                         Subtotal
                       </Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit pl-4"></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit pl-4"></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit pl-4"></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit pl-4">
                         {formatAmountWithSymbol({
                           amount: item.total,
                           currency: formData?.region?.currency_code || "usd",
@@ -205,7 +203,9 @@ const PrintQuotationFrom = ({
                     return (
                       <React.Fragment key={indexChild}>
                         <Table.Row className="">
-                          <Table.Cell></Table.Cell>
+                          <Table.Cell className="pl-4 border-l-[2px] border-black">
+                            {getNoNum(index, summary, indexChild + 1)}
+                          </Table.Cell>
                           <Table.Cell className="border-l-[2px] pl-4 border-black">{`- ${child.title}`}</Table.Cell>
                           <Table.Cell className="border-l-[2px] pl-4 border-black">
                             {child.quantity}
@@ -289,57 +289,65 @@ const PrintQuotationFrom = ({
           </Table.Body>
         </Table>
 
-        <div className="font-semibold mt-4 underline">Quotation Conditions</div>
+        <div className="font-semibold mt-2 underline text-sm">
+          Quotation Conditions
+        </div>
         <div
-          className="mt-1 text-justify w-full"
+          className="mt-1 text-justify w-full text-sm"
           dangerouslySetInnerHTML={{
             __html: renderText(formData?.quotationConditions),
           }}
         />
 
-        <div className="font-semibold mt-4 underline">Payment Terms</div>
+        <div className="font-semibold mt-2 underline text-sm">
+          Payment Terms
+        </div>
         <div
-          className="mt-1 text-justify w-full"
+          className="mt-1 text-justify w-full text-sm"
           dangerouslySetInnerHTML={{
             __html: renderText(formData?.paymentTerms),
           }}
         />
 
-        <div className="font-semibold mt-4 underline">Delivery Lead Time</div>
+        <div className="font-semibold mt-2 underline text-sm">
+          Delivery Lead Time
+        </div>
         <div
-          className="mt-1 text-justify w-full"
+          className="mt-1 text-justify w-full text-sm"
           dangerouslySetInnerHTML={{
             __html: renderText(formData?.deliveryLeadTime),
           }}
         />
 
-        <div className="font-semibold mt-4 underline">Warranty</div>
+        <div className="font-semibold mt-2 underline text-sm">Warranty</div>
         <div
-          className="mt-1 text-justify w-full"
+          className="mt-1 text-justify w-full text-sm"
           dangerouslySetInnerHTML={{
             __html: renderText(formData?.warranty),
           }}
         />
 
-        <div className="font-semibold mt-4 underline">Installation Support</div>
+        <div className="font-semibold mt-2 underline text-sm">
+          Installation Support
+        </div>
         <div
-          className="mt-1 text-justify w-full"
+          className="mt-1 text-justify w-full text-sm"
           dangerouslySetInnerHTML={{
             __html: renderText(formData?.installationSupport),
           }}
         />
 
-        <div className="font-semibold mt-4 underline">Appendix A</div>
+        <div className="font-semibold mt-2 underline text-sm">Appendix A</div>
         <div
-          className="mt-1 text-justify w-full"
+          className="mt-1 text-justify w-full text-sm"
           dangerouslySetInnerHTML={{
             __html: renderText(formData?.appendixA),
           }}
         />
 
-        <div className="font-semibold mt-4 underline">Appendix B</div>
+        <div className="font-semibold mt-2 underline text-sm">Appendix B</div>
         <div
-          className="mt-1 text-justify w-full"
+          className="mt-1 text-justify w-full text-sm"
           dangerouslySetInnerHTML={{
             __html: renderText(formData?.appendixB),
           }}

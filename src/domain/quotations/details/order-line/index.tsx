@@ -4,8 +4,10 @@ import clsx from "clsx";
 import React, { useCallback, useContext } from "react";
 import MinusIcon from "src/components/fundamentals/icons/minus-icon";
 import PlusIcon from "src/components/fundamentals/icons/plus-icon";
+import { KEY } from "src/constants/misc";
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder";
 import { formatAmountWithSymbol } from "../../../../utils/prices";
+import InputTag from "../input-tag";
 
 type OrderLineProps = {
   item: IProductAdded;
@@ -76,51 +78,38 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
     ]
   );
 
-  const getNumberTimes = useCallback((num): string => {
-    if (num === 1) return "1st";
-    if (num === 2) return "2nd";
-    if (num === 3) return "3rd";
-    return `${num}th`;
-  }, []);
-
   const handleOnChange = useCallback(
-    (product: string, hardware: string, value: string) => {
+    (product: string, value: string[]) => {
       if (!handleAddGameOption) return;
-      handleAddGameOption(product, hardware, value);
+      handleAddGameOption(product, value);
     },
     [handleAddGameOption]
   );
 
   const renderGameOptions = useCallback(() => {
-    if (!item.child_product?.length) return;
+    if (item?.collection?.value === KEY.ID_CATEGORY_QM) return;
     return (
-      <div className="flex justify-between mb-1 rounded-lg">
-        <div className="flex space-x-4 justify-center ml-12 inter-small-regular text-grey-90 truncate">
+      <div className="flex justify-between mb-1 rounded-lg items-center space-x-4">
+        <div className="ml-12 inter-small-regular text-grey-90 whitespace-nowrap">
           Game attached (optional):
         </div>
-        <div className="flex flex-col gap-y-4 w-1/3">
-          {item.child_product.map((child, index) => (
-            <input
-              key={index}
-              readOnly={readOnly}
-              placeholder={`Enter the game for ${getNumberTimes(
-                index + 1
-              )} machine`}
-              className={clsx(
-                "outline-none focus-within:outline-none border px-2 py-1 rounded-lg w-full",
-                "focus-within:shadow-input focus-within:border-violet-60 focus-within:bg-grey-5"
-              )}
-              maxLength={100}
-              value={child?.game || ""}
-              onChange={(e) =>
-                handleOnChange(item.id!, child.id, e.target.value)
-              }
-            />
-          ))}
-        </div>
+        <InputTag
+          value={item.game}
+          maxLength={item.quantity}
+          placeholder="Enter the game for machine"
+          readOnly={readOnly}
+          onSubmit={(values) => handleOnChange(item.id!, values)}
+        />
       </div>
     );
-  }, [getNumberTimes, handleOnChange, item.child_product, item.id, readOnly]);
+  }, [
+    handleOnChange,
+    item?.collection?.value,
+    item.game,
+    item.id,
+    item.quantity,
+    readOnly,
+  ]);
 
   const renderChildrenProduct = useCallback(() => {
     if (!item.child_product?.length) return;

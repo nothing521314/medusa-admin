@@ -10,6 +10,7 @@ export interface IProductAdded extends Omit<Product, "beforeInsert"> {
   child_product?: Hardware[];
   priceItem?: number;
   quantity: number;
+  game?: string[];
 }
 
 interface ICartContext extends CartState {
@@ -22,8 +23,7 @@ interface ICartContext extends CartState {
   handleSetListProduct?: (product: IProductAdded[]) => void;
   handleAddGameOption?: (
     product_id: string,
-    hardwareId: string,
-    game: string
+    games: string[]
   ) => void;
   action?: SUB_TAB;
   handleSetAction?: (action?: SUB_TAB) => void;
@@ -193,18 +193,15 @@ export const CartProvider = ({ children }: CartProps) => {
   }, []);
 
   const handleAddGameOption = useCallback(
-    (product_id: string, hardwareId: string, game: string) => {
+    (product_id: string, games: string[]) => {
       const cloneCart = [...state.productList];
       const indexOfProduct = cloneCart.findIndex(
         (item) => item.id === product_id
       );
 
-      const indexOfHw = cloneCart[
-        indexOfProduct
-      ].additional_hardwares.findIndex((hw) => hw.id === hardwareId);
-      cloneCart[indexOfProduct].additional_hardwares[indexOfHw] = {
-        ...cloneCart[indexOfProduct].additional_hardwares[indexOfHw],
-        game,
+      cloneCart[indexOfProduct] = {
+        ...cloneCart[indexOfProduct],
+        game: games,
       };
 
       handleSaveCard(cloneCart);

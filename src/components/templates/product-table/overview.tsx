@@ -159,14 +159,6 @@ const ProductTile = ({ product }: { product: Product }) => {
                   : "-"}
               </p>
             </div>
-            <span
-              className={clsx(
-                "mt-3 inter-small-regular text-grey-50 line-clamp-1",
-                "text-center max-w-full text-ellipsis whitespace-nowrap overflow-hidden"
-              )}
-            >
-              {product.description ?? "-"}
-            </span>
           </div>
         </Link>
         <div className="flex justify-center mt-4">

@@ -76,10 +76,14 @@ const OrderIndex: React.FC<RouteComponentProps> = () => {
           additional_hardwares: item?.child_product.map((child) => ({
             ...child?.product,
             ...child,
+            priceItem: child.unit_price,
+            quantity: child.volume,
           })),
           child_product: item?.child_product.map((child) => ({
             ...child?.product,
             ...child,
+            priceItem: child.unit_price,
+            quantity: child.volume,
           })),
           priceItem: item.unit_price,
           quantity: item.volume,
