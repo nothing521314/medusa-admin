@@ -10,16 +10,18 @@ type Props = {
   mode?: "new" | "edit";
 };
 
-const PricesForm = ({ form: { control } }: Props) => {
+const PricesForm = ({ form: { control, watch } }: Props) => {
   const { isAdmin, regions } = useContext(AccountContext);
+  const prices = watch("prices");
 
   return (
     <React.Fragment>
       {(regions as Region[])?.map((rp, index) => {
+        const i = prices.findIndex((reg) => reg.region === rp.id);
         return (
           <div
             className="grid grid-cols-[1fr_303px] p-2xsmall  hover:bg-grey-5 focus-within:bg-grey-5 transition-colors rounded-rounded justify-between"
-            key={rp.id}
+            key={index}
           >
             <div className="flex items-center gap-x-small">
               <div className="w-10 h-10 bg-grey-10 rounded-rounded text-grey-50 flex items-center justify-center">
@@ -33,7 +35,7 @@ const PricesForm = ({ form: { control } }: Props) => {
               </div>
             </div>
             <Controller
-              name={`prices.${index}`}
+              name={`prices.${i}`}
               control={control}
               render={({
                 field: { value, onChange },
