@@ -591,7 +591,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
 
   return (
     <React.Fragment>
-      <div className="flex flex-row justify-between items-center mb-4 print:hidden">
+      <div className="flex flex-row justify-between items-center mb-4">
         <Breadcrumb
           currentPage={subTabName}
           previousBreadcrumb={"Quotation"}
@@ -606,10 +606,7 @@ const OrderDetails = ({ id, tab }: OrderDetailProps) => {
         </BodyCard>
       ) : (
         <React.Fragment>
-          <form
-            onSubmit={handleSubmit(handleSubmitMakeQuotationForm)}
-            className="print:hidden"
-          >
+          <form onSubmit={handleSubmit(handleSubmitMakeQuotationForm)}>
             {isDeletedProduct && (
               <div
                 className={clsx(

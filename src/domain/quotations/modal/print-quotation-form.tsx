@@ -1,4 +1,5 @@
 import { RouteComponentProps } from "@reach/router";
+import ReactDOM from "react-dom";
 import clsx from "clsx";
 import moment from "moment";
 import React, { useCallback, useMemo } from "react";
@@ -6,7 +7,7 @@ import Table from "src/components/molecules/table";
 import { formatAmountWithSymbol } from "src/utils/prices";
 import { IQuotationDetailForm } from "../details";
 
-interface TPrintQuotationFromModal
+export interface TPrintQuotationFromModal
   extends RouteComponentProps<{ id: string; tab: string }>,
     React.HTMLAttributes<HTMLDivElement> {
   formData?: IQuotationDetailForm;
@@ -49,18 +50,25 @@ const PrintQuotationFrom = ({
 
   const getNoNum = useCallback((index: number, arr: any, indexChild = 0) => {
     return (
-      arr.slice(0, index).reduce((pre, cur) => pre + cur.count, 0) + 1 + indexChild || 0
+      arr.slice(0, index).reduce((pre, cur) => pre + cur.count, 0) +
+        1 +
+        indexChild || 0
     );
   }, []);
 
-  return (
-    <div className={clsx("w-full h-auto bg-white", className)} id="print-quote">
-      <img src={formData?.header?.header} alt="" />
-      <div className="w-full h-full px-4">
-        <div className="flex justify-between items-center">
-          <div className="text-sm">Our Ref: QM-5542-2022</div>
+  return ReactDOM.createPortal(
+    <div
+      className={clsx("w-full h-full relative", className)}
+      id="print-quote"
+    >
+      <div className="table-header-group">
+        <img src={formData?.header?.header} alt="" />
+        <div className="flex justify-between items-center text-sm">
+          <div>Our Ref: QM-5542-2022</div>
           <div>{moment(formData?.createdAt).format("DD MMMM YYYY")}</div>
         </div>
+      </div>
+      <div className="w-full px-4 mb-5 overflow-visible table-row-group">
         <div className="mt-2">
           <div className="font-semibold text-sm">
             Customer Name: {formData?.customer?.name}
@@ -83,22 +91,24 @@ const PrintQuotationFrom = ({
         <Table className="!border-[2px] border-black">
           <Table.Head className="!border-[2px] border-black">
             <Table.HeadRow className="!border-[2px] border-black">
-              <Table.HeadCell className="pl-4 border-black">No.</Table.HeadCell>
-              <Table.HeadCell className="border-l-[2px] pl-4 border border-black">
+              <Table.HeadCell className="text-center border-black">
+                No.
+              </Table.HeadCell>
+              <Table.HeadCell className="border-l-[2px] text-center border border-black">
                 Product Description
               </Table.HeadCell>
-              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">
+              <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black">
                 Qty
               </Table.HeadCell>
-              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">
+              <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black">
                 List Price (
                 {(formData?.region?.currency_code || "").toUpperCase()})
               </Table.HeadCell>
-              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">
+              <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black">
                 Unit Price (
                 {(formData?.region?.currency_code || "").toUpperCase()})
               </Table.HeadCell>
-              <Table.HeadCell className="border-l-[2px] border-t-[2px] pl-4 border-black">
+              <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black">
                 Total ({(formData?.region?.currency_code || "").toUpperCase()})
               </Table.HeadCell>
             </Table.HeadRow>
@@ -108,16 +118,16 @@ const PrintQuotationFrom = ({
               return (
                 <React.Fragment key={index}>
                   <Table.Row className="!border-b-0 !border-[2px] border-black">
-                    <Table.Cell className="pl-4 border-l-[2px] border-black">
+                    <Table.Cell className="text-center border-l-[2px] border-black">
                       {getNoNum(index, summary)}
                     </Table.Cell>
-                    <Table.Cell className="font-semibold border-l-[2px] pl-4 border-black">
+                    <Table.Cell className="font-semibold border-l-[2px] px-4 border-black">
                       {item.title}
                     </Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black">
+                    <Table.Cell className="border-l-[2px] text-center border-black">
                       {item.quantity}
                     </Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black">
+                    <Table.Cell className="border-l-[2px] px-4 border-black text-right">
                       {formatAmountWithSymbol({
                         amount: item.priceItem,
                         currency: formData?.region?.currency_code || "usd",
@@ -126,7 +136,7 @@ const PrintQuotationFrom = ({
                         tax: formData?.region?.tax_rate || 0,
                       })}
                     </Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black">
+                    <Table.Cell className="border-l-[2px] px-4 border-black text-right">
                       {formatAmountWithSymbol({
                         amount: item.priceItem,
                         currency: formData?.region?.currency_code || "usd",
@@ -135,7 +145,7 @@ const PrintQuotationFrom = ({
                         tax: formData?.region?.tax_rate || 0,
                       })}
                     </Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black">
+                    <Table.Cell className="border-l-[2px] px-4 border-black text-right">
                       {formatAmountWithSymbol({
                         amount: item.total,
                         currency: formData?.region?.currency_code || "usd",
@@ -147,48 +157,48 @@ const PrintQuotationFrom = ({
                   </Table.Row>
                   <Table.Row className="!border-none">
                     <Table.Cell className="!h-fit"></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black font-normal !h-fit text-sm">
+                    <Table.Cell className="border-l-[2px] px-4 border-black font-normal !h-fit text-sm">
                       {item.description}
                     </Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
-                    <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
+                    <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
                   </Table.Row>
                   {item?.game?.length ? (
                     <Table.Row className="!border-none mt-2">
                       <Table.Cell className="!h-fit"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit italic font-semibold text-sm">
+                      <Table.Cell className="border-l-[2px] px-4 border-black !h-fit italic font-semibold text-sm">
                         Games Selected:
                       </Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
                     </Table.Row>
                   ) : null}
                   {item.game?.map((name, indexG) => (
                     <Table.Row className="!border-none mt-2" key={indexG}>
                       <Table.Cell className="!h-fit"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] border-black !h-fit pl-4 italic">
+                      <Table.Cell className="border-l-[2px] border-black !h-fit px-4 italic">
                         <span className="italic">- {name}</span>
                       </Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] pl-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
+                      <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
                     </Table.Row>
                   ))}
                   {item.child_product.length ? (
                     <Table.Row className="!border-[2px] border-black">
                       <Table.Cell className="!h-fit"></Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit pl-4">
+                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit px-4">
                         Subtotal
                       </Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit pl-4"></Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit pl-4"></Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit pl-4"></Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit pl-4">
+                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit px-4"></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit px-4"></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit px-4"></Table.Cell>
+                      <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit px-4 text-right">
                         {formatAmountWithSymbol({
                           amount: item.total,
                           currency: formData?.region?.currency_code || "usd",
@@ -203,14 +213,14 @@ const PrintQuotationFrom = ({
                     return (
                       <React.Fragment key={indexChild}>
                         <Table.Row className="">
-                          <Table.Cell className="pl-4 border-l-[2px] border-black">
+                          <Table.Cell className="text-center border-l-[2px] border-black">
                             {getNoNum(index, summary, indexChild + 1)}
                           </Table.Cell>
-                          <Table.Cell className="border-l-[2px] pl-4 border-black">{`- ${child.title}`}</Table.Cell>
-                          <Table.Cell className="border-l-[2px] pl-4 border-black">
+                          <Table.Cell className="border-l-[2px] px-4 border-black">{`- ${child.title}`}</Table.Cell>
+                          <Table.Cell className="border-l-[2px] text-center border-black">
                             {child.quantity}
                           </Table.Cell>
-                          <Table.Cell className="border-l-[2px] pl-4 border-black">
+                          <Table.Cell className="border-l-[2px] px-4 border-black text-right">
                             {formatAmountWithSymbol({
                               amount: child.priceItem,
                               currency:
@@ -220,7 +230,7 @@ const PrintQuotationFrom = ({
                               tax: formData?.region?.tax_rate || 0,
                             })}
                           </Table.Cell>
-                          <Table.Cell className="border-l-[2px] pl-4 border-black">
+                          <Table.Cell className="border-l-[2px] px-4 border-black text-right">
                             {formatAmountWithSymbol({
                               amount: child.priceItem,
                               currency:
@@ -230,7 +240,7 @@ const PrintQuotationFrom = ({
                               tax: formData?.region?.tax_rate || 0,
                             })}
                           </Table.Cell>
-                          <Table.Cell className="border-l-[2px] pl-4 border-black">
+                          <Table.Cell className="border-l-[2px] px-4 border-black text-right">
                             {formatAmountWithSymbol({
                               amount: child.total,
                               currency:
@@ -244,13 +254,13 @@ const PrintQuotationFrom = ({
                         {item.child_product?.length > 1 ? (
                           <Table.Row className="!border-[2px] border-black">
                             <Table.Cell></Table.Cell>
-                            <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                            <Table.Cell className="font-semibold border-l-[2px] border-black px-4">
                               Subtotal
                             </Table.Cell>
-                            <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-                            <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-                            <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-                            <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+                            <Table.Cell className="font-semibold border-l-[2px] border-black px-4"></Table.Cell>
+                            <Table.Cell className="font-semibold border-l-[2px] border-black px-4"></Table.Cell>
+                            <Table.Cell className="font-semibold border-l-[2px] border-black px-4"></Table.Cell>
+                            <Table.Cell className="font-semibold border-l-[2px] border-black px-4 text-right">
                               {formatAmountWithSymbol({
                                 amount: item.subTotalChild,
                                 currency:
@@ -270,13 +280,13 @@ const PrintQuotationFrom = ({
             })}
             <Table.Row className="!border-[2px] border-black">
               <Table.Cell></Table.Cell>
-              <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+              <Table.Cell className="font-semibold border-l-[2px] border-black px-4">
                 Total
               </Table.Cell>
-              <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-              <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-              <Table.Cell className="font-semibold border-l-[2px] border-black pl-4"></Table.Cell>
-              <Table.Cell className="font-semibold border-l-[2px] border-black pl-4">
+              <Table.Cell className="font-semibold border-l-[2px] border-black px-4"></Table.Cell>
+              <Table.Cell className="font-semibold border-l-[2px] border-black px-4"></Table.Cell>
+              <Table.Cell className="font-semibold border-l-[2px] border-black px-4"></Table.Cell>
+              <Table.Cell className="font-semibold border-l-[2px] border-black px-4 text-right">
                 {formatAmountWithSymbol({
                   amount: total,
                   currency: formData?.region?.currency_code || "usd",
@@ -353,11 +363,11 @@ const PrintQuotationFrom = ({
           }}
         />
       </div>
-      <img
-        src={formData?.header?.footer}
-        className="object-contain object-top"
-      />
-    </div>
+      <div className="table-footer-group">
+        <img src={formData?.header?.footer} alt="" />
+      </div>
+    </div>,
+    document.body
   );
 };
 

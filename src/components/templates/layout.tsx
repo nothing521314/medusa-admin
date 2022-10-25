@@ -6,7 +6,7 @@ import Topbar from "../organisms/topbar";
 
 const Layout: React.FC = ({ children }) => {
   return (
-    <div className="flex w-full h-screen print:h-auto inter-base-regular text-grey-90">
+    <div className="flex w-full h-screen inter-base-regular text-grey-90 print:hidden">
       <Toaster
         containerStyle={{
           top: 74,
@@ -20,14 +20,12 @@ const Layout: React.FC = ({ children }) => {
         <Topbar />
         <div
           className={clsx(
-            "large:px-xlarge py-xlarge bg-grey-5 min-h-content overflow-y-auto",
-            "print:!p-0"
+            "large:px-xlarge py-xlarge bg-grey-5 min-h-content overflow-y-auto"
           )}
         >
           <main
             className={clsx(
-              "xsmall:mx-base small:mx-xlarge medium:mx-4xlarge large:mx-auto large:max-w-7xl large:w-full h-full",
-              "print:!m-0 print:!max-w-none print:!w-auto"
+              "xsmall:mx-base small:mx-xlarge medium:mx-4xlarge large:mx-auto large:max-w-7xl large:w-full h-full"
             )}
           >
             {children}
