@@ -87,7 +87,7 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
   );
 
   const renderGameOptions = useCallback(() => {
-    if (item?.collection?.value === KEY.ID_CATEGORY_QM) return;
+    if (item?.collection?.value !== KEY.ID_CATEGORY_QM) return;
     return (
       <div className="flex justify-between mb-1 rounded-lg items-center space-x-4">
         <div className="ml-12 inter-small-regular text-grey-90 whitespace-nowrap">

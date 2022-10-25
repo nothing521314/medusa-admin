@@ -34,9 +34,9 @@ export const defaultAccountContext: IAccountState = {
   selectedRegion: undefined,
 };
 
-export const AccountContext = React.createContext<IAccountState>(
-  defaultAccountContext
-);
+export const AccountContext = React.createContext<IAccountState>({
+  ...defaultAccountContext,
+});
 
 const reducer = (state: IAccountState, action): IAccountState => {
   const res = action.payload as User;
@@ -67,7 +67,7 @@ const reducer = (state: IAccountState, action): IAccountState => {
         ...action.payload,
       };
     case "userLoggedOut":
-      return defaultAccountContext;
+      return { ...defaultAccountContext };
     case "userLoggedIn":
       return {
         ...state,
@@ -92,9 +92,10 @@ export const AccountProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultAccountContext);
 
   useEffect(() => {
-    const regionSelected = state.regions.filter(
-      (v) => v.id === getCookie(KEY.ACTIVE_REGION)
-    )?.[0];
+    const regionSelected =
+      state.regions.find((v) => v.id === getCookie(KEY.ACTIVE_REGION)) ||
+      state.regions[0];
+
     if (regionSelected) {
       dispatch({ type: "selectRegion", payload: regionSelected });
     }
