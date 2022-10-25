@@ -87,29 +87,29 @@ const OrderLine = ({ item, readOnly, region }: OrderLineProps) => {
   );
 
   const renderGameOptions = useCallback(() => {
-    if (item?.collection?.value !== KEY.ID_CATEGORY_QM) return;
-    return (
-      <div className="flex justify-between mb-1 rounded-lg items-center space-x-4">
-        <div className="ml-12 inter-small-regular text-grey-90 whitespace-nowrap">
-          Game attached (optional):
+    if (
+      (item as { collection_id?: string })?.collection_id ===
+        KEY.ID_CATEGORY_QM ||
+      item?.collection?.value === KEY.ID_CATEGORY_QM
+    ) {
+      return (
+        <div className="flex justify-between mb-1 rounded-lg items-center space-x-4">
+          <div className="ml-12 inter-small-regular text-grey-90 whitespace-nowrap">
+            Game attached (optional):
+          </div>
+          <InputTag
+            value={item.game}
+            maxLength={item.quantity}
+            placeholder="Enter the game for machine"
+            readOnly={readOnly}
+            onSubmit={(values) => handleOnChange(item.id!, values)}
+          />
         </div>
-        <InputTag
-          value={item.game}
-          maxLength={item.quantity}
-          placeholder="Enter the game for machine"
-          readOnly={readOnly}
-          onSubmit={(values) => handleOnChange(item.id!, values)}
-        />
-      </div>
-    );
-  }, [
-    handleOnChange,
-    item?.collection?.value,
-    item.game,
-    item.id,
-    item.quantity,
-    readOnly,
-  ]);
+      );
+    }
+
+    return null;
+  }, [handleOnChange, item, readOnly]);
 
   const renderChildrenProduct = useCallback(() => {
     if (!item.child_product?.length) return;
