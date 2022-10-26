@@ -47,7 +47,10 @@ const PricesForm = ({ form: { control, watch } }: Props) => {
                   <PriceFormInput
                     readOnly={!isAdmin}
                     onChange={(v) =>
-                      onChange({ value: v, region: region?.id } as IPrice)
+                      onChange({
+                        value: v,
+                        region: isAdmin ? reg.id : region?.id,
+                      } as IPrice)
                     }
                     amount={price || undefined}
                     currencyCode={

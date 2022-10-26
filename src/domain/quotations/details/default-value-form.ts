@@ -107,7 +107,7 @@ export type THeaderPrint = {
 
 export const quotationHeaderOptions: THeaderPrint[] = [
   {
-    title: "RGB Macao Limited",
+    title: "RGB Macau Limited",
     company: "RGB",
     header: `${process.env.GATSBY_MEDUSA_BACKEND_URL}${process.env.GATSBY_RGB_MACAO_HEADER}`,
     footer: `${process.env.GATSBY_MEDUSA_BACKEND_URL}${process.env.GATSBY_RGB_MACAO_FOOTER}`,
