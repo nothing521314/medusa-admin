@@ -65,9 +65,16 @@ const SelectAdditionalHardwareModal = ({
 
   useEffect(() => {
     if (!isLoading && product?.additional_hardwares?.length) {
-      setAdditionalHardwaresList(product?.additional_hardwares);
+      
+      const filtered = product?.additional_hardwares?.filter((item) => {
+        const price = item?.product_addition?.prices?.find(
+          (reg) => reg?.region_id === selectedRegion?.id
+        );
+        return !!price;
+      });
+      setAdditionalHardwaresList(filtered);
     }
-  }, [isLoading, product?.additional_hardwares]);
+  }, [isLoading, product?.additional_hardwares, selectedRegion?.id]);
 
   return (
     <Modal open={isOpen} handleClose={handleClose}>

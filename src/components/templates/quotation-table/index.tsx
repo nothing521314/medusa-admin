@@ -262,7 +262,7 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
                   label: "Email",
                   onClick: (
                     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                  ) => handleSendMail(e, row.original.customer.email),
+                  ) => handleSendMail(e, row?.original?.customer?.email),
                   icon: <MailIcon size={20} />,
                 },
                 {

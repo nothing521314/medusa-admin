@@ -1,8 +1,9 @@
 import { CartContext } from "@medusa-react";
 import { Region } from "@medusa-types";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import clsx from "clsx";
 import { navigate } from "gatsby";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import CartIcon from "src/components/fundamentals/icons/cart-icon";
 import { SUB_TAB } from "src/domain/quotations";
 import useToggleState from "src/hooks/use-toggle-state";
@@ -12,6 +13,7 @@ import Avatar from "../../atoms/avatar";
 import Button from "../../fundamentals/button";
 import SignOutIcon from "../../fundamentals/icons/log-out-icon";
 import SearchBar from "../../molecules/search-bar";
+import CartDialog from "../cart-dialog";
 
 const Topbar: React.FC = () => {
   const {
@@ -26,19 +28,27 @@ const Topbar: React.FC = () => {
 
   const { totalItems, handleSetListProduct, action } = useContext(CartContext);
 
+  const [animate, setAnimate] = useState<boolean>(false);
+
   const {
     open: openCanNotMakeQuoteModal,
     close: closeCanNotMakeQuoteModal,
     state: canNotMakeQuoteModalOpen,
   } = useToggleState(false);
 
+  const {
+    open: handleOpenCartDiaglog,
+    close: handleCloseCartDiaglog,
+    state: isOpenCartDialog,
+  } = useToggleState(false);
+
   const handleClickCartIcon = useCallback(() => {
     if (totalItems && action === SUB_TAB.MAKE_QUOTATION) {
-      navigate(`/a/quotations/${SUB_TAB.MAKE_QUOTATION}/new-quotation`);
+      handleOpenCartDiaglog();
     } else {
       openCanNotMakeQuoteModal();
     }
-  }, [action, openCanNotMakeQuoteModal, totalItems]);
+  }, [action, handleOpenCartDiaglog, openCanNotMakeQuoteModal, totalItems]);
 
   const logOut = useCallback(() => {
     if (!handleLogout) return;
@@ -55,6 +65,20 @@ const Topbar: React.FC = () => {
     },
     [handleSelectRegion, handleSetListProduct]
   );
+
+  const handleMakeQuotation = useCallback(() => {
+    handleCloseCartDiaglog();
+    navigate(`/a/quotations/${SUB_TAB.MAKE_QUOTATION}/new-quotation`);
+  }, [handleCloseCartDiaglog]);
+
+  useEffect(() => {
+    if (totalItems) {
+      setAnimate(true);
+    }
+    setTimeout(() => {
+      setAnimate(false);
+    }, 150);
+  }, [totalItems]);
 
   const renderRegionMenu = useCallback(() => {
     if (isAdmin) return null;
@@ -129,17 +153,28 @@ const Topbar: React.FC = () => {
       <SearchBar />
       <div className="flex items-center">
         {renderRegionMenu()}
-
         <Button
           size="small"
           variant="ghost"
-          className="w-8 h-8 mr-3"
+          className="w-8 h-8 mr-3 relative"
           onClick={handleClickCartIcon}
         >
           <CartIcon size={24} />
-          <div>
-            {totalItems && action === SUB_TAB.MAKE_QUOTATION ? totalItems : ""}
-          </div>
+
+          {totalItems && action === SUB_TAB.MAKE_QUOTATION ? (
+            <div
+              className={clsx(
+                "rounded-full bg-green-600 text-white w-4 h-4 text-[10px] font-bold",
+                "flex items-center justify-center",
+                "absolute right-3 top-0",
+                {
+                  "animate-ping duration-150": animate,
+                }
+              )}
+            >
+              {totalItems}
+            </div>
+          ) : null}
         </Button>
 
         <div className="w-large h-large">{renderAccountDetailMenu()}</div>
@@ -148,6 +183,13 @@ const Topbar: React.FC = () => {
         <CanNotMakeQuotationModal
           handleClose={closeCanNotMakeQuoteModal}
           onSubmit={closeCanNotMakeQuoteModal}
+        />
+      )}
+      {isOpenCartDialog && (
+        <CartDialog
+          onMakeQuotation={handleMakeQuotation}
+          onClose={handleCloseCartDiaglog}
+          open={isOpenCartDialog}
         />
       )}
     </div>

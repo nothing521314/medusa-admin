@@ -201,7 +201,7 @@ export const CartProvider = ({ children }: CartProps) => {
 
       cloneCart[indexOfProduct] = {
         ...cloneCart[indexOfProduct],
-        game: games,
+        game: [...games],
       };
 
       handleSaveCard(cloneCart);

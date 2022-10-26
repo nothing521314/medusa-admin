@@ -38,11 +38,23 @@ const MediaSection = ({ mode = "new", form }: Props) => {
   } = useToggleState(false);
 
   const prices = getValues("prices");
+  const child_product = getValues("additional_hardwares");
   const price = useMemo(() => {
     return (
       prices?.find((reg) => reg?.region === selectedRegion?.id)?.value || 0
     );
   }, [prices, selectedRegion?.id]);
+
+  const listHavePrice = React.useMemo(() => {
+    console.log(child_product);
+
+    return child_product?.filter((item) => {
+      const price = item?.prices?.find(
+        (reg) => (reg as { label?: string })?.label === selectedRegion?.id
+      );
+      return !!price;
+    });
+  }, [child_product, selectedRegion?.id]);
 
   const [hardwares, setHardWares] = useState<Hardware[]>([]);
 
@@ -94,7 +106,7 @@ const MediaSection = ({ mode = "new", form }: Props) => {
               variant="secondary"
               size="small"
               onClick={() => {
-                if (getValues("additional_hardwares")?.length) {
+                if (listHavePrice?.length) {
                   handleOpenHardwareModal();
                 } else {
                   handleAddToCart && handleAddToCart(getValues());

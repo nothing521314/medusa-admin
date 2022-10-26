@@ -305,7 +305,7 @@ const ProductRow = ({ row, ...rest }) => {
   useEffect(() => {
     if (!hardwares.length) return;
     try {
-      handleAddHarwareToCart && handleAddHarwareToCart(product.id, hardwares);
+      handleAddHarwareToCart && handleAddHarwareToCart(product.id, [...hardwares]);
       setHardWares([]);
     } catch (error) {
       console.log(error);

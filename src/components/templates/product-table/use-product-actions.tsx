@@ -15,7 +15,7 @@ import { ActionType } from "../../molecules/actionables";
 const useProductActions = (product?: Product) => {
   const dialog = useImperativeDialog();
   const notification = useNotification();
-  const { isAdmin } = React.useContext(AccountContext);
+  const { isAdmin, selectedRegion } = React.useContext(AccountContext);
   const deleteProduct = useAdminDeleteProduct(product?.id!);
   const { handleAddToCart } = React.useContext(CartContext);
 
@@ -24,6 +24,15 @@ const useProductActions = (product?: Product) => {
     close: handleCloseHardwareModal,
     state: isOpenHardwareModal,
   } = useToggleState(false);
+
+  const listHavePrice = React.useMemo(() => {
+    return product?.additional_hardwares?.filter((item) => {
+      const price = item?.prices?.find(
+        (reg) => reg?.region_id === selectedRegion?.id
+      );
+      return !!price;
+    });
+  }, [product?.additional_hardwares, selectedRegion?.id]);
 
   const handleDelete = React.useCallback(async () => {
     const shouldDelete = await dialog({
@@ -55,7 +64,7 @@ const useProductActions = (product?: Product) => {
       l.push({
         label: "Add To Cart",
         onClick: () => {
-          if (product?.additional_hardwares?.length) {
+          if (listHavePrice?.length) {
             handleOpenHardwareModal();
           } else {
             if (!product || !handleAddToCart) return;
