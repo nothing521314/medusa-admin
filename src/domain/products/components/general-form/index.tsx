@@ -115,7 +115,7 @@ const GeneralForm = ({ mode = "new", form }: Props) => {
             label="Weight (Kilograms)"
             {...register("weight", {
               required: FormValidator.required("Weight (Kilograms)"),
-              validate: FormValidator.requiredNumber("Weight (Kilograms)"),
+              validate: FormValidator.isWeight("Weight (Kilograms)"),
               valueAsNumber: true,
             })}
             errors={errors}

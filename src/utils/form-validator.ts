@@ -50,10 +50,10 @@ const FormValidator = {
       `${name} must be less than or equal to ${getNormalizedAmount(currency)}.`
     );
   },
-  requiredNumber: (name: string) => {
+  isWeight: (name: string) => {
     return (v) => {
-      const isNumber = !Number.isNaN(v);
-      return isNumber ? true : `${name} is not a number format`;
+      const isNumber = !Number.isNaN(v) && v > 0;
+      return isNumber ? true : `${name} is not in the correct format.`;
     };
   },
   requiredImage: ((value: FormImage[]) => {
