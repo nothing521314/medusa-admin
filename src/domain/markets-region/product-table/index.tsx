@@ -8,6 +8,7 @@ import { usePagination, useTable } from "react-table";
 import Button from "src/components/fundamentals/button";
 import TrashIcon from "src/components/fundamentals/icons/trash-icon";
 import Table, { TablePagination } from "src/components/molecules/table";
+import { NoRecordTable } from "src/components/templates/no-record-table";
 import useToggleState from "src/hooks/use-toggle-state";
 import { useFeatureFlag } from "../../../context/feature-flag";
 import ModalAddProduct from "./modal-add-product";
@@ -112,7 +113,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ id, region }) => {
     setTileView,
     setListView,
     showList,
-    region
+    region,
   });
 
   const {
@@ -195,8 +196,10 @@ const ProductTable: React.FC<ProductTableProps> = ({ id, region }) => {
     refreshWithFilters();
   }, [refreshWithFilters]);
 
+  const hasData = products?.length ?? 0 > 0;
+
   return (
-    <div className="w-full h-full overflow-y-auto">
+    <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[220px] h-full ">
       <>
         <Table
           filteringOptions={
@@ -229,14 +232,18 @@ const ProductTable: React.FC<ProductTableProps> = ({ id, region }) => {
                 ))}
               </Table.Head>
 
-              <Table.Body {...getTableBodyProps()}>
-                {rows.map((row) => {
-                  prepareRow(row);
-                  return (
-                    <ProductRow row={row} id={id} {...row.getRowProps()} />
-                  );
-                })}
-              </Table.Body>
+              {hasData ? (
+                <Table.Body {...getTableBodyProps()}>
+                  {rows.map((row) => {
+                    prepareRow(row);
+                    return (
+                      <ProductRow row={row} id={id} {...row.getRowProps()} />
+                    );
+                  })}
+                </Table.Body>
+              ) : (
+                <NoRecordTable />
+              )}
             </>
           }
         </Table>

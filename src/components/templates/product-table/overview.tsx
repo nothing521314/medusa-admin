@@ -19,6 +19,7 @@ import ListIcon from "../../fundamentals/icons/list-icon";
 import MoreHorizontalIcon from "../../fundamentals/icons/more-horizontal-icon";
 import TileIcon from "../../fundamentals/icons/tile-icon";
 import Actionables from "../../molecules/actionables";
+import { NoRecordTable } from "../no-record-table";
 import useProductActions from "./use-product-actions";
 
 type ProductOverviewProps = {
@@ -55,11 +56,15 @@ const ProductOverview = ({
           </span>
         </div>
       </div>
-      <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(250px,5fr))] gap-4">
-        {products.map((product) => (
-          <ProductTile product={product} />
-        ))}
-      </div>
+      {products.length > 0 ? (
+        <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(250px,5fr))] gap-4">
+          {products.map((product) => (
+            <ProductTile product={product} />
+          ))}
+        </div>
+      ) : (
+        <NoRecordTable />
+      )}
     </>
   );
 };

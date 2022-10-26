@@ -20,6 +20,7 @@ import useNotification from "src/hooks/use-notification";
 import useToggleState from "src/hooks/use-toggle-state";
 import Spinner from "../../atoms/spinner";
 import Table, { TablePagination } from "../../molecules/table";
+import { NoRecordTable } from "../no-record-table";
 import {
   parseQuotationQueryString,
   removeEmptyProperties,
@@ -229,13 +230,7 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
     }
 
     if (!quotations || !quotations.length) {
-      return (
-        <Table.Body className="flex w-full h-full absolute items-center justify-center mt-10">
-          <Table.Row className="border-none">
-            <Table.HeadCell>No record</Table.HeadCell>
-          </Table.Row>
-        </Table.Body>
-      );
+      return <NoRecordTable />;
     }
 
     return (

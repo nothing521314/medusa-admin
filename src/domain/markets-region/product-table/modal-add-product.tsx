@@ -137,14 +137,14 @@ const ProductItem = ({
   return (
     <div
       className={clsx(
-        "px-base  py-xsmall group hover:bg-grey-5 rounded-rounded flex items-center justify-between border border-gray-30",
+        "px-base  py-xsmall group hover:bg-grey-5 rounded-rounded flex items-center justify-between border border-gray-30 gap-x-3",
         {
           // "bg-grey-5": value,
         }
       )}
     >
       <div className="flex items-center gap-x-large">
-        <div className="w-16 h-16 flex items-center justify-center">
+        <div className="flex-[0_0_4rem] flex basis-16 items-center justify-center">
           <img
             src={product?.images?.[0].url}
             className="max-w-[64px] max-h-[64px] rounded-rounded"

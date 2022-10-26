@@ -8,8 +8,8 @@ import Spinner from "src/components/atoms/spinner";
 import Button from "src/components/fundamentals/button";
 import TrashIcon from "src/components/fundamentals/icons/trash-icon";
 import Table, { TablePagination } from "src/components/molecules/table";
+import { NoRecordTable } from "src/components/templates/no-record-table";
 import useToggleState from "src/hooks/use-toggle-state";
-import ModalAddProduct from "../product-table/modal-add-product";
 import ModalAddSalesman from "./modal-add-salesman";
 import { useSalesmanActions } from "./use-salesman-actions";
 import { useSalesmanColumns } from "./use-salesman-columns";
@@ -144,8 +144,10 @@ const SalesmanTable: React.FC<any> = ({ id }: CustomerDetailProps) => {
     refreshWithFilters();
   }, [representationObject]);
 
+  const hasData = user?.length ?? 0 > 0;
+
   return (
-    <div className="w-full h-full overflow-y-auto flex flex-col justify-between">
+    <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[220px] h-full ">
       <Table
         filteringOptions={
           <>
@@ -176,7 +178,7 @@ const SalesmanTable: React.FC<any> = ({ id }: CustomerDetailProps) => {
               <Spinner size={"large"} variant={"secondary"} />
             </div>
           </div>
-        ) : (
+        ) : hasData ? (
           <Table.Body {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -206,6 +208,8 @@ const SalesmanTable: React.FC<any> = ({ id }: CustomerDetailProps) => {
               );
             })}
           </Table.Body>
+        ) : (
+          <NoRecordTable />
         )}
       </Table>
       <TablePagination

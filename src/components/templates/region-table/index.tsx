@@ -6,13 +6,13 @@ import { usePagination, useTable } from "react-table";
 import DetailsIcon from "src/components/fundamentals/details-icon";
 import Spinner from "../../atoms/spinner";
 import Table, { TablePagination } from "../../molecules/table";
+import { NoRecordTable } from "../no-record-table";
 import { useRegionColumns } from "./use-region-columns";
 import { useCustomerFilters } from "./use-region-filters";
 
 const DEFAULT_PAGE_SIZE = 15;
 
-const defaultQueryProps = {
-};
+const defaultQueryProps = {};
 
 const RegionTable: React.FC<RouteComponentProps> = () => {
   const {
@@ -102,8 +102,10 @@ const RegionTable: React.FC<RouteComponentProps> = () => {
     }
   };
 
+  const hasData = regions?.length ?? 0 > 0;
+
   return (
-    <div className="w-full h-full overflow-y-auto flex flex-col justify-between">
+    <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full ">
       <Table enableSearch handleSearch={setQuery} {...getTableProps()}>
         <Table.Head>
           {headerGroups?.map((headerGroup) => (
@@ -122,7 +124,7 @@ const RegionTable: React.FC<RouteComponentProps> = () => {
               <Spinner size={"large"} variant={"secondary"} />
             </div>
           </div>
-        ) : (
+        ) : hasData ? (
           <Table.Body {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -155,6 +157,8 @@ const RegionTable: React.FC<RouteComponentProps> = () => {
               );
             })}
           </Table.Body>
+        ) : (
+          <NoRecordTable />
         )}
       </Table>
       <TablePagination

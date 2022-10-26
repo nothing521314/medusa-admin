@@ -17,6 +17,7 @@ import { useFeatureFlag } from "../../../context/feature-flag";
 import ProductsFilter from "../../../domain/products/filter-dropdown";
 import Spinner from "../../atoms/spinner";
 import Table, { TablePagination } from "../../molecules/table";
+import { NoRecordTable } from "../no-record-table";
 import ProductOverview from "./overview";
 import useProductActions from "./use-product-actions";
 import useProductTableColumn from "./use-product-column";
@@ -195,8 +196,10 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     refreshWithFilters();
   }, [refreshWithFilters]);
 
+  const hasData = count && count > 0;
+
   return (
-    <div className="w-full h-full overflow-y-auto">
+    <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full  ">
       <>
         <Table
           filteringOptions={
@@ -233,12 +236,16 @@ const ProductTable: React.FC<ProductTableProps> = () => {
                 ))}
               </Table.Head>
 
-              <Table.Body {...getTableBodyProps()}>
-                {rows.map((row) => {
-                  prepareRow(row);
-                  return <ProductRow row={row} {...row.getRowProps()} />;
-                })}
-              </Table.Body>
+              {hasData ? (
+                <Table.Body {...getTableBodyProps()}>
+                  {rows.map((row) => {
+                    prepareRow(row);
+                    return <ProductRow row={row} {...row.getRowProps()} />;
+                  })}
+                </Table.Body>
+              ) : (
+                <NoRecordTable />
+              )}
             </>
           ) : (
             <LoadingContainer

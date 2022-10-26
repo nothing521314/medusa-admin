@@ -10,6 +10,7 @@ import Spinner from "../../atoms/spinner";
 import EditIcon from "../../fundamentals/icons/edit-icon";
 import TrashIcon from "../../fundamentals/icons/trash-icon";
 import Table, { TablePagination } from "../../molecules/table";
+import { NoRecordTable } from "../no-record-table";
 import { useSalesmanColumns } from "./use-salesman-columns";
 import { useCustomerFilters } from "./use-salesman-filters";
 
@@ -127,8 +128,10 @@ const SalesmanTable: React.FC<RouteComponentProps> = () => {
     refreshWithFilters();
   }, [representationObject]);
 
+  const hasData = users?.length ?? 0 > 0;
+
   return (
-    <div className="w-full h-full overflow-y-auto flex flex-col justify-between">
+    <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full ">
       <Table enableSearch handleSearch={setQuery} {...getTableProps()}>
         <Table.Head>
           {headerGroups?.map((headerGroup) => (
@@ -147,7 +150,7 @@ const SalesmanTable: React.FC<RouteComponentProps> = () => {
               <Spinner size={"large"} variant={"secondary"} />
             </div>
           </div>
-        ) : (
+        ) : hasData ? (
           <Table.Body {...getTableBodyProps()}>
             {rows.map((row) => {
               prepareRow(row);
@@ -187,6 +190,8 @@ const SalesmanTable: React.FC<RouteComponentProps> = () => {
               );
             })}
           </Table.Body>
+        ) : (
+          <NoRecordTable />
         )}
       </Table>
       <TablePagination
