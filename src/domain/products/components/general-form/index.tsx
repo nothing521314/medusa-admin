@@ -113,10 +113,9 @@ const GeneralForm = ({ mode = "new", form }: Props) => {
           <InputField
             readOnly={!isAdmin}
             label="Weight (Kilograms)"
-            type={isAdmin ? "number" : "text"}
             {...register("weight", {
               required: FormValidator.required("Weight (Kilograms)"),
-              min: FormValidator.nonNegativeNumberRule("Weight"),
+              validate: FormValidator.requiredNumber("Weight (Kilograms)"),
               valueAsNumber: true,
             })}
             errors={errors}
