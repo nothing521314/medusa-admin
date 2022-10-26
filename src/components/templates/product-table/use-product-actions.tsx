@@ -63,14 +63,7 @@ const useProductActions = (product?: Product) => {
     mode === "table" &&
       l.push({
         label: "Add To Cart",
-        onClick: () => {
-          if (listHavePrice?.length) {
-            handleOpenHardwareModal();
-          } else {
-            if (!product || !handleAddToCart) return;
-            handleAddToCart({ ...product });
-          }
-        },
+        onClick: () => navigate(`/a/products/${product?.id}`),
         icon: <CartPlusIcon size={20} />,
       });
 

@@ -66,7 +66,7 @@ const useProductTableColumn = ({
         },
       },
     ],
-    []
+    [region?.currency_code, region?.tax_rate]
   );
 
   return [columns] as const;

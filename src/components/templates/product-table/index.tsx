@@ -15,7 +15,6 @@ import SelectAdditionalHardwareModal from "src/domain/products/components/select
 import { CartContext, useAdminProducts } from "../../../../medusa-react";
 import { useFeatureFlag } from "../../../context/feature-flag";
 import ProductsFilter from "../../../domain/products/filter-dropdown";
-import Spinner from "../../atoms/spinner";
 import Table, { TablePagination } from "../../molecules/table";
 import { NoRecordTable } from "../no-record-table";
 import ProductOverview from "./overview";
@@ -30,8 +29,7 @@ type ProductTableProps = {};
 
 const defaultQueryProps = {
   fields: "id,title,type,thumbnail,status,handle,description,updated_at",
-  expand:
-    "variants,options,collection,tags,prices,additional_hardwares,images",
+  expand: "variants,options,collection,tags,prices,additional_hardwares,images",
   is_giftcard: false,
   // order: "created_at"
 };
@@ -72,7 +70,7 @@ const ProductTable: React.FC<ProductTableProps> = () => {
   }, [queryObject.limit, queryObject.offset]);
 
   const [query, setQuery] = useState(queryObject.query);
-  const [showList, setShowList] = React.useState(true);
+  const [showList, setShowList] = React.useState(false);
 
   const clearFilters = useCallback(() => {
     reset();
@@ -248,14 +246,10 @@ const ProductTable: React.FC<ProductTableProps> = () => {
               )}
             </>
           ) : (
-            <LoadingContainer
-              isLoading={isLoading || isRefetching || !products}
-            >
-              <ProductOverview
-                products={products as Product[]}
-                toggleListView={setListView}
-              />
-            </LoadingContainer>
+            <ProductOverview
+              products={products as Product[]}
+              toggleListView={setListView}
+            />
           )}
         </Table>
         <TablePagination
@@ -273,16 +267,6 @@ const ProductTable: React.FC<ProductTableProps> = () => {
         />
       </>
     </div>
-  );
-};
-
-const LoadingContainer = ({ isLoading, children }) => {
-  return isLoading ? (
-    <div className="w-full pt-2xlarge flex items-center justify-center">
-      <Spinner size={"large"} variant={"secondary"} />
-    </div>
-  ) : (
-    children
   );
 };
 
@@ -312,7 +296,8 @@ const ProductRow = ({ row, ...rest }) => {
   useEffect(() => {
     if (!hardwares.length) return;
     try {
-      handleAddHarwareToCart && handleAddHarwareToCart(product.id, [...hardwares]);
+      handleAddHarwareToCart &&
+        handleAddHarwareToCart(product.id, [...hardwares]);
       setHardWares([]);
     } catch (error) {
       console.log(error);

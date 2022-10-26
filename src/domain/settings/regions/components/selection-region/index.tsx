@@ -17,6 +17,7 @@ export const SelectionRegion = () => {
       if (selectedRegion?.name === item.name) return;
       handleSelectRegion(item);
       handleSetListProduct && handleSetListProduct([]);
+      location.reload();
     },
     [handleSelectRegion, handleSetListProduct, selectedRegion?.name]
   );

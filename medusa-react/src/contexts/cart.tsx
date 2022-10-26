@@ -105,22 +105,24 @@ export const CartProvider = ({ children }: CartProps) => {
         (item) => item.id === product_id
       );
 
-      hardwares.map((hardware) => {
-        const i = cloneCart[indexOfProduct].additional_hardwares.findIndex(
+      const childList = [...cloneCart[indexOfProduct].additional_hardwares];
+      [...hardwares].map((hardware) => {
+        const i = childList.findIndex(
           (item) => item.id === hardware.product_additions_id
         );
         if (i !== -1) {
-          cloneCart[indexOfProduct].additional_hardwares[i] = {
+          childList[i] = {
             ...hardware,
             quantity: (hardware?.quantity || 0) + 1,
           };
         } else {
-          cloneCart[indexOfProduct].additional_hardwares.push({
+          childList.push({
             ...hardware,
             quantity: 1,
           });
         }
       });
+      cloneCart[indexOfProduct].additional_hardwares = [...childList];
 
       handleSetListProduct([...cloneCart]);
     },
@@ -198,7 +200,7 @@ export const CartProvider = ({ children }: CartProps) => {
     },
     [handleSetListProduct, state.productList]
   );
-  
+
   useEffect(() => {
     let total = 0;
     if (state.productList) {

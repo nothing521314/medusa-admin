@@ -1,7 +1,7 @@
 import { CartContext } from "@medusa-react";
 import { Hardware, Product } from "@medusa-types";
 import clsx from "clsx";
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
 import React, {
   useCallback,
   useContext,
@@ -90,13 +90,14 @@ const ProductTile = ({ product }: { product: Product }) => {
   }, [product.prices, selectedRegion?.id]);
 
   const handleClickAddToCartBtn = useCallback(() => {
-    if (product?.additional_hardwares?.length) {
-      handleOpenHardwareModal();
-    } else {
-      if (!product || !handleAddToCart) return;
-      handleAddToCart({ ...product });
-    }
-  }, [handleAddToCart, handleOpenHardwareModal, product]);
+    // if (product?.additional_hardwares?.length) {
+    //   handleOpenHardwareModal();
+    // } else {
+    //   if (!product || !handleAddToCart) return;
+    //   handleAddToCart({ ...product });
+    // }
+    navigate(`/a/products/${product?.id}`);
+  }, [product]);
 
   const handleSubmitAdd = useCallback(
     (hw) => {
@@ -150,10 +151,10 @@ const ProductTile = ({ product }: { product: Product }) => {
 
           <div>
             <div className="mt-base flex items-center justify-between">
-              <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1 mr-3">
+              <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1 mr-3 max-w-[60%]">
                 {product.title}
               </p>
-              <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1">
+              <p className="inter-small-regular text-grey-90 font-semibold line-clamp-1 max-w-[40%]">
                 {price
                   ? formatAmountWithSymbol({
                       amount: price,

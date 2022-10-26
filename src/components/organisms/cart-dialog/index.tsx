@@ -48,6 +48,91 @@ const CartDialog = ({ open, onClose, onMakeQuotation }: CartDialogProps) => {
     [handleSetListProduct, productList]
   );
 
+  const renderBody = useCallback(() => {
+    if (!productList.length) {
+      return <div className="text-center text-grey-50">No product added</div>;
+    }
+
+    return productList?.map((prod, i) => {
+      return (
+        <div key={i}>
+          <div className="flex justify-between items-center">
+            <div className="flex h-10 gap-3 items-center">
+              <img src={prod?.thumbnail} alt="" className="h-12 w-6" />
+              <div>
+                <div>{prod?.title}</div>
+                <div className="text-xs text-grey-50">
+                  {formatAmountWithSymbol({
+                    amount:
+                      prod?.prices.find(
+                        (reg) => reg.region === selectedRegion?.id
+                      )?.value ||
+                      prod?.prices.find(
+                        (reg) => reg.region_id === selectedRegion?.id
+                      )?.price ||
+                      0,
+                    currency: selectedRegion?.currency_code || "",
+                    digits: 2,
+                    tax: selectedRegion?.tax_rate,
+                  })}
+                </div>
+              </div>
+            </div>
+            <div
+              className="cursor-pointer"
+              onClick={(e) => handleDeleteProduct(e, prod.id!)}
+            >
+              <BackspaceIcon size={20} />
+            </div>
+          </div>
+          {prod?.additional_hardwares
+            ?.filter((child) => child.quantity)
+            ?.map((child, ic) => {
+              return (
+                <div
+                  className="flex justify-between items-center ml-9 mt-3"
+                  key={ic}
+                >
+                  <div className="flex h-10 gap-3 items-center">
+                    <img src={child?.thumbnail} alt="" className="h-12 w-6" />
+                    <div>
+                      <div>{child?.title}</div>
+                      <div className="text-xs text-grey-50">
+                        {formatAmountWithSymbol({
+                          amount:
+                            child?.prices.find(
+                              (reg) => reg.region_id === selectedRegion?.id
+                            )?.price || 0,
+                          currency: selectedRegion?.currency_code || "",
+                          digits: 2,
+                          tax: selectedRegion?.tax_rate,
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="cursor-pointer"
+                    onClick={(e) =>
+                      handleDeleteAdditionalHardware(e, prod.id!, child.id)
+                    }
+                  >
+                    <BackspaceIcon size={20} />
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+      );
+    });
+  }, [
+    handleDeleteAdditionalHardware,
+    handleDeleteProduct,
+    productList,
+    selectedRegion?.currency_code,
+    selectedRegion?.id,
+    selectedRegion?.tax_rate,
+  ]);
+
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
       <Dialog.Overlay className="absolute z-10 grid top-0 left-0 right-8 place-items-end overflow-y-auto">
@@ -56,85 +141,11 @@ const CartDialog = ({ open, onClose, onMakeQuotation }: CartDialogProps) => {
             <CrossIcon size={20} onClick={onClose} className="cursor-pointer" />
           </div>
           <div className="p-8 w-full flex flex-col gap-y-5">
-            {productList?.map((prod, i) => {
-              return (
-                <div key={i}>
-                  <div className="flex justify-between items-center">
-                    <div className="flex h-10 gap-3 items-center">
-                      <img src={prod?.thumbnail} alt="" className="h-12 w-6" />
-                      <div>
-                        <div>{prod?.title}</div>
-                        <div className="text-xs text-grey-50">
-                          {formatAmountWithSymbol({
-                            amount:
-                              prod?.prices.find(
-                                (reg) => reg.region === selectedRegion?.id
-                              )?.value || 0,
-                            currency: selectedRegion?.currency_code || "",
-                            digits: 2,
-                            tax: selectedRegion?.tax_rate,
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className="cursor-pointer"
-                      onClick={(e) => handleDeleteProduct(e, prod.id!)}
-                    >
-                      <BackspaceIcon size={20} />
-                    </div>
-                  </div>
-                  {prod?.additional_hardwares
-                    ?.filter((child) => child.quantity)
-                    ?.map((child, ic) => {
-                      return (
-                        <div
-                          className="flex justify-between items-center ml-9 mt-3"
-                          key={ic}
-                        >
-                          <div className="flex h-10 gap-3 items-center">
-                            <img
-                              src={child?.thumbnail}
-                              alt=""
-                              className="h-12 w-6"
-                            />
-                            <div>
-                              <div>{child?.title}</div>
-                              <div className="text-xs text-grey-50">
-                                {formatAmountWithSymbol({
-                                  amount:
-                                    child?.prices.find(
-                                      (reg) =>
-                                        reg.region_id === selectedRegion?.id
-                                    )?.price || 0,
-                                  currency: selectedRegion?.currency_code || "",
-                                  digits: 2,
-                                  tax: selectedRegion?.tax_rate,
-                                })}
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            className="cursor-pointer"
-                            onClick={(e) =>
-                              handleDeleteAdditionalHardware(
-                                e,
-                                prod.id!,
-                                child.id
-                              )
-                            }
-                          >
-                            <BackspaceIcon size={20} />
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
-              );
-            })}
+            {renderBody()}
             <Button
               variant="primary"
               onClick={onMakeQuotation}
+              disabled={!productList?.length}
               className="w-full"
             >
               Make Quotation

@@ -46,8 +46,6 @@ const MediaSection = ({ mode = "new", form }: Props) => {
   }, [prices, selectedRegion?.id]);
 
   const listHavePrice = React.useMemo(() => {
-    console.log(child_product);
-
     return child_product?.filter((item) => {
       const price = item?.prices?.find(
         (reg) => (reg as { label?: string })?.label === selectedRegion?.id
