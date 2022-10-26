@@ -57,9 +57,15 @@ const PrintQuotationFrom = ({
   }, []);
 
   return ReactDOM.createPortal(
-    <div className={clsx("w-full h-full relative", className)} id="print-quote">
+    <div
+      className={clsx("w-full h-full relative", className)}
+      id="print-quote"
+      style={{
+        printColorAdjust: "exact",
+      }}
+    >
       <div className="table-header-group">
-        <img src={formData?.header?.header} alt="" />
+        <img src={formData?.header?.header} alt="" className="w-3/4 px-[1cm] mt-[1cm]" />
         <div className="flex justify-between items-center text-sm px-[1.5cm]">
           <div>Our Ref: QM-5542-2022</div>
           <div>{moment(formData?.createdAt).format("DD MMMM YYYY")}</div>
@@ -71,7 +77,7 @@ const PrintQuotationFrom = ({
             <div className="font-semibold text-sm">
               Customer Name: {formData?.customer?.name}
             </div>
-            <div className="text-sm">
+            <div className="text-sm h-5">
               Customer Address: {formData?.customer?.address}
             </div>
           </div>
@@ -88,25 +94,25 @@ const PrintQuotationFrom = ({
           {/* Table Price */}
           <Table className="!border-[2px] border-black">
             <Table.Head className="!border-[2px] border-black">
-              <Table.HeadRow className="!border-[2px] border-black">
-                <Table.HeadCell className="text-center border-black">
+              <Table.HeadRow className="!border-[2px] border-black bg-[#DDEBF7]">
+                <Table.HeadCell className="text-center border-black !text-black">
                   No.
                 </Table.HeadCell>
-                <Table.HeadCell className="border-l-[2px] text-center border border-black">
+                <Table.HeadCell className="border-l-[2px] text-center border border-black !text-black !w-2/5">
                   Product Description
                 </Table.HeadCell>
-                <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black">
+                <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black !text-black">
                   Qty
                 </Table.HeadCell>
-                <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black">
+                <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black !text-black">
                   List Price (
                   {(formData?.region?.currency_code || "").toUpperCase()})
                 </Table.HeadCell>
-                <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black">
+                <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black !text-black">
                   Unit Price (
                   {(formData?.region?.currency_code || "").toUpperCase()})
                 </Table.HeadCell>
-                <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black">
+                <Table.HeadCell className="border-l-[2px] border-t-[2px] text-center border-black !text-black">
                   Total ({(formData?.region?.currency_code || "").toUpperCase()}
                   )
                 </Table.HeadCell>
@@ -120,7 +126,7 @@ const PrintQuotationFrom = ({
                       <Table.Cell className="text-center border-l-[2px] border-black">
                         {getNoNum(index, summary)}
                       </Table.Cell>
-                      <Table.Cell className="font-semibold border-l-[2px] px-4 border-black">
+                      <Table.Cell className="font-semibold border-l-[2px] px-4 border-black !w-2/5">
                         {item.title}
                       </Table.Cell>
                       <Table.Cell className="border-l-[2px] text-center border-black">
@@ -156,8 +162,12 @@ const PrintQuotationFrom = ({
                     </Table.Row>
                     <Table.Row className="!border-none">
                       <Table.Cell className="!h-fit"></Table.Cell>
-                      <Table.Cell className="border-l-[2px] px-4 border-black font-normal !h-fit text-sm">
-                        {item.description}
+                      <Table.Cell className="border-l-[2px] px-4 border-black font-normal !h-fit text-sm !w-2/5">
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: renderText(item?.description),
+                          }}
+                        />
                       </Table.Cell>
                       <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
                       <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
@@ -179,8 +189,8 @@ const PrintQuotationFrom = ({
                     {item.game?.map((name, indexG) => (
                       <Table.Row className="!border-none mt-2" key={indexG}>
                         <Table.Cell className="!h-fit"></Table.Cell>
-                        <Table.Cell className="border-l-[2px] border-black !h-fit px-4 italic">
-                          <span className="italic">- {name}</span>
+                        <Table.Cell className="border-l-[2px] border-black !h-fit px-4 italic !w-2/5">
+                          - {name}
                         </Table.Cell>
                         <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
                         <Table.Cell className="border-l-[2px] px-4 border-black !h-fit"></Table.Cell>
@@ -189,7 +199,7 @@ const PrintQuotationFrom = ({
                       </Table.Row>
                     ))}
                     {item.child_product.length ? (
-                      <Table.Row className="!border-[2px] border-black">
+                      <Table.Row className="!border-[2px] border-black bg-[#f8e5d8]">
                         <Table.Cell className="!h-fit"></Table.Cell>
                         <Table.Cell className="font-semibold border-l-[2px] border-black !h-fit px-4">
                           Subtotal
@@ -215,7 +225,7 @@ const PrintQuotationFrom = ({
                             <Table.Cell className="text-center border-l-[2px] border-black">
                               {getNoNum(index, summary, indexChild + 1)}
                             </Table.Cell>
-                            <Table.Cell className="border-l-[2px] px-4 border-black">{`- ${child.title}`}</Table.Cell>
+                            <Table.Cell className="border-l-[2px] px-4 border-black !w-2/5">{`- ${child.title}`}</Table.Cell>
                             <Table.Cell className="border-l-[2px] text-center border-black">
                               {child.quantity}
                             </Table.Cell>
@@ -251,7 +261,7 @@ const PrintQuotationFrom = ({
                             </Table.Cell>
                           </Table.Row>
                           {item.child_product?.length > 1 ? (
-                            <Table.Row className="!border-[2px] border-black">
+                            <Table.Row className="!border-[2px] border-black bg-[#f8e5d8]">
                               <Table.Cell></Table.Cell>
                               <Table.Cell className="font-semibold border-l-[2px] border-black px-4">
                                 Subtotal
@@ -277,7 +287,7 @@ const PrintQuotationFrom = ({
                   </React.Fragment>
                 );
               })}
-              <Table.Row className="!border-[2px] border-black">
+              <Table.Row className="!border-[2px] border-black bg-[#ffff54]">
                 <Table.Cell></Table.Cell>
                 <Table.Cell className="font-semibold border-l-[2px] border-black px-4">
                   Total
@@ -367,7 +377,7 @@ const PrintQuotationFrom = ({
         <img src={formData?.header?.footer} alt="" />
       </div>
       <div className="table-footer-group fixed bottom-0">
-        <img src={formData?.header?.footer} alt="" />
+        <img src={formData?.header?.footer} alt="" className="w-3/4 px-[1cm]" />
       </div>
     </div>,
     document.body

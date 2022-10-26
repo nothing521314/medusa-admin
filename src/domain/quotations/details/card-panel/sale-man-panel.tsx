@@ -47,7 +47,7 @@ const SaleMalePanel = ({
   });
 
   useHotkeys("command+i", handleCopy);
-  
+
   return (
     <BodyCard
       className={"w-full mb-4 min-h-[200px]"}
@@ -100,6 +100,8 @@ const SaleMalePanel = ({
               minDate={minDate}
               showTimeInput
               timeInputLabel="Time:"
+              locale="en"
+              timeFormat="HH:mm a"
             />
           </RadixPopover.Content>
         </RadixPopover.Root>

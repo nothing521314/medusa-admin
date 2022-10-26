@@ -16,9 +16,9 @@ const PricesForm = ({ form: { control, watch } }: Props) => {
 
   return (
     <React.Fragment>
-      {prices?.map((reg, index) => {
+      {(isAdmin ? regions : prices)?.map((reg, index) => {
         const region = regions.find((rp) => rp.id === reg.region);
-        if (!region) return null;
+        if (!region && !isAdmin) return null;
         return (
           <div
             className="grid grid-cols-[1fr_303px] p-2xsmall  hover:bg-grey-5 focus-within:bg-grey-5 transition-colors rounded-rounded justify-between"
@@ -30,7 +30,7 @@ const PricesForm = ({ form: { control, watch } }: Props) => {
               </div>
               <div className="flex items-center gap-x-xsmall">
                 <span className="inter-base-regular text-grey-50">
-                  {region?.name}
+                  {isAdmin ? reg.name : region?.name}
                 </span>
                 {/* <IncludesTaxTooltip includesTax={rp.includes_tax} /> */}
               </div>
@@ -47,10 +47,14 @@ const PricesForm = ({ form: { control, watch } }: Props) => {
                   <PriceFormInput
                     readOnly={!isAdmin}
                     onChange={(v) =>
-                      onChange({ value: v, region: region.id } as IPrice)
+                      onChange({ value: v, region: region?.id } as IPrice)
                     }
                     amount={price || undefined}
-                    currencyCode={region.currency_code.toUpperCase()}
+                    currencyCode={
+                      isAdmin
+                        ? reg.currency_code.toUpperCase()
+                        : region?.currency_code.toUpperCase()
+                    }
                     errors={errors}
                   />
                 );

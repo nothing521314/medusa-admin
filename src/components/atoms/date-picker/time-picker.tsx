@@ -37,7 +37,7 @@ const TimePicker: React.FC<DateTimePickerProps> = ({
       newDate.setUTCMinutes(selectedMinute);
       onSubmitDate(newDate);
     }
-  }, [selectedMinute, selectedHour]);
+  }, [selectedMinute, selectedHour, date, onSubmitDate]);
 
   const [isOpen, setIsOpen] = useState(false);
 
