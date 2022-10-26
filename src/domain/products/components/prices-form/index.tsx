@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import MapPinIcon from "src/components/fundamentals/icons/map-pin-icon";
 import { AccountContext } from "src/context/account";
+import { RegionsContext } from "src/context/region";
 import PriceFormInput from "./price-form-input";
 
 type Props = {
@@ -11,7 +12,8 @@ type Props = {
 };
 
 const PricesForm = ({ form: { control, watch } }: Props) => {
-  const { isAdmin, regions } = useContext(AccountContext);
+  const { isAdmin } = useContext(AccountContext);
+  const { regions } = useContext(RegionsContext);
   const prices = watch("prices");
 
   return (
