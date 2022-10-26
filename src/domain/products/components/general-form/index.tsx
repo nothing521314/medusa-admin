@@ -61,7 +61,10 @@ const GeneralForm = ({ mode = "new", form }: Props) => {
               <NextSelect
                 readOnly={!isAdmin}
                 label="Category"
-                isDisabled={isModeEdit && value?.value === KEY.ID_CATEGORY_HW}
+                isDisabled={
+                  !isAdmin ||
+                  (isModeEdit && value?.value === KEY.ID_CATEGORY_HW)
+                }
                 onChange={onChange}
                 options={collectionOptions}
                 value={value}

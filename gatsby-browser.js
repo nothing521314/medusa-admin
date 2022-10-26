@@ -9,6 +9,7 @@ import { CacheProvider } from "./src/context/cache";
 import { FeatureFlagProvider } from "./src/context/feature-flag";
 import { InterfaceProvider } from "./src/context/interface";
 import { medusaUrl, queryClient } from "./src/services/config";
+import { RegionProvider } from "src/context/region";
 
 export const wrapPageElement = ({ element }) => {
   return (
@@ -20,15 +21,17 @@ export const wrapPageElement = ({ element }) => {
     >
       <CacheProvider>
         <AccountProvider>
-          <FeatureFlagProvider>
-            <InterfaceProvider>
-              <SteppedProvider>
-                <CartProvider>
-                  <LayeredModalProvider>{element}</LayeredModalProvider>
-                </CartProvider>
-              </SteppedProvider>
-            </InterfaceProvider>
-          </FeatureFlagProvider>
+          <RegionProvider>
+            <FeatureFlagProvider>
+              <InterfaceProvider>
+                <SteppedProvider>
+                  <CartProvider>
+                    <LayeredModalProvider>{element}</LayeredModalProvider>
+                  </CartProvider>
+                </SteppedProvider>
+              </InterfaceProvider>
+            </FeatureFlagProvider>
+          </RegionProvider>
         </AccountProvider>
       </CacheProvider>
     </MedusaProvider>

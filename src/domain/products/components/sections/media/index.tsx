@@ -6,13 +6,14 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useState
 } from "react";
 import { UseFormReturn } from "react-hook-form";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import Section from "src/components/organisms/section";
 import { AccountContext } from "src/context/account";
 import useToggleState from "src/hooks/use-toggle-state";
+import { formatAmountWithSymbol } from "src/utils/prices";
 import Button from "../../../../../components/fundamentals/button";
 import MediaForm from "../../media-form";
 import SelectAdditionalHardwareModal from "../../select-addtional-hardware-modal";
@@ -56,8 +57,7 @@ const MediaSection = ({ mode = "new", form }: Props) => {
   useEffect(() => {
     if (!hardwares.length) return;
     try {
-      handleAddHarwareToCart &&
-        handleAddHarwareToCart(getValues("id")!, hardwares);
+      handleAddHarwareToCart?.(getValues("id")!, hardwares);
       setHardWares([]);
     } catch (error) {
       console.log(error);
@@ -79,7 +79,16 @@ const MediaSection = ({ mode = "new", form }: Props) => {
           <div className="flex flex-col col-span-5 gap-y-3 justify-center items-center">
             <span>
               <span className="font-bold">Price</span>:{" "}
-              <span className="text-xl">{price ? `$${price}` : "-"}</span>
+              <span className="text-xl">
+                {price
+                  ? formatAmountWithSymbol({
+                      amount: price,
+                      currency: selectedRegion?.currency_code || "usd",
+                      digits: 2,
+                      tax: selectedRegion?.tax_rate || 0,
+                    })
+                  : "-"}
+              </span>
             </span>
             <Button
               variant="secondary"

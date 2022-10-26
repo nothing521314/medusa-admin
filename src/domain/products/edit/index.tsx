@@ -203,7 +203,7 @@ const Edit = ({ id }: EditProps) => {
         <div className="col-span-12 flex flex-col gap-y-xsmall">
           <MediaSection mode="edit" form={form} />
           <GeneralSection mode="edit" form={form} />
-          <PricesSection mode="edit" form={form} />
+          {isAdmin && <PricesSection mode="edit" form={form} />}
           {watch("collection.value") === KEY.ID_CATEGORY_QM && (
             <AdditionalHardwares form={form} />
           )}

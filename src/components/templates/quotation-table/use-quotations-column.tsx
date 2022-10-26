@@ -43,7 +43,7 @@ const useQuotationTableColumns = (): Column<TQuotationReturn>[] => {
             <CustomerAvatarItem
               customer={{
                 name: value?.name || "",
-                email: row.original.customer.email,
+                email: row?.original?.customer?.email,
               }}
               color={getColor(row.index)}
               className="!px-0"
