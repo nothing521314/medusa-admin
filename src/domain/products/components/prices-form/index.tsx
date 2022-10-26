@@ -1,4 +1,4 @@
-import { IPrice, Product, Region } from "@medusa-types";
+import { IPrice, Product } from "@medusa-types";
 import React, { useContext } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import MapPinIcon from "src/components/fundamentals/icons/map-pin-icon";
@@ -16,8 +16,9 @@ const PricesForm = ({ form: { control, watch } }: Props) => {
 
   return (
     <React.Fragment>
-      {(regions as Region[])?.map((rp, index) => {
-        const i = prices.findIndex((reg) => reg.region === rp.id);
+      {prices?.map((reg, index) => {
+        const region = regions.find((rp) => rp.id === reg.region);
+        if (!region) return null;
         return (
           <div
             className="grid grid-cols-[1fr_303px] p-2xsmall  hover:bg-grey-5 focus-within:bg-grey-5 transition-colors rounded-rounded justify-between"
@@ -29,13 +30,13 @@ const PricesForm = ({ form: { control, watch } }: Props) => {
               </div>
               <div className="flex items-center gap-x-xsmall">
                 <span className="inter-base-regular text-grey-50">
-                  {rp.name}
+                  {region?.name}
                 </span>
                 {/* <IncludesTaxTooltip includesTax={rp.includes_tax} /> */}
               </div>
             </div>
             <Controller
-              name={`prices.${i}`}
+              name={`prices.${index}`}
               control={control}
               render={({
                 field: { value, onChange },
@@ -46,10 +47,10 @@ const PricesForm = ({ form: { control, watch } }: Props) => {
                   <PriceFormInput
                     readOnly={!isAdmin}
                     onChange={(v) =>
-                      onChange({ value: v, region: rp.id } as IPrice)
+                      onChange({ value: v, region: region.id } as IPrice)
                     }
                     amount={price || undefined}
-                    currencyCode={rp.currency_code.toUpperCase()}
+                    currencyCode={region.currency_code.toUpperCase()}
                     errors={errors}
                   />
                 );
