@@ -21,10 +21,7 @@ interface ICartContext extends CartState {
   handleAddHarwareToCart?: (productId: string, hardware: Hardware[]) => void;
   handleDeleteHarwareToCart?: (productId: string, hardware: Hardware[]) => void;
   handleSetListProduct?: (product: IProductAdded[]) => void;
-  handleAddGameOption?: (
-    product_id: string,
-    games: string[]
-  ) => void;
+  handleAddGameOption?: (product_id: string, games: string[]) => void;
   action?: SUB_TAB;
   handleSetAction?: (action?: SUB_TAB) => void;
 }
@@ -68,7 +65,7 @@ export const CartProvider = ({ children }: CartProps) => {
     }
   }, initialState);
 
-  const handleSaveCard = useCallback((cart: IProductAdded[]) => {
+  const handleSetListProduct = useCallback((cart: IProductAdded[]) => {
     dispatch({ type: "productionList", payload: [...cart] });
     if (isBrowser) {
       localStorage.setItem(CART_LIST, JSON.stringify(cart));
@@ -96,9 +93,9 @@ export const CartProvider = ({ children }: CartProps) => {
         cloneCart.push(productAdding);
       }
 
-      handleSaveCard(cloneCart);
+      handleSetListProduct(cloneCart);
     },
-    [handleSaveCard, state.productList]
+    [handleSetListProduct, state.productList]
   );
 
   const handleAddHarwareToCart = useCallback(
@@ -110,7 +107,7 @@ export const CartProvider = ({ children }: CartProps) => {
 
       hardwares.map((hardware) => {
         const i = cloneCart[indexOfProduct].additional_hardwares.findIndex(
-          (item) => item.id === hardware.id
+          (item) => item.id === hardware.product_additions_id
         );
         if (i !== -1) {
           cloneCart[indexOfProduct].additional_hardwares[i] = {
@@ -125,9 +122,9 @@ export const CartProvider = ({ children }: CartProps) => {
         }
       });
 
-      handleSaveCard(cloneCart);
+      handleSetListProduct([...cloneCart]);
     },
-    [handleSaveCard, state.productList]
+    [handleSetListProduct, state.productList]
   );
 
   const handleDeleteHarwareToCart = useCallback(
@@ -153,9 +150,9 @@ export const CartProvider = ({ children }: CartProps) => {
         }
       });
 
-      handleSaveCard(cloneCart);
+      handleSetListProduct(cloneCart);
     },
-    [handleSaveCard, state.productList]
+    [handleSetListProduct, state.productList]
   );
 
   const handleDeleteFromCart = useCallback(
@@ -176,16 +173,9 @@ export const CartProvider = ({ children }: CartProps) => {
         cloneCart.splice(indexOfProduct, 1);
       }
 
-      handleSaveCard(cloneCart);
+      handleSetListProduct(cloneCart);
     },
-    [handleSaveCard, state.productList]
-  );
-
-  const handleSetListProduct = useCallback(
-    (data) => {
-      handleSaveCard([...data]);
-    },
-    [handleSaveCard]
+    [handleSetListProduct, state.productList]
   );
 
   const handleSetAction = useCallback((action?: SUB_TAB) => {
@@ -204,15 +194,15 @@ export const CartProvider = ({ children }: CartProps) => {
         game: [...games],
       };
 
-      handleSaveCard(cloneCart);
+      handleSetListProduct(cloneCart);
     },
-    [handleSaveCard, state.productList]
+    [handleSetListProduct, state.productList]
   );
-
+  
   useEffect(() => {
     let total = 0;
     if (state.productList) {
-      const prod = state.productList.map((item) => {
+      const prod = [...state.productList].map((item) => {
         return {
           total:
             item.quantity +
@@ -232,9 +222,9 @@ export const CartProvider = ({ children }: CartProps) => {
     const parseData = storageData ? JSON.parse(storageData) : null;
 
     if (parseData) {
-      handleSaveCard(parseData);
+      handleSetListProduct(parseData);
     }
-  }, [handleSaveCard]);
+  }, [handleSetListProduct]);
 
   return (
     <CartContext.Provider

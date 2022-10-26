@@ -95,7 +95,7 @@ const SaleMalePanel = ({
             className="flex flex-col bg-grey-0 rounded-rounded shadow-dropdown p-2 top-2/4"
           >
             <CalendarComponent
-              date={moment(date).toDate()}
+              date={date ? moment(date).toDate() : new Date()}
               onChange={onDateChange}
               minDate={minDate}
               showTimeInput

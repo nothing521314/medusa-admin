@@ -30,7 +30,7 @@ type ProductTableProps = {};
 const defaultQueryProps = {
   fields: "id,title,type,thumbnail,status,handle,description,updated_at",
   expand:
-    "variants,options,variants.prices,variants.options,collection,tags,prices,additional_hardwares,images",
+    "variants,options,collection,tags,prices,additional_hardwares,images",
   is_giftcard: false,
   // order: "created_at"
 };
@@ -43,7 +43,7 @@ const ProductTable: React.FC<ProductTableProps> = () => {
   let hiddenColumns = ["sales_channel"];
   if (isFeatureEnabled("sales_channels")) {
     defaultQueryProps.expand =
-      "variants,options,variants.prices,variants.options,collection,tags,sales_channels";
+      "variants,options,collection,tags,sales_channels";
     hiddenColumns = [];
   }
 

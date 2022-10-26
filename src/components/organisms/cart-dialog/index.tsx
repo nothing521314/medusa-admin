@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 
 import { CartContext } from "@medusa-react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -15,8 +15,38 @@ type CartDialogProps = {
 };
 
 const CartDialog = ({ open, onClose, onMakeQuotation }: CartDialogProps) => {
-  const { productList } = useContext(CartContext);
+  const { productList, handleSetListProduct } = useContext(CartContext);
   const { selectedRegion } = useContext(AccountContext);
+
+  const handleDeleteProduct = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>, prodId: string) => {
+      event.stopPropagation();
+      const clone = [...productList];
+      const i = clone.findIndex((prod) => prod.id === prodId);
+      clone.splice(i, 1);
+      handleSetListProduct && handleSetListProduct([...clone]);
+    },
+    [handleSetListProduct, productList]
+  );
+
+  const handleDeleteAdditionalHardware = useCallback(
+    (
+      event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+      prodId: string,
+      hardwareId: string
+    ) => {
+      event.stopPropagation();
+      const clone = [...productList];
+      const i = clone.findIndex((prod) => prod.id === prodId);
+      const childList = [...clone[i].additional_hardwares!];
+
+      const iChild = childList.findIndex((item) => item.id === hardwareId);
+      childList.splice(iChild, 1);
+      clone[i].additional_hardwares = [...childList];
+      handleSetListProduct && handleSetListProduct([...clone]);
+    },
+    [handleSetListProduct, productList]
+  );
 
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
@@ -47,19 +77,16 @@ const CartDialog = ({ open, onClose, onMakeQuotation }: CartDialogProps) => {
                         </div>
                       </div>
                     </div>
-                    <span className="cursor-pointer">
-                      <BackspaceIcon
-                        size={20}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                      />
-                    </span>
+                    <div
+                      className="cursor-pointer"
+                      onClick={(e) => handleDeleteProduct(e, prod.id!)}
+                    >
+                      <BackspaceIcon size={20} />
+                    </div>
                   </div>
                   {prod?.additional_hardwares
                     ?.filter((child) => child.quantity)
                     ?.map((child, ic) => {
-                      console.log(child);
                       return (
                         <div
                           className="flex justify-between items-center ml-9 mt-3"
@@ -87,14 +114,18 @@ const CartDialog = ({ open, onClose, onMakeQuotation }: CartDialogProps) => {
                               </div>
                             </div>
                           </div>
-                          <span className="cursor-pointer">
-                            <BackspaceIcon
-                              size={20}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                              }}
-                            />
-                          </span>
+                          <div
+                            className="cursor-pointer"
+                            onClick={(e) =>
+                              handleDeleteAdditionalHardware(
+                                e,
+                                prod.id!,
+                                child.id
+                              )
+                            }
+                          >
+                            <BackspaceIcon size={20} />
+                          </div>
                         </div>
                       );
                     })}

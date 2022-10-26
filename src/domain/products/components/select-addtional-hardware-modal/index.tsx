@@ -48,7 +48,7 @@ const SelectAdditionalHardwareModal = ({
   );
 
   const handleClickAddToCartBtn = useCallback(() => {
-    const selectedList = additionalHardwaresList.filter(
+    const selectedList = [...additionalHardwaresList].filter(
       (item) => item.isChecked
     );
     const formatListItem = selectedList?.map((item) => {
@@ -65,7 +65,6 @@ const SelectAdditionalHardwareModal = ({
 
   useEffect(() => {
     if (!isLoading && product?.additional_hardwares?.length) {
-      
       const filtered = product?.additional_hardwares?.filter((item) => {
         const price = item?.product_addition?.prices?.find(
           (reg) => reg?.region_id === selectedRegion?.id
