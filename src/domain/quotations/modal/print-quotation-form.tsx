@@ -363,6 +363,9 @@ const PrintQuotationFrom = ({
           />
         </div>
       </div>
+      <div className="table-footer-group invisible">
+        <img src={formData?.header?.footer} alt="" />
+      </div>
       <div className="table-footer-group fixed bottom-0">
         <img src={formData?.header?.footer} alt="" />
       </div>
