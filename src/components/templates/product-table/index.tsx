@@ -2,8 +2,15 @@ import { Hardware, Product } from "@medusa-types";
 import { useLocation } from "@reach/router";
 import { isEmpty } from "lodash";
 import qs from "qs";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { usePagination, useTable } from "react-table";
+import { AccountContext } from "src/context/account";
 import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
 import { CartContext, useAdminProducts } from "../../../../medusa-react";
 import { useFeatureFlag } from "../../../context/feature-flag";
@@ -30,7 +37,7 @@ const defaultQueryProps = {
 
 const ProductTable: React.FC<ProductTableProps> = () => {
   const location = useLocation();
-
+  const { selectedRegion } = useContext(AccountContext);
   const { isFeatureEnabled } = useFeatureFlag();
 
   let hiddenColumns = ["sales_channel"];
@@ -71,7 +78,13 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     setQuery("");
   }, [reset]);
 
-  const { products, isLoading, isRefetching, count } = useAdminProducts({
+  const {
+    products,
+    isLoading,
+    isRefetching,
+    count,
+    refetch,
+  } = useAdminProducts({
     ...queryObject,
   });
 
@@ -126,6 +139,11 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     },
     usePagination
   );
+
+  // Change selectedRegion -> refetch
+  useEffect(() => {
+    refetch();
+  }, [refetch, selectedRegion]);
 
   // Debounced search
   useEffect(() => {

@@ -4,11 +4,11 @@ import Button from "src/components/fundamentals/button";
 import { AccountContext } from "src/context/account";
 import { CartContext } from "@medusa-react";
 import { Region } from "@medusa-types";
+import { RegionsContext } from "src/context/region";
 
 export const SelectionRegion = () => {
-  const { regions, selectedRegion, handleSelectRegion } = useContext(
-    AccountContext
-  );
+  const { selectedRegion, handleSelectRegion } = useContext(AccountContext);
+  const { regions } = useContext(RegionsContext);
   const { handleSetListProduct } = useContext(CartContext);
 
   const handleClickSelectRegion = useCallback(
