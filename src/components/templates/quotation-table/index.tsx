@@ -7,7 +7,13 @@ import clsx from "clsx";
 import { navigate } from "gatsby";
 import { isEmpty } from "lodash";
 import qs from "qs";
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { usePagination, useTable } from "react-table";
 import DownloadIcon from "src/components/fundamentals/icons/download-icon";
 import EditIcon from "src/components/fundamentals/icons/edit-icon";
@@ -38,7 +44,7 @@ interface Props extends RouteComponentProps {
 const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
   const location = useLocation();
   const { mutateAsync: handleDeleteQuotation } = useAdminDeleteQuotation();
-  const { selectedRegion } = useContext(AccountContext);
+  const { selectedRegion, id } = useContext(AccountContext);
   const notification = useNotification();
 
   const [idDelete, setIdDelete] = useState<string>("");
@@ -62,9 +68,10 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
   );
 
   const filtersDebounce = useDebounce(filters, 400);
-  const { quotations, isLoading, count, refetch } = useAdminQuotationGetList(
-    filtersDebounce
-  );
+  const { quotations, isLoading, count, refetch } = useAdminQuotationGetList({
+    ...filtersDebounce,
+    sale_persion_id: id,
+  });
 
   const numPages = useMemo(() => {
     const controlledPageCount = Math.ceil(count! / filters.limit);

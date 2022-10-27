@@ -8,6 +8,7 @@ export declare class AdminGetQuotationsParams {
   offset: number;
   limit: number;
   fields?: string;
+  sale_persion_id: string;
 }
 
 export declare class AdminCreateQuotationParams {
