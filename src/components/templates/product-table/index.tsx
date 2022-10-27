@@ -12,6 +12,7 @@ import React, {
 import { usePagination, useTable } from "react-table";
 import { AccountContext } from "src/context/account";
 import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
+import { useDebounce } from "src/hooks/use-debounce";
 import { CartContext, useAdminProducts } from "../../../../medusa-react";
 import { useFeatureFlag } from "../../../context/feature-flag";
 import ProductsFilter from "../../../domain/products/filter-dropdown";
@@ -62,13 +63,6 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     representationObject,
   } = useProductFilters(location.search, defaultQueryProps);
 
-  const { offs, limit } = useMemo(() => {
-    return {
-      offs: queryObject.offset || 0,
-      limit: queryObject.limit,
-    };
-  }, [queryObject.limit, queryObject.offset]);
-
   const [query, setQuery] = useState(queryObject.query);
   const [showList, setShowList] = React.useState(false);
 
@@ -77,6 +71,8 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     setQuery("");
   }, [reset]);
 
+  const queryDebounce = useDebounce(queryObject, 400);
+
   const {
     products,
     isLoading,
@@ -84,15 +80,22 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     count,
     refetch,
   } = useAdminProducts({
-    ...queryObject,
+    ...queryDebounce,
   });
+
+  const { offs, limit } = useMemo(() => {
+    return {
+      offs: queryDebounce.offset || 0,
+      limit: queryDebounce.limit,
+    };
+  }, [queryDebounce.limit, queryDebounce.offset]);
 
   const numPages = useMemo(() => {
     if (typeof count !== "undefined") {
-      return Math.ceil(count / limit);
+      return Math.ceil(count / queryObject.limit);
     }
     return 0;
-  }, [count, limit]);
+  }, [count, queryObject.limit]);
 
   const setTileView = useCallback(() => {
     setLimit(DEFAULT_PAGE_SIZE_TILE_VIEW);

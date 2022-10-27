@@ -58,7 +58,7 @@ const PrintQuotationFrom = ({
 
   return ReactDOM.createPortal(
     <div
-      className={clsx("w-full h-full relative", className)}
+      className={clsx("w-full h-full relative table", className)}
       id="print-quote"
       style={{
         printColorAdjust: "exact",
