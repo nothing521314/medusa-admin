@@ -60,7 +60,7 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
   );
 
   const filtersDebounce = useDebounce(filters, 400);
-  const { quotations, isLoading, count } = useAdminQuotationGetList(
+  const { quotations, isLoading, count, refetch } = useAdminQuotationGetList(
     filtersDebounce
   );
 
@@ -166,6 +166,10 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
   useEffect(() => {
     refreshWithFilters();
   }, [refreshWithFilters]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const handleSendMail = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, mail: string) => {

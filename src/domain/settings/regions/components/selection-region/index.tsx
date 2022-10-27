@@ -1,15 +1,23 @@
-import React, { useCallback, useContext } from "react";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import Button from "src/components/fundamentals/button";
-import { AccountContext } from "src/context/account";
 import { CartContext } from "@medusa-react";
 import { Region } from "@medusa-types";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import clsx from "clsx";
+import React, { useCallback, useContext, useState } from "react";
+import Button from "src/components/fundamentals/button";
+import ChevronDownIcon from "src/components/fundamentals/icons/chevron-down";
+import { AccountContext } from "src/context/account";
 import { RegionsContext } from "src/context/region";
 
-export const SelectionRegion = () => {
+type Props = {
+  className?: string;
+};
+
+export const SelectionRegion = ({ className }: Props) => {
   const { selectedRegion, handleSelectRegion } = useContext(AccountContext);
   const { regions } = useContext(RegionsContext);
   const { handleSetListProduct } = useContext(CartContext);
+
+  const [isToggle, setIsToggle] = useState<boolean>(false);
 
   const handleClickSelectRegion = useCallback(
     (item: Region) => {
@@ -17,20 +25,31 @@ export const SelectionRegion = () => {
       if (selectedRegion?.name === item.name) return;
       handleSelectRegion(item);
       handleSetListProduct && handleSetListProduct([]);
-      location.reload();
     },
     [handleSelectRegion, handleSetListProduct, selectedRegion?.name]
   );
 
   return (
-    <div className="flex ml-5">
-      <DropdownMenu.Root>
+    <div className={clsx(className)}>
+      <DropdownMenu.Root
+        open={isToggle}
+        onOpenChange={() => setIsToggle((prev) => !prev)}
+      >
         <DropdownMenu.Trigger asChild className="flex">
-          <div className="flex text-xs font-light space-x-2 items-center">
-            Market Region:
-            <Button variant="ghost" size="small" className="p-0 ml-1  text-xs">
-              {selectedRegion?.name || "Select"}
-            </Button>
+          <div
+            className={clsx(
+              "p-2 flex items-center gap-2 cursor-pointer",
+              "text-xs font-semibold"
+            )}
+          >
+            <div className="text-xs font-light">Market Region:</div>
+            {selectedRegion?.name || "Select"}
+            <ChevronDownIcon
+              size={16}
+              className={clsx("transition-transform duration-100", {
+                "rotate-180": isToggle,
+              })}
+            />
           </div>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content

@@ -1,11 +1,11 @@
 import { CartContext } from "@medusa-react";
-import { Region } from "@medusa-types";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import clsx from "clsx";
 import { navigate } from "gatsby";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import CartIcon from "src/components/fundamentals/icons/cart-icon";
 import { SUB_TAB } from "src/domain/quotations";
+import { SelectionRegion } from "src/domain/settings/regions/components/selection-region";
 import useToggleState from "src/hooks/use-toggle-state";
 import { AccountContext } from "../../../context/account";
 import CanNotMakeQuotationModal from "../../../domain/quotations/modal/can-not-make-quotation-modal";
@@ -16,15 +16,7 @@ import SearchBar from "../../molecules/search-bar";
 import CartDialog from "../cart-dialog";
 
 const Topbar: React.FC = () => {
-  const {
-    name,
-    email,
-    handleLogout,
-    regions,
-    selectedRegion,
-    isAdmin,
-    handleSelectRegion,
-  } = useContext(AccountContext);
+  const { name, email, handleLogout, isAdmin } = useContext(AccountContext);
 
   const { totalItems, handleSetListProduct, action } = useContext(CartContext);
 
@@ -57,15 +49,6 @@ const Topbar: React.FC = () => {
     navigate("/login");
   }, [handleLogout, handleSetListProduct]);
 
-  const handleClickSelectRegion = useCallback(
-    (item: Region) => {
-      handleSetListProduct && handleSetListProduct([]);
-      handleSelectRegion && handleSelectRegion(item);
-      location.reload();
-    },
-    [handleSelectRegion, handleSetListProduct]
-  );
-
   const handleMakeQuotation = useCallback(() => {
     handleCloseCartDiaglog();
     navigate(`/a/quotations/${SUB_TAB.MAKE_QUOTATION}/new-quotation`);
@@ -84,41 +67,8 @@ const Topbar: React.FC = () => {
     if (isAdmin) return null;
     if (action === SUB_TAB.REVISE_QUOTATION) return null;
 
-    return (
-      <DropdownMenu.Root>
-        <DropdownMenu.Trigger asChild>
-          <div className="flex space-x-2 mr-3 items-center">
-            Market Region:
-            <Button variant="ghost" size="small" className="">
-              {selectedRegion?.name || "Select"}
-            </Button>
-          </div>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content
-          sideOffset={5}
-          className="border bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown p-xsmall min-w-[200px] z-30"
-        >
-          <DropdownMenu.Item className="mb-1 last:mb-0">
-            {regions.map((item, index) => {
-              return (
-                <Button
-                  key={index}
-                  variant="ghost"
-                  className="w-full !justify-start"
-                  onClick={() => {
-                    if (selectedRegion?.name === item.name) return;
-                    handleClickSelectRegion(item);
-                  }}
-                >
-                  {`${item.name}/${item.currency_code.toUpperCase()}`}
-                </Button>
-              );
-            })}
-          </DropdownMenu.Item>
-        </DropdownMenu.Content>
-      </DropdownMenu.Root>
-    );
-  }, [action, handleClickSelectRegion, isAdmin, regions, selectedRegion?.name]);
+    return <SelectionRegion />;
+  }, [action, isAdmin]);
 
   const renderAccountDetailMenu = useCallback(() => {
     return (

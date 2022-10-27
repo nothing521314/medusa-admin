@@ -5,10 +5,7 @@ import { SelectionRegion } from "src/domain/settings/regions/components/selectio
 import Button from "../../../components/fundamentals/button";
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon";
 import BodyCard from "../../../components/organisms/body-card";
-import TableViewHeader from "../../../components/organisms/custom-table-header";
 import ProductTable from "../../../components/templates/product-table";
-
-const VIEWS = ["products"];
 
 const Overview: React.FC<RouteComponentProps> = () => {
   const location = useLocation();
@@ -43,11 +40,10 @@ const Overview: React.FC<RouteComponentProps> = () => {
             forceDropdown={false}
             customActionable={CurrentAction()}
             customHeader={
-              <TableViewHeader
-                append={isAdmin ? <SelectionRegion /> : null}
-                views={VIEWS}
-                activeView="products"
-              />
+              <div className="inter-large-semibold gap-x-base flex flex-row items-center">
+                Products
+                {isAdmin ? <SelectionRegion /> : null}
+              </div>
             }
           >
             <ProductTable />
