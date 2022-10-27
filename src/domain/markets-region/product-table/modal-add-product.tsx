@@ -20,7 +20,6 @@ type Props = {
 };
 
 const ModalAddProduct = ({
-  open,
   region,
   onClose,
   listAdded,
@@ -167,7 +166,7 @@ const ProductItem = ({
           ) : (
             <PriceFormInput
               name="amount"
-              errors={error}
+              errors={error as any}
               className="w-[130px]"
               onChange={(amount) => {
                 setValue(amount);

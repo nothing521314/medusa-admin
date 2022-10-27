@@ -11,7 +11,7 @@ export const defaultFeatureFlagContext: {
 export const RegionsContext = React.createContext(defaultFeatureFlagContext);
 
 export const RegionProvider = ({ children }) => {
-  const { regions, isFetching } = useAdminRegions();
+  const { regions } = useAdminRegions();
 
   return (
     <RegionsContext.Provider value={{ regions: regions ?? [] }}>

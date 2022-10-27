@@ -3,7 +3,7 @@ import React, { useEffect, useReducer } from "react";
 import { KEY } from "src/constants/misc";
 import { getCookie } from "src/utils/getCookie";
 import { setCookieRegion } from "src/utils/setCookieResion";
-import { adminUserKeys } from "../../medusa-react";
+import { adminUserKeys, useAdminRegions } from "../../medusa-react";
 import Medusa from "../services/api";
 import { queryClient } from "../services/config";
 
@@ -90,16 +90,19 @@ const reducer = (state: IAccountState, action): IAccountState => {
 
 export const AccountProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultAccountContext);
+  const { regions } = useAdminRegions();
 
   useEffect(() => {
+    if (!regions) return;
+    const regionsList = state.isAdmin ? [...regions] : [...state.regions];
     const regionSelected =
-      state.regions.find((v) => v.id === getCookie(KEY.ACTIVE_REGION)) ||
-      state.regions[0];
+      regionsList.find((v) => v.id === getCookie(KEY.ACTIVE_REGION)) ||
+      regionsList[0];
 
     if (regionSelected) {
       dispatch({ type: "selectRegion", payload: regionSelected });
     }
-  }, [state.regions]);
+  }, [regions, state.isAdmin, state.regions]);
 
   return (
     <AccountContext.Provider
