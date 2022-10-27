@@ -55,7 +55,7 @@ const BodyCard: React.FC<BodyCardProps> = ({
       >
         <div className="flex items-center justify-between mt-6 h-xlarge">
           {customHeader ? (
-            <div>{customHeader}</div>
+            customHeader
           ) : title ? (
             <h1 className="inter-xlarge-semibold text-grey-90">{title}</h1>
           ) : (

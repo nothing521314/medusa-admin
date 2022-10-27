@@ -125,7 +125,7 @@ const AddProductDialog = ({
         align="center"
         alignOffset={-8}
         sideOffset={20}
-        className="w-full bg-grey-0 shadow-dropdown rounded-rounded p-8"
+        className="w-full max-w-[70vw] bg-grey-0 shadow-dropdown rounded-rounded p-8"
       >
         <TableSearch
           placeholder="Search product... "

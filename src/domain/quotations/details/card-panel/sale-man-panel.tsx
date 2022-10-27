@@ -52,15 +52,73 @@ const SaleMalePanel = ({
     <BodyCard
       className={"w-full mb-4 min-h-[200px]"}
       customHeader={
-        <Tooltip side="top" content={"Copy ID"}>
-          <button
-            className="inter-xlarge-semibold text-grey-90 active:text-violet-90 cursor-pointer gap-x-2 flex items-center"
-            type="button"
-            onClick={handleCopy}
-          >
-            #{state.code} <ClipboardCopyIcon size={16} />
-          </button>
-        </Tooltip>
+        <div className="flex flex-row items-center justify-between w-full">
+          <div className="max-w-[80%]">
+            <Tooltip
+              side="top"
+              content={`#${state.code}`}
+              className="w-fit whitespace-nowrap !max-w-max"
+            >
+              <button
+                className={clsx(
+                  "text-grey-90 active:text-violet-90 cursor-pointer gap-x-2 flex items-center",
+                  "inter-xlarge-semibold w-full"
+                )}
+                type="button"
+                onClick={handleCopy}
+              >
+                <div className="text-left overflow-hidden text-ellipsis whitespace-nowrap">
+                  #{state.code}
+                </div>
+                <ClipboardCopyIcon size={16} className="min-w-[16px]" />
+              </button>
+            </Tooltip>
+          </div>
+          <div>
+            <RadixPopover.Root>
+              {readOnly ? (
+                <div
+                  className={clsx(
+                    "flex items-center justify-between px-3 py-1.5",
+                    "bg-grey-5 border border-grey-20 rounded",
+                    "inter-small-semibold text-grey-90 whitespace-nowrap w-fit"
+                  )}
+                >
+                  {moment(date).format("DD MMM YYYY hh:mm A")}
+                </div>
+              ) : (
+                <RadixPopover.Trigger className="w-full my-1">
+                  <div
+                    className={clsx(
+                      "flex items-center justify-between px-3 py-1.5",
+                      "bg-grey-5 border border-grey-20 rounded",
+                      "inter-small-semibold text-grey-90 whitespace-nowrap w-fit"
+                    )}
+                  >
+                    {moment(date).format("DD MMM YYYY hh:mm A")}
+                  </div>
+                </RadixPopover.Trigger>
+              )}
+              <RadixPopover.Content
+                side="bottom"
+                align="start"
+                alignOffset={-8}
+                sideOffset={20}
+                className="flex flex-col bg-grey-0 rounded-rounded shadow-dropdown p-2 top-2/4"
+              >
+                <CalendarComponent
+                  date={date ? moment(date).toDate() : new Date()}
+                  onChange={onDateChange}
+                  minDate={minDate}
+                  showTimeInput
+                  timeInputLabel="Time:"
+                  locale="en"
+                  timeFormat="HH:mm a"
+                />
+              </RadixPopover.Content>
+            </RadixPopover.Root>
+          </div>
+        </div>
       }
       subtitle={
         <input
@@ -73,38 +131,6 @@ const SaleMalePanel = ({
           maxLength={100}
           {...register("quotationHeading", { required: true })}
         />
-      }
-      status={
-        <RadixPopover.Root>
-          {readOnly ? (
-            <div className="flex w-full items-center justify-between bg-grey-5 border border-grey-20 rounded inter-small-semibold text-grey-90 px-3 py-1.5">
-              {moment(date).format("DD MMM YYYY hh:mm A")}
-            </div>
-          ) : (
-            <RadixPopover.Trigger className="w-full my-1">
-              <div className="flex w-full items-center justify-between bg-grey-5 border border-grey-20 rounded inter-small-semibold text-grey-90 px-3 py-1.5">
-                {moment(date).format("DD MMM YYYY hh:mm A")}
-              </div>
-            </RadixPopover.Trigger>
-          )}
-          <RadixPopover.Content
-            side="bottom"
-            align="start"
-            alignOffset={-8}
-            sideOffset={20}
-            className="flex flex-col bg-grey-0 rounded-rounded shadow-dropdown p-2 top-2/4"
-          >
-            <CalendarComponent
-              date={date ? moment(date).toDate() : new Date()}
-              onChange={onDateChange}
-              minDate={minDate}
-              showTimeInput
-              timeInputLabel="Time:"
-              locale="en"
-              timeFormat="HH:mm a"
-            />
-          </RadixPopover.Content>
-        </RadixPopover.Root>
       }
       forceDropdown={true}
     >

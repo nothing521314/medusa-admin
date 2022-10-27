@@ -19,7 +19,7 @@ const CustomerLine = ({ customer, className, onClick }: Props) => {
       onClick={onClick}
     >
       <div className="flex space-x-4 items-center">
-        <div className="flex w-[40px] h-[40px] ">
+        <div className="flex w-[40px] h-[40px] min-w-[40px] min-h-[40px]">
           <Avatar
             user={customer}
             font="inter-large-semibold"
