@@ -13,7 +13,12 @@ type Props = {
 };
 
 export const SelectionRegion = ({ className }: Props) => {
-  const { selectedRegion, handleSelectRegion } = useContext(AccountContext);
+  const {
+    selectedRegion,
+    handleSelectRegion,
+    regions: userRegions,
+    isAdmin,
+  } = useContext(AccountContext);
   const { regions } = useContext(RegionsContext);
   const { handleSetListProduct } = useContext(CartContext);
 
@@ -57,7 +62,7 @@ export const SelectionRegion = ({ className }: Props) => {
           className="border bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown p-xsmall min-w-[200px] z-30"
         >
           <DropdownMenu.Item className="mb-1 last:mb-0">
-            {regions.map((item, index) => {
+            {(isAdmin ? regions : userRegions).map((item, index) => {
               return (
                 <Button
                   key={index}
