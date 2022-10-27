@@ -7,12 +7,13 @@ import clsx from "clsx";
 import { navigate } from "gatsby";
 import { isEmpty } from "lodash";
 import qs from "qs";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePagination, useTable } from "react-table";
 import DownloadIcon from "src/components/fundamentals/icons/download-icon";
 import EditIcon from "src/components/fundamentals/icons/edit-icon";
 import MailIcon from "src/components/fundamentals/icons/mail-icon";
 import TrashIcon from "src/components/fundamentals/icons/trash-icon";
+import { AccountContext } from "src/context/account";
 import { SUB_TAB } from "src/domain/quotations";
 import DeleteTheQuotationModal from "src/domain/quotations/modal/delete-the-quotation-modal";
 import { useDebounce } from "src/hooks/use-debounce";
@@ -37,6 +38,7 @@ interface Props extends RouteComponentProps {
 const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
   const location = useLocation();
   const { mutateAsync: handleDeleteQuotation } = useAdminDeleteQuotation();
+  const { selectedRegion } = useContext(AccountContext);
   const notification = useNotification();
 
   const [idDelete, setIdDelete] = useState<string>("");
@@ -169,7 +171,7 @@ const QuotationTable: React.FC<Props> = ({ handleSetFormData }) => {
 
   useEffect(() => {
     refetch();
-  }, [refetch]);
+  }, [refetch, selectedRegion]);
 
   const handleSendMail = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, mail: string) => {
