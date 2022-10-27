@@ -24,7 +24,7 @@ import useProductTableColumn from "./use-product-column";
 import { useProductFilters } from "./use-product-filters";
 
 const DEFAULT_PAGE_SIZE = 15;
-const DEFAULT_PAGE_SIZE_TILE_VIEW = 18;
+const DEFAULT_PAGE_SIZE_TILE_VIEW = DEFAULT_PAGE_SIZE;
 
 type ProductTableProps = {};
 

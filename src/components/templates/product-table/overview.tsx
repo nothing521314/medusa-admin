@@ -57,7 +57,7 @@ const ProductOverview = ({
         </div>
       </div>
       {products.length > 0 ? (
-        <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(250px,5fr))] gap-4">
+        <div className="mt-4 grid grid-cols-1 medium:grid-cols-3 large:grid-cols-5 gap-4">
           {products.map((product) => (
             <ProductTile product={product} />
           ))}
