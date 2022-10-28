@@ -1,6 +1,8 @@
 import { Hardware, Product } from "@medusa-types";
 import { useLocation } from "@reach/router";
+import { navigate } from "gatsby";
 import { isEmpty } from "lodash";
+import { getProductData } from "src/domain/products/get-one-product";
 import qs from "qs";
 import React, {
   useCallback,
@@ -10,16 +12,24 @@ import React, {
   useState,
 } from "react";
 import { usePagination, useTable } from "react-table";
+import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
+import TrashIcon from "src/components/fundamentals/icons/trash-icon";
+import ViewListIcon from "src/components/fundamentals/icons/view-list-icon";
+import { ActionType } from "src/components/molecules/actionables";
 import { AccountContext } from "src/context/account";
 import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
 import { useDebounce } from "src/hooks/use-debounce";
+import useImperativeDialog from "src/hooks/use-imperative-dialog";
+import useNotification from "src/hooks/use-notification";
+import useToggleState from "src/hooks/use-toggle-state";
+import Medusa from "src/services/api";
+import { getErrorMessage } from "src/utils/error-messages";
 import { CartContext, useAdminProducts } from "../../../../medusa-react";
 import { useFeatureFlag } from "../../../context/feature-flag";
 import ProductsFilter from "../../../domain/products/filter-dropdown";
 import Table, { TablePagination } from "../../molecules/table";
 import { NoRecordTable } from "../no-record-table";
 import ProductOverview from "./overview";
-import useProductActions from "./use-product-actions";
 import useProductTableColumn from "./use-product-column";
 import { useProductFilters } from "./use-product-filters";
 
@@ -37,8 +47,15 @@ const defaultQueryProps = {
 
 const ProductTable: React.FC<ProductTableProps> = () => {
   const location = useLocation();
-  const { selectedRegion } = useContext(AccountContext);
+  const { selectedRegion, isAdmin } = useContext(AccountContext);
+  const {
+    handleAddToCart,
+    handleAddHarwareToCart,
+  } = React.useContext(CartContext);
+
   const { isFeatureEnabled } = useFeatureFlag();
+  const dialog = useImperativeDialog();
+  const notification = useNotification();
 
   let hiddenColumns = ["sales_channel"];
   if (isFeatureEnabled("sales_channels")) {
@@ -65,6 +82,8 @@ const ProductTable: React.FC<ProductTableProps> = () => {
 
   const [query, setQuery] = useState(queryObject.query);
   const [showList, setShowList] = React.useState(false);
+  const [hardwaresList, setHardWaresList] = React.useState<Hardware[]>([]);
+  const [productData, setProductData] = React.useState<Product>();
 
   const clearFilters = useCallback(() => {
     reset();
@@ -142,6 +161,14 @@ const ProductTable: React.FC<ProductTableProps> = () => {
     usePagination
   );
 
+  const {
+    open: handleOpenHardwareModal,
+    close: handleCloseHardwareModal,
+    state: isOpenHardwareModal,
+  } = useToggleState(false);
+
+  const [hardwares, setHardWares] = useState<Hardware[]>([]);
+
   // Change selectedRegion -> refetch
   useEffect(() => {
     refetch();
@@ -199,6 +226,101 @@ const ProductTable: React.FC<ProductTableProps> = () => {
 
   const hasData = count && count > 0;
 
+  const handleClickAddToCartBtn = React.useCallback(
+    async (prodId: string) => {
+      const { child_product, product: productData } = await getProductData(
+        prodId
+      );
+
+      const childHavePrice = child_product?.filter((item) => {
+        const price = item?.prices?.find(
+          (reg) => (reg as { label?: string })?.label === selectedRegion?.id
+        );
+        return !!price;
+      });
+      if (childHavePrice.length) {
+        setProductData(productData);
+        handleOpenHardwareModal();
+        setHardWaresList([...childHavePrice]);
+      } else {
+        handleAddToCart && handleAddToCart({ ...productData });
+      }
+    },
+    [handleAddToCart, handleOpenHardwareModal, selectedRegion?.id]
+  );
+
+  const handleDelete = React.useCallback(
+    async (prodId: string) => {
+      const shouldDelete = await dialog({
+        heading: "Delete Product",
+        text: "Are you sure you want to delete this product?",
+      });
+      if (shouldDelete) {
+        try {
+          const res = await Medusa.products.delete(prodId);
+          if (res.status === 200) {
+            notification("Deleted", "Successfully deleted product", "success");
+          }
+        } catch (error) {
+          notification("Error", getErrorMessage(error), "error");
+        }
+      }
+    },
+    [dialog, notification]
+  );
+
+  const getActions = useCallback(
+    (mode: "grid" | "table" = "grid", prodId: string): ActionType[] => {
+      const l: ActionType[] = [
+        {
+          label: "Details",
+          onClick: () => navigate(`/a/products/${prodId}`),
+          icon: <ViewListIcon size={20} />,
+        },
+      ];
+
+      mode === "table" &&
+        l.push({
+          label: "Add To Cart",
+          onClick: () => handleClickAddToCartBtn(prodId),
+          icon: <CartPlusIcon size={20} />,
+        });
+
+      isAdmin &&
+        l.push({
+          label: "Delete Product",
+          variant: "danger",
+          onClick: () => handleDelete(prodId),
+          icon: <TrashIcon size={20} />,
+        });
+
+      return l;
+    },
+    [handleClickAddToCartBtn, handleDelete, isAdmin]
+  );
+
+  const handleSubmitAdd = useCallback(
+    (hw) => {
+      if (!productData) return;
+      console.log(productData);
+      
+      handleAddToCart && handleAddToCart(productData);
+      setHardWares(hw);
+    },
+    [handleAddToCart, productData]
+  );
+
+  useEffect(() => {
+    if (!hardwares.length) return;
+    if (!productData?.id) return;
+    try {
+      handleAddHarwareToCart?.(productData.id, hardwares);
+      setHardWares([]);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [handleAddHarwareToCart, hardwares, productData?.id]);
+
   return (
     <div className="w-full overflow-y-auto flex flex-col justify-between min-h-[300px] h-full  ">
       <>
@@ -208,11 +330,6 @@ const ProductTable: React.FC<ProductTableProps> = () => {
               filters={filters}
               submitFilters={setFilters}
               clearFilters={clearFilters}
-              // tabs={filterTabs}
-              // onTabClick={setTab}
-              // activeTab={activeFilterTab}
-              // onRemoveTab={removeTab}
-              // onSaveTab={saveTab}
             />
           }
           enableSearch
@@ -241,7 +358,22 @@ const ProductTable: React.FC<ProductTableProps> = () => {
                 <Table.Body {...getTableBodyProps()}>
                   {rows.map((row) => {
                     prepareRow(row);
-                    return <ProductRow row={row} {...row.getRowProps()} />;
+                    return (
+                      <Table.Row
+                        color={"inherit"}
+                        linkTo={`/a/products/${row.original.id}`}
+                        actions={getActions("table", row.original.id!)}
+                        {...row.getRowProps()}
+                      >
+                        {row.cells.map((cell, index) => {
+                          return (
+                            <Table.Cell {...cell.getCellProps()}>
+                              {cell.render("Cell", { index })}
+                            </Table.Cell>
+                          );
+                        })}
+                      </Table.Row>
+                    );
                   })}
                 </Table.Body>
               ) : (
@@ -252,6 +384,8 @@ const ProductTable: React.FC<ProductTableProps> = () => {
             <ProductOverview
               products={products as Product[]}
               toggleListView={setListView}
+              getActions={getActions as any}
+              handleClickAddToCartBtn={handleClickAddToCartBtn}
             />
           )}
         </Table>
@@ -269,67 +403,16 @@ const ProductTable: React.FC<ProductTableProps> = () => {
           hasPrev={canPreviousPage}
         />
       </>
-    </div>
-  );
-};
-
-const ProductRow = ({ row, ...rest }) => {
-  const product = row.original;
-  const {
-    getActions,
-    isOpenHardwareModal,
-    handleCloseHardwareModal,
-  } = useProductActions(product);
-  const {
-    handleAddToCart,
-    handleAddHarwareToCart,
-    productList,
-  } = React.useContext(CartContext);
-
-  const [hardwares, setHardWares] = useState<Hardware[]>([]);
-
-  const handleSubmitAdd = useCallback(
-    (hw) => {
-      handleAddToCart && handleAddToCart(product);
-      setHardWares(hw);
-    },
-    [handleAddToCart, product]
-  );
-
-  useEffect(() => {
-    if (!hardwares.length) return;
-    try {
-      handleAddHarwareToCart &&
-        handleAddHarwareToCart(product.id, [...hardwares]);
-      setHardWares([]);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [handleAddHarwareToCart, hardwares, product.id, productList.length]);
-
-  return (
-    <Table.Row
-      color={"inherit"}
-      linkTo={`/a/products/${product.id}`}
-      actions={getActions("table")}
-      {...rest}
-    >
-      {row.cells.map((cell, index) => {
-        return (
-          <Table.Cell {...cell.getCellProps()}>
-            {cell.render("Cell", { index })}
-          </Table.Cell>
-        );
-      })}
-      {isOpenHardwareModal && (
+      {isOpenHardwareModal && hardwaresList && (
         <SelectAdditionalHardwareModal
-          id={product.id}
+          hardwareList={hardwaresList}
           isOpen={isOpenHardwareModal}
           handleClose={handleCloseHardwareModal}
           handleSubmit={handleSubmitAdd}
         />
       )}
-    </Table.Row>
+    </div>
   );
 };
+
 export default ProductTable;

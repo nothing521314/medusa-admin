@@ -1,5 +1,6 @@
 import { CartContext, IProductAdded } from "@medusa-react";
 import { Hardware, Product } from "@medusa-types";
+import { getProductData } from "src/domain/products/get-one-product";
 import React, {
   useCallback,
   useContext,
@@ -32,6 +33,7 @@ const SummaryPanel = ({ formData, readOnly = true, tab }: Props) => {
   }, [formData?.summary]);
   const [productSelected, setProductSelected] = useState<Product>();
   const [hardwares, setHardWares] = useState<Hardware[]>([]);
+  const [hardwaresList, setHardWaresList] = React.useState<Hardware[]>([]);
   const { handleAddToCart, handleAddHarwareToCart } = useContext(CartContext);
 
   const {
@@ -81,6 +83,29 @@ const SummaryPanel = ({ formData, readOnly = true, tab }: Props) => {
     handleOpenCustomerDialog();
   }, [handleOpenCustomerDialog, isOpenProductDialog]);
 
+  const handleClickAddToCartBtn = React.useCallback(
+    async (prodId: string) => {
+      const { child_product, product: productData } = await getProductData(
+        prodId
+      );
+
+      const childHavePrice = child_product?.filter((item) => {
+        const price = item?.prices?.find(
+          (reg) => (reg as { label?: string })?.label === formData?.region?.id
+        );
+        return !!price;
+      });
+      if (childHavePrice.length) {
+        setProductSelected(productData);
+        handleOpenHardwareModal();
+        setHardWaresList([...childHavePrice]);
+      } else {
+        handleAddToCart && handleAddToCart({ ...productData });
+      }
+    },
+    [formData?.region?.id, handleAddToCart, handleOpenHardwareModal]
+  );
+
   const handleSubmitAdd = useCallback(
     (hw) => {
       if (!productSelected) return;
@@ -92,9 +117,9 @@ const SummaryPanel = ({ formData, readOnly = true, tab }: Props) => {
 
   useEffect(() => {
     if (!hardwares.length) return;
+    if (!productSelected?.id) return;
     try {
-      handleAddHarwareToCart &&
-        handleAddHarwareToCart(productSelected?.id!, hardwares);
+      handleAddHarwareToCart?.(productSelected.id, hardwares);
       setHardWares([]);
     } catch (error) {
       console.log(error);
@@ -160,19 +185,12 @@ const SummaryPanel = ({ formData, readOnly = true, tab }: Props) => {
             open={isOpenProductDialog}
             onClose={handleCloseProductDialog}
             region={formData.region}
-            handleSetProduct={(product) => {
-              if (!product.additional_hardwares?.length) {
-                handleAddToCart && handleAddToCart(product);
-              } else {
-                setProductSelected(product);
-                handleOpenHardwareModal();
-              }
-            }}
+            handleSetProduct={(product) => handleClickAddToCartBtn(product.id!)}
           />
         )}
-        {isOpenHardwareModal && (
+        {isOpenHardwareModal && hardwaresList && (
           <SelectAdditionalHardwareModal
-            id={productSelected?.id!}
+            hardwareList={hardwaresList}
             isOpen={isOpenHardwareModal}
             handleClose={handleCloseHardwareModal}
             handleSubmit={handleSubmitAdd}

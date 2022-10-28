@@ -10,7 +10,7 @@ import { useMedusa } from "../../../contexts";
 import { UseQueryOptionsWrapper } from "../../../types";
 import { queryKeysFactory } from "../../utils/index";
 
-const ADMIN_PRODUCTS_QUERY_KEY = `admin_products` as const;
+const ADMIN_PRODUCTS_QUERY_KEY = "admin_products" as const;
 
 export const adminProductKeys = queryKeysFactory(ADMIN_PRODUCTS_QUERY_KEY);
 

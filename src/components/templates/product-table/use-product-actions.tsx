@@ -1,6 +1,7 @@
 import { CartContext, useAdminDeleteProduct } from "@medusa-react";
-import { Product } from "@medusa-types";
+import { Hardware, Product } from "@medusa-types";
 import { navigate } from "gatsby";
+import { getProductData } from "src/domain/products/get-one-product";
 import * as React from "react";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import ViewListIcon from "src/components/fundamentals/icons/view-list-icon";
@@ -16,23 +17,16 @@ const useProductActions = (product?: Product) => {
   const dialog = useImperativeDialog();
   const notification = useNotification();
   const { isAdmin, selectedRegion } = React.useContext(AccountContext);
-  const deleteProduct = useAdminDeleteProduct(product?.id!);
   const { handleAddToCart } = React.useContext(CartContext);
+  const deleteProduct = useAdminDeleteProduct(product?.id!);
+
+  const [hardwaresList, setHardWaresList] = React.useState<Hardware[]>([]);
 
   const {
     open: handleOpenHardwareModal,
     close: handleCloseHardwareModal,
     state: isOpenHardwareModal,
   } = useToggleState(false);
-
-  const listHavePrice = React.useMemo(() => {
-    return product?.additional_hardwares?.filter((item) => {
-      const price = item?.prices?.find(
-        (reg) => reg?.region_id === selectedRegion?.id
-      );
-      return !!price;
-    });
-  }, [product?.additional_hardwares, selectedRegion?.id]);
 
   const handleDelete = React.useCallback(async () => {
     const shouldDelete = await dialog({
@@ -51,6 +45,31 @@ const useProductActions = (product?: Product) => {
     }
   }, [deleteProduct, dialog, notification]);
 
+  const handleClickAddToCartBtn = React.useCallback(async () => {
+    if (!product?.id) return;
+    const { child_product, product: productData } = await getProductData(
+      product.id
+    );
+
+    const childHavePrice = child_product?.filter((item) => {
+      const price = item?.prices?.find(
+        (reg) => (reg as { label?: string })?.label === selectedRegion?.id
+      );
+      return !!price;
+    });
+    if (childHavePrice.length) {
+      handleOpenHardwareModal();
+      setHardWaresList([...childHavePrice]);
+    } else {
+      handleAddToCart && handleAddToCart({ ...productData });
+    }
+  }, [
+    handleAddToCart,
+    handleOpenHardwareModal,
+    product?.id,
+    selectedRegion?.id,
+  ]);
+
   const getActions = (mode: "grid" | "table" = "grid"): ActionType[] => {
     const l: ActionType[] = [
       {
@@ -63,7 +82,7 @@ const useProductActions = (product?: Product) => {
     mode === "table" &&
       l.push({
         label: "Add To Cart",
-        onClick: () => navigate(`/a/products/${product?.id}`),
+        onClick: () => handleClickAddToCartBtn(),
         icon: <CartPlusIcon size={20} />,
       });
 
@@ -83,6 +102,7 @@ const useProductActions = (product?: Product) => {
     isOpenHardwareModal,
     handleCloseHardwareModal,
     handleOpenHardwareModal,
+    hardwaresList,
   };
 };
 

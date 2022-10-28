@@ -1,35 +1,30 @@
-import { CartContext } from "@medusa-react";
-import { Hardware, Product } from "@medusa-types";
+import { Product } from "@medusa-types";
 import clsx from "clsx";
-import { Link, navigate } from "gatsby";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Link } from "gatsby";
+import React, { useContext, useMemo } from "react";
 import CartPlusIcon from "src/components/fundamentals/icons/cart-plus-icon";
 import ImagePlaceholderIcon from "src/components/fundamentals/icons/image-placeholder-icon";
 import { AccountContext } from "src/context/account";
-import SelectAdditionalHardwareModal from "src/domain/products/components/select-addtional-hardware-modal";
 import { formatAmountWithSymbol } from "src/utils/prices";
 import Button from "../../fundamentals/button";
 import ListIcon from "../../fundamentals/icons/list-icon";
 import MoreHorizontalIcon from "../../fundamentals/icons/more-horizontal-icon";
 import TileIcon from "../../fundamentals/icons/tile-icon";
-import Actionables from "../../molecules/actionables";
+import Actionables, { ActionType } from "../../molecules/actionables";
 import { NoRecordTable } from "../no-record-table";
-import useProductActions from "./use-product-actions";
 
 type ProductOverviewProps = {
   products?: Product[];
   toggleListView: () => void;
+  getActions: (mode: string, prodId: string) => ActionType[];
+  handleClickAddToCartBtn: (prodId: string) => void;
 };
 
 const ProductOverview = ({
   products,
   toggleListView,
+  getActions,
+  handleClickAddToCartBtn,
 }: ProductOverviewProps) => {
   if (!products) {
     return null;
@@ -59,7 +54,11 @@ const ProductOverview = ({
       {products.length > 0 ? (
         <div className="mt-4 grid grid-cols-1 medium:grid-cols-3 large:grid-cols-5 gap-4">
           {products.map((product) => (
-            <ProductTile product={product} />
+            <ProductTile
+              product={product}
+              getActions={getActions}
+              handleClickAddToCartBtn={handleClickAddToCartBtn}
+            />
           ))}
         </div>
       ) : (
@@ -69,18 +68,16 @@ const ProductOverview = ({
   );
 };
 
-const ProductTile = ({ product }: { product: Product }) => {
-  const {
-    getActions,
-    handleOpenHardwareModal,
-    isOpenHardwareModal,
-    handleCloseHardwareModal,
-  } = useProductActions(product);
+const ProductTile = ({
+  product,
+  getActions,
+  handleClickAddToCartBtn,
+}: {
+  product: Product;
+  getActions: (mode: string, prodId: string) => ActionType[];
+  handleClickAddToCartBtn: (prodId: string) => void;
+}) => {
   const { selectedRegion } = useContext(AccountContext);
-  const { handleAddToCart, handleAddHarwareToCart, productList } = useContext(
-    CartContext
-  );
-  const [hardwares, setHardWares] = useState<Hardware[]>([]);
 
   const price = useMemo(() => {
     return (
@@ -88,34 +85,6 @@ const ProductTile = ({ product }: { product: Product }) => {
         ?.price || 0
     );
   }, [product.prices, selectedRegion?.id]);
-
-  const handleClickAddToCartBtn = useCallback(() => {
-    // if (product?.additional_hardwares?.length) {
-    //   handleOpenHardwareModal();
-    // } else {
-    //   if (!product || !handleAddToCart) return;
-    //   handleAddToCart({ ...product });
-    // }
-    navigate(`/a/products/${product?.id}`);
-  }, [product]);
-
-  const handleSubmitAdd = useCallback(
-    (hw) => {
-      handleAddToCart && handleAddToCart(product);
-      setHardWares(hw);
-    },
-    [handleAddToCart, product]
-  );
-
-  useEffect(() => {
-    if (!hardwares.length) return;
-    try {
-      handleAddHarwareToCart && handleAddHarwareToCart(product.id!, hardwares);
-      setHardWares([]);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [handleAddHarwareToCart, hardwares, product.id, productList.length]);
 
   return (
     <div className="p-base group rounded-rounded hover:bg-grey-5 flex-col border border-grey-30">
@@ -126,7 +95,7 @@ const ProductTile = ({ product }: { product: Product }) => {
           )}
         >
           <Actionables
-            actions={getActions()}
+            actions={getActions("grid", product.id!)}
             customTrigger={
               <Button
                 variant="ghost"
@@ -171,21 +140,13 @@ const ProductTile = ({ product }: { product: Product }) => {
           <Button
             variant="secondary"
             size="small"
-            onClick={handleClickAddToCartBtn}
+            onClick={() => handleClickAddToCartBtn(product.id!)}
           >
             <CartPlusIcon size={20} />
             Add To Cart
           </Button>
         </div>
       </div>
-      {isOpenHardwareModal && (
-        <SelectAdditionalHardwareModal
-          id={product.id!}
-          isOpen={isOpenHardwareModal}
-          handleClose={handleCloseHardwareModal}
-          handleSubmit={handleSubmitAdd}
-        />
-      )}
     </div>
   );
 };

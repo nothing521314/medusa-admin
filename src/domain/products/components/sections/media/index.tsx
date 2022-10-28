@@ -119,7 +119,7 @@ const MediaSection = ({ mode = "new", form }: Props) => {
       </div>
       {isOpenHardwareModal && (
         <SelectAdditionalHardwareModal
-          id={getValues("id") || ""}
+          hardwareList={listHavePrice!}
           isOpen={isOpenHardwareModal}
           handleClose={handleCloseHardwareModal}
           handleSubmit={handleSubmitAdd}

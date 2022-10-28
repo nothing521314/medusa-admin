@@ -1,4 +1,3 @@
-import { useAdminProduct } from "@medusa-react";
 import { Hardware } from "@medusa-types";
 import clsx from "clsx";
 import React, { useCallback, useContext, useEffect, useState } from "react";
@@ -10,7 +9,7 @@ import { AccountContext } from "src/context/account";
 import { formatAmountWithSymbol } from "src/utils/prices";
 
 type Props = {
-  id: string;
+  hardwareList: Hardware[];
   hw?: Hardware;
   isOpen: boolean;
   handleClose: () => void;
@@ -22,12 +21,11 @@ interface IHardware extends Hardware {
 }
 
 const SelectAdditionalHardwareModal = ({
-  id,
+  hardwareList,
   isOpen,
   handleClose,
   handleSubmit,
 }: Props) => {
-  const { product, isLoading } = useAdminProduct(id);
   const { selectedRegion } = useContext(AccountContext);
 
   const [additionalHardwaresList, setAdditionalHardwaresList] = useState<
@@ -64,16 +62,10 @@ const SelectAdditionalHardwareModal = ({
   }, [additionalHardwaresList, handleClose, handleSubmit]);
 
   useEffect(() => {
-    if (!isLoading && product?.additional_hardwares?.length) {
-      const filtered = product?.additional_hardwares?.filter((item) => {
-        const price = item?.product_addition?.prices?.find(
-          (reg) => reg?.region_id === selectedRegion?.id
-        );
-        return !!price;
-      });
-      setAdditionalHardwaresList(filtered);
+    if (hardwareList.length) {
+      setAdditionalHardwaresList([...hardwareList]);
     }
-  }, [isLoading, product?.additional_hardwares, selectedRegion?.id]);
+  }, [hardwareList]);
 
   return (
     <Modal open={isOpen} handleClose={handleClose}>
